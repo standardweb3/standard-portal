@@ -1,4 +1,11 @@
 import React, { FC, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+
+// Icons
+import { EyeIcon } from '@heroicons/react/outline';
+// next
+import Image from 'next/image';
+// connectors
 import {
   binance,
   fortmatic,
@@ -9,15 +16,25 @@ import {
   walletlink,
 } from '../../connectors';
 
-import Image from 'next/image';
-import { AppDispatch } from '../../state';
+// web3
+import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
+
 // import { ExternalLink as LinkIcon } from 'react-feather';
-import { SUPPORTED_WALLETS } from '../../constants';
+// state
+import { AppDispatch } from '../../state';
 import { clearAllTransactions } from '../../state/transactions/actions';
+
+// functions
 import { getExplorerLink } from '../../functions/explorer';
 import { shortenAddress } from '../../functions';
-import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
-import { useDispatch } from 'react-redux';
+
+// constants
+import { SUPPORTED_WALLETS } from '../../constants';
+import { ModalHeader } from '../Modal/ModalHeader';
+import { Button } from '../Button';
+import { ExternalLink } from '../ExternalLink';
+import Copier from '../Copier';
+import Transaction from './Transaction';
 
 const WalletIcon: FC<{ size?: number; src: string; alt: string }> = ({
   size,
@@ -26,7 +43,7 @@ const WalletIcon: FC<{ size?: number; src: string; alt: string }> = ({
   children,
 }) => {
   return (
-    <div className="flex flex-row flex-nowrap items-end md:items-center justify-center mr-2">
+    <div className="flex flex-row flex-nowrap items-center md:items-center justify-center mr-3">
       <Image src={src} alt={alt} width={size} height={size} />
       {children}
     </div>
@@ -35,9 +52,9 @@ const WalletIcon: FC<{ size?: number; src: string; alt: string }> = ({
 
 function renderTransactions(transactions: string[]) {
   return (
-    <div className="flex flex-col flex-nowrap gap-2">
+    <div className="flex flex-col flex-nowrap">
       {transactions.map((hash, i) => {
-        return <div key={i}>transaction</div>;
+        return <Transaction key={i} hash={hash} />;
       })}
     </div>
   );
@@ -72,7 +89,7 @@ const WalletInfo: FC<WalletInfoProps> = ({
       )
       .map((k) => SUPPORTED_WALLETS[k].name)[0];
     return (
-      <div className="font-medium text-baseline text-secondary">
+      <div className="font-medium text-baseline text-success">
         Connected with {name}
       </div>
     );
@@ -80,19 +97,28 @@ const WalletInfo: FC<WalletInfoProps> = ({
 
   function getStatusIcon() {
     if (connector === injected) {
-      return null;
-      // return <IconWrapper size={16}>{/* <Identicon /> */}</IconWrapper>
+      return (
+        <WalletIcon src="/img/wallets/metamask.png" alt="Metamask" size={16} />
+      );
     } else if (connector === walletconnect) {
       return (
-        <WalletIcon src="/wallet-connect.png" alt="Wallet Connect" size={16} />
+        <WalletIcon
+          src="/img/wallets/wallet-connect.svg"
+          alt="Wallet Connect"
+          size={16}
+        />
       );
     } else if (connector === walletlink) {
-      return <WalletIcon src="/coinbase.svg" alt="Coinbase" size={16} />;
+      return (
+        <WalletIcon src="/img/wallets/coinbase.svg" alt="Coinbase" size={16} />
+      );
     } else if (connector === fortmatic) {
-      return <WalletIcon src="/formatic.png" alt="Fortmatic" size={16} />;
+      return (
+        <WalletIcon src="/img/wallets/formatic.png" alt="Fortmatic" size={16} />
+      );
     } else if (connector === portis) {
       return (
-        <WalletIcon src="/portnis.png" alt="Portis" size={16}>
+        <WalletIcon src="/img/wallets/portnis.png" alt="Portis" size={16}>
           <button
             onClick={() => {
               portis.portis.showPortis();
@@ -103,7 +129,7 @@ const WalletInfo: FC<WalletInfoProps> = ({
         </WalletIcon>
       );
     } else if (connector === torus) {
-      return <WalletIcon src="/torus.png" alt="Torus" size={16} />;
+      return <WalletIcon src="/img/wallets/torus.png" alt="Torus" size={16} />;
     }
     return null;
   }
@@ -115,7 +141,7 @@ const WalletInfo: FC<WalletInfoProps> = ({
   return (
     <div className="space-y-3">
       <div className="space-y-3">
-        <button onClick={toggleWalletModal}>close</button>
+        <ModalHeader title={'Wallet'} onClose={toggleWalletModal} />
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             {formatConnectorName()}
@@ -124,21 +150,27 @@ const WalletInfo: FC<WalletInfoProps> = ({
                 connector !== walletlink &&
                 connector !== binance &&
                 connector.constructor.name !== 'KeystoneConnector' && (
-                  <button
+                  <Button
+                    type="bordered"
+                    color="info"
+                    className="text-sm"
                     onClick={() => {
                       (connector as any).close();
                     }}
                   >
                     Disconnect
-                  </button>
+                  </Button>
                 )}
-              <button
+              <Button
+                type="bordered"
+                color="white"
+                className="text-sm"
                 onClick={() => {
                   openOptions();
                 }}
               >
-                change
-              </button>
+                Change
+              </Button>
             </div>
           </div>
           <div
@@ -146,33 +178,36 @@ const WalletInfo: FC<WalletInfoProps> = ({
             className="flex flex-col justify-center space-y-3"
           >
             {ENSName ? (
-              <div className="bg-dark-800">
+              <div className="flex align-center bg-modal-inner-background rounded-xl py-2 px-3">
                 {getStatusIcon()}
-                <div>{ENSName}</div>
+                <div className="truncate">{ENSName}</div>
               </div>
             ) : (
-              <div className="bg-dark-800 py-2 px-3 rounded">
+              <div className="flex align-center bg-modal-inner-background rounded-xl py-2 px-3">
                 {getStatusIcon()}
-                <div>{account && shortenAddress(account)}</div>
+                <div className="truncate">
+                  {account && shortenAddress(account)}
+                </div>
               </div>
             )}
-            <div className="flex items-center space-x-3 gap-2">
+            <div className="flex items-center flex-wrap justify-start">
               {chainId && account && (
-                <div
-                //   color="blue"
-                //   startIcon={<LinkIcon size={16} />}
-                //   href={
-                //     chainId &&
-                //     getExplorerLink(chainId, ENSName || account, 'address')
-                //   }
+                <ExternalLink
+                  className="text-sm mr-3"
+                  color="link"
+                  startIcon={<EyeIcon className="w-4 h-4" />}
+                  href={
+                    chainId &&
+                    getExplorerLink(chainId, ENSName || account, 'address')
+                  }
                 >
                   <div>View on explorer</div>
-                </div>
+                </ExternalLink>
               )}
               {account && (
-                <div>
+                <Copier className="text-sm" toCopy={account}>
                   <div>Copy Address</div>
-                </div>
+                </Copier>
               )}
             </div>
           </div>
@@ -182,18 +217,23 @@ const WalletInfo: FC<WalletInfoProps> = ({
         <div className="flex items-center justify-between">
           <div>Recent Transactions</div>
           <div>
-            <button onClick={clearAllTransactionsCallback}>
-              {`Clear all`}
-            </button>
+            <Button
+              type="bordered"
+              color="white"
+              className="text-sm"
+              onClick={clearAllTransactionsCallback}
+            >
+              Clear
+            </Button>
           </div>
         </div>
         {!!pendingTransactions.length || !!confirmedTransactions.length ? (
-          <>
+          <div className="bg-modal-inner-background rounded-xl py-2 px-3 ">
             {renderTransactions(pendingTransactions)}
             {renderTransactions(confirmedTransactions)}
-          </>
+          </div>
         ) : (
-          <div className="text-secondary">
+          <div className="text-info text-sm">
             Your transactions will appear here...
           </div>
         )}

@@ -30,56 +30,8 @@ import usePrevious from '../../hooks/usePrevious';
 import Option from './Option';
 import PendingView from './PendingView';
 import WalletInfo from '../../components-ui/WalletInfo';
-
-const CloseIcon = styled.div`
-  position: absolute;
-  right: 0;
-  top: 0;
-  &:hover {
-    cursor: pointer;
-    opacity: 0.6;
-  }
-`;
-
-const HeaderRow = styled.div`
-  margin-bottom: 1rem;
-`;
-
-const UpperSection = styled.div`
-  position: relative;
-
-  h5 {
-    margin: 0;
-    margin-bottom: 0.5rem;
-    font-size: 1rem;
-    font-weight: 400;
-  }
-
-  h5:last-child {
-    margin-bottom: 0px;
-  }
-
-  h4 {
-    margin-top: 0;
-    font-weight: 500;
-  }
-`;
-
-const OptionGrid = styled.div`
-  display: grid;
-  grid-gap: 10px;
-  grid-template-columns: 1fr;
-  // ${({ theme }) => theme.mediaWidth.upToMedium`
-    grid-template-columns: 1fr;
-    grid-gap: 10px;
-  `};
-`;
-
-const HoverText = styled.div`
-  :hover {
-    cursor: pointer;
-  }
-`;
+import { ModalHeader } from '../../components-ui/Modal/ModalHeader';
+import { Button } from '../../components-ui/Button';
 
 const WALLET_VIEWS = {
   OPTIONS: 'options',
@@ -93,8 +45,8 @@ export default function WalletModal({
   confirmedTransactions,
   ENSName,
 }: {
-  pendingTransactions?: string[]; // hashes of pending
-  confirmedTransactions?: string[]; // hashes of confirmed
+  pendingTransactions: string[]; // hashes of pending
+  confirmedTransactions: string[]; // hashes of confirmed
   ENSName?: string;
 }) {
   // console.log({ ENSName })
@@ -299,23 +251,28 @@ export default function WalletModal({
   function getModalContent() {
     if (error) {
       return (
-        <UpperSection>
-          <CloseIcon onClick={toggleWalletModal}>X</CloseIcon>
-          <HeaderRow style={{ paddingLeft: 0, paddingRight: 0 }}>
-            {error instanceof UnsupportedChainIdError
-              ? `Wrong Network`
-              : `Error connecting`}
-          </HeaderRow>
+        <div>
+          <ModalHeader
+            title={
+              error instanceof UnsupportedChainIdError
+                ? `Wrong Network`
+                : `Error connecting`
+            }
+            onClose={toggleWalletModal}
+          />
           <div>
-            {error instanceof UnsupportedChainIdError ? (
-              <h5>{`Please connect to the appropriate Ethereum network.`}</h5>
-            ) : (
-              `Error connecting. Try refreshing the page.`
-            )}
-            <div style={{ marginTop: '1rem' }} />
-            <button onClick={deactivate}>{`Disconnect`}</button>
+            <div className="mt-2 mb-4 text-danger">
+              {true || error instanceof UnsupportedChainIdError
+                ? 'Please connect to the appropriate Ethereum network'
+                : 'Try refreshing the page'}
+            </div>
+            <Button
+              type="bordered"
+              color="white"
+              onClick={deactivate}
+            >{`Disconnect`}</Button>
           </div>
-        </UpperSection>
+        </div>
       );
     }
     if (account && walletView === WALLET_VIEWS.ACCOUNT) {
@@ -331,12 +288,7 @@ export default function WalletModal({
     }
     return (
       <div className="flex flex-col space-y-4">
-        <button
-          onClick={toggleWalletModal}
-          className="text-left text-2xl font-semibold"
-        >
-          Select A Wallet
-        </button>
+        <ModalHeader title="Select A Wallet" onClose={toggleWalletModal} />
         <div className="flex flex-col space-y-6">
           {walletView === WALLET_VIEWS.PENDING ? (
             <PendingView

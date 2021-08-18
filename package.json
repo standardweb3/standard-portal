@@ -26,6 +26,7 @@
     "@ethersproject/contracts": "^5.4.0",
     "@ethersproject/providers": "^5.4.1",
     "@gnosis.pm/safe-apps-web3-react": "^0.6.1",
+    "@heroicons/react": "^1.0.4",
     "@keystonehq/keystone-connector": "0.8.3",
     "@lingui/react": "^3.10.2",
     "@reach/dialog": "^0.16.0",
@@ -73,13 +74,13 @@
     "wcag-contrast": "^3.0.0"
   },
   "devDependencies": {
+    "@emotion/babel-plugin": "^11.3.0",
+    "@emotion/eslint-plugin": "^11.2.0",
     "@lingui/cli": "^3.10.2",
     "@lingui/core": "^3.10.4",
     "@lingui/detect-locale": "^3.10.4",
     "@lingui/loader": "^3.10.2",
     "@lingui/macro": "^3.10.2",
-    "@emotion/babel-plugin": "^11.3.0",
-    "@emotion/eslint-plugin": "^11.2.0",
     "@types/node": "^15.12.2",
     "@types/react": "17.0.17",
     "autoprefixer": "^10.3.1",

@@ -40,7 +40,11 @@ export default function Option({
         cursor-pointer 
         backdrop-filter
         backdrop-blur-sm
-        ${!active ? 'bg-modal-inner-background' : 'bg-background'}
+        ${
+          !active
+            ? 'bg-modal-inner-background '
+            : 'bg-background border border-success'
+        }
         hover:bg-background
         transition duration-500
         `}
@@ -64,11 +68,5 @@ export default function Option({
     return <a href={link}>{content}</a>;
   }
 
-  return !active ? (
-    content
-  ) : (
-    <div className="w-full p-px rounded bg-gradient-to-r from-blue to-pink">
-      {content}
-    </div>
-  );
+  return content;
 }

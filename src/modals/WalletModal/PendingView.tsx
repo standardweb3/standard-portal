@@ -60,7 +60,7 @@ export default function PendingView({
         <LoadingWrapper>
           {error ? (
             <>
-              <div className="mb-3">Error Occured</div>
+              <div className="mb-3 text-danger">Error Occured</div>
               <ErrorGroup
                 className="
                   p-3 rounded-xl

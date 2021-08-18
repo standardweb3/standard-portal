@@ -38,6 +38,7 @@ const StyledDialogOverlay = styled(AnimatedDialogOverlay)`
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
   }
 `;
 const AnimatedDialogContent = animated(DialogContent);
@@ -53,24 +54,30 @@ const StyledDialogContent = styled(
   &[data-reach-dialog-content] {
     background-color: transparent;
     align-self: ${({ mobile }) => (mobile ? 'flex-end' : 'center')};
+    margin: 4rem 0.5rem;
+    padding: 0;
+    width: 100vw;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    ${({ maxWidth }) =>
+      maxWidth &&
+      css`
+        max-width: ${maxWidth};
+      `}
+
+    ${({ maxHeight }) =>
+      maxHeight &&
+      css`
+        max-height: ${maxHeight};
+      `}
+
+    ${({ minHeight }) =>
+      minHeight &&
+      css`
+        min-height: ${minHeight};
+      `}
   }
-  ${({ maxWidth }) =>
-    maxWidth &&
-    css`
-      max-width: ${maxWidth};
-    `}
-
-  ${({ maxHeight }) =>
-    maxHeight &&
-    css`
-      max-width: ${maxHeight};
-    `}
-
-  ${({ minHeight }) =>
-    minHeight &&
-    css`
-      max-width: ${minHeight};
-    `}  
 `;
 
 export function Modal({
@@ -110,7 +117,7 @@ export function Modal({
               className={classNames(
                 'text-text',
                 'rounded-xl p-8',
-                'backdrop-filter backdrop-blur',
+                // 'backdrop-filter backdrop-blur',
                 'bg-modal-background',
                 className ?? '',
               )}

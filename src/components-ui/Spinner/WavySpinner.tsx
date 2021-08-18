@@ -1,19 +1,24 @@
 import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
+import { classNames } from '../../functions';
 
-export function WavySpinner() {
+export type WavySpinnerProps = {
+  className?: string;
+};
+
+export function WavySpinner({ className = 'bg-blue' }: WavySpinnerProps) {
   return (
     <WavesWrapper>
-      <div className="wave bg-background"></div>
-      <div className="wave bg-background"></div>
-      <div className="wave bg-background"></div>
-      <div className="wave bg-background"></div>
-      <div className="wave bg-background"></div>
-      <div className="wave bg-background"></div>
-      <div className="wave bg-background"></div>
-      <div className="wave bg-background"></div>
-      <div className="wave bg-background"></div>
-      <div className="wave bg-background"></div>
+      <div className={classNames('wave', className)}></div>
+      <div className={classNames('wave', className)}></div>
+      <div className={classNames('wave', className)}></div>
+      <div className={classNames('wave', className)}></div>
+      <div className={classNames('wave', className)}></div>
+      <div className={classNames('wave', className)}></div>
+      <div className={classNames('wave', className)}></div>
+      <div className={classNames('wave', className)}></div>
+      <div className={classNames('wave', className)}></div>
+      <div className={classNames('wave', className)}></div>
     </WavesWrapper>
   );
 }
@@ -42,32 +47,33 @@ const WavesWrapper = styled.div`
       animation: ${wavy} 2s ease infinite;
     `}
     border-radius: 20px;
-    &:nth-child(2) {
-      animation-delay: 0.1s;
-    }
-    &:nth-child(3) {
-      animation-delay: 0.3s;
-    }
-    &:nth-child(4) {
-      animation-delay: 0.5s;
-    }
-    &:nth-child(5) {
-      animation-delay: 0.7s;
-    }
-    &:nth-child(6) {
-      animation-delay: 0.9s;
-    }
-    &:nth-child(7) {
-      animation-delay: 1.1s;
-    }
-    &:nth-child(8) {
-      animation-delay: 1.3s;
-    }
-    &:nth-child(9) {
-      animation-delay: 1.5s;
-    }
-    &:nth-child(10) {
-      animation-delay: 1.7s;
-    }
+  }
+
+  .wave:nth-of-type(2) {
+    animation-delay: 0.1s;
+  }
+  .wave:nth-of-type(3) {
+    animation-delay: 0.3s;
+  }
+  .wave:nth-of-type(4) {
+    animation-delay: 0.5s;
+  }
+  .wave:nth-of-type(5) {
+    animation-delay: 0.7s;
+  }
+  .wave:nth-of-type(6) {
+    animation-delay: 0.9s;
+  }
+  .wave:nth-of-type(7) {
+    animation-delay: 1.1s;
+  }
+  .wave:nth-of-type(8) {
+    animation-delay: 1.3s;
+  }
+  .wave:nth-of-type(9) {
+    animation-delay: 1.5s;
+  }
+  .wave:nth-of-type(10) {
+    animation-delay: 1.7s;
   }
 `;
