@@ -1,23 +1,24 @@
-import { ChainId } from '@sushiswap/sdk'
+import { ChainId } from '@sushiswap/sdk';
 
-const Arbitrum = '/images/networks/arbitrum-network.jpg'
-const Avalanche = '/images/networks/avalanche-network.jpg'
-const Bsc = '/images/networks/bsc-network.jpg'
-const Fantom = '/images/networks/fantom-network.jpg'
-const Goerli = '/images/networks/goerli-network.jpg'
-const Harmony = '/images/networks/harmonyone-network.jpg'
-const Heco = '/images/networks/heco-network.jpg'
-const Kovan = '/images/networks/kovan-network.jpg'
-const Mainnet = '/images/networks/mainnet-network.jpg'
-const Matic = '/images/networks/matic-network.jpg'
-const Moonbeam = '/images/networks/moonbeam-network.jpg'
-const OKEx = '/images/networks/okex-network.jpg'
-const Polygon = '/images/networks/polygon-network.jpg'
-const Rinkeby = '/images/networks/rinkeby-network.jpg'
-const Ropsten = '/images/networks/ropsten-network.jpg'
-const xDai = '/images/networks/xdai-network.jpg'
-const Celo = '/images/networks/celo-network.jpg'
-const Palm = 'https://raw.githubusercontent.com/sushiswap/icons/master/network/palm.jpg'
+const Arbitrum = '/img/networks/arbitrum-network.jpg';
+const Avalanche = '/img/networks/avalanche-network.jpg';
+const Bsc = '/img/networks/bsc-network.jpg';
+const Fantom = '/img/networks/fantom-network.jpg';
+const Goerli = '/img/networks/goerli-network.jpg';
+const Harmony = '/img/networks/harmonyone-network.jpg';
+const Heco = '/img/networks/heco-network.jpg';
+const Kovan = '/img/networks/kovan-network.jpg';
+const Mainnet = '/img/networks/ethereum-net.png';
+const Matic = '/img/networks/matic-network.jpg';
+const Moonbeam = '/img/networks/moonbeam-network.jpg';
+const OKEx = '/img/networks/okex-network.jpg';
+const Polygon = '/img/networks/polygon-net.png';
+const Rinkeby = '/img/networks/rinkeby-network.jpg';
+const Ropsten = '/img/networks/ropsten-network.jpg';
+const xDai = '/img/networks/xdai-network.jpg';
+const Celo = '/img/networks/celo-network.jpg';
+// const Palm =
+// 'https://raw.githubusercontent.com/sushiswap/icons/master/network/palm.jpg';
 
 export const NETWORK_ICON = {
   [ChainId.MAINNET]: Mainnet,
@@ -44,8 +45,8 @@ export const NETWORK_ICON = {
   [ChainId.OKEX]: OKEx,
   [ChainId.OKEX_TESTNET]: OKEx,
   [ChainId.CELO]: Celo,
-  [ChainId.PALM]: Palm,
-}
+  // [ChainId.PALM]: Palm,
+};
 
 export const NETWORK_LABEL: { [chainId in ChainId]?: string } = {
   [ChainId.MAINNET]: 'Ethereum',
@@ -72,5 +73,5 @@ export const NETWORK_LABEL: { [chainId in ChainId]?: string } = {
   [ChainId.OKEX]: 'OKEx',
   [ChainId.OKEX_TESTNET]: 'OKEx',
   [ChainId.CELO]: 'Celo',
-  [ChainId.PALM]: 'Palm',
-}
+  // [ChainId.PALM]: 'Palm',
+};
