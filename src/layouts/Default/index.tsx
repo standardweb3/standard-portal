@@ -1,9 +1,16 @@
 import { Sidebar } from '../../components-ui/Sidebar';
+import Main from './Main';
 
-const Layout = ({}) => {
+const Layout = ({ children }) => {
   return (
-    <div className="w-full h-full">
+    <div
+      className={`
+      flex items-center
+      w-full h-full
+      `}
+    >
       <Sidebar />
+      <Main>{children}</Main>
     </div>
   );
 };

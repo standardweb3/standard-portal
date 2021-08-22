@@ -18,12 +18,20 @@ const MAX_WIDTH: { [key: string]: string } = {
 
 export type ContainerProps = {
   children: ReactNode;
-  maxWidth: string;
-  className: string;
+  maxWidth?: string;
+  className?: string;
 };
 
-const Container = ({ children, maxWidth = '2xl', className = '', ...rest }: ContainerProps) => (
-  <div className={classNames(className, MAX_WIDTH[maxWidth], 'w-full')} {...rest}>
+const Container = ({
+  children,
+  maxWidth = 'full',
+  className = '',
+  ...rest
+}: ContainerProps) => (
+  <div
+    className={classNames(className, MAX_WIDTH[maxWidth], 'w-full')}
+    {...rest}
+  >
     {children}
   </div>
 );

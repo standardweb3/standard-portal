@@ -1,17 +1,39 @@
-import { AppDispatch, AppState } from '../index'
-import { ChainId, Currency, CurrencyAmount, JSBI, Percent, TradeType, Trade as V2Trade, WNATIVE } from '@sushiswap/sdk'
-import { DEFAULT_ARCHER_ETH_TIP, DEFAULT_ARCHER_GAS_ESTIMATE } from '../../constants'
+import { AppDispatch, AppState } from '../index';
+import {
+  ChainId,
+  Currency,
+  CurrencyAmount,
+  JSBI,
+  Percent,
+  TradeType,
+  Trade as V2Trade,
+  WNATIVE,
+} from '@sushiswap/sdk';
+import {
+  DEFAULT_ARCHER_ETH_TIP,
+  DEFAULT_ARCHER_GAS_ESTIMATE,
+} from '../../constants';
 // import {
 //   EstimatedSwapCall,
 //   SuccessfulCall,
 //   useSwapCallArguments,
 // } from "../../hooks/useSwapCallback";
-import { Field, replaceSwapState, selectCurrency, setRecipient, switchCurrencies, typeInput } from './actions'
-import { isAddress, isZero } from '../../functions/validate'
-import { useAppDispatch, useAppSelector } from '../hooks'
-import { useCallback, useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useV2TradeExactIn as useTradeExactIn, useV2TradeExactOut as useTradeExactOut } from '../../hooks/useV2Trades'
+import {
+  Field,
+  replaceSwapState,
+  selectCurrency,
+  setRecipient,
+  switchCurrencies,
+  typeInput,
+} from './actions';
+import { isAddress, isZero } from '../../functions/validate';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  useV2TradeExactIn as useTradeExactIn,
+  useV2TradeExactOut as useTradeExactOut,
+} from '../../hooks/useV2Trades';
 import {
   useExpertModeManager,
   useUserArcherETHTip,
@@ -20,37 +42,37 @@ import {
   useUserArcherTipManualOverride,
   useUserSingleHopOnly,
   useUserSlippageTolerance,
-} from '../user/hooks'
+} from '../user/hooks';
 
-import { ParsedQs } from 'qs'
-import { SwapState } from './reducer'
-import { t } from '@lingui/macro'
-import { tryParseAmount } from '../../functions/parse'
-import { useActiveWeb3React } from '../../hooks/useActiveWeb3React'
-import { useCurrency } from '../../hooks/Tokens'
-import { useCurrencyBalances } from '../wallet/hooks'
-import useENS from '../../hooks/useENS'
-import { useLingui } from '@lingui/react'
-import useParsedQueryString from '../../hooks/useParsedQueryString'
-import useSwapSlippageTolerance from '../../hooks/useSwapSlippageTollerence'
+import { ParsedQs } from 'qs';
+import { SwapState } from './reducer';
+import { t } from '@lingui/macro';
+import { tryParseAmount } from '../../functions/parse';
+import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
+import { useCurrency } from '../../hooks/Tokens';
+import { useCurrencyBalances } from '../wallet/hooks';
+import useENS from '../../hooks/useENS';
+import { useLingui } from '@lingui/react';
+import useParsedQueryString from '../../hooks/useParsedQueryString';
+import useSwapSlippageTolerance from '../../hooks/useSwapSlippageTollerence';
 import {
   EstimatedSwapCall,
   SuccessfulCall,
   swapErrorToUserReadableMessage,
   useSwapCallArguments,
-} from '../../hooks/useSwapCallback'
+} from '../../hooks/useSwapCallback';
 
 export function useSwapState(): AppState['swap'] {
-  return useAppSelector((state) => state.swap)
+  return useAppSelector((state) => state.swap);
 }
 
 export function useSwapActionHandlers(): {
-  onCurrencySelection: (field: Field, currency: Currency) => void
-  onSwitchTokens: () => void
-  onUserInput: (field: Field, typedValue: string) => void
-  onChangeRecipient: (recipient: string | null) => void
+  onCurrencySelection: (field: Field, currency: Currency) => void;
+  onSwitchTokens: () => void;
+  onUserInput: (field: Field, typedValue: string) => void;
+  onChangeRecipient: (recipient: string | null) => void;
 } {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const onCurrencySelection = useCallback(
     (field: Field, currency: Currency) => {
       dispatch(
@@ -61,75 +83,84 @@ export function useSwapActionHandlers(): {
             : currency.isNative && currency.chainId !== ChainId.CELO
             ? 'ETH'
             : '',
-        })
-      )
+        }),
+      );
     },
-    [dispatch]
-  )
+    [dispatch],
+  );
 
   const onSwitchTokens = useCallback(() => {
-    dispatch(switchCurrencies())
-  }, [dispatch])
+    dispatch(switchCurrencies());
+  }, [dispatch]);
 
   const onUserInput = useCallback(
     (field: Field, typedValue: string) => {
-      dispatch(typeInput({ field, typedValue }))
+      dispatch(typeInput({ field, typedValue }));
     },
-    [dispatch]
-  )
+    [dispatch],
+  );
 
   const onChangeRecipient = useCallback(
     (recipient: string | null) => {
-      dispatch(setRecipient({ recipient }))
+      dispatch(setRecipient({ recipient }));
     },
-    [dispatch]
-  )
+    [dispatch],
+  );
 
   return {
     onSwitchTokens,
     onCurrencySelection,
     onUserInput,
     onChangeRecipient,
-  }
+  };
 }
 
 // TODO: Swtich for ours...
-const BAD_RECIPIENT_ADDRESSES: { [chainId: string]: { [address: string]: true } } = {
+const BAD_RECIPIENT_ADDRESSES: {
+  [chainId: string]: { [address: string]: true };
+} = {
   [ChainId.MAINNET]: {
     '0xC0AEe478e3658e2610c5F7A4A2E1777cE9e4f2Ac': true, // v2 factory
     '0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F': true, // v2 router 02
   },
-}
+};
 
 /**
  * Returns true if any of the pairs or tokens in a trade have the given checksummed address
  * @param trade to check for the given address
  * @param checksummedAddress address to check in the pairs and tokens
  */
-function involvesAddress(trade: V2Trade<Currency, Currency, TradeType>, checksummedAddress: string): boolean {
-  const path = trade.route.path
+function involvesAddress(
+  trade: V2Trade<Currency, Currency, TradeType>,
+  checksummedAddress: string,
+): boolean {
+  const path = trade.route.path;
   return (
     path.some((token) => token.address === checksummedAddress) ||
     (trade instanceof V2Trade
-      ? trade.route.pairs.some((pair) => pair.liquidityToken.address === checksummedAddress)
+      ? trade.route.pairs.some(
+          (pair) => pair.liquidityToken.address === checksummedAddress,
+        )
       : false)
-  )
+  );
 }
 
 // from the current swap inputs, compute the best trade and return it.
-export function useDerivedSwapInfo(doArcher = false): {
-  currencies: { [field in Field]?: Currency }
-  currencyBalances: { [field in Field]?: CurrencyAmount<Currency> }
-  parsedAmount: CurrencyAmount<Currency> | undefined
-  inputError?: string
-  v2Trade: V2Trade<Currency, Currency, TradeType> | undefined
-  allowedSlippage: Percent
+export function useDerivedSwapInfo(
+  doArcher = false,
+): {
+  currencies: { [field in Field]?: Currency };
+  currencyBalances: { [field in Field]?: CurrencyAmount<Currency> };
+  parsedAmount: CurrencyAmount<Currency> | undefined;
+  inputError?: string;
+  v2Trade: V2Trade<Currency, Currency, TradeType> | undefined;
+  allowedSlippage: Percent;
 } {
-  const { i18n } = useLingui()
+  // const { i18n } = useLingui()
 
-  const { account, chainId, library } = useActiveWeb3React()
+  const { account, chainId, library } = useActiveWeb3React();
 
-  const [singleHopOnly] = useUserSingleHopOnly()
+  const [singleHopOnly] = useUserSingleHopOnly();
 
   const {
     independentField,
@@ -137,105 +168,140 @@ export function useDerivedSwapInfo(doArcher = false): {
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
     recipient,
-  } = useSwapState()
+  } = useSwapState();
 
-  const inputCurrency = useCurrency(inputCurrencyId)
+  const inputCurrency = useCurrency(inputCurrencyId);
 
-  const outputCurrency = useCurrency(outputCurrencyId)
+  const outputCurrency = useCurrency(outputCurrencyId);
 
-  const recipientLookup = useENS(recipient ?? undefined)
+  const recipientLookup = useENS(recipient ?? undefined);
 
-  const to: string | null = (recipient === null ? account : recipientLookup.address) ?? null
+  const to: string | null =
+    (recipient === null ? account : recipientLookup.address) ?? null;
 
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
     inputCurrency ?? undefined,
     outputCurrency ?? undefined,
-  ])
+  ]);
 
-  const isExactIn: boolean = independentField === Field.INPUT
-  const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
+  const isExactIn: boolean = independentField === Field.INPUT;
+  const parsedAmount = tryParseAmount(
+    typedValue,
+    (isExactIn ? inputCurrency : outputCurrency) ?? undefined,
+  );
 
-  const bestTradeExactIn = useTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined, {
-    maxHops: singleHopOnly ? 1 : undefined,
-  })
+  const bestTradeExactIn = useTradeExactIn(
+    isExactIn ? parsedAmount : undefined,
+    outputCurrency ?? undefined,
+    {
+      maxHops: singleHopOnly ? 1 : undefined,
+    },
+  );
 
-  const bestTradeExactOut = useTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmount : undefined, {
-    maxHops: singleHopOnly ? 1 : undefined,
-  })
+  const bestTradeExactOut = useTradeExactOut(
+    inputCurrency ?? undefined,
+    !isExactIn ? parsedAmount : undefined,
+    {
+      maxHops: singleHopOnly ? 1 : undefined,
+    },
+  );
 
-  const v2Trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
+  const v2Trade = isExactIn ? bestTradeExactIn : bestTradeExactOut;
 
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],
     [Field.OUTPUT]: relevantTokenBalances[1],
-  }
+  };
 
   const currencies: { [field in Field]?: Currency } = {
     [Field.INPUT]: inputCurrency ?? undefined,
     [Field.OUTPUT]: outputCurrency ?? undefined,
-  }
+  };
 
-  let inputError: string | undefined
+  let inputError: string | undefined;
   if (!account) {
-    inputError = 'Connect Wallet'
+    inputError = 'Connect Wallet';
   }
 
   if (!parsedAmount) {
-    inputError = inputError ?? i18n._(t`Enter an amount`)
+    inputError = inputError ?? `Enter an amount`;
   }
 
   if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT]) {
-    inputError = inputError ?? i18n._(t`Select a token`)
+    inputError = inputError ?? `Select a token`;
   }
 
-  const formattedTo = isAddress(to)
+  const formattedTo = isAddress(to);
   if (!to || !formattedTo) {
-    inputError = inputError ?? i18n._(t`Enter a recipient`)
+    inputError = inputError ?? `Enter a recipient`;
   } else {
     if (
       BAD_RECIPIENT_ADDRESSES?.[chainId]?.[formattedTo] ||
       (bestTradeExactIn && involvesAddress(bestTradeExactIn, formattedTo)) ||
       (bestTradeExactOut && involvesAddress(bestTradeExactOut, formattedTo))
     ) {
-      inputError = inputError ?? i18n._(t`Invalid recipient`)
+      inputError = inputError ?? `Invalid recipient`;
     }
   }
 
-  const allowedSlippage = useSwapSlippageTolerance(v2Trade)
+  const allowedSlippage = useSwapSlippageTolerance(v2Trade);
 
   // compare input balance to max input based on version
-  const [balanceIn, amountIn] = [currencyBalances[Field.INPUT], v2Trade?.maximumAmountIn(allowedSlippage)]
+  const [balanceIn, amountIn] = [
+    currencyBalances[Field.INPUT],
+    v2Trade?.maximumAmountIn(allowedSlippage),
+  ];
 
   if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
-    inputError = i18n._(t`Insufficient ${amountIn.currency.symbol} balance`)
+    inputError = `Insufficient ${amountIn.currency.symbol} balance`;
   }
 
-  const swapCalls = useSwapCallArguments(v2Trade, allowedSlippage, to, undefined, doArcher)
+  const swapCalls = useSwapCallArguments(
+    v2Trade,
+    allowedSlippage,
+    to,
+    undefined,
+    doArcher,
+  );
 
-  const [, setUserETHTip] = useUserArcherETHTip()
-  const [userGasEstimate, setUserGasEstimate] = useUserArcherGasEstimate()
-  const [userGasPrice] = useUserArcherGasPrice()
-  const [userTipManualOverride, setUserTipManualOverride] = useUserArcherTipManualOverride()
+  const [, setUserETHTip] = useUserArcherETHTip();
+  const [userGasEstimate, setUserGasEstimate] = useUserArcherGasEstimate();
+  const [userGasPrice] = useUserArcherGasPrice();
+  const [
+    userTipManualOverride,
+    setUserTipManualOverride,
+  ] = useUserArcherTipManualOverride();
 
   useEffect(() => {
     if (doArcher) {
-      setUserTipManualOverride(false)
-      setUserETHTip(DEFAULT_ARCHER_ETH_TIP.toString())
-      setUserGasEstimate(DEFAULT_ARCHER_GAS_ESTIMATE.toString())
+      setUserTipManualOverride(false);
+      setUserETHTip(DEFAULT_ARCHER_ETH_TIP.toString());
+      setUserGasEstimate(DEFAULT_ARCHER_GAS_ESTIMATE.toString());
     }
-  }, [doArcher, setUserTipManualOverride, setUserETHTip, setUserGasEstimate])
+  }, [doArcher, setUserTipManualOverride, setUserETHTip, setUserGasEstimate]);
 
   useEffect(() => {
     if (doArcher && !userTipManualOverride) {
-      setUserETHTip(JSBI.multiply(JSBI.BigInt(userGasEstimate), JSBI.BigInt(userGasPrice)).toString())
+      setUserETHTip(
+        JSBI.multiply(
+          JSBI.BigInt(userGasEstimate),
+          JSBI.BigInt(userGasPrice),
+        ).toString(),
+      );
     }
-  }, [doArcher, userGasEstimate, userGasPrice, userTipManualOverride, setUserETHTip])
+  }, [
+    doArcher,
+    userGasEstimate,
+    userGasPrice,
+    userTipManualOverride,
+    setUserETHTip,
+  ]);
 
   useEffect(() => {
     async function estimateGas() {
       const estimatedCalls: EstimatedSwapCall[] = await Promise.all(
         swapCalls.map((call) => {
-          const { address, calldata, value } = call
+          const { address, calldata, value } = call;
 
           const tx =
             !value || isZero(value)
@@ -245,7 +311,7 @@ export function useDerivedSwapInfo(doArcher = false): {
                   to: address,
                   data: calldata,
                   value,
-                }
+                };
 
           return library
             .estimateGas(tx)
@@ -253,45 +319,63 @@ export function useDerivedSwapInfo(doArcher = false): {
               return {
                 call,
                 gasEstimate,
-              }
+              };
             })
             .catch((gasError) => {
-              console.debug('Gas estimate failed, trying eth_call to extract error', call)
+              console.debug(
+                'Gas estimate failed, trying eth_call to extract error',
+                call,
+              );
 
               return library
                 .call(tx)
                 .then((result) => {
-                  console.debug('Unexpected successful call after failed estimate gas', call, gasError, result)
+                  console.debug(
+                    'Unexpected successful call after failed estimate gas',
+                    call,
+                    gasError,
+                    result,
+                  );
                   return {
                     call,
-                    error: new Error('Unexpected issue with estimating the gas. Please try again.'),
-                  }
+                    error: new Error(
+                      'Unexpected issue with estimating the gas. Please try again.',
+                    ),
+                  };
                 })
                 .catch((callError) => {
-                  console.debug('Call threw error', call, callError)
+                  console.debug('Call threw error', call, callError);
                   return {
                     call,
                     error: new Error(swapErrorToUserReadableMessage(callError)),
-                  }
-                })
-            })
-        })
-      )
+                  };
+                });
+            });
+        }),
+      );
 
       // a successful estimation is a bignumber gas estimate and the next call is also a bignumber gas estimate
       const successfulEstimation = estimatedCalls.find(
         (el, ix, list): el is SuccessfulCall =>
-          'gasEstimate' in el && (ix === list.length - 1 || 'gasEstimate' in list[ix + 1])
-      )
+          'gasEstimate' in el &&
+          (ix === list.length - 1 || 'gasEstimate' in list[ix + 1]),
+      );
 
       if (successfulEstimation) {
-        setUserGasEstimate(successfulEstimation.gasEstimate.toString())
+        setUserGasEstimate(successfulEstimation.gasEstimate.toString());
       }
     }
     if (doArcher && v2Trade && swapCalls && !userTipManualOverride) {
-      estimateGas()
+      estimateGas();
     }
-  }, [doArcher, v2Trade, swapCalls, userTipManualOverride, library, setUserGasEstimate])
+  }, [
+    doArcher,
+    v2Trade,
+    swapCalls,
+    userTipManualOverride,
+    library,
+    setUserGasEstimate,
+  ]);
 
   return {
     currencies,
@@ -300,52 +384,59 @@ export function useDerivedSwapInfo(doArcher = false): {
     inputError,
     v2Trade: v2Trade ?? undefined,
     allowedSlippage,
-  }
+  };
 }
 
 function parseCurrencyFromURLParameter(urlParam: any): string {
   if (typeof urlParam === 'string') {
-    const valid = isAddress(urlParam)
-    if (valid) return valid
-    if (urlParam.toUpperCase() === 'ETH') return 'ETH'
+    const valid = isAddress(urlParam);
+    if (valid) return valid;
+    if (urlParam.toUpperCase() === 'ETH') return 'ETH';
   }
-  return ''
+  return '';
 }
 
 function parseTokenAmountURLParameter(urlParam: any): string {
-  return typeof urlParam === 'string' && !isNaN(parseFloat(urlParam)) ? urlParam : ''
+  return typeof urlParam === 'string' && !isNaN(parseFloat(urlParam))
+    ? urlParam
+    : '';
 }
 
 function parseIndependentFieldURLParameter(urlParam: any): Field {
-  return typeof urlParam === 'string' && urlParam.toLowerCase() === 'output' ? Field.OUTPUT : Field.INPUT
+  return typeof urlParam === 'string' && urlParam.toLowerCase() === 'output'
+    ? Field.OUTPUT
+    : Field.INPUT;
 }
 
-const ENS_NAME_REGEX = /^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)?$/
-const ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/
+const ENS_NAME_REGEX = /^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)?$/;
+const ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/;
 function validatedRecipient(recipient: any): string | null {
-  if (typeof recipient !== 'string') return null
-  const address = isAddress(recipient)
-  if (address) return address
-  if (ENS_NAME_REGEX.test(recipient)) return recipient
-  if (ADDRESS_REGEX.test(recipient)) return recipient
-  return null
+  if (typeof recipient !== 'string') return null;
+  const address = isAddress(recipient);
+  if (address) return address;
+  if (ENS_NAME_REGEX.test(recipient)) return recipient;
+  if (ADDRESS_REGEX.test(recipient)) return recipient;
+  return null;
 }
-export function queryParametersToSwapState(parsedQs: ParsedQs, chainId: ChainId = ChainId.MAINNET): SwapState {
-  let inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency)
-  let outputCurrency = parseCurrencyFromURLParameter(parsedQs.outputCurrency)
+export function queryParametersToSwapState(
+  parsedQs: ParsedQs,
+  chainId: ChainId = ChainId.MAINNET,
+): SwapState {
+  let inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency);
+  let outputCurrency = parseCurrencyFromURLParameter(parsedQs.outputCurrency);
   if (inputCurrency === '' && outputCurrency === '') {
     if (chainId === ChainId.CELO) {
-      inputCurrency = WNATIVE[chainId].address
+      inputCurrency = WNATIVE[chainId].address;
     } else {
       // default to ETH input
-      inputCurrency = 'ETH'
+      inputCurrency = 'ETH';
     }
   } else if (inputCurrency === outputCurrency) {
     // clear output if identical
-    outputCurrency = ''
+    outputCurrency = '';
   }
 
-  const recipient = validatedRecipient(parsedQs.recipient)
+  const recipient = validatedRecipient(parsedQs.recipient);
 
   return {
     [Field.INPUT]: {
@@ -357,31 +448,31 @@ export function queryParametersToSwapState(parsedQs: ParsedQs, chainId: ChainId 
     typedValue: parseTokenAmountURLParameter(parsedQs.exactAmount),
     independentField: parseIndependentFieldURLParameter(parsedQs.exactField),
     recipient,
-  }
+  };
 }
 
 // updates the swap state to use the defaults for a given network
 export function useDefaultsFromURLSearch():
   | {
-      inputCurrencyId: string | undefined
-      outputCurrencyId: string | undefined
+      inputCurrencyId: string | undefined;
+      outputCurrencyId: string | undefined;
     }
   | undefined {
-  const { chainId } = useActiveWeb3React()
-  const dispatch = useAppDispatch()
-  const parsedQs = useParsedQueryString()
-  const [expertMode] = useExpertModeManager()
+  const { chainId } = useActiveWeb3React();
+  const dispatch = useAppDispatch();
+  const parsedQs = useParsedQueryString();
+  const [expertMode] = useExpertModeManager();
   const [result, setResult] = useState<
     | {
-        inputCurrencyId: string | undefined
-        outputCurrencyId: string | undefined
+        inputCurrencyId: string | undefined;
+        outputCurrencyId: string | undefined;
       }
     | undefined
-  >()
+  >();
 
   useEffect(() => {
-    if (!chainId) return
-    const parsed = queryParametersToSwapState(parsedQs, chainId)
+    if (!chainId) return;
+    const parsed = queryParametersToSwapState(parsedQs, chainId);
 
     dispatch(
       replaceSwapState({
@@ -390,15 +481,15 @@ export function useDefaultsFromURLSearch():
         inputCurrencyId: parsed[Field.INPUT].currencyId,
         outputCurrencyId: parsed[Field.OUTPUT].currencyId,
         recipient: expertMode ? parsed.recipient : null,
-      })
-    )
+      }),
+    );
 
     setResult({
       inputCurrencyId: parsed[Field.INPUT].currencyId,
       outputCurrencyId: parsed[Field.OUTPUT].currencyId,
-    })
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, chainId])
+  }, [dispatch, chainId]);
 
-  return result
+  return result;
 }

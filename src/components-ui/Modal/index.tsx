@@ -112,13 +112,13 @@ export function Modal({
             maxHeight={maxHeight}
             maxWidth={maxWidth}
             mobile={isMobile}
+            className="shadow-primary-glow rounded-xl"
           >
             <div
               className={classNames(
-                'text-text',
-                'rounded-xl p-8',
-                // 'backdrop-filter backdrop-blur',
-                'bg-modal-background',
+                `text-text
+                 rounded-xl p-8
+                 bg-modal-background`,
                 className ?? '',
               )}
             >

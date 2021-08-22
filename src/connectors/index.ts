@@ -1,20 +1,25 @@
-import { BscConnector } from '@binance-chain/bsc-connector'
-import { ChainId } from '@sushiswap/sdk'
-import { FortmaticConnector } from './Fortmatic'
-import { InjectedConnector } from '@web3-react/injected-connector'
-import { NetworkConnector } from './NetworkConnector'
-import { PortisConnector } from '@web3-react/portis-connector'
-import { TorusConnector } from '@web3-react/torus-connector'
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
-import { WalletLinkConnector } from '@web3-react/walletlink-connector'
-import { Web3Provider } from '@ethersproject/providers'
+import { BscConnector } from '@binance-chain/bsc-connector';
+import { ChainId } from '@sushiswap/sdk';
+import { FortmaticConnector } from './Fortmatic';
+import { InjectedConnector } from '@web3-react/injected-connector';
+import { NetworkConnector } from './NetworkConnector';
+import { PortisConnector } from '@web3-react/portis-connector';
+import { TorusConnector } from '@web3-react/torus-connector';
+import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
+import { WalletLinkConnector } from '@web3-react/walletlink-connector';
+import { Web3Provider } from '@ethersproject/providers';
 
 const RPC = {
-  [ChainId.MAINNET]: 'https://eth-mainnet.alchemyapi.io/v2/q1gSNoSMEzJms47Qn93f9-9Xg5clkmEC',
-  [ChainId.ROPSTEN]: 'https://eth-ropsten.alchemyapi.io/v2/cidKix2Xr-snU3f6f6Zjq_rYdalKKHmW',
-  [ChainId.RINKEBY]: 'https://eth-rinkeby.alchemyapi.io/v2/XVLwDlhGP6ApBXFz_lfv0aZ6VmurWhYD',
-  [ChainId.GÖRLI]: 'https://eth-goerli.alchemyapi.io/v2/Dkk5d02QjttYEoGmhZnJG37rKt8Yl3Im',
-  [ChainId.KOVAN]: 'https://eth-kovan.alchemyapi.io/v2/6OVAa_B_rypWWl9HqtiYK26IRxXiYqER',
+  [ChainId.MAINNET]:
+    'https://eth-mainnet.alchemyapi.io/v2/EA7UDrnRTL_aXxyoPoasAMx9ey2vQzky',
+  [ChainId.ROPSTEN]:
+    'https://eth-ropsten.alchemyapi.io/v2/325Q127k2d4G_Ev077fwz-OzPz7fyIZ4',
+  [ChainId.RINKEBY]:
+    'https://eth-mainnet.alchemyapi.io/v2/-m6r5QkA0mAmuLJ71qRce4xOI7w8w73l',
+  [ChainId.GÖRLI]:
+    'https://eth-goerli.alchemyapi.io/v2/LMUMz1ESenYl3xQPw2jUcgNsS8aasIFH',
+  [ChainId.KOVAN]:
+    'https://eth-kovan.alchemyapi.io/v2/NU1Dxk4vYkOcMmndMTRAPIin-IyKKcYq',
   [ChainId.FANTOM]: 'https://rpcapi.fantom.network',
   [ChainId.FANTOM_TESTNET]: 'https://rpc.testnet.fantom.network',
   [ChainId.MATIC]: 'https://rpc-mainnet.maticvigil.com',
@@ -34,18 +39,20 @@ const RPC = {
   [ChainId.OKEX]: 'https://exchainrpc.okex.org',
   [ChainId.OKEX_TESTNET]: 'https://exchaintestrpc.okex.org',
   [ChainId.ARBITRUM]: 'https://arb1.arbitrum.io/rpc',
-  [ChainId.PALM]: 'https://palm-mainnet.infura.io/v3/da5fbfafcca14b109e2665290681e267',
-}
+  [ChainId.PALM]:
+    'https://palm-mainnet.infura.io/v3/da5fbfafcca14b109e2665290681e267',
+};
 
 export const network = new NetworkConnector({
   defaultChainId: 1,
   urls: RPC,
-})
+});
 
-let networkLibrary: Web3Provider | undefined
+let networkLibrary: Web3Provider | undefined;
 
 export function getNetworkLibrary(): Web3Provider {
-  return (networkLibrary = networkLibrary ?? new Web3Provider(network.provider as any))
+  return (networkLibrary =
+    networkLibrary ?? new Web3Provider(network.provider as any));
 }
 
 export const injected = new InjectedConnector({
@@ -75,7 +82,7 @@ export const injected = new InjectedConnector({
     42220, // celo
     11297108109, // palm
   ],
-})
+});
 
 // mainnet only
 export const walletconnect = new WalletConnectConnector({
@@ -83,31 +90,32 @@ export const walletconnect = new WalletConnectConnector({
   bridge: 'https://bridge.walletconnect.org',
   qrcode: true,
   pollingInterval: 15000,
-})
+});
 
 // mainnet only
 export const fortmatic = new FortmaticConnector({
   apiKey: process.env.NEXT_PUBLIC_FORTMATIC_API_KEY ?? '',
   chainId: 1,
-})
+});
 
 // mainnet only
 export const portis = new PortisConnector({
   dAppId: process.env.NEXT_PUBLIC_PORTIS_ID ?? '',
   networks: [1],
-})
+});
 
 // mainnet only
 export const walletlink = new WalletLinkConnector({
   url: RPC[ChainId.MAINNET],
   appName: 'SushiSwap',
-  appLogoUrl: 'https://raw.githubusercontent.com/sushiswap/art/master/sushi/logo-256x256.png',
-})
+  appLogoUrl:
+    'https://raw.githubusercontent.com/sushiswap/art/master/sushi/logo-256x256.png',
+});
 
 // mainnet only
 export const torus = new TorusConnector({
   chainId: 1,
-})
+});
 
 // binance only
-export const binance = new BscConnector({ supportedChainIds: [56] })
+export const binance = new BscConnector({ supportedChainIds: [56] });

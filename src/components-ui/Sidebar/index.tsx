@@ -21,7 +21,7 @@ export function Sidebar() {
     <div
       className="
       relative
-      pl-8 pr-8 pd-8 pt-8
+      p-8
       bg-background 
       w-[279px]
       h-full

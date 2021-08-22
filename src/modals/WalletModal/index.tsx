@@ -7,7 +7,7 @@ import Image from 'next/image';
 // device detector
 import { isMobile } from 'react-device-detect';
 // ga
-import ReactGA from 'react-ga';
+// import ReactGA from 'react-ga';
 // web3
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import { AbstractConnector } from '@web3-react/abstract-connector';
@@ -126,11 +126,11 @@ export default function WalletModal({
       return true;
     });
     // log selected wallet
-    ReactGA.event({
-      category: 'Wallet',
-      action: 'Change Wallet',
-      label: name,
-    });
+    // ReactGA.event({
+    //   category: 'Wallet',
+    //   action: 'Change Wallet',
+    //   label: name,
+    // });
     setPendingWallet(conn); // set wallet for pending view
     setWalletView(WALLET_VIEWS.PENDING);
 
@@ -305,7 +305,7 @@ export default function WalletModal({
           {walletView !== WALLET_VIEWS.PENDING && (
             <div className="flex flex-col text-center">
               <div>{`New to Ethereum?`}</div>
-              <a href="https://ethereum.org/wallets/" className="text-success">
+              <a href="https://ethereum.org/wallets/" className="text-green">
                 {`Learn more about wallets`}
               </a>
             </div>

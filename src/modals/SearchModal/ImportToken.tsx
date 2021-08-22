@@ -1,92 +1,103 @@
-import { AutoRow, RowFixed } from '../../components/Row'
-import { Currency, Token } from '@sushiswap/sdk'
+import React from 'react';
+import { Currency, Token } from '@sushiswap/sdk';
 
-import { AlertTriangle } from 'react-feather'
-import { AutoColumn } from '../../components/Column'
-import Button from '../../components/Button'
-import Card from '../../components/Card'
-import CurrencyLogo from '../../components/CurrencyLogo'
-import ExternalLink from '../../components/ExternalLink'
-import ListLogo from '../../components/ListLogo'
-import ModalHeader from '../../components/ModalHeader'
-import React from 'react'
-import { TokenList } from '@uniswap/token-lists/dist/types'
-import Typography from '../../components/Typography'
-import { getExplorerLink } from '../../functions/explorer'
-import { shortenAddress } from '../../functions'
-import styled from 'styled-components'
-import { t, plural } from '@lingui/macro'
-import { transparentize } from 'polished'
-import { useActiveWeb3React } from '../../hooks/useActiveWeb3React'
-import { useAddUserToken } from '../../state/user/hooks'
-import { useLingui } from '@lingui/react'
+import { TokenList } from '@uniswap/token-lists/dist/types';
+import { getExplorerLink } from '../../functions/explorer';
+import { shortenAddress } from '../../functions';
+import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
+import { useAddUserToken } from '../../state/user/hooks';
+import { Button } from '../../components-ui/Button';
+import { ModalHeader } from '../../components-ui/Modal/ModalHeader';
+import { CurrencyLogo } from '../../components-ui/CurrencyLogo';
+import { ExternalLink } from '../../components-ui/ExternalLink';
+import ListLogo from '../../components-ui/Logo/ListLogo';
 
 interface ImportProps {
-  tokens: Token[]
-  list?: TokenList
-  onBack?: () => void
-  onDismiss?: () => void
-  handleCurrencySelect?: (currency: Currency) => void
+  tokens: Token[];
+  list?: TokenList;
+  onBack?: () => void;
+  onDismiss?: () => void;
+  handleCurrencySelect?: (currency: Currency) => void;
 }
 
-export function ImportToken({ tokens, list, onBack, onDismiss, handleCurrencySelect }: ImportProps) {
-  const { chainId } = useActiveWeb3React()
-  const { i18n } = useLingui()
+export function ImportToken({
+  tokens,
+  list,
+  onBack,
+  onDismiss,
+  handleCurrencySelect,
+}: ImportProps) {
+  const { chainId } = useActiveWeb3React();
 
-  const addToken = useAddUserToken()
+  const addToken = useAddUserToken();
   return (
     <div className="relative w-full space-y-3 overflow-auto">
       <ModalHeader
         onBack={onBack}
         onClose={onDismiss}
-        title={`Import ${plural(tokens.length, { one: 'Token', many: 'Tokens' })}`}
+        title={`Import ${tokens.length > 1 ? 'Token' : 'Tokens'}
+        `}
       />
-      <Typography className="text-center">
-        {i18n._(
-          t`This token doesn't appear on the active token list(s). Make sure this is the token that you want to trade.`
-        )}
-      </Typography>
+      <div>
+        This token doesn't appear on the active token list(s). Make sure this is
+        the token that you want to trade
+      </div>
       {tokens.map((token) => {
         return (
-          <div key={'import' + token.address} className=".token-warning-container rounded p-5">
-            <AutoColumn gap="10px" justify="center">
+          <div
+            key={'import' + token.address}
+            className=".token-warning-container rounded p-5"
+          >
+            <div className="space-x-3">
               <CurrencyLogo currency={token} size={'32px'} />
-              <AutoColumn gap="4px" justify="center">
-                <div className="mx-2 text-xl font-medium text-high-emphesis">{token.symbol}</div>
-                <div className="text-sm font-light text-secondary">{token.name}</div>
-              </AutoColumn>
+              <div>
+                <div className="mx-2 text-xl font-medium text-high-emphesis">
+                  {token.symbol}
+                </div>
+                <div className="text-sm font-light text-secondary">
+                  {token.name}
+                </div>
+              </div>
               {chainId && (
-                <ExternalLink href={getExplorerLink(chainId, token.address, 'address')}>
+                <ExternalLink
+                  href={getExplorerLink(chainId, token.address, 'address')}
+                >
                   {shortenAddress(token.address)}
                 </ExternalLink>
               )}
               {list !== undefined ? (
-                <RowFixed align="center">
-                  {list.logoURI && <ListLogo logoURI={list.logoURI} size="16px" />}
-                  <div className="ml-2 text-sm text-secondary">via {list.name}</div>
-                </RowFixed>
+                <div className="flex justify-center">
+                  {list.logoURI && (
+                    <ListLogo logoURI={list.logoURI} size="16px" />
+                  )}
+                  <div className="ml-2 text-sm text-secondary">
+                    via {list.name}
+                  </div>
+                </div>
               ) : (
                 <div>
-                  <RowFixed align="center">
-                    <AlertTriangle className="stroke-current text-red" size={24} />
-                    <div className="ml-1 text-xs font-semibold text-red">Unknown Source</div>
-                  </RowFixed>
+                  <div className="flex justify-center">
+                    <div>ALERT TRIANGLE</div>
+                    <div className="ml-1 text-xs font-semibold text-red">
+                      Unknown Source
+                    </div>
+                  </div>
                 </div>
               )}
-            </AutoColumn>
+            </div>
           </div>
-        )
+        );
       })}
       <Button
-        color="gradient"
+        type="bordered"
         onClick={() => {
-          tokens.map((token) => addToken(token))
-          handleCurrencySelect && handleCurrencySelect(tokens[0])
+          tokens.map((token) => addToken(token));
+          handleCurrencySelect && handleCurrencySelect(tokens[0]);
         }}
         className=".token-dismiss-button"
       >
-        {i18n._(t`Import`)}
+        Import
       </Button>
     </div>
-  )
+  );
 }
