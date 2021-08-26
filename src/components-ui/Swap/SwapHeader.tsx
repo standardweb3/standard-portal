@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 // import MyOrders from '../features/limit-order/MyOrders';
 import { NavigationLink } from '../NavigationLink';
 import { Gas } from '../Gas';
+import Settings from '../Settings';
 
 const getQuery = (input, output) => {
   if (!input && !output) return;
@@ -112,14 +113,14 @@ export const SwapHeader: FC<SwapHeaderProps> = ({
           } */}
 
           {chainId === ChainId.MAINNET && (
-            <div className="flex items-center text-primary space-x-1 font-semibold">
+            <div className="flex items-center text-green space-x-1 font-semibold">
               <CalculatorIcon className="w-5 h-5" />
               <Gas />
             </div>
           )}
           <div className="relative w-full h-full rounded hover:bg-dark-800 flex items-center">
-            {/* <Settings placeholderSlippage={allowedSlippage} /> */}
-            settings
+            <Settings placeholderSlippage={allowedSlippage} />
+            {/* settings */}
           </div>
         </div>
       </div>

@@ -1,52 +1,55 @@
-import { ChainId, Currency, Token, currencyEquals } from '@sushiswap/sdk'
+import React from 'react';
+import { ChainId, Currency, Token, currencyEquals } from '@sushiswap/sdk';
 
-import { AutoColumn } from '../../components/Column'
-import { AutoRow } from '../../components/Row'
-import Button from '../../components/Button'
-import { COMMON_BASES } from '../../constants/routing'
-import CurrencyLogo from '../../components/CurrencyLogo'
-import QuestionHelper from '../../components/QuestionHelper'
-import React from 'react'
-import Typography from '../../components/Typography'
-import { currencyId } from '../../functions'
+import { Button } from '../../components-ui/Button';
+import { COMMON_BASES } from '../../constants/routing';
+import { CurrencyLogo } from '../../components-ui/CurrencyLogo';
+import { currencyId } from '../../functions';
+import { Question } from '../../components-ui/Question';
 
 export default function CommonBases({
   chainId,
   onSelect,
   selectedCurrency,
 }: {
-  chainId?: number
-  selectedCurrency?: Currency | null
-  onSelect: (currency: Currency) => void
+  chainId?: number;
+  selectedCurrency?: Currency | null;
+  onSelect: (currency: Currency) => void;
 }) {
-  const bases = typeof chainId !== 'undefined' ? COMMON_BASES[chainId] ?? [] : []
+  const bases =
+    typeof chainId !== 'undefined' ? COMMON_BASES[chainId] ?? [] : [];
 
   return (
     <div className="flex flex-col space-y-2">
-      <div className="flex flex-row">
-        Common bases
-        <QuestionHelper text="These tokens are commonly paired with other tokens." />
+      <div className="flex items-center space-x-2">
+        <div>Common bases</div>
+        <Question text="These tokens are commonly paired with other tokens." />
       </div>
       <div className="flex flex-wrap">
         {bases.map((currency: Currency) => {
-          const isSelected = selectedCurrency?.equals(currency)
+          const isSelected = selectedCurrency?.equals(currency);
           return (
             <Button
-              variant="empty"
-              type="button"
+              type="bordered"
               onClick={() => !isSelected && onSelect(currency)}
               disabled={isSelected}
               key={currencyId(currency)}
-              className="flex items-center p-2 m-1 space-x-2 rounded bg-dark-800 hover:bg-dark-700 disabled:bg-dark-1000 disabled:cursor-not-allowed"
+              className={`
+                flex items-center 
+                px-2 py-2 m-1 space-x-2
+                bg-transparent hover:bg-primary 
+                disabled:bg-dark disabled:cursor-not-allowed
+                transition duration-200
+              `}
             >
-              <CurrencyLogo currency={currency} />
-              <Typography variant="sm" className="font-semibold">
-                {currency.symbol}
-              </Typography>
+              <>
+                <CurrencyLogo currency={currency} className="rounded-full" />
+                <div className="font-semibold">{currency.symbol}</div>
+              </>
             </Button>
-          )
+          );
         })}
       </div>
     </div>
-  )
+  );
 }

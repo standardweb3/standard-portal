@@ -1,10 +1,8 @@
-import { Currency, TradeType, Trade as V2Trade } from '@sushiswap/sdk'
-import React, { ReactNode } from 'react'
+import { Currency, TradeType, Trade as V2Trade } from '@sushiswap/sdk';
+import React, { ReactNode } from 'react';
 
-import { ButtonError } from '../../components/Button'
-import { SwapCallbackError } from './styleds'
-import { t } from '@lingui/macro'
-import { useLingui } from '@lingui/react'
+import { ButtonError } from '../../components-ui/Button';
+import { SwapCallbackError } from './styleds';
 
 export default function SwapModalFooter({
   trade,
@@ -12,14 +10,13 @@ export default function SwapModalFooter({
   swapErrorMessage,
   disabledConfirm,
 }: {
-  trade: V2Trade<Currency, Currency, TradeType>
-  onConfirm: () => void
-  swapErrorMessage: ReactNode | undefined
-  disabledConfirm: boolean
+  trade: V2Trade<Currency, Currency, TradeType>;
+  onConfirm: () => void;
+  swapErrorMessage: ReactNode | undefined;
+  disabledConfirm: boolean;
 }) {
-  const { i18n } = useLingui()
   return (
-    <div className="p-6 mt-0 -m-6 rounded bg-dark-800">
+    <div className="p-6 mt-0 -m-6 rounded bg-background">
       {/* <div className="grid gap-1 pb-6">
         <div className="flex items-center justify-between">
           <div className="text-sm text-secondary">{i18n._(t`Price`)}</div>
@@ -97,10 +94,10 @@ export default function SwapModalFooter({
         id="confirm-swap-or-send"
         className="text-xl font-semibold"
       >
-        {i18n._(t`Confirm Swap`)}
+        {`Confirm Swap`}
       </ButtonError>
 
       {swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
     </div>
-  )
+  );
 }

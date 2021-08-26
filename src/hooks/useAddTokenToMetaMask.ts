@@ -1,21 +1,28 @@
-import { Currency, Token } from '@sushiswap/sdk'
-import { useCallback, useState } from 'react'
+import { Currency, Token } from '@sushiswap/sdk';
+import { useCallback, useState } from 'react';
 
-import { getTokenLogoURL } from './../components/CurrencyLogo'
-import { useActiveWeb3React } from './useActiveWeb3React'
+import { getTokenLogoURL } from './../components-ui/CurrencyLogo';
+import { useActiveWeb3React } from './useActiveWeb3React';
 
-export default function useAddTokenToMetaMask(currencyToAdd: Currency | undefined): {
-  addToken: () => void
-  success: boolean | undefined
+export default function useAddTokenToMetaMask(
+  currencyToAdd: Currency | undefined,
+): {
+  addToken: () => void;
+  success: boolean | undefined;
 } {
-  const { chainId, library } = useActiveWeb3React()
+  const { chainId, library } = useActiveWeb3React();
 
-  const token: Token | undefined = currencyToAdd?.wrapped
+  const token: Token | undefined = currencyToAdd?.wrapped;
 
-  const [success, setSuccess] = useState<boolean | undefined>()
+  const [success, setSuccess] = useState<boolean | undefined>();
 
   const addToken = useCallback(() => {
-    if (library && library.provider.isMetaMask && library.provider.request && token) {
+    if (
+      library &&
+      library.provider.isMetaMask &&
+      library.provider.request &&
+      token
+    ) {
       library.provider
         .request({
           method: 'wallet_watchAsset',
@@ -31,13 +38,13 @@ export default function useAddTokenToMetaMask(currencyToAdd: Currency | undefine
           },
         })
         .then((success) => {
-          setSuccess(success)
+          setSuccess(success);
         })
-        .catch(() => setSuccess(false))
+        .catch(() => setSuccess(false));
     } else {
-      setSuccess(false)
+      setSuccess(false);
     }
-  }, [chainId, library, token])
+  }, [chainId, library, token]);
 
-  return { addToken, success }
+  return { addToken, success };
 }

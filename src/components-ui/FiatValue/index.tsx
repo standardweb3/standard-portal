@@ -1,0 +1,44 @@
+import React, { useMemo } from 'react';
+import { Currency, CurrencyAmount, Percent } from '@sushiswap/sdk';
+
+import { warningSeverity } from '../../functions/prices';
+import { classNames } from '../../functions';
+
+export function FiatValue({
+  fiatValue,
+  priceImpact,
+  className,
+}: {
+  fiatValue: CurrencyAmount<Currency> | null | undefined;
+  priceImpact?: Percent;
+  className?: string;
+}) {
+  const priceImpactClassName = useMemo(() => {
+    if (!priceImpact) return undefined;
+    if (priceImpact.lessThan('0')) return 'text-green';
+    const severity = warningSeverity(priceImpact);
+    if (severity < 1) return 'text-text';
+    if (severity < 3) return 'text-yellow';
+    return 'text-red';
+  }, [priceImpact]);
+
+  return (
+    <div
+      className={classNames(
+        `flex justify-end space-x-1 text-xs font-medium text-right`,
+        className,
+      )}
+    >
+      {fiatValue ? (
+        <>≈$ {fiatValue?.toSignificant(6, { groupSeparator: ',' })}</>
+      ) : (
+        ''
+      )}
+      {priceImpact ? (
+        <span className={priceImpactClassName}>
+          {priceImpact.multiply(-1).toSignificant(3)}%
+        </span>
+      ) : null}
+    </div>
+  );
+}

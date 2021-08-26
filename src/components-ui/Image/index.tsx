@@ -34,7 +34,7 @@ const toBase64 = (str: string) =>
     ? Buffer.from(str).toString('base64')
     : window.btoa(str);
 
-const Image = ({
+export const Image = ({
   src,
   width = undefined,
   height = undefined,
@@ -45,7 +45,7 @@ const Image = ({
 }) => {
   //   const useBlur = parseInt(String(height), 10) >= 40 && parseInt(String(width), 10) >= 40
   return (
-    <div style={{ width, height }} className="overflow-hidden rounded-xl">
+    <div style={{ width, height }} className="flex">
       {useBlur ? (
         <NextImage
           loader={loader}

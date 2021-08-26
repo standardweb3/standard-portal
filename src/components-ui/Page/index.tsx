@@ -14,6 +14,7 @@ export function Page({ children }: PageProps) {
     flex flex-col
     justify-start
     overflow-hidden
+    text-text
     w-full h-full`}
     >
       <Cone1 />

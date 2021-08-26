@@ -10,7 +10,7 @@ import { Button } from '../../components-ui/Button';
 import { ModalHeader } from '../../components-ui/Modal/ModalHeader';
 import { CurrencyLogo } from '../../components-ui/CurrencyLogo';
 import { ExternalLink } from '../../components-ui/ExternalLink';
-import ListLogo from '../../components-ui/Logo/ListLogo';
+import { ListLogo } from '../../components-ui/Logo/ListLogo';
 
 interface ImportProps {
   tokens: Token[];

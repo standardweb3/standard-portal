@@ -1,9 +1,9 @@
 import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 
-export function BoxSpinner() {
+export function BoxSpinner({ size }) {
   return (
-    <DotWrapper>
+    <DotWrapper style={{ width: size, height: size }}>
       <div className="dot">
         <div />
       </div>

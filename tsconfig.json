@@ -4,7 +4,7 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -16,11 +16,5 @@
     "jsxImportSource": "@emotion/react"
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"],
-  "baseUrl": ".",
-  "paths": {
-    "@/images/*": ["public/img/*"],
-    "@/public/*": ["public*"],
-    "@/src/*": ["src/*"]
-  }
+  "exclude": ["node_modules"]
 }

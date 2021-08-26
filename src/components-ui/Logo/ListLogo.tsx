@@ -2,7 +2,7 @@ import React from 'react';
 import useHttpLocations from '../../hooks/useHttpLocations';
 import { SequentialLogo } from './SequentialLogo';
 
-export default function ListLogo({
+export function ListLogo({
   logoURI,
   style,
   size = '24px',

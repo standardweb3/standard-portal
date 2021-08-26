@@ -1,36 +1,45 @@
-import React, { useCallback } from 'react'
+import React, { useCallback } from 'react';
 
-import { Currency, Price } from '@sushiswap/sdk'
-import Typography from '../../components/Typography'
-import { classNames } from '../../functions'
-import { t } from '@lingui/macro'
-import { useLingui } from '@lingui/react'
-
+import { Currency, Price } from '@sushiswap/sdk';
+import { classNames } from '../../functions';
 interface TradePriceProps {
-  price: Price<Currency, Currency>
-  showInverted: boolean
-  setShowInverted: (showInverted: boolean) => void
-  className?: string
+  price: Price<Currency, Currency>;
+  showInverted: boolean;
+  setShowInverted: (showInverted: boolean) => void;
+  className?: string;
 }
 
-export default function TradePrice({ price, showInverted, setShowInverted, className }: TradePriceProps) {
-  const { i18n } = useLingui()
-
-  let formattedPrice: string
+export function TradePrice({
+  price,
+  showInverted,
+  setShowInverted,
+  className,
+}: TradePriceProps) {
+  let formattedPrice: string;
 
   try {
-    formattedPrice = showInverted ? price.toSignificant(4) : price.invert()?.toSignificant(4)
+    formattedPrice = showInverted
+      ? price.toSignificant(4)
+      : price.invert()?.toSignificant(4);
   } catch (error) {
-    formattedPrice = '0'
+    formattedPrice = '0';
   }
 
-  const label = showInverted ? `${price.quoteCurrency?.symbol}` : `${price.baseCurrency?.symbol} `
+  const label = showInverted
+    ? `${price.quoteCurrency?.symbol}`
+    : `${price.baseCurrency?.symbol} `;
 
-  const labelInverted = showInverted ? `${price.baseCurrency?.symbol} ` : `${price.quoteCurrency?.symbol}`
+  const labelInverted = showInverted
+    ? `${price.baseCurrency?.symbol} `
+    : `${price.quoteCurrency?.symbol}`;
 
-  const flipPrice = useCallback(() => setShowInverted(!showInverted), [setShowInverted, showInverted])
+  const flipPrice = useCallback(() => setShowInverted(!showInverted), [
+    setShowInverted,
+    showInverted,
+  ]);
 
-  const text = `${'1 ' + labelInverted + ' = ' + formattedPrice ?? '-'} ${label}`
+  const text = `${'1 ' + labelInverted + ' = ' + formattedPrice ??
+    '-'} ${label}`;
 
   return (
     <div
@@ -38,16 +47,12 @@ export default function TradePrice({ price, showInverted, setShowInverted, class
       title={text}
       className={classNames(
         'flex justify-between w-full px-5 py-1 cursor-pointer rounded-b-md text-secondary hover:text-primary',
-        className
+        className,
       )}
     >
-      <Typography variant="sm" className="select-none">
-        {i18n._(t`Exchange Rate`)}
-      </Typography>
+      <div className="select-none">{`Exchange Rate`}</div>
       <div className="flex items-center space-x-4">
-        <Typography variant="sm" className="select-none">
-          {text}
-        </Typography>
+        <div className="select-none">{text}</div>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="w-4 h-4"
@@ -64,5 +69,5 @@ export default function TradePrice({ price, showInverted, setShowInverted, class
         </svg>
       </div>
     </div>
-  )
+  );
 }

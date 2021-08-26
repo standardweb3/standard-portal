@@ -41,6 +41,7 @@ import { Field } from '../../state/swap/actions';
 import useENSAddress from '../../hooks/useENSAddress';
 import { useUSDCValue } from '../../hooks/useUSDCPrice';
 import {
+  classNames,
   computeFiatValuePriceImpact,
   maxAmountSpend,
   warningSeverity,
@@ -49,14 +50,28 @@ import { useSwapCallback } from '../../hooks/useSwapCallback';
 import confirmPriceImpactWithoutFee from '../../constants/features/swap/confirmPriceImpactWithoutFee';
 import { useIsSwapUnsupported } from '../../hooks/useIsSwapUnsupported';
 import usePrevious from '../../hooks/usePrevious';
-import Container from '../../components-ui/Container';
 import useIsArgentWallet from '../../hooks/useIsArgentWallet';
 import { PageHeader } from '../../components-ui/PageHeader';
 import { Page } from '../../components-ui/Page';
 import TokenWarningModal from '../../modals/TokenWarningModal';
 import { PageContent } from '../../components-ui/PageContent';
 import { SwapHeader } from '../../components-ui/Swap/SwapHeader';
-import { Gas } from '../../components-ui/Gas';
+import ConfirmSwapModal from '../../features/swap/ConfirmSwapModal';
+import { CurrencyInputPanel } from '../../components-ui/CurrencyInputPanel';
+import {
+  Button,
+  ButtonConfirmed,
+  ButtonError,
+} from '../../components-ui/Button';
+import { TradePrice } from '../../components-ui/TradePrice';
+import {
+  SwitchHorizontalIcon,
+  SwitchVerticalIcon,
+} from '@heroicons/react/outline';
+import { AddressInputPanel } from '../../components-ui/AddressInputPanel';
+import { Alert } from '../../components-ui/Alert';
+import { WalletConnector } from '../../components-ui/WalletConnector';
+import { RippleSpinner } from '../../components-ui/Spinner/RippleSpinner';
 
 export default function Swap() {
   /** PARSE TOKENS FROM CONTRACT ADDRESSES PROVIDED IN URL */
@@ -285,6 +300,7 @@ export default function Swap() {
   const maxInputAmount: CurrencyAmount<Currency> | undefined = maxAmountSpend(
     currencyBalances[Field.INPUT],
   );
+
   const showMaxButton = Boolean(
     maxInputAmount?.greaterThan(0) &&
       !parsedAmounts[Field.INPUT]?.equalTo(maxInputAmount),
@@ -480,7 +496,6 @@ export default function Swap() {
       </Head>
       <Page>
         <PageHeader title="swap" />
-
         <TokenWarningModal
           isOpen={importTokensNotInDefault.length > 0 && !dismissTokenWarning}
           tokens={importTokensNotInDefault}
@@ -489,7 +504,7 @@ export default function Swap() {
         <PageContent>
           <div
             className={`
-            max-w-[500px] 
+            max-w-[600px] 
             bg-swap-background 
             rounded-xl p-8
             shadow-primary-glow
@@ -500,6 +515,279 @@ export default function Swap() {
               output={currencies[Field.OUTPUT]}
               allowedSlippage={allowedSlippage}
             />
+
+            {/* {archer} */}
+            <ConfirmSwapModal
+              isOpen={showConfirm}
+              trade={trade}
+              originalTrade={tradeToConfirm}
+              onAcceptChanges={handleAcceptChanges}
+              attemptingTxn={attemptingTxn}
+              txHash={txHash}
+              recipient={recipient}
+              allowedSlippage={allowedSlippage}
+              onConfirm={handleSwap}
+              swapErrorMessage={swapErrorMessage}
+              onDismiss={handleConfirmDismiss}
+              minerBribe={undefined}
+            />
+
+            <div>
+              <CurrencyInputPanel
+                // priceImpact={priceImpact}
+                label={
+                  independentField === Field.OUTPUT && !showWrap
+                    ? `Swap From (est.):`
+                    : `Swap From:`
+                }
+                value={formattedAmounts[Field.INPUT]}
+                showMaxButton={showMaxButton}
+                currency={currencies[Field.INPUT]}
+                onUserInput={handleTypeInput}
+                onMax={handleMaxInput}
+                fiatValue={fiatValueInput ?? undefined}
+                onCurrencySelect={handleInputSelect}
+                otherCurrency={currencies[Field.OUTPUT]}
+                showCommonBases={true}
+                id="swap-currency-input"
+              />
+              <div className="py-3 flex justify-between items-center">
+                <button
+                  className="z-10 rounded-xl p-3 text-text"
+                  onClick={() => {
+                    setApprovalSubmitted(false); // reset 2 step UI for approvals
+                    onSwitchTokens();
+                  }}
+                >
+                  <SwitchVerticalIcon className="w-6 h-6" />
+                  {/* <Lottie
+                          animationData={swapArrowsAnimationData}
+                          autoplay={animateSwapArrows}
+                          loop={false}
+                          style={{ width: 32, height: 32 }}
+                        /> */}
+                </button>
+                {isExpertMode ? (
+                  recipient === null && !showWrap ? (
+                    <div
+                      // color="link"
+                      // type="bordered"
+                      id="add-recipient-button"
+                      className="text-link text-sm cursor-pointer"
+                      onClick={() => onChangeRecipient('')}
+                    >
+                      + Add recipient (optional)
+                    </div>
+                  ) : (
+                    <div
+                      // color="link"
+                      // type="bordered"
+                      id="remove-recipient-button"
+                      className="text-link text-sm cursor-pointer"
+                      onClick={() => onChangeRecipient(null)}
+                    >
+                      <>- {`Remove recipient`}</>
+                    </div>
+                  )
+                ) : null}
+              </div>
+              <div>
+                <CurrencyInputPanel
+                  value={formattedAmounts[Field.OUTPUT]}
+                  onUserInput={handleTypeOutput}
+                  label={
+                    independentField === Field.INPUT && !showWrap
+                      ? `Swap To (est.):`
+                      : `Swap To:`
+                  }
+                  showMaxButton={false}
+                  hideBalance={false}
+                  fiatValue={fiatValueOutput ?? undefined}
+                  priceImpact={priceImpact}
+                  currency={currencies[Field.OUTPUT]}
+                  onCurrencySelect={handleOutputSelect}
+                  otherCurrency={currencies[Field.INPUT]}
+                  showCommonBases={true}
+                  id="swap-currency-output"
+                />
+                {Boolean(trade) && (
+                  <div className="p-1 mt-2 cursor-pointer rounded-b-md bg-dark-800">
+                    <TradePrice
+                      price={trade?.executionPrice}
+                      showInverted={showInverted}
+                      setShowInverted={setShowInverted}
+                      className="text-sm"
+                      icon={
+                        <div className="bg-swap-inner-background p-2 rounded-xl text-text">
+                          <SwitchHorizontalIcon className="w-4 h-4" />
+                        </div>
+                      }
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {recipient !== null && !showWrap && (
+              <>
+                <AddressInputPanel
+                  id="recipient"
+                  value={recipient}
+                  onChange={onChangeRecipient}
+                />
+                {recipient !== account && (
+                  <Alert
+                    type="warning"
+                    dismissable={false}
+                    showIcon
+                    message={`Please note that the recipient address is different from the connected wallet address.`}
+                  />
+                )}
+              </>
+            )}
+
+            <div className="mt-6">
+              {swapIsUnsupported ? (
+                <Alert
+                  type="error"
+                  dismissable={false}
+                  showIcon
+                  message={`Unsupported Asset`}
+                />
+              ) : !account ? (
+                <WalletConnector />
+              ) : showWrap ? (
+                <Button
+                  color="primary"
+                  className="py-4 px-4 w-full text-lg"
+                  disabled={Boolean(wrapInputError)}
+                  onClick={onWrap}
+                >
+                  {wrapInputError ??
+                    (wrapType === WrapType.WRAP
+                      ? `Wrap`
+                      : wrapType === WrapType.UNWRAP
+                      ? `Unwrap`
+                      : null)}
+                </Button>
+              ) : routeNotFound && userHasSpecifiedInputOutput ? (
+                <Alert
+                  type="error"
+                  dismissable={false}
+                  showIcon
+                  message={`Insufficient liquidity for this trade. Try enabling multi-hop trades`}
+                />
+              ) : showApproveFlow ? (
+                <div className="flex justify-between items-center">
+                  {approvalState !== ApprovalState.APPROVED && (
+                    <ButtonConfirmed
+                      className="py-4 px-4 w-full text-lg"
+                      onClick={handleApprove}
+                      disabled={
+                        approvalState !== ApprovalState.NOT_APPROVED ||
+                        approvalSubmitted
+                      }
+                    >
+                      {approvalState === ApprovalState.PENDING ? (
+                        <div className="flex justify-center items-center">
+                          Approving <RippleSpinner size={16} />
+                        </div>
+                      ) : (
+                        `Approve ${currencies[Field.INPUT]?.symbol}`
+                      )}
+                    </ButtonConfirmed>
+                  )}
+                  {approvalState === ApprovalState.APPROVED && (
+                    <ButtonError
+                      className="py-4 px-4 w-full text-2xl"
+                      onClick={() => {
+                        if (isExpertMode) {
+                          handleSwap();
+                        } else {
+                          setSwapState({
+                            tradeToConfirm: trade,
+                            attemptingTxn: false,
+                            swapErrorMessage: undefined,
+                            showConfirm: true,
+                            txHash: undefined,
+                          });
+                        }
+                      }}
+                      style={{
+                        width: '100%',
+                      }}
+                      id="swap-button"
+                      disabled={
+                        !isValid ||
+                        approvalState !== ApprovalState.APPROVED ||
+                        (priceImpactSeverity > 3 && !isExpertMode)
+                      }
+                      error={isValid && priceImpactSeverity > 2}
+                    >
+                      {priceImpactSeverity > 3 && !isExpertMode
+                        ? `Price Impact High`
+                        : priceImpactSeverity > 2
+                        ? `Swap Anyway`
+                        : `Swap`}
+                    </ButtonError>
+                  )}
+                </div>
+              ) : !isValid ||
+                (priceImpactSeverity > 3 && !isExpertMode) ||
+                !!swapCallbackError ? (
+                <Alert
+                  type="error"
+                  dismissable={false}
+                  showIcon
+                  message={
+                    swapInputError ? swapInputError : `Price Impact Too High`
+                  }
+                />
+              ) : (
+                <ButtonError
+                  className="py-4 px-4 w-full"
+                  onClick={() => {
+                    if (isExpertMode) {
+                      handleSwap();
+                    } else {
+                      setSwapState({
+                        tradeToConfirm: trade,
+                        attemptingTxn: false,
+                        swapErrorMessage: undefined,
+                        showConfirm: true,
+                        txHash: undefined,
+                      });
+                    }
+                  }}
+                  id="swap-button"
+                  disabled={
+                    !isValid ||
+                    (priceImpactSeverity > 3 && !isExpertMode) ||
+                    !!swapCallbackError
+                  }
+                  error={
+                    isValid && priceImpactSeverity > 2 && !swapCallbackError
+                  }
+                >
+                  {priceImpactSeverity > 2 ? `Swap Anyway` : `Swap`}
+                </ButtonError>
+              )}
+              {showApproveFlow && (
+                <div
+                  className="flex flex-col justify-center"
+                  style={{ marginTop: '1rem' }}
+                >
+                  steps
+                  {/* <ProgressSteps
+                    steps={[approvalState === ApprovalState.APPROVED]}
+                  /> */}
+                </div>
+              )}
+              {isExpertMode && swapErrorMessage
+                ? 'err'
+                : // <SwapCallbackError error={swapErrorMessage} />
+                  null}
+            </div>
           </div>
         </PageContent>
       </Page>

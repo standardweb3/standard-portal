@@ -1,22 +1,22 @@
-import 'rc-slider/assets/index.css'
+// import 'rc-slider/assets/index.css';
 
-import React, { ReactNode } from 'react'
-import styled, { css } from 'styled-components'
+import React, { ReactNode } from 'react';
+import { css } from '@emotion/react';
+import styled from '@emotion/styled';
 
-import { AlertTriangle } from 'react-feather'
-import Slider from 'rc-slider'
-import Typography from '../../components/Typography'
+// import Slider from 'rc-slider';
+// import Typography from '../../components/Typography'
 
 export const Wrapper = styled.div`
   position: relative;
   padding: 1rem;
-`
+`;
 
-export const ClickableText = styled(Typography)`
-  :hover {
-    cursor: pointer;
-  }
-`
+// export const ClickableText = styled(Typography)`
+//   :hover {
+//     cursor: pointer;
+//   }
+// `
 
 export const ArrowWrapper = styled.div<{ clickable: boolean }>`
   padding: 2px;
@@ -30,28 +30,28 @@ export const ArrowWrapper = styled.div<{ clickable: boolean }>`
           }
         `
       : null}
-`
+`;
 
 export const SectionBreak = styled.div`
   height: 1px;
   width: 100%;
   // background-color: ${({ theme }) => theme.bg3};
-`
+`;
 
 export const BottomGrouping = styled.div`
   margin-top: 1rem;
-`
+`;
 
-export const ErrorText = styled(Typography)<{ severity?: 0 | 1 | 2 | 3 | 4 }>`
-  color: ${({ theme, severity }) =>
-    severity === 3 || severity === 4
-      ? theme.red1
-      : severity === 2
-      ? theme.yellow2
-      : severity === 1
-      ? theme.text3
-      : theme.green1};
-`
+// export const ErrorText = styled(Typography)<{ severity?: 0 | 1 | 2 | 3 | 4 }>`
+//   color: ${({ theme, severity }) =>
+//     severity === 3 || severity === 4
+//       ? theme.red1
+//       : severity === 2
+//       ? theme.yellow2
+//       : severity === 1
+//       ? theme.text3
+//       : theme.green1};
+// `;
 
 export const StyledBalanceMaxMini = styled.button`
   height: 22px;
@@ -77,7 +77,7 @@ export const StyledBalanceMaxMini = styled.button`
     // background-color: ${({ theme }) => theme.bg3};
     outline: none;
   }
-`
+`;
 
 // styles
 export const Dots = styled.span`
@@ -99,50 +99,50 @@ export const Dots = styled.span`
       content: '...';
     }
   }
-`
+`;
 
 export function SwapCallbackError({ error }: { error: ReactNode }) {
   return (
     <div className="flex items-center justify-center pt-6 text-red">
-      <AlertTriangle size={16} />
+      TriangleIcon
       <div className="ml-4 text-sm">{error}</div>
     </div>
-  )
+  );
 }
 
-export const StyledSlider = styled(Slider)`
-  margin: 0.8rem auto 2rem auto;
-  width: 95% !important;
+// export const StyledSlider = styled(Slider)`
+//   margin: 0.8rem auto 2rem auto;
+//   width: 95% !important;
 
-  .rc-slider-mark-text {
-    color: #575757;
-  }
+//   .rc-slider-mark-text {
+//     color: #575757;
+//   }
 
-  .rc-slider-mark-text-active {
-    color: #7f7f7f;
-  }
+//   .rc-slider-mark-text-active {
+//     color: #7f7f7f;
+//   }
 
-  .rc-slider-rail {
-    background-color: #202231;
-  }
+//   .rc-slider-rail {
+//     background-color: #202231;
+//   }
 
-  .rc-slider-track {
-    background: linear-gradient(to right, #27b0e6, #fa52a0);
-  }
+//   .rc-slider-track {
+//     background: linear-gradient(to right, #27b0e6, #fa52a0);
+//   }
 
-  .rc-slider-handle {
-    border-color: #fa52a0;
-  }
+//   .rc-slider-handle {
+//     border-color: #fa52a0;
+//   }
 
-  .rc-slider-handle:hover {
-    border-color: #fa52a0;
-  }
+//   .rc-slider-handle:hover {
+//     border-color: #fa52a0;
+//   }
 
-  .rc-slider-handle-click-focused:focus {
-    border-color: #fa52a0;
-  }
+//   .rc-slider-handle-click-focused:focus {
+//     border-color: #fa52a0;
+//   }
 
-  .rc-slider-dot-active {
-    border-color: #fa52a0;
-  }
-`
+//   .rc-slider-dot-active {
+//     border-color: #fa52a0;
+//   }
+// `;

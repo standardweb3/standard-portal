@@ -161,6 +161,7 @@ export const CurrencyLogo: FunctionComponent<CurrencyLogoProps> = ({
       width={size}
       height={size}
       alt={currency?.symbol}
+      className={className}
       {...rest}
     />
   );

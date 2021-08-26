@@ -24,8 +24,15 @@ module.exports = {
         // 'modal-inner-background': 'rgba(222, 199, 239, 0.25)',
         'modal-inner-background': 'rgba(255, 255, 255, 0.2)',
         'swap-background': 'rgba(14, 5, 37, 0.5)',
-        'swap-inner-background': 'rgba(255,255,255,0.2)',
+        'swap-inner-background': 'rgba(255,255,255,0.1)',
+        'swap-settings-background': 'rgba(255, 255, 255, 0.2)',
+        opaque: 'rgba(255,255,255,0.2)',
+        'toggle-background': 'rgba(255,255,255,0.2)',
         'overlay-background': 'rgba(14, 5, 37, 0.7)',
+      },
+      textShadow: {
+        white: '0px 0px 1px rgba(255,255,255, 0.5)',
+        // '3xl': '0 0 3px rgba(0, 0, 0, .8), 0 0 5px rgba(0, 0, 0, .9)',
       },
     },
     boxShadow: {
@@ -35,5 +42,5 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [require('tailwindcss-textshadow')],
 };

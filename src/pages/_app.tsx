@@ -25,6 +25,13 @@ import { darkTheme } from '../theme/theme';
 import DefaultLayout from '../layouts/Default'
 import store, { persistor } from '../state'
 
+// updaters
+import ApplicationUpdater from '../state/application/updater'
+import ListsUpdater from '../state/lists/updater'
+import MulticallUpdater from '../state/multicall/updater'
+import TransactionUpdater from '../state/transactions/updater'
+import UserUpdater from '../state/user/updater'
+
 
 import '../styles/index.css'
 import '../styles/globals.css';
@@ -67,9 +74,20 @@ function MyApp({
           <Web3ProviderNetwork getLibrary={getLibrary}>
             <Web3ReactManager>
               <ReduxProvider store={store}>
-                <Layout>
-                  <Component {...pageProps} />
-                </Layout>
+              <PersistGate loading='loading' persistor={persistor}>
+                  <>
+                    <ListsUpdater />
+                    <UserUpdater />
+                    <ApplicationUpdater />
+                    <TransactionUpdater />
+                    <MulticallUpdater />
+                  </>
+                  <Provider>
+                    <Layout>
+                      <Component {...pageProps} />
+                    </Layout>
+                  </Provider>
+                </PersistGate>
               </ReduxProvider>
             </Web3ReactManager>
           </Web3ProviderNetwork>

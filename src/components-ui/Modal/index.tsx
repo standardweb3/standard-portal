@@ -52,6 +52,7 @@ const StyledDialogContent = styled(
   }: StyledDialogContentProps) => <AnimatedDialogContent {...rest} />,
 )`
   &[data-reach-dialog-content] {
+    height: 1px;
     background-color: transparent;
     align-self: ${({ mobile }) => (mobile ? 'flex-end' : 'center')};
     margin: 4rem 0.5rem;
@@ -117,6 +118,7 @@ export function Modal({
             <div
               className={classNames(
                 `text-text
+                 h-full w-full
                  rounded-xl p-8
                  bg-modal-background`,
                 className ?? '',

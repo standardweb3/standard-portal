@@ -1,8 +1,8 @@
 import React, { FC, useState } from 'react';
 
-import Image from '../Image';
+import { Image } from '../Image';
 import { classNames } from '../../functions';
-// import { cloudinaryLoader } from '../../functions/cloudinary'
+import { cloudinaryLoader } from '../../functions/cloudinary';
 
 const BAD_SRCS: { [tokenAddress: string]: true } = {};
 
@@ -12,7 +12,7 @@ export type SequentialLogoProps = {
   height: string | number;
   alt?: string;
   className?: string;
-  style: { [key: string]: string };
+  style?: React.CSSProperties;
 };
 
 /**
@@ -30,13 +30,13 @@ export const SequentialLogo: FC<SequentialLogoProps> = ({
   const [, refresh] = useState<number>(0);
   const src = srcs.find((src) => !BAD_SRCS[src]);
   return (
-    <div className="rounded" style={{ width, height }}>
+    <div style={{ width, height }}>
       <Image
         src={
           src ||
           'https://raw.githubusercontent.com/sushiswap/icons/master/token/unknown.png'
         }
-        // loader={cloudinaryLoader}
+        loader={cloudinaryLoader}
         onError={() => {
           if (src) BAD_SRCS[src] = true;
           refresh((i) => i + 1);
@@ -45,7 +45,7 @@ export const SequentialLogo: FC<SequentialLogoProps> = ({
         height={height}
         alt={alt}
         layout="fixed"
-        className={classNames('rounded', className)}
+        className={classNames(className)}
         style={style}
         {...rest}
       />

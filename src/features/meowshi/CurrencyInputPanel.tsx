@@ -1,33 +1,39 @@
-import { Field, MeowshiState } from '../../pages/tools/meowshi'
-import React, { FC } from 'react'
-import { SUSHI, XSUSHI } from '../../constants'
+import { Field, MeowshiState } from '../../pages/tools/meowshi';
+import React, { FC } from 'react';
+import { SUSHI, XSUSHI } from '../../constants';
 
-import { ChainId } from '@sushiswap/sdk'
-import Image from 'next/image'
-import { Input as NumericalInput } from '../../components/NumericalInput'
-import Typography from '../../components/Typography'
-import { t } from '@lingui/macro'
-import { tryParseAmount } from '../../functions'
-import { useActiveWeb3React } from '../../hooks'
-import { useLingui } from '@lingui/react'
-import { useTokenBalance } from '../../state/wallet/hooks'
-import { useUSDCValue } from '../../hooks/useUSDCPrice'
+import { ChainId } from '@sushiswap/sdk';
+import Image from 'next/image';
+import { Input as NumericalInput } from '../../components/NumericalInput';
+import Typography from '../../components/Typography';
+import { t } from '@lingui/macro';
+import { tryParseAmount } from '../../functions';
+import { useActiveWeb3React } from '../../hooks';
+import { useLingui } from '@lingui/react';
+import { useTokenBalance } from '../../state/wallet/hooks';
+import { useUSDCValue } from '../../hooks/useUSDCPrice';
 
 interface CurrencyInputPanelProps {
-  field: Field
-  meowshiState: MeowshiState
-  showMax: boolean
+  field: Field;
+  meowshiState: MeowshiState;
+  showMax: boolean;
 }
 
-const CurrencyInputPanel: FC<CurrencyInputPanelProps> = ({ field, meowshiState, showMax }) => {
-  const { currencies, handleInput, setCurrency, fields } = meowshiState
+const CurrencyInputPanel: FC<CurrencyInputPanelProps> = ({
+  field,
+  meowshiState,
+  showMax,
+}) => {
+  const { currencies, handleInput, setCurrency, fields } = meowshiState;
 
-  const { account } = useActiveWeb3React()
-  const { i18n } = useLingui()
-  const currency = currencies[field]
-  const balance = useTokenBalance(account, currency)
-  const inputUSDCValue = useUSDCValue(tryParseAmount(fields[field], currencies[field]))
-  const balanceUSDCValue = useUSDCValue(balance)
+  const { account } = useActiveWeb3React();
+  const { i18n } = useLingui();
+  const currency = currencies[field];
+  const balance = useTokenBalance(account, currency);
+  const inputUSDCValue = useUSDCValue(
+    tryParseAmount(fields[field], currencies[field]),
+  );
+  const balanceUSDCValue = useUSDCValue(balance);
 
   return (
     <>
@@ -50,16 +56,28 @@ const CurrencyInputPanel: FC<CurrencyInputPanelProps> = ({ field, meowshiState, 
                 className="rounded-full"
               />
               <div className="flex flex-col items-start">
-                <Typography variant="h3" className="text-high-emphesis leading-6" weight={700}>
+                <Typography
+                  variant="h3"
+                  className="text-high-emphesis leading-6"
+                  weight={700}
+                >
                   {currency?.symbol}
                 </Typography>
-                {(currency === SUSHI[ChainId.MAINNET] || currency === XSUSHI) && (
+                {(currency === SUSHI[ChainId.MAINNET] ||
+                  currency === XSUSHI) && (
                   <Typography
                     variant="xs"
                     className="underline text-blue cursor-pointer"
-                    onClick={() => setCurrency(currency === XSUSHI ? SUSHI[ChainId.MAINNET] : XSUSHI, field)}
+                    onClick={() =>
+                      setCurrency(
+                        currency === XSUSHI ? SUSHI[ChainId.MAINNET] : XSUSHI,
+                        field,
+                      )
+                    }
                   >
-                    {currencies[field] === SUSHI[ChainId.MAINNET] ? i18n._(t`Use xSUSHI`) : i18n._(t`Use SUSHI`)}
+                    {currencies[field] === SUSHI[ChainId.MAINNET]
+                      ? i18n._(t`Use xSUSHI`)
+                      : i18n._(t`Use SUSHI`)}
                   </Typography>
                 )}
               </div>
@@ -69,7 +87,11 @@ const CurrencyInputPanel: FC<CurrencyInputPanelProps> = ({ field, meowshiState, 
             <div className="flex flex-col items-start">
               <div className="w-full">
                 <NumericalInput
-                  className="w-full bg-transparent text-2xl leading-4"
+                  className={`
+                    w-full 
+                    bg-transparent 
+                    text-2xl leading-4 
+                    focust:text-text focust:placeholder-text`}
                   id="token-amount-input"
                   value={fields[field]}
                   onUserInput={(val) => handleInput(val, field)}
@@ -77,7 +99,8 @@ const CurrencyInputPanel: FC<CurrencyInputPanelProps> = ({ field, meowshiState, 
               </div>
               {inputUSDCValue && (
                 <div className="text-xs font-medium text-low-emphesis">
-                  ≈ {inputUSDCValue?.toSignificant(6, { groupSeparator: ',' })} USDC
+                  ≈ {inputUSDCValue?.toSignificant(6, { groupSeparator: ',' })}{' '}
+                  USDC
                 </div>
               )}
             </div>
@@ -99,22 +122,28 @@ const CurrencyInputPanel: FC<CurrencyInputPanelProps> = ({ field, meowshiState, 
             onClick={() => handleInput(balance?.toExact(), field)}
             className="cursor-pointer text-primary"
           >
-            Balance: {balance?.toSignificant(6, { groupSeparator: ',' }) || '0'} {currency?.symbol}
+            Balance: {balance?.toSignificant(6, { groupSeparator: ',' }) || '0'}{' '}
+            {currency?.symbol}
           </Typography>
           {balanceUSDCValue && (
             <>
               <Typography variant="xs" component="span" className="text-pr]">
                 {' ≈ '}
               </Typography>
-              <Typography variant="xs" component="span" className="text-secondary">
-                ${balanceUSDCValue?.toSignificant(6, { groupSeparator: ',' })} USDC
+              <Typography
+                variant="xs"
+                component="span"
+                className="text-secondary"
+              >
+                ${balanceUSDCValue?.toSignificant(6, { groupSeparator: ',' })}{' '}
+                USDC
               </Typography>
             </>
           )}
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default CurrencyInputPanel
+export default CurrencyInputPanel;
