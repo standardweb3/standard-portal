@@ -38,7 +38,7 @@ const DEFAULT = {
   link: 'bg-link text-white',
   white: 'bg-white text-primary',
   success: 'bg-success text-white',
-  disabled: 'bg-opaque text-danger',
+  disabled: 'bg-opaque text-info',
 };
 
 const TYPE = {

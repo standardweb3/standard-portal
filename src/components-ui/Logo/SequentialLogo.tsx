@@ -12,7 +12,6 @@ export type SequentialLogoProps = {
   height: string | number;
   alt?: string;
   className?: string;
-  style?: React.CSSProperties;
 };
 
 /**
@@ -22,7 +21,6 @@ export const SequentialLogo: FC<SequentialLogoProps> = ({
   srcs,
   width,
   height,
-  style,
   alt = '',
   className,
   ...rest
@@ -36,6 +34,7 @@ export const SequentialLogo: FC<SequentialLogoProps> = ({
           src ||
           'https://raw.githubusercontent.com/sushiswap/icons/master/token/unknown.png'
         }
+        unoptimized
         loader={cloudinaryLoader}
         onError={() => {
           if (src) BAD_SRCS[src] = true;
@@ -46,7 +45,6 @@ export const SequentialLogo: FC<SequentialLogoProps> = ({
         alt={alt}
         layout="fixed"
         className={classNames(className)}
-        style={style}
         {...rest}
       />
     </div>

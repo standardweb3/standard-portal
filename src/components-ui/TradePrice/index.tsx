@@ -51,7 +51,7 @@ export function TradePrice({
       onClick={flipPrice}
       title={text}
       className={classNames(
-        'flex justify-between w-full py-1 cursor-pointer rounded-b-md text-success',
+        'flex items-center justify-between w-full py-1 cursor-pointer rounded-b-md text-success',
         className,
       )}
     >

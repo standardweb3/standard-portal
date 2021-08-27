@@ -1,3 +1,4 @@
+import { MinusCircleIcon } from '@heroicons/react/outline';
 import React, { FC, useCallback } from 'react';
 import { isAddress } from '../../functions';
 import useENS from '../../hooks/useENS';
@@ -38,15 +39,20 @@ export const AddressInputPanel: FC<AddressInputPanelProps> = ({
     >
       <div
         className={`
-        flex justify-between 
+        flex space-x-2
+        items-center
         w-full
         text-sm`}
       >
-        {`Recipient:`}
+        <div className="text-red cursor-pointer" onClick={() => onChange(null)}>
+          <MinusCircleIcon className="w-4 h-4" />
+        </div>
+        <div>{`Recipient:`}</div>
       </div>
       <div
         className={`
-        flex w-full h-full
+        flex items-center
+        w-full h-full
         `}
       >
         <input

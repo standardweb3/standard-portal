@@ -43,8 +43,8 @@ export function AdvancedSwapDetails({
   return !trade ? null : (
     <div className="flex flex-col space-y-2">
       <div className="flex flex-row items-center justify-between">
-        <span className="flex items-center">
-          <div className="text-sm text-secondary">{`Route`}</div>
+        <span className="flex items-center space-x-2">
+          <div className="text-sm">{`Route`}</div>
           <Question
             text={`Routing through these tokens resulted in the best price for your trade.`}
           />
@@ -52,9 +52,9 @@ export function AdvancedSwapDetails({
         <SwapRoute trade={trade} />
       </div>
 
-      <div className="flex justify-center items-center">
-        <div>
-          <div className="text-sm text-secondary">
+      <div className="flex justify-center items-center justify-between">
+        <div className="flex items-center space-x-2">
+          <div className="text-sm">
             {trade.tradeType === TradeType.EXACT_INPUT
               ? `Minimum received`
               : `Maximum sent`}
@@ -75,9 +75,9 @@ export function AdvancedSwapDetails({
           </div>
         </div>
       </div>
-      <div className="flex justify-center items-center">
-        <div>
-          <div className="text-sm text-secondary">{`Price Impact`}</div>
+      <div className="flex justify-center items-center justify-between">
+        <div className="flex items-center space-x-2">
+          <div className="text-sm">{`Price Impact`}</div>
           <Question
             text={`The difference between the market price and estimated price due to trade size.`}
           />
@@ -85,9 +85,9 @@ export function AdvancedSwapDetails({
         <FormattedPriceImpact priceImpact={priceImpact} />
       </div>
 
-      <div className="flex justify-center items-center">
-        <div>
-          <div className="text-sm text-secondary">{`Liquidity Provider Fee`}</div>
+      <div className="flex justify-center items-center justify-between">
+        <div className="flex items-center space-x-2">
+          <div className="text-sm">{`Liquidity Provider Fee`}</div>
           <Question
             text={`A portion of each trade (0.25%) goes to liquidity providers as a protocol incentive.`}
           />
@@ -102,9 +102,9 @@ export function AdvancedSwapDetails({
         </div>
       </div>
 
-      <div className="flex justify-center items-center">
+      {/* <div className="flex justify-center items-center justify-between">
         <div>
-          <div className="text-sm text-secondary">{`xSUSHI Fee`}</div>
+          <div className="text-sm">{`xSUSHI Fee`}</div>
           <Question
             text={`A portion of each trade (0.05%) goes to xSUSHI holders as a protocol incentive.`}
           />
@@ -116,11 +116,11 @@ export function AdvancedSwapDetails({
               }`
             : '-'}
         </div>
-      </div>
+      </div> */}
 
-      <div className="flex justify-center items-center">
-        <div>
-          <div className="text-sm text-secondary">{`Slippage tolerance`}</div>
+      <div className="flex justify-center items-center justify-between">
+        <div className="flex items-center space-x-2">
+          <div className="text-sm">{`Slippage tolerance`}</div>
           <Question text={`Slippage tolerance...`} />
         </div>
         <div className="text-sm font-bold text-high-emphesis">
@@ -131,7 +131,7 @@ export function AdvancedSwapDetails({
       {minerBribe && (
         <div className="flex justify-center items-center">
           <div>
-            <div className="text-sm text-secondary">{`Miner Tip`}</div>
+            <div className="text-sm">{`Miner Tip`}</div>
             <Question
               text={`Tip to encourage miners to select this transaction.`}
             />

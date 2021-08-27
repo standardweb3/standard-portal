@@ -3,7 +3,16 @@ import { ChainId, Currency } from '@sushiswap/sdk';
 import React, { FC } from 'react';
 
 import { Button } from '../../components-ui/Button';
-import { XIcon } from '@heroicons/react/outline';
+import {
+  CheckCircleIcon,
+  CheckIcon,
+  EmojiSadIcon,
+  ExclamationCircleIcon,
+  SortAscendingIcon,
+  ThumbUpIcon,
+  UploadIcon,
+  XIcon,
+} from '@heroicons/react/outline';
 import { ExternalLink } from '../../components-ui/ExternalLink';
 import { Image } from '../../components-ui/Image';
 // import Lottie from 'lottie-react';
@@ -13,6 +22,7 @@ import { getExplorerLink } from '../../functions/explorer';
 // import loadingRollingCircle from '../../animation/loading-rolling-circle.json';
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
 import useAddTokenToMetaMask from '../../hooks/useAddTokenToMetaMask';
+import { WavySpinner } from '../../components-ui/Spinner/WavySpinner';
 
 interface ConfirmationPendingContentProps {
   onDismiss: () => void;
@@ -28,14 +38,18 @@ export const ConfirmationPendingContent: FC<ConfirmationPendingContentProps> = (
   return (
     <div>
       <div className="flex justify-end">
-        <XIcon onClick={onDismiss} />
+        <XIcon onClick={onDismiss} className="w-4 h-4" />
       </div>
-      <div className="w-24 pb-4 m-auto">loadding....</div>
-      <div className="flex flex-col items-center justify-center gap-3">
-        <div className="text-xl font-bold text-high-emphesis">{`Waiting for Confirmation`}</div>
-        <div className="font-bold">{pendingText}</div>
-        <div className="font-bold">{pendingText2}</div>
-        <div className="text-sm font-bold text-secondary">{`Confirm this transaction in your wallet`}</div>
+      <div className="flex justify-center">
+        <WavySpinner />
+      </div>
+      <div className="flex flex-col items-center justify-center space-y-3 mt-4">
+        <div className="text-xl font-bold text-primary">{`Waiting for Confirmation`}</div>
+        <div className="font-bold text-center">{pendingText}</div>
+        {pendingText2 && (
+          <div className="font-bold text-center">{pendingText2}</div>
+        )}
+        <div className="text-sm font-bold text-warn">{`Confirm this transaction in your wallet`}</div>
       </div>
     </div>
   );
@@ -58,28 +72,27 @@ export const TransactionSubmittedContent: FC<TransactionSubmittedContentProps> =
   const { library } = useActiveWeb3React();
   const { addToken, success } = useAddTokenToMetaMask(currencyToAdd);
   return (
-    <div>
+    <div className="relative">
       <div className="flex justify-end">
-        <XIcon onClick={onDismiss} />
+        <XIcon onClick={onDismiss} className="w-5 h-5 cursor-pointer" />
       </div>
-      <div className="w-24 pb-4 m-auto">
-        upicon
-        {/* <ArrowUpCircle strokeWidth={0.5} size={90} className="text-blue" /> */}
-      </div>
-      <div className="flex flex-col items-center justify-center gap-1">
-        <div className="text-xl font-bold">{`Transaction Submitted`}</div>
+      <div className="flex flex-col items-center justify-center space-y-4">
+        <div className="flex items-center space-x-2 text-success">
+          <CheckCircleIcon className="w-5 h-5" />
+          <div className="text-xl font-bold">{`Transaction Submitted`}</div>
+        </div>
         {chainId && hash && (
           <ExternalLink href={getExplorerLink(chainId, hash, 'transaction')}>
             <div className="font-bold text-blue">View on explorer</div>
           </ExternalLink>
         )}
         {currencyToAdd && library?.provider?.isMetaMask && (
-          <Button color="gradient" onClick={addToken} className="w-auto mt-4">
+          <Button color="primary" onClick={addToken}>
             {!success ? (
-              <div className="mx-auto space-x-2">
+              <div className="flex items-center space-x-2">
                 <span>{`Add ${currencyToAdd.symbol} to MetaMask`}</span>
                 <Image
-                  src="/images/wallets/metamask.png"
+                  src="/img/wallets/metamask.png"
                   alt={`Add ${currencyToAdd.symbol} to MetaMask`}
                   width={24}
                   height={24}
@@ -134,24 +147,23 @@ export const TransactionErrorContent: FC<TransactionErrorContentProps> = ({
   onDismiss,
 }) => {
   return (
-    <div className="grid gap-6">
+    <div className="space-y-6">
       <div>
-        <div className="flex justify-between">
-          <div className="text-lg font-medium text-high-emphesis">{`Error`}</div>
-          <XIcon onClick={onDismiss} />
+        <div className="flex justify-end">
+          <XIcon onClick={onDismiss} className="w-5 h-5" />
         </div>
-        <div className="flex flex-col items-center justify-center gap-3">
+        <div className="flex space-x-2 items-center justify-center text-danger">
           {/* <AlertTriangle
             className="text-red"
             style={{ strokeWidth: 1.5 }}
             size={64}
           /> */}
-          triangleIcon
-          <div className="font-bold text-red">{message}</div>
+          <ExclamationCircleIcon className="w-5 h-5" />
+          <div className="font-bold">{message}</div>
         </div>
       </div>
-      <div>
-        <Button color="gradient" size="lg" onClick={onDismiss}>
+      <div className="flex justify-center">
+        <Button type="bordered" color="info" onClick={onDismiss}>
           Dismiss
         </Button>
       </div>
@@ -186,7 +198,7 @@ const TransactionConfirmationModal: FC<ConfirmationModalProps> = ({
 
   // confirmation screen
   return (
-    <Modal isOpen={isOpen} onDismiss={onDismiss} maxWidth={'500px'}>
+    <Modal isOpen={isOpen} onDismiss={onDismiss} maxWidth={'400px'}>
       {attemptingTxn ? (
         <ConfirmationPendingContent
           onDismiss={onDismiss}

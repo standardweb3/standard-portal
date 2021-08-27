@@ -11,7 +11,11 @@ import {
   useToggleSettingsMenu,
 } from '../../state/application/hooks';
 
-import { CogIcon } from '@heroicons/react/outline';
+import {
+  CogIcon,
+  DotsHorizontalIcon,
+  MenuAlt3Icon,
+} from '@heroicons/react/outline';
 import { ApplicationModal } from '../../state/application/actions';
 import Toggle from '../Toggle';
 import { useActiveWeb3React } from '../../hooks';
@@ -53,7 +57,7 @@ export default function Settings({
         onClick={toggle}
         id="open-settings-dialog-button"
       >
-        <CogIcon className="w-[26px] h-[26px] transform rotate-90" />
+        <MenuAlt3Icon className="w-[26px] h-[26px]" />
       </div>
       {open && (
         <div
@@ -149,6 +153,7 @@ export default function Settings({
           </div>
           <Button
             color="danger"
+            className="w-full py-4 text-lg"
             onClick={() => {
               // if (window.prompt(`Please type the word "confirm" to enable expert mode.`)) === 'confirm') {
               //   toggleExpertMode()

@@ -45,7 +45,7 @@ export const SwapHeader: FC<SwapHeaderProps> = ({
       className={`
       text-text
       flex justify-between items-center
-      space-x-3`}
+      mb-6`}
     >
       <div>Swap</div>
       {/* <div
@@ -118,9 +118,8 @@ export const SwapHeader: FC<SwapHeaderProps> = ({
               <Gas />
             </div>
           )}
-          <div className="relative w-full h-full rounded hover:bg-dark-800 flex items-center">
+          <div className="relative w-full h-full rounded flex items-center">
             <Settings placeholderSlippage={allowedSlippage} />
-            {/* settings */}
           </div>
         </div>
       </div>

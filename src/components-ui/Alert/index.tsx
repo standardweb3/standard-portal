@@ -66,8 +66,12 @@ export function Alert({
       {title && <div className="mb-1 text-2xl font-medium">{title}</div>}
       <div className="flex items-center">
         {showIcon && <div className="flex-shrink-0">{icon}</div>}
-        <div className={!showIcon ? 'ml-0' : 'ml-3'}>
-          <p className="text-base">{message}</p>
+        <div className={!showIcon ? 'w-full ml-0' : 'w-full ml-3'}>
+          {typeof message === 'string' ? (
+            <p className="text-base">{message}</p>
+          ) : (
+            <div className="text-base">{message}</div>
+          )}
         </div>
       </div>
       {dismissable && (

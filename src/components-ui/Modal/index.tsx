@@ -52,7 +52,6 @@ const StyledDialogContent = styled(
   }: StyledDialogContentProps) => <AnimatedDialogContent {...rest} />,
 )`
   &[data-reach-dialog-content] {
-    height: 1px;
     background-color: transparent;
     align-self: ${({ mobile }) => (mobile ? 'flex-end' : 'center')};
     margin: 4rem 0.5rem;
@@ -76,6 +75,7 @@ const StyledDialogContent = styled(
     ${({ minHeight }) =>
       minHeight &&
       css`
+        height: 1px;
         min-height: ${minHeight};
       `}
   }
@@ -92,7 +92,7 @@ export function Modal({
   maxWidth,
 }: ModalProps) {
   const modalTranstion = useTransition(isOpen, {
-    config: { duration: 150 },
+    config: { duration: 0 },
     from: { opacity: 0 },
     enter: { opacity: 1 },
     leave: { opacity: 0 },

@@ -92,7 +92,7 @@ export default function SwapModalFooter({
         onClick={onConfirm}
         disabled={disabledConfirm}
         id="confirm-swap-or-send"
-        className="text-xl font-semibold"
+        className="text-xl font-semibold w-full py-4"
       >
         {`Confirm Swap`}
       </ButtonError>

@@ -72,6 +72,7 @@ import { AddressInputPanel } from '../../components-ui/AddressInputPanel';
 import { Alert } from '../../components-ui/Alert';
 import { WalletConnector } from '../../components-ui/WalletConnector';
 import { RippleSpinner } from '../../components-ui/Spinner/RippleSpinner';
+import { ProgressCircles } from '../../components-ui/ProgressSteps';
 
 export default function Swap() {
   /** PARSE TOKENS FROM CONTRACT ADDRESSES PROVIDED IN URL */
@@ -690,7 +691,8 @@ export default function Swap() {
                     >
                       {approvalState === ApprovalState.PENDING ? (
                         <div className="flex justify-center items-center">
-                          Approving <RippleSpinner size={16} />
+                          <span className="mr-2">Approving</span>
+                          <RippleSpinner size={16} />
                         </div>
                       ) : (
                         `Approve ${currencies[Field.INPUT]?.symbol}`
@@ -699,7 +701,7 @@ export default function Swap() {
                   )}
                   {approvalState === ApprovalState.APPROVED && (
                     <ButtonError
-                      className="py-4 px-4 w-full text-2xl"
+                      className="py-4 px-4 w-full text-lg"
                       onClick={() => {
                         if (isExpertMode) {
                           handleSwap();
@@ -712,9 +714,6 @@ export default function Swap() {
                             txHash: undefined,
                           });
                         }
-                      }}
-                      style={{
-                        width: '100%',
                       }}
                       id="swap-button"
                       disabled={
@@ -745,7 +744,7 @@ export default function Swap() {
                 />
               ) : (
                 <ButtonError
-                  className="py-4 px-4 w-full"
+                  className="py-4 px-4 w-full text-lg"
                   onClick={() => {
                     if (isExpertMode) {
                       handleSwap();
@@ -777,10 +776,9 @@ export default function Swap() {
                   className="flex flex-col justify-center"
                   style={{ marginTop: '1rem' }}
                 >
-                  steps
-                  {/* <ProgressSteps
+                  <ProgressCircles
                     steps={[approvalState === ApprovalState.APPROVED]}
-                  /> */}
+                  />
                 </div>
               )}
               {isExpertMode && swapErrorMessage

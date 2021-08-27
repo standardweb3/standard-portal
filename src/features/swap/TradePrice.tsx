@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { ReactNode, useCallback } from 'react';
 
 import { Currency, Price } from '@sushiswap/sdk';
 import { classNames } from '../../functions';
@@ -7,6 +7,7 @@ interface TradePriceProps {
   showInverted: boolean;
   setShowInverted: (showInverted: boolean) => void;
   className?: string;
+  icon?: ReactNode;
 }
 
 export function TradePrice({
@@ -14,6 +15,7 @@ export function TradePrice({
   showInverted,
   setShowInverted,
   className,
+  icon,
 }: TradePriceProps) {
   let formattedPrice: string;
 
@@ -46,27 +48,14 @@ export function TradePrice({
       onClick={flipPrice}
       title={text}
       className={classNames(
-        'flex justify-between w-full px-5 py-1 cursor-pointer rounded-b-md text-secondary hover:text-primary',
+        'flex items-center justify-between w-full py-1 cursor-pointer rounded-b-md text-success',
         className,
       )}
     >
       <div className="select-none">{`Exchange Rate`}</div>
       <div className="flex items-center space-x-4">
         <div className="select-none">{text}</div>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-4 h-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
-          />
-        </svg>
+        {icon && icon}
       </div>
     </div>
   );

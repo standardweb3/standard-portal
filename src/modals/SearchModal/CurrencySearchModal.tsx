@@ -79,6 +79,7 @@ function CurrencySearchModal({
       onDismiss={onDismiss}
       maxWidth="500px"
       minHeight="80vh"
+      maxHeight="80vh"
     >
       {modalView === CurrencyModalView.search ? (
         <CurrencySearch

@@ -4,9 +4,14 @@ import { isAddress, shortenAddress } from '../../functions';
 
 import { AdvancedSwapDetails } from './AdvancedSwapDetails';
 import { CurrencyLogo } from '../../components-ui/CurrencyLogo';
-import TradePrice from './TradePrice';
+import { TradePrice } from './TradePrice';
 import { useUSDCValue } from '../../hooks/useUSDCPrice';
 import { warningSeverity } from '../../functions';
+import {
+  ChevronDoubleDownIcon,
+  SwitchHorizontalIcon,
+} from '@heroicons/react/outline';
+import { Alert } from '../../components-ui/Alert';
 
 export default function SwapModalHeader({
   trade,
@@ -25,38 +30,48 @@ export default function SwapModalHeader({
 }) {
   const [showInverted, setShowInverted] = useState<boolean>(false);
 
-  const fiatValueInput = useUSDCValue(trade.inputAmount);
-  const fiatValueOutput = useUSDCValue(trade.outputAmount);
+  // const fiatValueInput = useUSDCValue(trade.inputAmount);
+  // const fiatValueOutput = useUSDCValue(trade.outputAmount);
 
   const priceImpactSeverity = warningSeverity(trade.priceImpact);
 
   return (
-    <div className="grid gap-4">
-      <div className="grid gap-2">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <CurrencyLogo currency={trade.inputAmount.currency} size={48} />
-            <div className="overflow-ellipsis w-[220px] overflow-hidden font-bold text-2xl text-high-emphesis">
+    <div className="space-y-4">
+      <div className="flex flex-col items-start">
+        <div className="flex w-full items-center justify-between bg-opaque rounded-xl p-4">
+          <div className="flex items-center space-x-3">
+            <CurrencyLogo
+              currency={trade.inputAmount.currency}
+              size={36}
+              className="rounded-full"
+            />
+            <div className="overflow-ellipsis overflow-hidden font-bold text-2xl">
               {trade.inputAmount.toSignificant(6)}
             </div>
           </div>
-          <div className="ml-3 text-2xl font-medium text-high-emphesis">
+          <div className="ml-3 text-2xl font-medium">
             {trade.inputAmount.currency.symbol}
           </div>
         </div>
-        <div className="ml-3 mr-3 min-w-[24px]">ArrowdownIcon</div>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <CurrencyLogo currency={trade.outputAmount.currency} size={48} />
+        <div className="flex my-2 p-4">
+          <ChevronDoubleDownIcon className="w-5 h-5" />
+        </div>
+        <div className="flex w-full items-center justify-between bg-opaque rounded-xl p-4">
+          <div className="flex items-center space-x-3">
+            <CurrencyLogo
+              currency={trade.outputAmount.currency}
+              size={36}
+              className="rounded-full"
+            />
             <div
-              className={`overflow-ellipsis w-[220px] overflow-hidden font-bold text-2xl ${
-                priceImpactSeverity > 2 ? 'text-red' : 'text-high-emphesis'
+              className={`overflow-ellipsis overflow-hidden font-bold text-2xl ${
+                priceImpactSeverity > 2 ? 'text-red' : 'text-text'
               }`}
             >
               {trade.outputAmount.toSignificant(6)}
             </div>
           </div>
-          <div className="ml-3 text-2xl font-medium text-high-emphesis">
+          <div className="ml-3 text-2xl font-medium">
             {trade.outputAmount.currency.symbol}
           </div>
         </div>
@@ -67,46 +82,58 @@ export default function SwapModalHeader({
         showInverted={showInverted}
         setShowInverted={setShowInverted}
         className="px-0"
+        icon={
+          <div className="bg-opaque p-2 rounded-xl text-text">
+            <SwitchHorizontalIcon className="w-4 h-4" />
+          </div>
+        }
       />
-
-      <AdvancedSwapDetails
-        trade={trade}
-        allowedSlippage={allowedSlippage}
-        minerBribe={minerBribe}
-      />
+      <div className="bg-opaque rounded-xl p-4">
+        <AdvancedSwapDetails
+          trade={trade}
+          allowedSlippage={allowedSlippage}
+          minerBribe={minerBribe}
+        />
+      </div>
 
       {showAcceptChanges ? (
-        <div className="flex items-center justify-between p-2 px-3 border border-gray-800 rounded">
-          <div className="flex items-center justify-start text-sm font-bold uppercase text-high-emphesis">
-            <div className="mr-3 min-w-[24px]">TriangleIcon</div>
-            <span>{`Price Updated`}</span>
-          </div>
-          <span
-            className="text-sm cursor-pointer text-blue"
-            onClick={onAcceptChanges}
-          >
-            {`Accept`}
-          </span>
+        <div className="flex items-center justify-start text-sm font-bold uppercase">
+          <Alert
+            type="error"
+            dismissable={false}
+            showIcon
+            message={
+              <div className="flex justify-between items-center w-full">
+                <div>{`Price Updated`}</div>
+                <div
+                  className="text-sm cursor-pointer text-blue"
+                  onClick={onAcceptChanges}
+                >
+                  {`Accept`}
+                </div>
+              </div>
+            }
+          />
         </div>
       ) : null}
-      <div className="justify-start text-sm text-secondary">
+      <div className="justify-start text-sm text-warn">
         {trade.tradeType === TradeType.EXACT_INPUT ? (
           <>
-            {`Output is estimated. You will receive at least`}
+            {`Output is estimated. You will receive at least `}
             <b>
               {trade.minimumAmountOut(allowedSlippage).toSignificant(6)}{' '}
               {trade.outputAmount.currency.symbol}
             </b>
-            {`or the transaction will revert.`}
+            {` or the transaction will revert.`}
           </>
         ) : (
           <>
-            {`Input is estimated. You will sell at most`}
+            {`Input is estimated. You will sell at most `}
             <b>
               {trade.maximumAmountIn(allowedSlippage).toSignificant(6)}{' '}
               {trade.inputAmount.currency.symbol}
             </b>
-            {`or the transaction will revert.`}
+            {` or the transaction will revert.`}
           </>
         )}
       </div>
