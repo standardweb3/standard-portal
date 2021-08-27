@@ -47,7 +47,7 @@ import {
   warningSeverity,
 } from '../../functions';
 import { useSwapCallback } from '../../hooks/useSwapCallback';
-import confirmPriceImpactWithoutFee from '../../constants/features/swap/confirmPriceImpactWithoutFee';
+import confirmPriceImpactWithoutFee from '../../features/swap/confirmPriceImpactWithoutFee';
 import { useIsSwapUnsupported } from '../../hooks/useIsSwapUnsupported';
 import usePrevious from '../../hooks/usePrevious';
 import useIsArgentWallet from '../../hooks/useIsArgentWallet';

@@ -35,7 +35,6 @@ export const ArrowWrapper = styled.div<{ clickable: boolean }>`
 export const SectionBreak = styled.div`
   height: 1px;
   width: 100%;
-  // background-color: ${({ theme }) => theme.bg3};
 `;
 
 export const BottomGrouping = styled.div`
@@ -56,7 +55,6 @@ export const BottomGrouping = styled.div`
 export const StyledBalanceMaxMini = styled.button`
   height: 22px;
   width: 22px;
-  // background-color: ${({ theme }) => theme.bg2};
   border: none;
   border-radius: 50%;
   padding: 0.2rem;
@@ -64,17 +62,14 @@ export const StyledBalanceMaxMini = styled.button`
   font-weight: 400;
   margin-left: 0.4rem;
   cursor: pointer;
-  // color: ${({ theme }) => theme.text2};
   display: flex;
   justify-content: center;
   align-items: center;
   float: right;
 
   :hover {
-    // background-color: ${({ theme }) => theme.bg3};
   }
   :focus {
-    // background-color: ${({ theme }) => theme.bg3};
     outline: none;
   }
 `;

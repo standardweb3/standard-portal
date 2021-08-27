@@ -82,7 +82,7 @@ export function ProgressCircles({
   ...rest
 }: ProgressCirclesProps) {
   return (
-    <Wrapper justify={'center'} {...rest}>
+    <Wrapper>
       <Grouping>
         {steps.map((step, i) => {
           return (

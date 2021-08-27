@@ -28,8 +28,6 @@ function currencyKey(currency: Currency): string {
 }
 
 const Tag = styled.div`
-  background-color: ${({ theme }) => theme.bg3};
-  // color: ${({ theme }) => theme.text2};
   font-size: 14px;
   border-radius: 4px;
   padding: 0.25rem 0.3rem 0.25rem 0.3rem;
@@ -148,7 +146,7 @@ function CurrencyRow({
         {balance ? (
           <Balance balance={balance} />
         ) : account ? (
-          <RippleSpinner />
+          <RippleSpinner size={16} />
         ) : null}
       </div>
     </MenuItem>

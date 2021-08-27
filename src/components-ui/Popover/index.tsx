@@ -32,9 +32,7 @@ const Arrow = styled.div`
     z-index: 9998;
 
     content: '';
-    // border: 1px solid ${({ theme }) => theme.bg3};
     transform: rotate(45deg);
-    // background: ${({ theme }) => theme.bg2};
   }
 
   &.arrow-top {

@@ -102,7 +102,7 @@ export function Modal({
     (styles, item) =>
       item && (
         <StyledDialogOverlay
-          key={item.key}
+          // key={item.key}
           style={styles}
           onDismiss={onDismiss}
           initialFocusRef={initialFocusRef}

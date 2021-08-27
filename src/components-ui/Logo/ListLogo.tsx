@@ -15,13 +15,5 @@ export function ListLogo({
 }) {
   const srcs: string[] = useHttpLocations(logoURI);
 
-  return (
-    <SequentialLogo
-      alt={alt}
-      width={size}
-      height={size}
-      srcs={srcs}
-      style={style}
-    />
-  );
+  return <SequentialLogo alt={alt} width={size} height={size} srcs={srcs} />;
 }
