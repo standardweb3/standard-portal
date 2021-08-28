@@ -14,6 +14,9 @@ export type ExternalLinkProps = Omit<
 const COLOR: { [key: string]: string } = {
   primary: 'text-primary hover:brightness-125',
   link: 'text-link hover:brightness-125',
+  warn: 'text-warn hover:brightness-125',
+  success: 'text-success hover:brightness-125',
+  danger: 'text-danger hover:brightness-125',
 };
 
 export function ExternalLink({

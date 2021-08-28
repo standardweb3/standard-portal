@@ -56,7 +56,7 @@ export function InnerConnectionStatus() {
         onClick={toggleWalletModal}
       >
         {hasPendingTransactions ? (
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between w-full text-warn">
             <div className="pr-2">{pending?.length} Pending</div>
             <RippleSpinner size={16} />
           </div>

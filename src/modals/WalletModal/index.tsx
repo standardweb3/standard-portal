@@ -279,8 +279,8 @@ export default function WalletModal({
       return (
         <WalletInfo
           toggleWalletModal={toggleWalletModal}
-          pendingTransactions={[]}
-          confirmedTransactions={[]}
+          pendingTransactions={pendingTransactions}
+          confirmedTransactions={confirmedTransactions}
           ENSName={ENSName}
           openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}
         />

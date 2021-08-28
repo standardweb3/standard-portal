@@ -178,12 +178,12 @@ const WalletInfo: FC<WalletInfoProps> = ({
             className="flex flex-col justify-center space-y-3"
           >
             {ENSName ? (
-              <div className="flex align-center bg-modal-inner-background rounded-xl py-2 px-3">
+              <div className="flex align-center bg-opaque rounded-xl py-2 px-3">
                 {getStatusIcon()}
                 <div className="truncate">{ENSName}</div>
               </div>
             ) : (
-              <div className="flex align-center bg-modal-inner-background rounded-xl py-2 px-3">
+              <div className="flex align-center bg-opaque rounded-xl py-2 px-3">
                 {getStatusIcon()}
                 <div className="truncate">
                   {account && shortenAddress(account)}
@@ -228,7 +228,7 @@ const WalletInfo: FC<WalletInfoProps> = ({
           </div>
         </div>
         {!!pendingTransactions.length || !!confirmedTransactions.length ? (
-          <div className="bg-modal-inner-background rounded-xl py-2 px-3 ">
+          <div className="bg-opaque rounded-xl py-2 px-3">
             {renderTransactions(pendingTransactions)}
             {renderTransactions(confirmedTransactions)}
           </div>

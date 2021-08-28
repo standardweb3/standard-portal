@@ -1,63 +1,74 @@
-import { AppDispatch, AppState } from '../../state'
-import { CheckCircle, Settings } from 'react-feather'
-import Column, { AutoColumn } from '../../components/Column'
-import { PaddedColumn, SeparatorDark } from './styleds'
-import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import Row, { RowBetween, RowFixed } from '../../components/Row'
-import { acceptListUpdate, disableList, enableList, removeList } from '../../state/lists/actions'
-import { useActiveListUrls, useAllLists, useIsListActive } from '../../state/lists/hooks'
-import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, AppState } from '../../state';
+import React, {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import {
+  acceptListUpdate,
+  disableList,
+  enableList,
+  removeList,
+} from '../../state/lists/actions';
+import {
+  useActiveListUrls,
+  useAllLists,
+  useIsListActive,
+} from '../../state/lists/hooks';
+import { useDispatch, useSelector } from 'react-redux';
 
-import AutoSizer from 'react-virtualized-auto-sizer'
-import Button from '../../components/Button'
-import CurrencyModalView from './CurrencyModalView'
-import ExternalLink from '../../components/ExternalLink'
-import IconWrapper from '../../components/IconWrapper'
-import LinkStyledButton from '../../components/LinkStyledButton'
-import ListLogo from '../../components/ListLogo'
-import ListToggle from '../../components/Toggle/ListToggle'
-import ReactGA from 'react-ga'
-import { TokenList } from '@uniswap/token-lists'
-import { UNSUPPORTED_LIST_URLS } from '../../constants/token-lists'
-import { listVersionLabel } from '../../functions/list'
-import { parseENSAddress } from '../../functions/ens'
-import styled from 'styled-components'
-import { uriToHttp } from '../../functions/convert'
-import { useFetchListCallback } from '../../hooks/useFetchListCallback'
-import { useListColor } from '../../hooks/useColor'
-import { useOnClickOutside } from '../../hooks/useOnClickOutside'
-import { usePopper } from 'react-popper'
-import useToggle from '../../hooks/useToggle'
+import AutoSizer from 'react-virtualized-auto-sizer';
+import { Button } from '../../components-ui/Button';
+import CurrencyModalView from './CurrencyModalView';
+import { ExternalLink } from '../../components-ui/ExternalLink';
+import { LinkStyledButton } from '../../components-ui/LinkStyledButton';
+import { ListLogo } from '../../components-ui/Logo/ListLogo';
+import { ListToggle } from '../../components-ui/Toggle/ListToggle';
+import ReactGA from 'react-ga';
+import { TokenList } from '@uniswap/token-lists';
+import { UNSUPPORTED_LIST_URLS } from '../../constants/token-lists';
+import { listVersionLabel } from '../../functions/list';
+import { parseENSAddress } from '../../functions/ens';
+import styled from '@emotion/styled';
+import { uriToHttp } from '../../functions/convert';
+import { useFetchListCallback } from '../../hooks/useFetchListCallback';
+import { useListColor } from '../../hooks/useColor';
+import { useOnClickOutside } from '../../hooks/useOnClickOutside';
+import { usePopper } from 'react-popper';
+import useToggle from '../../hooks/useToggle';
+import { CheckCircleIcon, CogIcon } from '@heroicons/react/outline';
 
-const Wrapper = styled(Column)`
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   width: 100%;
   height: 100%;
-`
+`;
 
 const UnpaddedLinkStyledButton = styled(LinkStyledButton)`
   padding: 0;
   font-size: 1rem;
   opacity: ${({ disabled }) => (disabled ? '0.4' : '1')};
-`
+`;
 
 const PopoverContainer = styled.div<{ show: boolean }>`
   z-index: 100;
   visibility: ${(props) => (props.show ? 'visible' : 'hidden')};
   opacity: ${(props) => (props.show ? 1 : 0)};
   transition: visibility 150ms linear, opacity 150ms linear;
-  background: ${({ theme }) => theme.bg2};
-  border: 1px solid ${({ theme }) => theme.bg3};
-  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
-    0px 24px 32px rgba(0, 0, 0, 0.01);
-  // color: ${({ theme }) => theme.text2};
-  // border-radius: ${({ theme }) => theme.borderRadius};
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04),
+    0px 16px 24px rgba(0, 0, 0, 0.04), 0px 24px 32px rgba(0, 0, 0, 0.01);
   padding: 1rem;
   display: grid;
   grid-template-rows: 1fr;
   grid-gap: 8px;
   font-size: 1rem;
   text-align: left;
-`
+`;
 
 const StyledMenu = styled.div`
   display: flex;
@@ -65,151 +76,184 @@ const StyledMenu = styled.div`
   align-items: center;
   position: relative;
   border: none;
-`
+`;
 
 const StyledTitleText = styled.div<{ active: boolean }>`
   font-size: 16px;
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: 600;
-  color: ${({ theme, active }) => (active ? theme.white : theme.text2)};
-`
+`;
 
 const StyledListUrlText = styled.div<{ active: boolean }>`
   font-size: 12px;
-  color: ${({ theme, active }) => (active ? theme.white : theme.text2)};
-`
+`;
 
-const RowWrapper = styled(Row)<{ bgColor: string; active: boolean }>`
-  background-color: ${({ bgColor, active, theme }) => (active ? bgColor ?? 'transparent' : theme.bg2)};
+const RowWrapper = styled.div<{ bgColor: string; active: boolean }>`
+  display: flex;
+  align-items: center;
   transition: 200ms;
   align-items: center;
   padding: 1rem;
   border-radius: 10px;
-`
+`;
 
 function listUrlRowHTMLId(listUrl: string) {
-  return `list-row-${listUrl.replace(/\./g, '-')}`
+  return `list-row-${listUrl.replace(/\./g, '-')}`;
 }
 
 const ListRow = memo(({ listUrl }: { listUrl: string }) => {
-  const listsByUrl = useSelector<AppState, AppState['lists']['byUrl']>((state) => state.lists.byUrl)
-  const dispatch = useDispatch<AppDispatch>()
-  const { current: list, pendingUpdate: pending } = listsByUrl[listUrl]
+  const listsByUrl = useSelector<AppState, AppState['lists']['byUrl']>(
+    (state) => state.lists.byUrl,
+  );
+  const dispatch = useDispatch<AppDispatch>();
+  const { current: list, pendingUpdate: pending } = listsByUrl[listUrl];
 
-  const listColor = useListColor(list?.logoURI)
-  const isActive = useIsListActive(listUrl)
+  const listColor = useListColor(list?.logoURI);
+  const isActive = useIsListActive(listUrl);
 
-  const [open, toggle] = useToggle(false)
-  const node = useRef<HTMLDivElement>()
-  const [referenceElement, setReferenceElement] = useState<HTMLButtonElement>()
-  const [popperElement, setPopperElement] = useState<HTMLDivElement>()
+  const [open, toggle] = useToggle(false);
+  const node = useRef<HTMLDivElement>();
+  const [referenceElement, setReferenceElement] = useState<HTMLButtonElement>();
+  const [popperElement, setPopperElement] = useState<HTMLDivElement>();
 
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
     placement: 'auto',
     strategy: 'fixed',
     modifiers: [{ name: 'offset', options: { offset: [8, 8] } }],
-  })
+  });
 
-  useOnClickOutside(node, open ? toggle : undefined)
+  useOnClickOutside(node, open ? toggle : undefined);
 
   const handleAcceptListUpdate = useCallback(() => {
-    if (!pending) return
+    if (!pending) return;
     ReactGA.event({
       category: 'Lists',
       action: 'Update List from List Select',
       label: listUrl,
-    })
-    dispatch(acceptListUpdate(listUrl))
-  }, [dispatch, listUrl, pending])
+    });
+    dispatch(acceptListUpdate(listUrl));
+  }, [dispatch, listUrl, pending]);
 
   const handleRemoveList = useCallback(() => {
     ReactGA.event({
       category: 'Lists',
       action: 'Start Remove List',
       label: listUrl,
-    })
-    if (window.prompt(`Please confirm you would like to remove this list by typing REMOVE`) === `REMOVE`) {
+    });
+    if (
+      window.prompt(
+        `Please confirm you would like to remove this list by typing REMOVE`,
+      ) === `REMOVE`
+    ) {
       ReactGA.event({
         category: 'Lists',
         action: 'Confirm Remove List',
         label: listUrl,
-      })
-      dispatch(removeList(listUrl))
+      });
+      dispatch(removeList(listUrl));
     }
-  }, [dispatch, listUrl])
+  }, [dispatch, listUrl]);
 
   const handleEnableList = useCallback(() => {
     ReactGA.event({
       category: 'Lists',
       action: 'Enable List',
       label: listUrl,
-    })
-    dispatch(enableList(listUrl))
-  }, [dispatch, listUrl])
+    });
+    dispatch(enableList(listUrl));
+  }, [dispatch, listUrl]);
 
   const handleDisableList = useCallback(() => {
     ReactGA.event({
       category: 'Lists',
       action: 'Disable List',
       label: listUrl,
-    })
-    dispatch(disableList(listUrl))
-  }, [dispatch, listUrl])
+    });
+    dispatch(disableList(listUrl));
+  }, [dispatch, listUrl]);
 
-  if (!list) return null
+  if (!list) return null;
 
   return (
     <RowWrapper
       id={listUrlRowHTMLId(listUrl)}
       active={isActive}
-      bgColor={listColor}
+      bgColor={''}
       key={listUrl}
-      className={`${isActive ? 'text-high-emphesis' : 'text-primary bg-dark-700'}`}
+      className={`border bg-opaque-xs ${
+        isActive ? 'text-text border-success' : 'text-text border-info'
+      }`}
     >
       {list.logoURI ? (
-        <ListLogo size="40px" logoURI={list.logoURI} alt={`${list.name} list logo`} />
+        <ListLogo
+          size="40px"
+          logoURI={list.logoURI}
+          alt={`${list.name} list logo`}
+        />
       ) : (
         <div style={{ width: '24px', height: '24px' }} />
       )}
-      <Column style={{ flex: '1', marginLeft: '1rem' }}>
-        <Row>
+      <div
+        className="flex flex-col justify-center"
+        style={{ flex: '1', marginLeft: '1rem' }}
+      >
+        <div className="flex items-center">
           <StyledTitleText active={isActive}>{list.name}</StyledTitleText>
-        </Row>
-        <RowFixed mt="4px">
-          <StyledListUrlText active={isActive} mr="6px">
+        </div>
+        <div className="flex items-center mt-4">
+          <StyledListUrlText active={isActive}>
             {list.tokens.length} tokens
           </StyledListUrlText>
           <StyledMenu ref={node as any}>
-            <Button variant="empty" onClick={toggle} ref={setReferenceElement} style={{ padding: '0' }}>
-              <Settings size={12} className="ml-1 stroke-current" />
+            <Button
+              color="transprent"
+              className="px-0 py-0 bg-transparent ml-2"
+              onClick={toggle}
+              ref={setReferenceElement}
+            >
+              <CogIcon className="w-4 h-4" />
             </Button>
             {open && (
-              <PopoverContainer show={true} ref={setPopperElement as any} style={styles.popper} {...attributes.popper}>
+              <PopoverContainer
+                show={true}
+                ref={setPopperElement as any}
+                style={styles.popper}
+                {...attributes.popper}
+              >
                 <div>{list && listVersionLabel(list.version)}</div>
-                <SeparatorDark />
-                <ExternalLink href={`https://tokenlists.org/token-list?url=${listUrl}`}>View list</ExternalLink>
-                <UnpaddedLinkStyledButton onClick={handleRemoveList} disabled={Object.keys(listsByUrl).length === 1}>
+                <div>DARK SEPERATOR</div>
+                <ExternalLink
+                  href={`https://tokenlists.org/token-list?url=${listUrl}`}
+                >
+                  View list
+                </ExternalLink>
+                <UnpaddedLinkStyledButton
+                  onClick={handleRemoveList}
+                  disabled={Object.keys(listsByUrl).length === 1}
+                >
                   Remove list
                 </UnpaddedLinkStyledButton>
                 {pending && (
-                  <UnpaddedLinkStyledButton onClick={handleAcceptListUpdate}>Update list</UnpaddedLinkStyledButton>
+                  <UnpaddedLinkStyledButton onClick={handleAcceptListUpdate}>
+                    Update list
+                  </UnpaddedLinkStyledButton>
                 )}
               </PopoverContainer>
             )}
           </StyledMenu>
-        </RowFixed>
-      </Column>
+        </div>
+      </div>
       <ListToggle
         isActive={isActive}
         bgColor={listColor}
         toggle={() => {
-          isActive ? handleDisableList() : handleEnableList()
+          isActive ? handleDisableList() : handleEnableList();
         }}
       />
     </RowWrapper>
-  )
-})
+  );
+});
 
 const ListContainer = styled.div`
   // padding: 1rem;
@@ -217,57 +261,63 @@ const ListContainer = styled.div`
   overflow-y: auto;
 
   padding-bottom: 80px;
-`
+`;
 
 function ManageLists({
   setModalView,
   setImportList,
   setListUrl,
 }: {
-  setModalView: (view: CurrencyModalView) => void
-  setImportList: (list: TokenList) => void
-  setListUrl: (url: string) => void
+  setModalView: (view: CurrencyModalView) => void;
+  setImportList: (list: TokenList) => void;
+  setListUrl: (url: string) => void;
 }) {
-  const [listUrlInput, setListUrlInput] = useState<string>('')
+  const [listUrlInput, setListUrlInput] = useState<string>('');
 
-  const lists = useAllLists()
+  const lists = useAllLists();
 
   // sort by active but only if not visible
-  const activeListUrls = useActiveListUrls()
-  const [activeCopy, setActiveCopy] = useState<string[] | undefined>()
+  const activeListUrls = useActiveListUrls();
+  const [activeCopy, setActiveCopy] = useState<string[] | undefined>();
   useEffect(() => {
     if (!activeCopy && activeListUrls) {
-      setActiveCopy(activeListUrls)
+      setActiveCopy(activeListUrls);
     }
-  }, [activeCopy, activeListUrls])
+  }, [activeCopy, activeListUrls]);
 
   const handleInput = useCallback((e) => {
-    setListUrlInput(e.target.value)
-  }, [])
+    setListUrlInput(e.target.value);
+  }, []);
 
-  const fetchList = useFetchListCallback()
+  const fetchList = useFetchListCallback();
 
   const validUrl: boolean = useMemo(() => {
-    return uriToHttp(listUrlInput).length > 0 || Boolean(parseENSAddress(listUrlInput))
-  }, [listUrlInput])
+    return (
+      uriToHttp(listUrlInput).length > 0 ||
+      Boolean(parseENSAddress(listUrlInput))
+    );
+  }, [listUrlInput]);
 
   const sortedLists = useMemo(() => {
-    const listUrls = Object.keys(lists)
+    const listUrls = Object.keys(lists);
     return listUrls
       .filter((listUrl) => {
         // only show loaded lists, hide unsupported lists
-        return Boolean(lists[listUrl].current) && !UNSUPPORTED_LIST_URLS.includes(listUrl)
+        return (
+          Boolean(lists[listUrl].current) &&
+          !UNSUPPORTED_LIST_URLS.includes(listUrl)
+        );
       })
       .sort((u1, u2) => {
-        const { current: l1 } = lists[u1]
-        const { current: l2 } = lists[u2]
+        const { current: l1 } = lists[u1];
+        const { current: l2 } = lists[u2];
 
         // first filter on active lists
         if (activeCopy?.includes(u1) && !activeCopy?.includes(u2)) {
-          return -1
+          return -1;
         }
         if (!activeCopy?.includes(u1) && activeCopy?.includes(u2)) {
-          return 1
+          return 1;
         }
 
         if (l1 && l2) {
@@ -275,48 +325,48 @@ function ManageLists({
             ? -1
             : l1.name.toLowerCase() === l2.name.toLowerCase()
             ? 0
-            : 1
+            : 1;
         }
-        if (l1) return -1
-        if (l2) return 1
-        return 0
-      })
-  }, [lists, activeCopy])
+        if (l1) return -1;
+        if (l2) return 1;
+        return 0;
+      });
+  }, [lists, activeCopy]);
 
   // temporary fetched list for import flow
-  const [tempList, setTempList] = useState<TokenList>()
-  const [addError, setAddError] = useState<string | undefined>()
+  const [tempList, setTempList] = useState<TokenList>();
+  const [addError, setAddError] = useState<string | undefined>();
 
   useEffect(() => {
     async function fetchTempList() {
       fetchList(listUrlInput, false)
         .then((list) => setTempList(list))
-        .catch(() => setAddError('Error importing list'))
+        .catch(() => setAddError('Error importing list'));
     }
     // if valid url, fetch details for card
     if (validUrl) {
-      fetchTempList()
+      fetchTempList();
     } else {
-      setTempList(undefined)
-      listUrlInput !== '' && setAddError('Enter valid list location')
+      setTempList(undefined);
+      listUrlInput !== '' && setAddError('Enter valid list location');
     }
 
     // reset error
     if (listUrlInput === '') {
-      setAddError(undefined)
+      setAddError(undefined);
     }
-  }, [fetchList, listUrlInput, validUrl])
+  }, [fetchList, listUrlInput, validUrl]);
 
   // check if list is already imported
-  const isImported = Object.keys(lists).includes(listUrlInput)
+  const isImported = Object.keys(lists).includes(listUrlInput);
 
   // set list values and have parent modal switch to import list view
   const handleImport = useCallback(() => {
-    if (!tempList) return
-    setImportList(tempList)
-    setModalView(CurrencyModalView.importList)
-    setListUrl(listUrlInput)
-  }, [listUrlInput, setImportList, setListUrl, setModalView, tempList])
+    if (!tempList) return;
+    setImportList(tempList);
+    setModalView(CurrencyModalView.importList);
+    setListUrl(listUrlInput);
+  }, [listUrlInput, setImportList, setListUrl, setModalView, tempList]);
 
   return (
     <div className="relative flex-1 w-full h-full space-y-4 overflow-y-hidden">
@@ -324,7 +374,14 @@ function ManageLists({
         id="list-add-input"
         type="text"
         placeholder="https:// or ipfs:// or ENS name"
-        className="mt-4 w-full bg-dark-900 border border-dark-800 focus:border-transparent focus:border-gradient-r-blue-pink-dark-900 rounded placeholder-secondary focus:placeholder-primary font-bold text-base px-6 py-3.5 appearance-none"
+        className={`
+        mt-4 w-full
+        bg-opaque 
+        rounded-xl
+        placeholder-info 
+        focus:placeholder-text 
+        font-bold
+        px-6 py-3.5 appearance-none`}
         value={listUrlInput}
         onChange={handleInput}
         title="List URI"
@@ -332,30 +389,33 @@ function ManageLists({
         autoCorrect="off"
       />
       {addError ? (
-        <div title={addError} className="overflow-hidden text-red text-ellipsis">
+        <div
+          title={addError}
+          className="overflow-hidden text-red text-ellipsis"
+        >
           {addError}
         </div>
       ) : null}
       {tempList && (
-        <PaddedColumn style={{ paddingTop: 0 }}>
-          <RowBetween>
-            <RowFixed>
-              {tempList.logoURI && <ListLogo logoURI={tempList.logoURI} size="40px" />}
-              <AutoColumn gap="4px" style={{ marginLeft: '20px' }}>
+        <div style={{ paddingTop: 0 }}>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              {tempList.logoURI && (
+                <ListLogo logoURI={tempList.logoURI} size="40px" />
+              )}
+              <div style={{ marginLeft: '20px' }}>
                 <div className="font-semibold">{tempList.name}</div>
                 <div className="text-xs">{tempList.tokens.length} tokens</div>
-              </AutoColumn>
-            </RowFixed>
+              </div>
+            </div>
             {isImported ? (
-              <RowFixed>
-                <IconWrapper size="16px" marginRight={'10px'}>
-                  <CheckCircle />
-                </IconWrapper>
+              <div className="flex items-center">
+                <CheckCircleIcon className="w-4 h-4" />
                 <div>Loaded</div>
-              </RowFixed>
+              </div>
             ) : (
               <Button
-                color="gradient"
+                color="primary"
                 style={{
                   width: 'fit-content',
                   padding: '6px 8px',
@@ -366,8 +426,8 @@ function ManageLists({
                 Import
               </Button>
             )}
-          </RowBetween>
-        </PaddedColumn>
+          </div>
+        </div>
       )}
       <ListContainer>
         <div className="h-full">
@@ -383,7 +443,7 @@ function ManageLists({
         </div>
       </ListContainer>
     </div>
-  )
+  );
 }
 
-export default ManageLists
+export default ManageLists;

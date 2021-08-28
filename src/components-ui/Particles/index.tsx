@@ -18,7 +18,7 @@ export const ParticlesBackground = ({
   const particles = useMemo(
     () => (
       <Particles
-        className={`${className}`}
+        className={className}
         id={id}
         init={particlesInit}
         loaded={particlesLoaded}

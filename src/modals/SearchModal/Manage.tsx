@@ -8,10 +8,13 @@ import { ModalHeader } from '../../components-ui/Modal/ModalHeader';
 import { Token } from '@sushiswap/sdk';
 import { TokenList } from '@uniswap/token-lists';
 import styled from '@emotion/styled';
+import 'react-tabs/style/react-tabs.css';
 
 const ContentWrapper = styled.div`
   height: 100%;
   width: 100%;
+  display: flex;
+  flex-direction: column;
   flex: 1 1;
   position: relative;
   overflow-y: hidden;
@@ -43,34 +46,54 @@ function Manage({
         forceRenderTabPanel
         selectedIndex={tabIndex}
         onSelect={(index: number) => setTabIndex(index)}
-        className="flex flex-col flex-grow"
+        className="flex flex-col flex-grow mt-6"
       >
-        <TabList className="flex flex-shrink-0 p-1 rounded bg-dark-800">
+        <TabList className="flex flex-shrink-0 p-1 rounded-xl">
           <Tab
-            className="flex items-center justify-center flex-1 px-1 py-2 text-lg rounded cursor-pointer select-none text-secondary hover:text-primary focus:outline-none"
-            selectedClassName="bg-dark-900 text-high-emphesis"
+            className={`
+            flex items-center justify-center flex-1
+            px-1 py-2 
+            text-lg 
+            rounded-xl
+            cursor-pointer 
+            select-none 
+            focus:outline-none
+            transition
+            duration-500
+            `}
+            selectedClassName="bg-primary"
           >
             {`Lists`}
           </Tab>
           <Tab
-            className="flex items-center justify-center flex-1 px-1 py-2 text-lg rounded cursor-pointer select-none text-secondary hover:text-primary focus:outline-none"
-            selectedClassName="bg-dark-900 text-high-emphesis"
+            className={`
+            flex items-center justify-center flex-1 
+            px-1 py-2 
+            text-lg 
+            rounded-xl 
+            cursor-pointer 
+            select-none 
+            focus:outline-none
+            transition
+            duration-500
+            `}
+            selectedClassName="bg-primary"
           >
             {`Tokens`}
           </Tab>
         </TabList>
         <TabPanel style={{ flexGrow: 1 }}>
-          {/* <ManageLists
+          <ManageLists
             setModalView={setModalView}
             setImportList={setImportList}
             setListUrl={setListUrl}
-          /> */}
+          />
         </TabPanel>
         <TabPanel style={{ flexGrow: 1 }}>
-          {/* <ManageTokens
+          <ManageTokens
             setModalView={setModalView}
             setImportToken={setImportToken}
-          /> */}
+          />
         </TabPanel>
       </Tabs>
     </ContentWrapper>

@@ -9,7 +9,6 @@ import { WrappedTokenInfo } from '../../state/lists/wrappedTokenInfo';
 import { CheckCircleIcon } from '@heroicons/react/outline';
 
 const TokenSection = styled.div<{ dim?: boolean }>`
-  padding: 4px 20px;
   height: 56px;
   display: grid;
   grid-template-columns: auto minmax(auto, 1fr) auto;
@@ -54,7 +53,7 @@ export default function ImportRow({
         size={'24px'}
         style={{ opacity: dim ? '0.6' : '1' }}
       />
-      <div gap="4px" style={{ opacity: dim ? '0.6' : '1' }}>
+      <div style={{ opacity: dim ? '0.6' : '1' }}>
         <div className="flex justify-center items-center">
           <div className="font-semibold">{token.symbol}</div>
           <div className="ml-2 font-light">
@@ -70,6 +69,7 @@ export default function ImportRow({
       </div>
       {!isActive && !isAdded ? (
         <Button
+          type="bordered"
           color="primary"
           style={{
             width: 'fit-content',

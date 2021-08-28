@@ -70,15 +70,15 @@ function CurrencySearchModal({
   const minHeight =
     modalView === CurrencyModalView.importToken ||
     modalView === CurrencyModalView.importList
-      ? 40
-      : 80;
+      ? undefined
+      : '80vh';
 
   return (
     <Modal
       isOpen={isOpen}
       onDismiss={onDismiss}
       maxWidth="500px"
-      minHeight="80vh"
+      minHeight={minHeight}
       maxHeight="80vh"
     >
       {modalView === CurrencyModalView.search ? (

@@ -100,7 +100,7 @@ const Transaction: FC<{ hash: string }> = ({ hash }) => {
   return (
     <div className="flex flex-col space-x-2 rounded py-1.5 w-full">
       <ExternalLink
-        color="link"
+        color={pending ? 'warn' : success ? 'success' : 'danger'}
         href={getExplorerLink(chainId, hash, 'transaction')}
         className="flex items-center text-sm space-x-2"
       >
@@ -110,7 +110,7 @@ const Transaction: FC<{ hash: string }> = ({ hash }) => {
         <div
           className={classNames(
             pending
-              ? 'text-link'
+              ? 'text-warn'
               : success
               ? 'text-success'
               : cancelled

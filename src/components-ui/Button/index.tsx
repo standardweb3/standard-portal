@@ -11,20 +11,21 @@ export type ButtonProps = {
   disabled?: boolean;
   style?: { [key: string]: any };
   id?: string;
+  ref?: React.Ref<HTMLButtonElement>;
   onClick?: () => void;
 };
 
 const BORDERED = {
   primary: 'bg-transparent border border-primary text-white',
-  secondary: 'bg-trasnparent border border-secondary text-white',
-  danger: 'bg-trasnparent border border-danger text-white',
-  warn: 'bg-trasnparent border border-warn text-white',
-  dark: 'bg-trasnparent border border-dark text-white',
-  info: 'bg-trasnparent border border-info text-white',
-  link: 'bg-trasnparent border border-link text-white',
-  white: 'bg-trasnparent border border-white text-white',
-  success: 'bg-trasnparent border border-success text-white',
-  disabled: 'bg-trasnparent border border-danger text-info',
+  secondary: 'bg-transparent border border-secondary text-white',
+  danger: 'bg-transparent border border-danger text-white',
+  warn: 'bg-transparent border border-warn text-white',
+  dark: 'bg-transparent border border-dark text-white',
+  info: 'bg-transparent border border-info text-white',
+  link: 'bg-transparent border border-link text-white',
+  white: 'bg-transparent border border-white text-white',
+  success: 'bg-transparent border border-success text-white',
+  disabled: 'bg-transparent border border-danger text-info',
 };
 
 const DEFAULT = {
@@ -39,6 +40,7 @@ const DEFAULT = {
   white: 'bg-white text-primary',
   success: 'bg-success text-white',
   disabled: 'bg-opaque text-info',
+  transprent: 'bg-transparent',
 };
 
 const TYPE = {
@@ -56,7 +58,8 @@ export type ButtonColor =
   | 'warn'
   | 'info'
   | 'success'
-  | 'disabled';
+  | 'disabled'
+  | 'transprent';
 
 export type ButtonType = 'bordered' | 'default';
 
@@ -66,6 +69,7 @@ export function Button({
   children,
   className,
   onClick,
+  ref,
   ...rest
 }: ButtonProps) {
   return (

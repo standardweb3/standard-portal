@@ -11,6 +11,8 @@ import { ModalHeader } from '../../components-ui/Modal/ModalHeader';
 import { CurrencyLogo } from '../../components-ui/CurrencyLogo';
 import { ExternalLink } from '../../components-ui/ExternalLink';
 import { ListLogo } from '../../components-ui/Logo/ListLogo';
+import { ExclamationCircleIcon } from '@heroicons/react/outline';
+import { Alert } from '../../components-ui/Alert';
 
 interface ImportProps {
   tokens: Token[];
@@ -31,14 +33,14 @@ export function ImportToken({
 
   const addToken = useAddUserToken();
   return (
-    <div className="relative w-full space-y-3 overflow-auto">
+    <div className="relative w-full overflow-auto flex flex-col justify-center">
       <ModalHeader
         onBack={onBack}
         onClose={onDismiss}
         title={`Import ${tokens.length > 1 ? 'Token' : 'Tokens'}
         `}
       />
-      <div>
+      <div className="mt-6">
         This token doesn't appear on the active token list(s). Make sure this is
         the token that you want to trade
       </div>
@@ -46,55 +48,50 @@ export function ImportToken({
         return (
           <div
             key={'import' + token.address}
-            className=".token-warning-container rounded p-5"
+            className=".token-warning-container rounded"
           >
-            <div className="space-x-3">
-              <CurrencyLogo currency={token} size={'32px'} />
-              <div>
-                <div className="mx-2 text-xl font-medium text-high-emphesis">
-                  {token.symbol}
-                </div>
-                <div className="text-sm font-light text-secondary">
-                  {token.name}
+            <div className="space-y-5 mt-6">
+              <div className="flex items-center space-x-3">
+                {chainId && (
+                  <ExternalLink
+                    color="warn"
+                    className="flex-1"
+                    href={getExplorerLink(chainId, token.address, 'address')}
+                  >
+                    {shortenAddress(token.address)}
+                  </ExternalLink>
+                )}
+                <CurrencyLogo currency={token} size={'48px'} />
+                <div className="flex flex-col">
+                  <div className="text-xl font-medium">{token.symbol}</div>
+                  <div className="text-sm font-light">{token.name}</div>
                 </div>
               </div>
-              {chainId && (
-                <ExternalLink
-                  href={getExplorerLink(chainId, token.address, 'address')}
-                >
-                  {shortenAddress(token.address)}
-                </ExternalLink>
-              )}
               {list !== undefined ? (
                 <div className="flex justify-center">
                   {list.logoURI && (
                     <ListLogo logoURI={list.logoURI} size="16px" />
                   )}
-                  <div className="ml-2 text-sm text-secondary">
-                    via {list.name}
-                  </div>
+                  <div className="ml-2 text-sm">via {list.name}</div>
                 </div>
               ) : (
-                <div>
-                  <div className="flex justify-center">
-                    <div>ALERT TRIANGLE</div>
-                    <div className="ml-1 text-xs font-semibold text-red">
-                      Unknown Source
-                    </div>
-                  </div>
-                </div>
+                <Alert
+                  type="error"
+                  dismissable={false}
+                  showIcon
+                  message={`Unknown Source`}
+                />
               )}
             </div>
           </div>
         );
       })}
       <Button
-        type="bordered"
         onClick={() => {
           tokens.map((token) => addToken(token));
           handleCurrencySelect && handleCurrencySelect(tokens[0]);
         }}
-        className=".token-dismiss-button"
+        className=".token-dismiss-button py-4 px-4 mt-6 text-lg"
       >
         Import
       </Button>

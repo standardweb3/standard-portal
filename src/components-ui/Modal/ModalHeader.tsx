@@ -16,12 +16,7 @@ export function ModalHeader({
   onBack,
 }: ModalHeaderProps) {
   return (
-    <div
-      className={classNames(
-        `flex items-center justify-between`,
-        `${className}`,
-      )}
-    >
+    <div className={classNames(`flex items-center justify-between`, className)}>
       {onBack && (
         <div onClick={onBack}>
           <ArrowLeftIcon className="w-5 h-5" />

@@ -28,6 +28,7 @@ module.exports = {
         'swap-inner-background': 'rgba(255,255,255,0.1)',
         'swap-settings-background': 'rgba(255, 255, 255, 0.2)',
         opaque: 'rgba(255,255,255,0.2)',
+        'opaque-xs': 'rgba(255,255,255,0.05)',
         'toggle-background': 'rgba(255,255,255,0.2)',
         'overlay-background': 'rgba(14, 5, 37, 0.7)',
       },
@@ -38,6 +39,7 @@ module.exports = {
     },
     boxShadow: {
       'primary-glow': '0 0 15px 4px rgba(198,19,127,0.5)',
+      'success-glow': '0 0 15px 4px rgba(111,207,151,0.5)',
     },
   },
   variants: {
