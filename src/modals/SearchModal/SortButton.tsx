@@ -1,11 +1,10 @@
-import React from 'react'
-import { RowFixed } from '../../components/Row'
-import styled from 'styled-components'
+import React from 'react';
+import styled from '@emotion/styled';
 
-export const FilterWrapper = styled(RowFixed)`
+export const FilterWrapper = styled.div`
+  display: flex;
+  align-items: center;
   padding: 8px;
-  // background-color: ${({ theme }) => theme.bg2};
-  // color: ${({ theme }) => theme.text1};
   border-radius: 8px;
   user-select: none;
   & > * {
@@ -14,18 +13,18 @@ export const FilterWrapper = styled(RowFixed)`
   :hover {
     cursor: pointer;
   }
-`
+`;
 
 export default function SortButton({
   toggleSortOrder,
   ascending,
 }: {
-  toggleSortOrder: () => void
-  ascending: boolean
+  toggleSortOrder: () => void;
+  ascending: boolean;
 }) {
   return (
     <FilterWrapper onClick={toggleSortOrder} className="text-sm bg-dark-800">
       {ascending ? '↑' : '↓'}
     </FilterWrapper>
-  )
+  );
 }

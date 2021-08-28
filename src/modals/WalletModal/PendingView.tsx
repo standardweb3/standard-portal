@@ -27,12 +27,6 @@ const LoadingMessage = styled.div<{ error?: boolean }>`
 const ErrorGroup = styled.div`
   align-items: center;
   justify-content: flex-start;
-  color: ${({ theme }) => theme.colors.text};
-  background: ${({ theme }) => theme.colors.danger};
-  &:hover {
-    background: ${({ theme }) => theme.colors.background};
-    color: ${({ theme }) => theme.colors.text};
-  }
   cursor: pointer;
 `;
 

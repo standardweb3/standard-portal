@@ -68,7 +68,7 @@ interface WalletInfoProps {
   openOptions: () => void;
 }
 
-const WalletInfo: FC<WalletInfoProps> = ({
+export const WalletInfo: FC<WalletInfoProps> = ({
   toggleWalletModal,
   pendingTransactions,
   confirmedTransactions,
@@ -241,5 +241,3 @@ const WalletInfo: FC<WalletInfoProps> = ({
     </div>
   );
 };
-
-export default WalletInfo;

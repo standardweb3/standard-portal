@@ -29,7 +29,7 @@ import usePrevious from '../../hooks/usePrevious';
 // children
 import Option from './Option';
 import PendingView from './PendingView';
-import WalletInfo from '../../components-ui/WalletInfo';
+import { WalletInfo } from '../../components-ui/WalletInfo';
 import { ModalHeader } from '../../components-ui/Modal/ModalHeader';
 import { Button } from '../../components-ui/Button';
 
