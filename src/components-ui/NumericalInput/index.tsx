@@ -3,7 +3,7 @@ import { classNames, escapeRegExp } from '../../functions';
 
 const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`); // match escaped "." characters via in a non-capturing group
 
-const defaultClassName = 'w-0 p-0 text-2xl bg-transparent';
+const defaultClassName = 'p-0 text-2xl bg-transparent';
 
 export const Input = React.memo(
   ({
@@ -50,7 +50,13 @@ export const Input = React.memo(
         maxLength={79}
         spellCheck="false"
         className={classNames(
-          'relative font-bold outline-none border-none flex-auto overflow-hidden overflow-ellipsis placeholder-info focus:placeholder-text',
+          `relative 
+          font-bold 
+          outline-none border-none 
+          flex-auto 
+          overflow-hidden 
+          overflow-ellipsis 
+          placeholder-info focus:placeholder-text`,
           defaultClassName,
           className,
         )}

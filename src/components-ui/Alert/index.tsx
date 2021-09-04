@@ -6,7 +6,7 @@ import { ExclamationCircleIcon } from '@heroicons/react/outline';
 
 const TYPE = {
   information: {
-    color: 'bg-purple bg-opacity-20 text-high-emphesis',
+    color: 'bg-info bg-opacity-25',
     icon: (
       <svg
         width="33"
@@ -57,29 +57,41 @@ export function Alert({
   return message && show ? (
     <div
       className={classNames(
-        'block relative w-full rounded-xl text-sm p-4',
-        show && 'pr-10',
+        'flex relative w-full rounded-xl text-sm p-4',
         color,
         className,
       )}
     >
-      {title && <div className="mb-1 text-2xl font-medium">{title}</div>}
-      <div className="flex items-center">
-        {showIcon && <div className="flex-shrink-0">{icon}</div>}
-        <div className={!showIcon ? 'w-full ml-0' : 'w-full ml-3'}>
-          {typeof message === 'string' ? (
-            <p className="text-base">{message}</p>
-          ) : (
-            <div className="text-base">{message}</div>
-          )}
+      <div className="flex flex-col">
+        {title && <div className="mb-1 text-2xl font-medium">{title}</div>}
+        <div className="flex items-center">
+          {showIcon && <div className="flex-shrink-0">{icon}</div>}
+          <div className={!showIcon ? 'w-full ml-0' : 'w-full ml-3'}>
+            {typeof message === 'string' ? (
+              <p className="text-base">{message}</p>
+            ) : (
+              <div className="text-base">{message}</div>
+            )}
+          </div>
         </div>
       </div>
       {dismissable && (
-        <div className="absolute top-2 right-2">
+        <div className="top-2 right-2">
           <button
             type="button"
             onClick={() => setShow(!show)}
-            className="inline-flex opacity-80 hover:opacity-100 focused:opacity-100 rounded p-1.5 text-primary hover:text-high-emphesis focus:text-high-emphesis focus:outline-none focus:ring focus:ring-offset focus:ring-offset-purple focus:ring-purple"
+            className={`
+            inline-flex 
+            opacity-80 
+            hover:opacity-100 
+            focused:opacity-100 
+            rounded p-1.5 
+            text-primary 
+            focus:outline-none 
+            focus:ring 
+            focus:ring-offset 
+            focus:ring-offset-purple 
+            focus:ring-purple`}
           >
             <span className="sr-only">Dismiss</span>
             <XIcon className="w-5 h-5" aria-hidden="true" />

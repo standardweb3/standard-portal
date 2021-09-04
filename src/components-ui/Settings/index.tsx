@@ -24,7 +24,7 @@ import { Modal } from '../Modal';
 import { ModalHeader } from '../Modal/ModalHeader';
 import { Button } from '../Button';
 import { Question } from '../Question';
-import { TransactionSettings } from '../Swap/TransactionSettings';
+import { TransactionSettings } from '../Exchange/TransactionSettings';
 
 export default function Settings({
   placeholderSlippage,
@@ -57,7 +57,7 @@ export default function Settings({
         onClick={toggle}
         id="open-settings-dialog-button"
       >
-        <MenuAlt3Icon className="w-[26px] h-[26px]" />
+        <CogIcon className="w-[26px] h-[26px] text-grey" />
       </div>
       {open && (
         <div

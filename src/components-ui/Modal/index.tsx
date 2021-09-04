@@ -17,12 +17,14 @@ export type ModalProps = {
   className?: string;
   minHeight?: string | false;
   maxHeight?: string;
+  minWidth?: string;
   maxWidth?: string;
 };
 
 type StyledDialogContentProps = {
   minHeight?: string | false;
   maxHeight?: string;
+  minWidth?: string;
   maxWidth?: string;
   mobile: boolean;
   [key: string]: any;
@@ -44,6 +46,7 @@ const StyledDialogOverlay = styled(AnimatedDialogOverlay)`
 const AnimatedDialogContent = animated(DialogContent);
 const StyledDialogContent = styled(
   ({
+    minWidth,
     maxWidth,
     maxHeight,
     minHeight,
@@ -56,9 +59,15 @@ const StyledDialogContent = styled(
     align-self: ${({ mobile }) => (mobile ? 'flex-end' : 'center')};
     margin: 4rem 0.5rem;
     padding: 0;
-    width: 100vw;
     overflow-y: auto;
     overflow-x: hidden;
+    display: inline-block;
+
+    ${({ minWidth }) =>
+      minWidth &&
+      css`
+        max-width: ${minWidth};
+      `}
 
     ${({ maxWidth }) =>
       maxWidth &&
@@ -89,6 +98,7 @@ export function Modal({
   onDismiss,
   minHeight = false,
   maxHeight,
+  minWidth,
   maxWidth,
 }: ModalProps) {
   const modalTranstion = useTransition(isOpen, {
@@ -111,14 +121,15 @@ export function Modal({
             aria-label="dialog content"
             minHeight={minHeight}
             maxHeight={maxHeight}
+            minWidth={minWidth}
             maxWidth={maxWidth}
             mobile={isMobile}
-            className="shadow-primary-glow rounded-xl"
+            className="rounded-20"
           >
             <div
               className={classNames(
                 `text-text
-                 h-full w-full
+                 h-full
                  rounded-xl p-8
                  bg-modal-background`,
                 className ?? '',

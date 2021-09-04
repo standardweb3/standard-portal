@@ -21,11 +21,10 @@ export function FiatValue({
     if (severity < 3) return 'text-yellow';
     return 'text-red';
   }, [priceImpact]);
-
   return (
     <div
       className={classNames(
-        `flex justify-end space-x-1 text-xs font-medium text-right`,
+        `flex justify-end space-x-1 text-xs font-medium`,
         className,
       )}
     >

@@ -22,10 +22,12 @@ export function ModalHeader({
           <ArrowLeftIcon className="w-5 h-5" />
         </div>
       )}
-      {title && <div className={Typographies.modalHeader}>{title}</div>}
+      {title && (
+        <div className={`${Typographies.modalHeader} text-sm`}>{title}</div>
+      )}
       {onClose && (
         <div onClick={onClose}>
-          <XIcon className="w-6 h-6 cursor-pointer" />
+          <XIcon className="w-4 h-4 cursor-pointer" />
         </div>
       )}
     </div>

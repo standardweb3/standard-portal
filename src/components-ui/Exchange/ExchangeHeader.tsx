@@ -1,7 +1,7 @@
 import { ChainId, Currency, Percent } from '@sushiswap/sdk';
 import React, { FC, useState } from 'react';
 
-// import Gas from './Gas';
+import { Gas } from '../Gas';
 // import Settings from './Settings';
 import { currencyId } from '../../functions';
 import { useActiveWeb3React } from '../../hooks';
@@ -10,7 +10,7 @@ import { CalculatorIcon } from '@heroicons/react/solid';
 import { useRouter } from 'next/router';
 // import MyOrders from '../features/limit-order/MyOrders';
 import { NavigationLink } from '../NavigationLink';
-import { Gas } from '../Gas';
+import { default as GasIcon } from '../../../public/icons/outlined/gas.svg';
 import Settings from '../Settings';
 
 const getQuery = (input, output) => {
@@ -23,13 +23,13 @@ const getQuery = (input, output) => {
   }
 };
 
-interface SwapHeaderProps {
+interface ExchangeHeaderProps {
   input?: Currency;
   output?: Currency;
   allowedSlippage?: Percent;
 }
 
-export const SwapHeader: FC<SwapHeaderProps> = ({
+export const ExchangeHeader: FC<ExchangeHeaderProps> = ({
   input,
   output,
   allowedSlippage,
@@ -45,19 +45,24 @@ export const SwapHeader: FC<SwapHeaderProps> = ({
       className={`
       text-text
       flex justify-between items-center
+      w-full
       mb-6`}
     >
-      <div>Swap</div>
-      {/* <div
+      <div
         className={`
-        rounded-xl
-        bg-swap-inner-background
-        grid grid-cols-3
+        rounded-full
+        text-grey
+        flex items-center
+        bg-opaque-inactive
         `}
       >
         <NavigationLink
           activeClassName={`
-            bg-primary
+            bg-opaque
+            border
+            border-opaque-border
+            text-text
+            font-bold
           `}
           href={{
             pathname: '/swap',
@@ -67,29 +72,20 @@ export const SwapHeader: FC<SwapHeaderProps> = ({
           <a
             className={`
             flex items-center justify-center 
-            py-2 px-4
-            text-text rounded-xl`}
+            px-4 py-2
+            rounded-full`}
           >
             {`Swap`}
           </a>
         </NavigationLink>
         <NavigationLink
-          activeClassName="font-bold border rounded text-high-emphesis border-dark-800 bg-gradient-to-r from-opaque-blue to-opaque-pink hover:from-blue hover:to-pink"
-          href={{
-            pathname: '/limit-order',
-            query: getQuery(input, output),
-          }}
-        >
-          <a
-            className={`
-            flex items-center justify-center 
-            text-text rounded-xl`}
-          >
-            {`Limit`}
-          </a>
-        </NavigationLink>
-        <NavigationLink
-          activeClassName="font-bold border rounded text-high-emphesis border-dark-800 bg-gradient-to-r from-opaque-blue to-opaque-pink hover:from-blue hover:to-pink"
+          activeClassName={`
+          bg-opaque 
+          border 
+          border-opaque-border
+          text-text
+          font-bold
+          `}
           href={`/${!isRemove ? 'add' : 'remove'}${
             input ? `/${currencyId(input)}` : ''
           }${output ? `/${currencyId(output)}` : ''}`}
@@ -97,12 +93,13 @@ export const SwapHeader: FC<SwapHeaderProps> = ({
           <a
             className={`
             flex items-center justify-center 
-            text-text rounded-xl`}
+            px-4 py-2
+            rounded-full`}
           >
             {`Liquidity`}
           </a>
         </NavigationLink>
-      </div> */}
+      </div>
       <div className="flex items-center text-lg">
         <div className="grid grid-flow-col gap-1">
           {/* {isLimitOrder && (
@@ -114,7 +111,7 @@ export const SwapHeader: FC<SwapHeaderProps> = ({
 
           {chainId === ChainId.MAINNET && (
             <div className="flex items-center text-green space-x-1 font-semibold">
-              <CalculatorIcon className="w-5 h-5" />
+              <GasIcon className="fill-current stroke-current text-green" />
               <Gas />
             </div>
           )}

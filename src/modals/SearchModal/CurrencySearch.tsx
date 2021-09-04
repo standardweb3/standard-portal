@@ -36,6 +36,7 @@ import { useOnClickOutside } from '../../hooks/useOnClickOutside';
 import { useRouter } from 'next/router';
 import useToggle from '../../hooks/useToggle';
 import { useTokenComparator } from './sorting';
+import { Divider } from '../../components-ui/Divider';
 interface CurrencySearchProps {
   isOpen: boolean;
   onDismiss: () => void;
@@ -217,7 +218,7 @@ export function CurrencySearch({
           <input
             type="text"
             id="token-search-input"
-            placeholder={`Search name or paste address`}
+            placeholder={`Search name or token address`}
             autoComplete="off"
             value={searchQuery}
             ref={inputRef as RefObject<HTMLInputElement>}
@@ -225,9 +226,9 @@ export function CurrencySearch({
             onKeyDown={handleEnter}
             className={`
               w-full 
-              bg-swap-inner-background 
+              bg-transparent
               border
-              border-transparent
+              border-border-light
               focus:border-text
               rounded-xl 
               placeholder-info
@@ -249,6 +250,8 @@ export function CurrencySearch({
         </div>
       )}
 
+      <div className="border-t border-divider my-5" />
+
       {searchToken && !searchTokenIsAdded ? (
         <div
           className="flex flex-col justify-center"
@@ -262,27 +265,30 @@ export function CurrencySearch({
         </div>
       ) : filteredSortedTokens?.length > 0 ||
         filteredInactiveTokens?.length > 0 ? (
-        <div className="flex-1 h-full">
-          <AutoSizer disableWidth>
-            {({ height }) => (
-              <CurrencyList
-                height={height}
-                currencies={
-                  includeNativeCurrency
-                    ? filteredSortedTokensWithETH
-                    : filteredSortedTokens
-                }
-                otherListTokens={filteredInactiveTokens}
-                onCurrencySelect={handleCurrencySelect}
-                otherCurrency={otherSelectedCurrency}
-                selectedCurrency={selectedCurrency}
-                fixedListRef={fixedList}
-                showImportView={showImportView}
-                setImportToken={setImportToken}
-              />
-            )}
-          </AutoSizer>
-        </div>
+        <>
+          <div>All</div>
+          <div className="flex-1 rounded-20 h-full bg-opaque-secondary p-3 mt-2">
+            <AutoSizer disableWidth>
+              {({ height }) => (
+                <CurrencyList
+                  height={height}
+                  currencies={
+                    includeNativeCurrency
+                      ? filteredSortedTokensWithETH
+                      : filteredSortedTokens
+                  }
+                  otherListTokens={filteredInactiveTokens}
+                  onCurrencySelect={handleCurrencySelect}
+                  otherCurrency={otherSelectedCurrency}
+                  selectedCurrency={selectedCurrency}
+                  fixedListRef={fixedList}
+                  showImportView={showImportView}
+                  setImportToken={setImportToken}
+                />
+              )}
+            </AutoSizer>
+          </div>
+        </>
       ) : (
         <div
           className="flex flex-col justify-center"

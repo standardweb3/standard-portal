@@ -130,7 +130,7 @@ function CurrencyRow({
       selected={otherSelected}
     >
       <div className="flex items-center">
-        <CurrencyLogo currency={currency} size={32} />
+        <CurrencyLogo currency={currency} size={32} className="rounded-full" />
       </div>
       <div className="flex flex-col justify-center">
         <div title={currency.name} className="text-sm font-medium">
@@ -271,6 +271,11 @@ export default function CurrencyList({
 
   return (
     <FixedSizeList
+      className="
+      scrollbar-thin scrollbar-thumb-primary 
+      scrollbar-thumb-rounded-20 
+      scrollbar-track-scrollbar-track 
+      scrollbar-track-rounded-20"
       height={height}
       ref={fixedListRef as any}
       width="100%"

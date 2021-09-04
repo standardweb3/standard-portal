@@ -69,26 +69,158 @@ export function CurrencyInputPanel({
     setModalOpen(false);
   }, [setModalOpen]);
 
+  const renderConditionalBalance = () => {
+    return !hideBalance && currency && selectedCurrencyBalance ? (
+      <div className="flex flex-col items-start">
+        <div
+          // onClick={onMax}
+          className="text-xs text-grey font-medium"
+        >
+          {renderBalance ? (
+            renderBalance(selectedCurrencyBalance)
+          ) : (
+            <>{formatCurrencyAmount(selectedCurrencyBalance, 4)}</>
+          )}
+        </div>
+      </div>
+    ) : null;
+  };
+
+  const renderConditionalFiatValue = () => {
+    return !hideBalance && currency && selectedCurrencyBalance ? (
+      <FiatValue
+        fiatValue={fiatValue}
+        priceImpact={priceImpact}
+        className="text-grey flex-col text-right"
+      />
+    ) : null;
+  };
+
   return (
-    <div
-      id={id}
-      className={classNames(
-        hideInput ? 'px-3 py-3' : 'px-3 py-3',
-        'rounded-xl bg-swap-inner-background',
-      )}
-    >
-      <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
-        {!hideInput && (
-          <div
-            className={classNames(
-              `flex items-center 
+    <div>
+      <div
+        id={id}
+        className={classNames(
+          hideInput ? 'px-4 py-1' : 'px-4 py-1',
+          'rounded-20 bg-opaque-secondary',
+        )}
+      >
+        <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
+          <div>
+            <button
+              type="button"
+              className={classNames(
+                !!currency ? 'text-primary' : '',
+                `h-full 
+              outline-none select-none 
+              cursor-pointer 
+              border-none text-xl 
+              font-medium`,
+              )}
+              onClick={() => {
+                if (onCurrencySelect) {
+                  setModalOpen(true);
+                }
+              }}
+            >
+              <div
+                className={`
+            flex 
+            rounded-20
+            bg-opaque-inactive
+            items-center
+            px-3 py-3
+            `}
+              >
+                {pair ? (
+                  <DoubleCurrencyLogo
+                    currency0={pair.token0}
+                    currency1={pair.token1}
+                    size={34}
+                    margin={true}
+                  />
+                ) : currency ? (
+                  <CurrencyLogo
+                    currency={currency}
+                    size={'34px'}
+                    className="rounded-full"
+                  />
+                ) : (
+                  <BoxSpinner size="34px" />
+                )}
+                {pair ? (
+                  <span
+                    className={classNames(
+                      'pair-name-container',
+                      Boolean(currency && currency.symbol)
+                        ? 'text-sm'
+                        : 'text-sm',
+                    )}
+                  >
+                    {pair?.token0.symbol}:{pair?.token1.symbol}
+                  </span>
+                ) : (
+                  <div className="flex flex-1 flex-col items-start justify-center ml-3">
+                    <div className="flex items-center text-text">
+                      <div>
+                        <div className="text-base">
+                          {(currency &&
+                          currency.symbol &&
+                          currency.symbol.length > 20
+                            ? currency.symbol.slice(0, 4) +
+                              '...' +
+                              currency.symbol.slice(
+                                currency.symbol.length - 5,
+                                currency.symbol.length,
+                              )
+                            : currency?.symbol) || 'Select'}
+                        </div>
+
+                        {renderConditionalBalance()}
+                      </div>
+
+                      {!disableCurrencySelect && (
+                        <ChevronDownIcon
+                          width={16}
+                          height={16}
+                          className="stroke-current text-text ml-4"
+                        />
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </button>
+          </div>
+          {!hideInput && (
+            <div
+              className={classNames(
+                `flex items-center 
                w-full space-x-3 
-               rounded-xl 
+               rounded-20
             `,
-              // showMaxButton && selectedCurrencyBalance && 'px-3'
-            )}
-          >
-            <>
+                // showMaxButton && selectedCurrencyBalance && 'px-3'
+              )}
+            >
+              <div className="w-full">
+                <NumericalInput
+                  className={`
+                  w-full
+                  text-right
+                  text-xl
+                  focus:text-text 
+                  text-text 
+                  placeholder-info 
+                  focus:placeholder-text`}
+                  id="token-amount-input"
+                  value={value}
+                  onUserInput={(val) => {
+                    onUserInput(val);
+                  }}
+                />
+                {renderConditionalFiatValue()}
+              </div>
+
               {showMaxButton && selectedCurrencyBalance && (
                 <Button
                   type="bordered"
@@ -103,143 +235,20 @@ export function CurrencyInputPanel({
                   {`Max`}
                 </Button>
               )}
-              <NumericalInput
-                className={`
-                  text-lg 
-                  focus:text-text 
-                  text-text 
-                  placeholder-info 
-                  focus:placeholder-text`}
-                id="token-amount-input"
-                value={value}
-                onUserInput={(val) => {
-                  onUserInput(val);
-                }}
-              />
-              {!hideBalance && currency && selectedCurrencyBalance ? (
-                <div className="flex flex-col px-3">
-                  <div
-                    // onClick={onMax}
-                    className="text-xs font-medium text-right"
-                  >
-                    {renderBalance ? (
-                      renderBalance(selectedCurrencyBalance)
-                    ) : (
-                      <>
-                        {`Balance:`}{' '}
-                        {formatCurrencyAmount(selectedCurrencyBalance, 4)}{' '}
-                        {currency.symbol}
-                      </>
-                    )}
-                  </div>
-                  <FiatValue
-                    fiatValue={fiatValue}
-                    priceImpact={priceImpact}
-                    className="text-primary text-shadow-white"
-                  />
-                </div>
-              ) : null}
-            </>
-          </div>
-        )}
-        <div>
-          <button
-            type="button"
-            className={classNames(
-              !!currency ? 'text-primary' : 'text-high-emphesis',
-              `h-full 
-              outline-none select-none 
-              cursor-pointer 
-              border-none text-xl 
-              font-medium`,
-            )}
-            onClick={() => {
-              if (onCurrencySelect) {
-                setModalOpen(true);
-              }
-            }}
-          >
-            <div
-              className={`
-            flex 
-            rounded-xl
-            bg-opaque
-            items-center
-            px-3 py-2
-            `}
-            >
-              {pair ? (
-                <DoubleCurrencyLogo
-                  currency0={pair.token0}
-                  currency1={pair.token1}
-                  size={24}
-                  margin={true}
-                />
-              ) : currency ? (
-                <CurrencyLogo
-                  currency={currency}
-                  size={'24px'}
-                  className="rounded-full"
-                />
-              ) : (
-                <BoxSpinner size="24px" />
-              )}
-              {pair ? (
-                <span
-                  className={classNames(
-                    'pair-name-container',
-                    Boolean(currency && currency.symbol)
-                      ? 'text-sm'
-                      : 'text-sm',
-                  )}
-                >
-                  {pair?.token0.symbol}:{pair?.token1.symbol}
-                </span>
-              ) : (
-                <div className="flex flex-1 flex-col items-start justify-center ml-2">
-                  {/* {label && (
-                    <div className="text-sm font-medium text-text whitespace-nowrap">
-                      {label}
-                    </div>
-                  )} */}
-                  <div className="flex items-center text-text">
-                    <div className="text-sm md:text-sm">
-                      {(currency &&
-                      currency.symbol &&
-                      currency.symbol.length > 20
-                        ? currency.symbol.slice(0, 4) +
-                          '...' +
-                          currency.symbol.slice(
-                            currency.symbol.length - 5,
-                            currency.symbol.length,
-                          )
-                        : currency?.symbol) || 'Select'}
-                    </div>
-
-                    {!disableCurrencySelect && (
-                      <ChevronDownIcon
-                        width={16}
-                        height={16}
-                        className="stroke-current text-text ml-1"
-                      />
-                    )}
-                  </div>
-                </div>
-              )}
             </div>
-          </button>
+          )}
         </div>
+        {!disableCurrencySelect && onCurrencySelect && (
+          <CurrencySearchModal
+            isOpen={modalOpen}
+            onDismiss={handleDismissSearch}
+            onCurrencySelect={onCurrencySelect}
+            selectedCurrency={currency}
+            otherSelectedCurrency={otherCurrency}
+            showCommonBases={showCommonBases}
+          />
+        )}
       </div>
-      {!disableCurrencySelect && onCurrencySelect && (
-        <CurrencySearchModal
-          isOpen={modalOpen}
-          onDismiss={handleDismissSearch}
-          onCurrencySelect={onCurrencySelect}
-          selectedCurrency={currency}
-          otherSelectedCurrency={otherCurrency}
-          showCommonBases={showCommonBases}
-        />
-      )}
     </div>
   );
 }

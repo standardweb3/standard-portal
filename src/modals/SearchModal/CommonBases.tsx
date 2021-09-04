@@ -22,15 +22,15 @@ export default function CommonBases({
   return (
     <div className="flex flex-col space-y-2">
       <div className="flex items-center space-x-2">
-        <div>Common bases</div>
+        <div>Popular</div>
         <Question text="These tokens are commonly paired with other tokens." />
       </div>
-      <div className="flex flex-wrap">
+      <div className="flex flex-wrap bg-opaque-secondary rounded-20 p-3">
         {bases.map((currency: Currency) => {
           const isSelected = selectedCurrency?.equals(currency);
           return (
             <Button
-              type="bordered"
+              color="transparent"
               onClick={() => !isSelected && onSelect(currency)}
               disabled={isSelected}
               key={currencyId(currency)}

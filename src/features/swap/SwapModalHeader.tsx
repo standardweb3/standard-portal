@@ -8,6 +8,7 @@ import { TradePrice } from './TradePrice';
 import { useUSDCValue } from '../../hooks/useUSDCPrice';
 import { warningSeverity } from '../../functions';
 import {
+  ArrowDownIcon,
   ChevronDoubleDownIcon,
   SwitchHorizontalIcon,
 } from '@heroicons/react/outline';
@@ -36,43 +37,59 @@ export default function SwapModalHeader({
   const priceImpactSeverity = warningSeverity(trade.priceImpact);
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-col items-start">
-        <div className="flex w-full items-center justify-between bg-opaque rounded-xl p-4">
-          <div className="flex items-center space-x-3">
-            <CurrencyLogo
-              currency={trade.inputAmount.currency}
-              size={36}
-              className="rounded-full"
-            />
-            <div className="overflow-ellipsis overflow-hidden font-bold text-2xl">
-              {trade.inputAmount.toSignificant(6)}
+    <div className="grid gap-4">
+      <div className="flex flex-col md:flex-row space-x-4">
+        <div className="flex flex-col items-start">
+          <div className="flex w-full items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <CurrencyLogo
+                currency={trade.inputAmount.currency}
+                size={60}
+                className="rounded-full"
+              />
+              <div className="overflow-ellipsis overflow-hidden font-semibold text-2xl">
+                {trade.inputAmount.toSignificant(6)}&nbsp;
+                {trade.inputAmount.currency.symbol}
+              </div>
             </div>
           </div>
-          <div className="ml-3 text-2xl font-medium">
-            {trade.inputAmount.currency.symbol}
+          <div className="flex ml-[60px]">
+            <ArrowDownIcon className="w-6 h-6" />
           </div>
-        </div>
-        <div className="flex my-2 p-4">
-          <ChevronDoubleDownIcon className="w-5 h-5" />
-        </div>
-        <div className="flex w-full items-center justify-between bg-opaque rounded-xl p-4">
-          <div className="flex items-center space-x-3">
-            <CurrencyLogo
-              currency={trade.outputAmount.currency}
-              size={36}
-              className="rounded-full"
-            />
-            <div
-              className={`overflow-ellipsis overflow-hidden font-bold text-2xl ${
-                priceImpactSeverity > 2 ? 'text-red' : 'text-text'
-              }`}
-            >
-              {trade.outputAmount.toSignificant(6)}
+          <div className="flex w-full items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <CurrencyLogo
+                currency={trade.outputAmount.currency}
+                size={60}
+                className="rounded-full"
+              />
+              <div
+                className={`overflow-ellipsis overflow-hidden font-semibold text-2xl ${
+                  priceImpactSeverity > 2 ? 'text-red' : 'text-text'
+                }`}
+              >
+                {trade.outputAmount.toSignificant(6)}&nbsp;
+                {trade.outputAmount.currency.symbol}
+              </div>
             </div>
           </div>
-          <div className="ml-3 text-2xl font-medium">
-            {trade.outputAmount.currency.symbol}
+        </div>
+        <div
+          className="
+          flex-1 
+          flex items-center justify-end"
+        >
+          <div
+            className="
+              bg-opaque-inactive p-4
+              rounded-20
+            "
+          >
+            <AdvancedSwapDetails
+              trade={trade}
+              allowedSlippage={allowedSlippage}
+              minerBribe={minerBribe}
+            />
           </div>
         </div>
       </div>
@@ -83,18 +100,11 @@ export default function SwapModalHeader({
         setShowInverted={setShowInverted}
         className="px-0"
         icon={
-          <div className="bg-opaque p-2 rounded-xl text-text">
+          <div className="bg-opaque p-2 rounded-full text-text">
             <SwitchHorizontalIcon className="w-4 h-4" />
           </div>
         }
       />
-      <div className="bg-opaque rounded-xl p-4">
-        <AdvancedSwapDetails
-          trade={trade}
-          allowedSlippage={allowedSlippage}
-          minerBribe={minerBribe}
-        />
-      </div>
 
       {showAcceptChanges ? (
         <div className="flex items-center justify-start text-sm font-bold uppercase">

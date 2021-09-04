@@ -42,17 +42,7 @@ export function AdvancedSwapDetails({
 
   return !trade ? null : (
     <div className="flex flex-col space-y-2">
-      <div className="flex flex-row items-center justify-between">
-        <span className="flex items-center space-x-2">
-          <div className="text-sm">{`Route`}</div>
-          <Question
-            text={`Routing through these tokens resulted in the best price for your trade.`}
-          />
-        </span>
-        <SwapRoute trade={trade} />
-      </div>
-
-      <div className="flex justify-center items-center justify-between">
+      <div className="flex justify-center items-center justify-between space-x-2">
         <div className="flex items-center space-x-2">
           <div className="text-sm">
             {trade.tradeType === TradeType.EXACT_INPUT
@@ -64,7 +54,7 @@ export function AdvancedSwapDetails({
           />
         </div>
         <div>
-          <div className="text-sm font-bold text-high-emphesis">
+          <div className="text-sm font-bold">
             {trade.tradeType === TradeType.EXACT_INPUT
               ? `${trade.minimumAmountOut(allowedSlippage).toSignificant(6)} ${
                   trade.outputAmount.currency.symbol
@@ -75,7 +65,7 @@ export function AdvancedSwapDetails({
           </div>
         </div>
       </div>
-      <div className="flex justify-center items-center justify-between">
+      <div className="flex justify-center items-center justify-between space-x-2">
         <div className="flex items-center space-x-2">
           <div className="text-sm">{`Price Impact`}</div>
           <Question
@@ -85,14 +75,24 @@ export function AdvancedSwapDetails({
         <FormattedPriceImpact priceImpact={priceImpact} />
       </div>
 
-      <div className="flex justify-center items-center justify-between">
+      <div className="flex flex-row items-center justify-between space-x-2 text-grey">
+        <span className="flex items-center space-x-2">
+          <div className="text-sm">{`Route`}</div>
+          <Question
+            text={`Routing through these tokens resulted in the best price for your trade.`}
+          />
+        </span>
+        <SwapRoute trade={trade} />
+      </div>
+
+      <div className="flex justify-center items-center justify-between space-x-2 text-grey">
         <div className="flex items-center space-x-2">
           <div className="text-sm">{`Liquidity Provider Fee`}</div>
           <Question
             text={`A portion of each trade (0.25%) goes to liquidity providers as a protocol incentive.`}
           />
         </div>
-        <div className="text-sm font-bold text-high-emphesis">
+        <div className="text-sm font-bold">
           {realizedLPFee
             ? `${realizedLPFee
                 .divide(6)
@@ -109,7 +109,7 @@ export function AdvancedSwapDetails({
             text={`A portion of each trade (0.05%) goes to xSUSHI holders as a protocol incentive.`}
           />
         </div>
-        <div className="text-sm font-bold text-high-emphesis">
+        <div className="text-sm font-bold">
           {realizedLPFee
             ? `${realizedLPFee.divide(6).toSignificant(4)} ${
                 realizedLPFee.currency.symbol
@@ -118,14 +118,12 @@ export function AdvancedSwapDetails({
         </div>
       </div> */}
 
-      <div className="flex justify-center items-center justify-between">
+      <div className="flex justify-center items-center justify-between space-x-2 text-grey">
         <div className="flex items-center space-x-2">
           <div className="text-sm">{`Slippage tolerance`}</div>
           <Question text={`Slippage tolerance...`} />
         </div>
-        <div className="text-sm font-bold text-high-emphesis">
-          {allowedSlippage.toFixed(2)}%
-        </div>
+        <div className="text-sm font-bold">{allowedSlippage.toFixed(2)}%</div>
       </div>
 
       {minerBribe && (
@@ -136,7 +134,7 @@ export function AdvancedSwapDetails({
               text={`Tip to encourage miners to select this transaction.`}
             />
           </div>
-          <div className="text-sm font-bold text-high-emphesis">
+          <div className="text-sm font-bold">
             {CurrencyAmount.fromRawAmount(
               Ether.onChain(ChainId.MAINNET),
               minerBribe,

@@ -3,11 +3,13 @@ import styled from '@emotion/styled';
 
 export type PageProps = {
   children: ReactNode;
+  id?: string;
 };
 
-export function Page({ children }: PageProps) {
+export function Page({ children, id }: PageProps) {
   return (
     <div
+      id={id}
       className={`
     bg-main-background
     relative

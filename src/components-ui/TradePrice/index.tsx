@@ -51,15 +51,15 @@ export function TradePrice({
       onClick={flipPrice}
       title={text}
       className={classNames(
-        'flex items-center justify-between w-full py-1 cursor-pointer rounded-b-md text-success',
+        'flex items-center py-1 cursor-pointer space-x-4',
         className,
       )}
     >
-      <div className="select-none">{`Exchange Rate`}</div>
-      <div className="flex items-center space-x-4">
-        <div className="select-none">{text}</div>
-        {icon && icon}
-      </div>
+      {/* <div className="select-none">{`Exchange Rate`}</div> */}
+      {/* <div className="flex items-center space-x-4"> */}
+      <div className="select-none">{text}</div>
+      {icon && icon}
+      {/* </div> */}
     </div>
   );
 }

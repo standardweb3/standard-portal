@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { useCallback } from 'react';
 import { ReactNode } from 'react';
 import { ReactElement } from 'react';
 import { classNames } from '../../functions';
@@ -16,31 +17,33 @@ export type ButtonProps = {
 };
 
 const BORDERED = {
-  primary: 'bg-transparent border border-primary text-white',
-  secondary: 'bg-transparent border border-secondary text-white',
-  danger: 'bg-transparent border border-danger text-white',
-  warn: 'bg-transparent border border-warn text-white',
-  dark: 'bg-transparent border border-dark text-white',
-  info: 'bg-transparent border border-info text-white',
-  link: 'bg-transparent border border-link text-white',
-  white: 'bg-transparent border border-white text-white',
-  success: 'bg-transparent border border-success text-white',
-  disabled: 'bg-transparent border border-danger text-info',
+  primary: 'bg-transparent border border-primary text-text',
+  secondary: 'bg-transparent border border-secondary text-text',
+  danger: 'bg-transparent border border-danger text-text',
+  warn: 'bg-transparent border border-warn text-text',
+  dark: 'bg-transparent border border-dark text-text',
+  info: 'bg-transparent border border-info text-text',
+  link: 'bg-transparent border border-link text-text',
+  white: 'bg-transparent border border-white text-text',
+  success: 'bg-transparent border border-success text-text',
+  disabled: 'bg-transparent border border-info text-info',
+  green: 'bg-transparent border border-green text-text',
 };
 
 const DEFAULT = {
-  primary: 'bg-primary text-white',
-  secondary: 'bg-secondary text-white',
-  warn: 'bg-warn text-white',
-  danger: 'bg-danger text-white',
-  dark: 'bg-dark text-white',
-  info: 'bg-info text-white',
+  primary: 'bg-primary text-text',
+  secondary: 'bg-secondary text-text',
+  warn: 'bg-warn text-text',
+  danger: 'bg-danger text-text',
+  dark: 'bg-dark text-text',
+  info: 'bg-info text-text',
 
-  link: 'bg-link text-white',
+  link: 'bg-link text-text',
   white: 'bg-white text-primary',
-  success: 'bg-success text-white',
+  success: 'bg-success text-text',
   disabled: 'bg-opaque text-info',
-  transprent: 'bg-transparent',
+  transparent: 'bg-transparent',
+  green: 'bg-green text-text',
 };
 
 const TYPE = {
@@ -59,7 +62,8 @@ export type ButtonColor =
   | 'info'
   | 'success'
   | 'disabled'
-  | 'transprent';
+  | 'transparent'
+  | 'green';
 
 export type ButtonType = 'bordered' | 'default';
 
@@ -68,18 +72,23 @@ export function Button({
   type = 'default',
   children,
   className,
+  disabled,
   onClick,
   ref,
   ...rest
 }: ButtonProps) {
+  const handleClick = useCallback(() => {
+    if (!disabled) onClick();
+  }, [disabled, onClick]);
+
   return (
     <button
       className={classNames(
-        'rounded-xl py-1 px-3 text-xs',
-        TYPE[type][color],
+        'rounded-20 py-1 px-3 text-xs',
+        TYPE[type][disabled ? 'disabled' : color],
         className,
       )}
-      onClick={onClick}
+      onClick={handleClick}
       {...rest}
     >
       {children}
