@@ -50,6 +50,8 @@ import { WalletConnector } from '../../components-ui/WalletConnector';
 import { MinimalPositionCard } from '../../components-ui/PositionCard';
 import PercentInputPanel from '../../components-ui/PercentInputPanel';
 import { PageHeader } from '../../components-ui/PageHeader';
+import { LiquidityHeader } from '../../features/liquidity';
+import { Typographies } from '../../utils/Typography';
 
 const DEFAULT_REMOVE_LIQUIDITY_SLIPPAGE_TOLERANCE = new Percent(5, 100);
 
@@ -802,7 +804,7 @@ export default function Remove() {
         <PageHeader title="remove liquidity" />
 
         <PageContent>
-          <div className="mb-5">
+          <div>
             <NavigationLink href="/pool">
               <a
                 className={`
@@ -835,18 +837,18 @@ export default function Remove() {
           </div>
           <div
             className="
-              max-w-[600px] 
-              bg-swap-background 
-              rounded-xl p-8
-              shadow-primary-glow text-text"
+            mt-[10%]
+            md:min-w-[600px]
+            max-w-[1000px] 
+            bg-opaque
+            rounded-20 py-4 px-8"
           >
             <ExchangeHeader
-              title="Remove Liquidity"
               input={currencyA}
               output={currencyB}
               allowedSlippage={allowedSlippage}
             />
-            <div>
+            <div className="grid gap-4">
               <TransactionConfirmationModal
                 isOpen={showConfirm}
                 onDismiss={handleDismissConfirmation}
@@ -862,77 +864,39 @@ export default function Remove() {
                 )}
                 pendingText={pendingText}
               />
-              {/* <LiquidityHeader input={currencyA} output={currencyB} /> */}
+              <LiquidityHeader input={currencyA} output={currencyB} />
 
               <div>
                 <PercentInputPanel
                   value={innerLiquidityPercentage}
                   onUserInput={setInnerLiquidityPercentage}
                   id="liquidity-percent"
-                  className="py-3"
+                  className="py-3 px-4 rounded-20 bg-opaque-secondary"
                 />
 
-                <div className="flex py-2.5">
-                  <button className="cursor-default">
-                    <div className="p-3 rounded-full">
+                <div className="flex justify-center items-center">
+                  <button
+                    className="
+                      z-10 rounded-20 px-3 py-6 -mt-10 -mb-10 text-text
+                      cursor-default
+                    "
+                  >
+                    <div className="rounded-full p-3 bg-icon-btn-grey">
                       <ArrowDownIcon className="w-6 h-6" />
                     </div>
                   </button>
                 </div>
 
-                <div
-                  id="remove-liquidity-output"
-                  className="py-3 px-4 rounded-xl bg-opaque"
-                >
-                  <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
-                    <div
-                      className="w-full text-white sm:w-2/5"
-                      style={{ margin: 'auto 0px' }}
-                    >
-                      <div>
-                        <div>You Will Receive:</div>
-                        {chainId && (oneCurrencyIsWETH || oneCurrencyIsETH) ? (
-                          <div className="flex items-center text-sm">
-                            {oneCurrencyIsETH ? (
-                              <Link
-                                href={`/remove/${
-                                  currencyA?.isNative
-                                    ? WNATIVE[chainId].address
-                                    : currencyIdA
-                                }/${
-                                  currencyB?.isNative
-                                    ? WNATIVE[chainId].address
-                                    : currencyIdB
-                                }`}
-                              >
-                                <a className="text-baseline text-blue opacity-80 hover:opacity-100 focus:opacity-100 whitespace-nowrap">
-                                  Receive W{NATIVE[chainId].symbol}
-                                </a>
-                              </Link>
-                            ) : oneCurrencyIsWETH ? (
-                              <Link
-                                href={`/remove/${
-                                  currencyA?.equals(WNATIVE[chainId])
-                                    ? 'ETH'
-                                    : currencyIdA
-                                }/${
-                                  currencyB?.equals(WNATIVE[chainId])
-                                    ? 'ETH'
-                                    : currencyIdB
-                                }`}
-                              >
-                                <a className="text-baseline text-blue opacity-80 hover:opacity-100 whitespace-nowrap">
-                                  Receive {NATIVE[chainId].symbol}
-                                </a>
-                              </Link>
-                            ) : null}
-                          </div>
-                        ) : null}
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col space-y-3 md:flex-row md:space-x-6 md:space-y-0">
-                      <div className="flex flex-row items-center w-full p-3 pr-8 space-x-3 rounded bg-dark-900">
+                <div id="remove-liquidity-output">
+                  <div className="flex flex-col justify-center items-center space-y-4">
+                    <div className="w-full flex flex-col space-y-3 md:flex-row md:space-x-2 md:space-y-0">
+                      <div
+                        className="
+                      w-full
+                      flex justify-center items-center 
+                      p-3 pr-8 space-x-3 
+                      rounded-20 bg-opaque-secondary"
+                      >
                         <CurrencyLogo
                           currency={currencyA}
                           size="46px"
@@ -945,7 +909,13 @@ export default function Remove() {
                           <div className="text-sm">{currencyA?.symbol}</div>
                         </div>
                       </div>
-                      <div className="flex flex-row items-center w-full p-3 pr-8 space-x-3 rounded bg-dark-900">
+                      <div
+                        className="
+                      w-full
+                      flex justify-center items-center 
+                      p-3 pr-8 space-x-3 
+                      rounded-20 bg-opaque-secondary"
+                      >
                         <CurrencyLogo
                           currency={currencyB}
                           size="46px"
@@ -959,6 +929,43 @@ export default function Remove() {
                         </div>
                       </div>
                     </div>
+                    {chainId && (oneCurrencyIsWETH || oneCurrencyIsETH) ? (
+                      <div className="flex items-center text-sm">
+                        {oneCurrencyIsETH ? (
+                          <Link
+                            href={`/remove/${
+                              currencyA?.isNative
+                                ? WNATIVE[chainId].address
+                                : currencyIdA
+                            }/${
+                              currencyB?.isNative
+                                ? WNATIVE[chainId].address
+                                : currencyIdB
+                            }`}
+                          >
+                            <a className="text-baseline text-blue opacity-80 hover:opacity-100 focus:opacity-100 whitespace-nowrap">
+                              Receive W{NATIVE[chainId].symbol}
+                            </a>
+                          </Link>
+                        ) : oneCurrencyIsWETH ? (
+                          <Link
+                            href={`/remove/${
+                              currencyA?.equals(WNATIVE[chainId])
+                                ? 'ETH'
+                                : currencyIdA
+                            }/${
+                              currencyB?.equals(WNATIVE[chainId])
+                                ? 'ETH'
+                                : currencyIdB
+                            }`}
+                          >
+                            <a className="text-baseline text-blue opacity-80 hover:opacity-100 whitespace-nowrap">
+                              Receive {NATIVE[chainId].symbol}
+                            </a>
+                          </Link>
+                        ) : null}
+                      </div>
+                    ) : null}
                   </div>
                 </div>
               </div>
@@ -970,7 +977,7 @@ export default function Remove() {
                   <div className="grid grid-cols-2 gap-4">
                     <ButtonConfirmed
                       color="primary"
-                      className="w-full py-4 px-4 text-lg"
+                      className={Typographies.swapButton}
                       onClick={onAttemptToApprove}
                       confirmed={
                         approval === ApprovalState.APPROVED ||
@@ -990,7 +997,7 @@ export default function Remove() {
                     </ButtonConfirmed>
                     <ButtonError
                       color="primary"
-                      className="w-full py-4 px-4 text-lg"
+                      className={Typographies.swapButton}
                       onClick={() => {
                         setShowConfirm(true);
                       }}
@@ -1005,7 +1012,7 @@ export default function Remove() {
                         !!parsedAmounts[Field.CURRENCY_B]
                       }
                     >
-                      {error || `Confirm Withdrawal`}
+                      {error || `Remove`}
                     </ButtonError>
                   </div>
                 )}

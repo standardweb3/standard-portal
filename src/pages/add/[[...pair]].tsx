@@ -457,7 +457,7 @@ export default function Liquidity() {
               md:min-w-[600px] 
               max-w-[1000px]
               bg-opaque
-              rounded-xl p-8
+              rounded-20 p-8
               text-text"
             style={{ zIndex: 1 }}
           >
@@ -513,7 +513,7 @@ export default function Liquidity() {
                 <div className="flex justify-center items-center">
                   <button
                     className="
-                      z-10 rounded-xl px-3 py-6 -mt-10 -mb-10 text-text
+                      z-10 rounded-20 px-3 py-6 -mt-10 -mb-10 text-text
                       cursor-default
                     "
                   >
@@ -542,7 +542,7 @@ export default function Liquidity() {
               {currencies[Field.CURRENCY_A] &&
                 currencies[Field.CURRENCY_B] &&
                 pairState !== PairState.INVALID && (
-                  <div className="p-1 rounded-xl">
+                  <div className="p-1 rounded-20">
                     <LiquidityPrice
                       currencies={currencies}
                       price={price}
@@ -567,9 +567,9 @@ export default function Liquidity() {
                   approvalB === ApprovalState.NOT_APPROVED ||
                   approvalB === ApprovalState.PENDING ||
                   isValid) && (
-                  <div className="flex">
+                  <div className="grid gap-4">
                     {
-                      <div className="flex justify-between mb-4 space-x-3">
+                      <div className="w-full flex justify-between space-x-3">
                         {approvalA !== ApprovalState.APPROVED && (
                           <Button
                             className={Typographies.swapButton}

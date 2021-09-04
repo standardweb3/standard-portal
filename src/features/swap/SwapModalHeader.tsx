@@ -10,9 +10,11 @@ import { warningSeverity } from '../../functions';
 import {
   ArrowDownIcon,
   ChevronDoubleDownIcon,
+  ExclamationCircleIcon,
   SwitchHorizontalIcon,
 } from '@heroicons/react/outline';
 import { Alert } from '../../components-ui/Alert';
+import { Typographies } from '../../utils/Typography';
 
 export default function SwapModalHeader({
   trade,
@@ -107,23 +109,28 @@ export default function SwapModalHeader({
       />
 
       {showAcceptChanges ? (
-        <div className="flex items-center justify-start text-sm font-bold uppercase">
-          <Alert
-            type="error"
-            dismissable={false}
-            showIcon
-            message={
-              <div className="flex justify-between items-center w-full">
-                <div>{`Price Updated`}</div>
-                <div
-                  className="text-sm cursor-pointer text-blue"
-                  onClick={onAcceptChanges}
-                >
-                  {`Accept`}
-                </div>
-              </div>
-            }
-          />
+        <div
+          className="
+        flex items-center
+        py-2 px-4 
+        rounded-20 
+        border border-primary"
+        >
+          <div className="w-full text-primary flex items-center space-x-3">
+            <ExclamationCircleIcon className="w-8 h-8" />
+            <div>{`Price Updated`}</div>
+          </div>
+          <div
+            className="
+              cursor-pointer
+              w-full bg-primary 
+              py-4 px-4 
+              text-text text-lg 
+              rounded-20 text-center"
+            onClick={onAcceptChanges}
+          >
+            {`Accept`}
+          </div>
         </div>
       ) : null}
       <div className="justify-start text-sm text-warn">

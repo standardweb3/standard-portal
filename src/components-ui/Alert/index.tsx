@@ -33,12 +33,16 @@ const TYPE = {
     color: 'bg-danger bg-opacity-25 text-high-emphesis',
     icon: <ExclamationCircleIcon className="text-danger w-4 h-4" />,
   },
+  'bordered-primary': {
+    color: 'bg-transparent rounded-20 border border-primary text-primary',
+    icon: <ExclamationCircleIcon className="text-primary w-8 h-8" />,
+  },
 };
 
 export interface AlertProps {
   title?: string;
   message?: string | React.ReactChild | React.ReactChild[];
-  type?: 'warning' | 'error' | 'information';
+  type?: 'warning' | 'error' | 'information' | 'bordered-primary';
   showIcon?: boolean;
   dismissable?: boolean;
 }
@@ -62,7 +66,7 @@ export function Alert({
         className,
       )}
     >
-      <div className="flex flex-col">
+      <div className="flex flex-1 flex-col">
         {title && <div className="mb-1 text-2xl font-medium">{title}</div>}
         <div className="flex items-center">
           {showIcon && <div className="flex-shrink-0">{icon}</div>}

@@ -51,6 +51,8 @@ const TYPE = {
   default: DEFAULT,
 };
 
+const disabledStyle = 'opacity-50';
+
 export type ButtonColor =
   | 'primary'
   | 'secondary'
@@ -85,7 +87,8 @@ export function Button({
     <button
       className={classNames(
         'rounded-20 py-1 px-3 text-xs',
-        TYPE[type][disabled ? 'disabled' : color],
+        TYPE[type][color],
+        disabled ? disabledStyle : '',
         className,
       )}
       onClick={handleClick}
@@ -107,13 +110,7 @@ export function ButtonError({
   if (error) {
     return <Button color="danger" {...rest} />;
   } else {
-    return (
-      <Button
-        color={disabled ? 'disabled' : 'primary'}
-        disabled={disabled}
-        {...rest}
-      />
-    );
+    return <Button color={'primary'} disabled={disabled} {...rest} />;
   }
 }
 
@@ -136,12 +133,6 @@ export function ButtonConfirmed({
       />
     );
   } else {
-    return (
-      <Button
-        color={disabled ? 'disabled' : 'success'}
-        disabled={disabled}
-        {...rest}
-      />
-    );
+    return <Button color={'success'} disabled={disabled} {...rest} />;
   }
 }

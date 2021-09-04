@@ -2,6 +2,7 @@ import { Currency, TradeType, Trade as V2Trade } from '@sushiswap/sdk';
 import React, { ReactNode } from 'react';
 
 import { ButtonError } from '../../components-ui/Button';
+import { Typographies } from '../../utils/Typography';
 import { SwapCallbackError } from './styleds';
 
 export default function SwapModalFooter({
@@ -16,7 +17,7 @@ export default function SwapModalFooter({
   disabledConfirm: boolean;
 }) {
   return (
-    <div className="p-6 mt-0 -m-6 rounded bg-background">
+    <div className="p-6 mt-0 -m-6">
       {/* <div className="grid gap-1 pb-6">
         <div className="flex items-center justify-between">
           <div className="text-sm text-secondary">{i18n._(t`Price`)}</div>
@@ -92,7 +93,7 @@ export default function SwapModalFooter({
         onClick={onConfirm}
         disabled={disabledConfirm}
         id="confirm-swap-or-send"
-        className="text-xl font-semibold w-full py-4"
+        className={Typographies.swapButton}
       >
         {`Confirm Swap`}
       </ButtonError>

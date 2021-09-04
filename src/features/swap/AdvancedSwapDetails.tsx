@@ -42,7 +42,10 @@ export function AdvancedSwapDetails({
 
   return !trade ? null : (
     <div className="flex flex-col space-y-2">
-      <div className="flex justify-center items-center justify-between space-x-2">
+      <div
+        className="flex justify-center items-center justify-between space-x-2 
+      font-bold"
+      >
         <div className="flex items-center space-x-2">
           <div className="text-sm">
             {trade.tradeType === TradeType.EXACT_INPUT
@@ -65,7 +68,10 @@ export function AdvancedSwapDetails({
           </div>
         </div>
       </div>
-      <div className="flex justify-center items-center justify-between space-x-2">
+      <div
+        className="flex justify-center items-center justify-between space-x-2
+      font-bold"
+      >
         <div className="flex items-center space-x-2">
           <div className="text-sm">{`Price Impact`}</div>
           <Question

@@ -10,7 +10,7 @@ export default function LiquidityHeader({
 }: any): JSX.Element {
   const { chainId } = useActiveWeb3React();
   const router = useRouter();
-  const isAddActive = router.asPath === '/add';
+  const isAddActive = router.asPath.startsWith('/add');
   return (
     <div className="flex items-center justify-center p-3px">
       <NavigationLink href={`/add/${currencyId(input)}/${currencyId(output)}`}>
@@ -21,7 +21,7 @@ export default function LiquidityHeader({
           px-1
           text-base font-medium text-center
           border-b-4
-          ${isAddActive ? 'border-transparent' : 'border-primary'}
+          ${isAddActive ? 'border-primary' : 'border-transparent'}
           `}
         >
           Add
@@ -40,7 +40,7 @@ export default function LiquidityHeader({
           px-1
           text-base font-medium text-center 
           border-b-4
-          ${!isAddActive ? 'border-transparent' : 'border-primary'}
+          ${!isAddActive ? 'border-primary' : 'border-transparent'}
           `}
         >
           Remove
