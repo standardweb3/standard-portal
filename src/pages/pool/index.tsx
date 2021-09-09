@@ -1,4 +1,10 @@
-import { ChainId, CurrencyAmount, JSBI, NATIVE, Pair } from '@sushiswap/sdk';
+import {
+  ChainId,
+  CurrencyAmount,
+  JSBI,
+  NATIVE,
+  Pair,
+} from '@digitalnativeinc/standard-protocol-sdk';
 import React, { useMemo } from 'react';
 import { classNames, currencyId } from '../../functions';
 import {

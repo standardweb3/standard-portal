@@ -6,8 +6,11 @@ import {
   Percent,
   TradeType,
   Trade as V2Trade,
-} from '@sushiswap/sdk';
+} from '@digitalnativeinc/standard-protocol-sdk';
+import { ArrowRightIcon } from '@heroicons/react/outline';
 import React, { useCallback, useMemo } from 'react';
+import { CurrencyLogo } from '../../components-ui/CurrencyLogo';
+import { TradeAmountInfo } from '../../components-ui/TradeAmountInfo';
 import TransactionConfirmationModal, {
   ConfirmationModalContent,
   TransactionErrorContent,
@@ -96,12 +99,13 @@ export default function ConfirmSwapModal({
     ) : null;
   }, [onConfirm, showAcceptChanges, swapErrorMessage, trade]);
 
-  // text to show while loading
-  const pendingText = `Swapping ${trade?.inputAmount?.toSignificant(6)} ${
-    trade?.inputAmount?.currency?.symbol
-  } for ${trade?.outputAmount?.toSignificant(6)} ${
-    trade?.outputAmount?.currency?.symbol
-  }`;
+  const pendingMessage = () => (
+    <div className="flex items-center flex-wrap space-x-3">
+      <TradeAmountInfo amount={trade?.inputAmount} />
+      <ArrowRightIcon className="w-3 h-3" />
+      <TradeAmountInfo amount={trade?.outputAmount} />
+    </div>
+  );
 
   // archer
   const pendingText2 = minerBribe
@@ -141,7 +145,7 @@ export default function ConfirmSwapModal({
       attemptingTxn={attemptingTxn}
       hash={txHash}
       content={confirmationContent}
-      pendingText={pendingText}
+      pendingText={pendingMessage()}
       pendingText2={pendingText2}
       currencyToAdd={trade?.outputAmount.currency}
     />

@@ -1,7 +1,13 @@
 import Head from 'next/head';
 import { TransactionResponse } from '@ethersproject/providers';
 import ReactGA from 'react-ga';
-import { ChainId, Currency, NATIVE, Percent, WNATIVE } from '@sushiswap/sdk';
+import {
+  ChainId,
+  Currency,
+  NATIVE,
+  Percent,
+  WNATIVE,
+} from '@digitalnativeinc/standard-protocol-sdk';
 import { BigNumber, Contract } from 'ethers';
 import { useRouter } from 'next/router';
 import { useState, useMemo, useCallback } from 'react';
@@ -52,6 +58,7 @@ import PercentInputPanel from '../../components-ui/PercentInputPanel';
 import { PageHeader } from '../../components-ui/PageHeader';
 import { LiquidityHeader } from '../../features/liquidity';
 import { Typographies } from '../../utils/Typography';
+import { RemoveLiquidityPercentInput } from '../../components-ui/RemoveLiquidityPercentInput';
 
 const DEFAULT_REMOVE_LIQUIDITY_SLIPPAGE_TOLERANCE = new Percent(5, 100);
 
@@ -871,13 +878,13 @@ export default function Remove() {
                   value={innerLiquidityPercentage}
                   onUserInput={setInnerLiquidityPercentage}
                   id="liquidity-percent"
-                  className="py-3 px-4 rounded-20 bg-opaque-secondary"
+                  preset
                 />
 
                 <div className="flex justify-center items-center">
                   <button
                     className="
-                      z-10 rounded-20 px-3 py-6 -mt-10 -mb-10 text-text
+                      z-10 rounded-20 px-3 py-6 -mb-10 text-text
                       cursor-default
                     "
                   >

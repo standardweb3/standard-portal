@@ -1,4 +1,8 @@
-import { ChainId, Currency, WNATIVE } from '@sushiswap/sdk';
+import {
+  ChainId,
+  Currency,
+  WNATIVE,
+} from '@digitalnativeinc/standard-protocol-sdk';
 import React, { FunctionComponent, useMemo } from 'react';
 
 import { WrappedTokenInfo } from '../../state/lists/wrappedTokenInfo';

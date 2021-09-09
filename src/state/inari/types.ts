@@ -1,7 +1,11 @@
-import { ChainId, CurrencyAmount, Token } from '@sushiswap/sdk'
-import { BaseStrategyWithBentoBoxTraitHook } from './traits/useBentoBoxTrait'
-import { BaseStrategyWithHasPermitTokenHook } from './traits/useHasPermitTokenTrait'
-import { BaseStrategyHook } from './strategies/useBaseStrategy'
+import {
+  ChainId,
+  CurrencyAmount,
+  Token,
+} from '@digitalnativeinc/standard-protocol-sdk';
+import { BaseStrategyWithBentoBoxTraitHook } from './traits/useBentoBoxTrait';
+import { BaseStrategyWithHasPermitTokenHook } from './traits/useHasPermitTokenTrait';
+import { BaseStrategyHook } from './strategies/useBaseStrategy';
 
 export enum Field {
   INPUT = 'INPUT',
@@ -9,57 +13,61 @@ export enum Field {
 }
 
 export interface Strategy {
-  id: string
-  general: StrategyGeneralInfo
-  tokenDefinitions: StrategyTokenDefinitions
+  id: string;
+  general: StrategyGeneralInfo;
+  tokenDefinitions: StrategyTokenDefinitions;
 }
 
 export interface StrategyGeneralInfo {
-  name: string
-  steps: string[]
-  zapMethod: string
-  unzapMethod: string
-  description: string
-  inputSymbol: string
-  outputSymbol: string
+  name: string;
+  steps: string[];
+  zapMethod: string;
+  unzapMethod: string;
+  description: string;
+  inputSymbol: string;
+  outputSymbol: string;
 }
 
 export interface StrategyTokenDefinitions {
-  inputToken: StrategyToken
-  outputToken: StrategyToken
+  inputToken: StrategyToken;
+  outputToken: StrategyToken;
 }
 
 export interface StrategyToken {
-  chainId: ChainId
-  address: string
-  decimals: number
-  symbol: string
+  chainId: ChainId;
+  address: string;
+  decimals: number;
+  symbol: string;
 }
 
 export interface StrategyBalances {
-  inputTokenBalance: CurrencyAmount<Token>
-  outputTokenBalance: CurrencyAmount<Token>
+  inputTokenBalance: CurrencyAmount<Token>;
+  outputTokenBalance: CurrencyAmount<Token>;
 }
 
-export type StrategyHook = BaseStrategyHook | BaseStrategyWithBentoBoxTraitHook | BaseStrategyWithHasPermitTokenHook
+export type StrategyHook =
+  | BaseStrategyHook
+  | BaseStrategyWithBentoBoxTraitHook
+  | BaseStrategyWithHasPermitTokenHook;
 
 // --------------------------------
 // STATE
 // --------------------------------
 export interface InariState {
-  id: string
-  zapIn: boolean
-  inputValue: string
-  outputValue: string
-  general: StrategyGeneralInfo
-  tokens: StrategyTokenDefinitions
+  id: string;
+  zapIn: boolean;
+  inputValue: string;
+  outputValue: string;
+  general: StrategyGeneralInfo;
+  tokens: StrategyTokenDefinitions;
 }
 
-export interface DerivedInariState extends Omit<InariState, 'inputValue' | 'outputValue' | 'tokens'> {
-  inputValue: CurrencyAmount<Token>
-  outputValue: CurrencyAmount<Token>
+export interface DerivedInariState
+  extends Omit<InariState, 'inputValue' | 'outputValue' | 'tokens'> {
+  inputValue: CurrencyAmount<Token>;
+  outputValue: CurrencyAmount<Token>;
   tokens: {
-    inputToken: Token
-    outputToken: Token
-  }
+    inputToken: Token;
+    outputToken: Token;
+  };
 }

@@ -1,11 +1,18 @@
-import { t } from '@lingui/macro'
-import { AXSUSHI, SUSHI } from '../../../constants'
-import { ChainId, SUSHI_ADDRESS } from '@sushiswap/sdk'
-import { useActiveWeb3React } from '../../../hooks'
-import { useTokenBalances } from '../../wallet/hooks'
-import { StrategyGeneralInfo, StrategyHook, StrategyTokenDefinitions } from '../types'
-import useBaseStrategy from './useBaseStrategy'
-import { useEffect, useMemo } from 'react'
+import { t } from '@lingui/macro';
+import { AXSUSHI, SUSHI } from '../../../constants';
+import {
+  ChainId,
+  SUSHI_ADDRESS,
+} from '@digitalnativeinc/standard-protocol-sdk';
+import { useActiveWeb3React } from '../../../hooks';
+import { useTokenBalances } from '../../wallet/hooks';
+import {
+  StrategyGeneralInfo,
+  StrategyHook,
+  StrategyTokenDefinitions,
+} from '../types';
+import useBaseStrategy from './useBaseStrategy';
+import { useEffect, useMemo } from 'react';
 
 export const general: StrategyGeneralInfo = {
   name: 'SUSHI → Aave',
@@ -15,7 +22,7 @@ export const general: StrategyGeneralInfo = {
   description: t`Stake SUSHI for xSUSHI and deposit into Aave in one click. xSUSHI in Aave (aXSUSHI) can be lent or used as collateral for borrowing.`,
   inputSymbol: 'SUSHI',
   outputSymbol: 'xSUSHI in Aave',
-}
+};
 
 export const tokenDefinitions: StrategyTokenDefinitions = {
   inputToken: {
@@ -30,33 +37,33 @@ export const tokenDefinitions: StrategyTokenDefinitions = {
     decimals: 18,
     symbol: 'aXSUSHI',
   },
-}
+};
 
 const useStakeSushiToAaveStrategy = (): StrategyHook => {
-  const { account } = useActiveWeb3React()
-  const balances = useTokenBalances(account, [SUSHI[ChainId.MAINNET], AXSUSHI])
+  const { account } = useActiveWeb3React();
+  const balances = useTokenBalances(account, [SUSHI[ChainId.MAINNET], AXSUSHI]);
   const { setBalances, ...strategy } = useBaseStrategy({
     id: 'stakeSushiToAaveStrategy',
     general,
     tokenDefinitions,
-  })
+  });
 
   useEffect(() => {
-    if (!balances) return
+    if (!balances) return;
 
     setBalances({
       inputTokenBalance: balances[SUSHI[ChainId.MAINNET].address],
       outputTokenBalance: balances[AXSUSHI.address],
-    })
-  }, [balances, setBalances])
+    });
+  }, [balances, setBalances]);
 
   return useMemo(
     () => ({
       ...strategy,
       setBalances,
     }),
-    [strategy, setBalances]
-  )
-}
+    [strategy, setBalances],
+  );
+};
 
-export default useStakeSushiToAaveStrategy
+export default useStakeSushiToAaveStrategy;

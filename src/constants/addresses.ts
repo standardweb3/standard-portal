@@ -1,33 +1,33 @@
-import { ChainId } from '@sushiswap/sdk'
+import { ChainId } from '@digitalnativeinc/standard-protocol-sdk';
 
-type AddressMap = { [chainId: number]: string }
+type AddressMap = { [chainId: number]: string };
 
-export const TIMELOCK_ADDRESS = '0x1a9C8182C09F50C8318d769245beA52c32BE35BC'
+export const TIMELOCK_ADDRESS = '0x1a9C8182C09F50C8318d769245beA52c32BE35BC';
 
 export const ARCHER_ROUTER_ADDRESS: AddressMap = {
   [ChainId.MAINNET]: '0x9917C083FF9FbD29Df1367FBF7F2388A9a202431',
-}
+};
 
 export const MINICHEF_ADDRESS: AddressMap = {
   [ChainId.MATIC]: '0x0769fd68dFb93167989C6f7254cd0D766Fb2841F',
   [ChainId.XDAI]: '0xdDCbf776dF3dE60163066A5ddDF2277cB445E0F3',
   [ChainId.HARMONY]: '0x67dA5f2FfaDDfF067AB9d5F025F8810634d84287',
-}
+};
 
 export const MASTERCHEF_V2_ADDRESS: AddressMap = {
   [ChainId.MAINNET]: '0xEF0881eC094552b2e128Cf945EF17a6752B4Ec5d',
-}
+};
 
 export const ZAPPER_ADDRESS: AddressMap = {
   [ChainId.MAINNET]: '0xcff6eF0B9916682B37D80c19cFF8949bc1886bC2',
   [ChainId.ROPSTEN]: '0xcff6eF0B9916682B37D80c19cFF8949bc1886bC2',
-}
+};
 
 // TODO: specify merkle distributor for mainnet
 export const MERKLE_DISTRIBUTOR_ADDRESS: AddressMap = {
   [ChainId.MAINNET]: '0xcBE6B83e77cdc011Cc18F6f0Df8444E5783ed982',
   [ChainId.ROPSTEN]: '0x84d1f7202e0e7dac211617017ca72a2cb5e2b955',
-}
+};
 
 export const MULTICALL2_ADDRESS: AddressMap = {
   [ChainId.MAINNET]: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',
@@ -55,4 +55,4 @@ export const MULTICALL2_ADDRESS: AddressMap = {
   [ChainId.OKEX]: '0xF4d73326C13a4Fc5FD7A064217e12780e9Bd62c3',
   [ChainId.OKEX_TESTNET]: '',
   [ChainId.PALM]: '0x0769fd68dFb93167989C6f7254cd0D766Fb2841F',
-}
+};

@@ -1,5 +1,5 @@
 import { AppDispatch } from '../state';
-import { ChainId } from '@sushiswap/sdk';
+import { ChainId } from '@digitalnativeinc/standard-protocol-sdk';
 import { TokenList } from '@uniswap/token-lists';
 import { fetchTokenList } from '../state/lists/actions';
 import { getNetworkLibrary } from '../connectors';
@@ -10,7 +10,10 @@ import { useActiveWeb3React } from './useActiveWeb3React';
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
-export function useFetchListCallback(): (listUrl: string, sendDispatch?: boolean) => Promise<TokenList> {
+export function useFetchListCallback(): (
+  listUrl: string,
+  sendDispatch?: boolean,
+) => Promise<TokenList> {
   const { chainId, library } = useActiveWeb3React();
   const dispatch = useDispatch<AppDispatch>();
 
@@ -34,10 +37,14 @@ export function useFetchListCallback(): (listUrl: string, sendDispatch?: boolean
   return useCallback(
     async (listUrl: string, sendDispatch = true) => {
       const requestId = nanoid();
-      sendDispatch && dispatch(fetchTokenList.pending({ requestId, url: listUrl }));
+      sendDispatch &&
+        dispatch(fetchTokenList.pending({ requestId, url: listUrl }));
       return getTokenList(listUrl, ensResolver)
         .then((tokenList) => {
-          sendDispatch && dispatch(fetchTokenList.fulfilled({ url: listUrl, tokenList, requestId }));
+          sendDispatch &&
+            dispatch(
+              fetchTokenList.fulfilled({ url: listUrl, tokenList, requestId }),
+            );
           return tokenList;
         })
         .catch((error) => {

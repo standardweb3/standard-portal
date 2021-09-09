@@ -1,6 +1,7 @@
 // import { AlertTriangle, ArrowUpCircle, CheckCircle } from 'react-feather';
-import { ChainId, Currency } from '@sushiswap/sdk';
+import { ChainId, Currency } from '@digitalnativeinc/standard-protocol-sdk';
 import React, { FC } from 'react';
+import LogoPrimary from '../../../public/img/logos/logo.primary.png';
 
 import { Button } from '../../components-ui/Button';
 import {
@@ -23,11 +24,13 @@ import { getExplorerLink } from '../../functions/explorer';
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
 import useAddTokenToMetaMask from '../../hooks/useAddTokenToMetaMask';
 import { WavySpinner } from '../../components-ui/Spinner/WavySpinner';
+import { LogoSpinner } from '../../components-ui/Spinner/LogoSpinner';
+import { LogoCrumble } from '../../components-ui/LogoCrumble';
 
 interface ConfirmationPendingContentProps {
   onDismiss: () => void;
-  pendingText: string;
-  pendingText2: string;
+  pendingText: React.ReactNode;
+  pendingText2: React.ReactNode;
 }
 
 export const ConfirmationPendingContent: FC<ConfirmationPendingContentProps> = ({
@@ -41,15 +44,15 @@ export const ConfirmationPendingContent: FC<ConfirmationPendingContentProps> = (
         <XIcon onClick={onDismiss} className="w-4 h-4" />
       </div>
       <div className="flex justify-center">
-        <WavySpinner />
+        {/* <WavySpinner /> */}
+        <LogoSpinner width={92} height={114} rot />
       </div>
-      <div className="flex flex-col items-center justify-center space-y-3 mt-4">
-        <div className="text-xl font-bold text-primary">{`Waiting for Confirmation`}</div>
+      <div className="flex flex-col items-center justify-center space-y-6 mt-4">
+        <div className="text-xl font-bold">{`Confirm this transaction in your wallet`}</div>
         <div className="font-bold text-center">{pendingText}</div>
         {pendingText2 && (
           <div className="font-bold text-center">{pendingText2}</div>
         )}
-        <div className="text-sm font-bold text-warn">{`Confirm this transaction in your wallet`}</div>
       </div>
     </div>
   );
@@ -76,14 +79,12 @@ export const TransactionSubmittedContent: FC<TransactionSubmittedContentProps> =
       <div className="flex justify-end">
         <XIcon onClick={onDismiss} className="w-5 h-5 cursor-pointer" />
       </div>
-      <div className="flex flex-col items-center justify-center space-y-4">
-        <div className="flex items-center space-x-2 text-success">
-          <CheckCircleIcon className="w-5 h-5" />
-          <div className="text-xl font-bold">{`Transaction Submitted`}</div>
-        </div>
+      <div className="flex flex-col items-center justify-center space-y-6">
+        <LogoSpinner width={92} height={114} />
+        <div className="text-xl font-bold">{`Transaction Submitted`}</div>
         {chainId && hash && (
           <ExternalLink href={getExplorerLink(chainId, hash, 'transaction')}>
-            <div className="font-bold text-blue">View on explorer</div>
+            <div className="font-bold text-primary">View transaction</div>
           </ExternalLink>
         )}
         {currencyToAdd && library?.provider?.isMetaMask && (
@@ -152,20 +153,17 @@ export const TransactionErrorContent: FC<TransactionErrorContentProps> = ({
         <div className="flex justify-end">
           <XIcon onClick={onDismiss} className="w-5 h-5" />
         </div>
-        <div className="flex space-x-2 items-center justify-center text-danger">
-          {/* <AlertTriangle
-            className="text-red"
-            style={{ strokeWidth: 1.5 }}
-            size={64}
-          /> */}
-          <ExclamationCircleIcon className="w-5 h-5" />
+        <div
+          className="
+          flex flex-col items-center justify-center
+          text-danger space-y-4"
+        >
+          <LogoCrumble width={92} height={114} />
           <div className="font-bold">{message}</div>
+          <Button type="bordered" color="info" onClick={onDismiss}>
+            Dismiss
+          </Button>
         </div>
-      </div>
-      <div className="flex justify-center">
-        <Button type="bordered" color="info" onClick={onDismiss}>
-          Dismiss
-        </Button>
       </div>
     </div>
   );
@@ -177,8 +175,8 @@ interface ConfirmationModalProps {
   hash: string | undefined;
   content: () => React.ReactNode;
   attemptingTxn: boolean;
-  pendingText: string;
-  pendingText2?: string;
+  pendingText: React.ReactNode;
+  pendingText2?: React.ReactNode;
   currencyToAdd?: Currency | undefined;
 }
 

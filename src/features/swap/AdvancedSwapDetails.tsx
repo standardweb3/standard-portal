@@ -6,7 +6,7 @@ import {
   TradeType,
   Trade as V2Trade,
   CurrencyAmount,
-} from '@sushiswap/sdk';
+} from '@digitalnativeinc/standard-protocol-sdk';
 import React, { useMemo } from 'react';
 
 // import { ANALYTICS_URL } from '../../constants';

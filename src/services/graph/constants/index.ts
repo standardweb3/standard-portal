@@ -1,5 +1,5 @@
-import { ChainId } from '@sushiswap/sdk'
-const THE_GRAPH = 'https://api.thegraph.com'
+import { ChainId } from '@digitalnativeinc/standard-protocol-sdk';
+const THE_GRAPH = 'https://api.thegraph.com';
 
 export const GRAPH_HOST = {
   [ChainId.MAINNET]: THE_GRAPH,
@@ -11,4 +11,4 @@ export const GRAPH_HOST = {
   [ChainId.CELO]: THE_GRAPH,
   [ChainId.HARMONY]: 'https://sushi.graph.t.hmny.io',
   [ChainId.OKEX]: 'https://graph.kkt.one/node',
-}
+};

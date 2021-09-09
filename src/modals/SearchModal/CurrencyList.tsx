@@ -1,4 +1,8 @@
-import { Currency, CurrencyAmount, Token } from '@sushiswap/sdk';
+import {
+  Currency,
+  CurrencyAmount,
+  Token,
+} from '@digitalnativeinc/standard-protocol-sdk';
 import React, {
   CSSProperties,
   MutableRefObject,
@@ -199,7 +203,6 @@ export default function CurrencyList({
   showImportView: () => void;
   setImportToken: (token: Token) => void;
 }) {
-  console.log('bjhlheight', height);
   const itemData: (Currency | BreakLine)[] = useMemo(() => {
     if (otherListTokens && otherListTokens?.length > 0) {
       return [...currencies, BREAK_LINE, ...otherListTokens];

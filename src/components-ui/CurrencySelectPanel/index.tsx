@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 
 import { ChevronDownIcon } from '@heroicons/react/outline';
-import { Currency } from '@sushiswap/sdk';
+import { Currency } from '@digitalnativeinc/standard-protocol-sdk';
 import { CurrencyLogo } from '../CurrencyLogo';
 import CurrencySearchModal from '../../modals/SearchModal/CurrencySearchModal';
 import styled from '@emotion/styled';

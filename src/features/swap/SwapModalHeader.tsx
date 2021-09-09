@@ -1,4 +1,9 @@
-import { Currency, Percent, TradeType, Trade as V2Trade } from '@sushiswap/sdk';
+import {
+  Currency,
+  Percent,
+  TradeType,
+  Trade as V2Trade,
+} from '@digitalnativeinc/standard-protocol-sdk';
 import React, { useState } from 'react';
 import { isAddress, shortenAddress } from '../../functions';
 

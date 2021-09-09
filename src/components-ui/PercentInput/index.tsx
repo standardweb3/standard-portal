@@ -7,7 +7,6 @@ const StyledInput = styled.input<{
   fontSize?: string;
   align?: string;
 }>`
-  width: 0;
   position: relative;
   font-weight: 500;
   outline: none;

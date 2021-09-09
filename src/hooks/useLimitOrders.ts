@@ -1,53 +1,54 @@
-import { useActiveWeb3React, useLimitOrderContract } from '.'
-import useSWR, { SWRResponse } from 'swr'
-import { LAMBDA_URL, LimitOrder, OrderStatus } from 'limitorderv2-sdk'
-import { BigNumber } from 'ethers'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { JSBI, Percent, Token } from '@sushiswap/sdk'
-import { useAllTokens } from './Tokens'
+import { useActiveWeb3React, useLimitOrderContract } from '.';
+import useSWR, { SWRResponse } from 'swr';
+import { LAMBDA_URL, LimitOrder, OrderStatus } from 'limitorderv2-sdk';
+import { BigNumber } from 'ethers';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { JSBI, Percent, Token } from '@digitalnativeinc/standard-protocol-sdk';
+import { useAllTokens } from './Tokens';
 
 interface State {
   pending: {
-    page: number
-    maxPages: null
-    data: OpenOrder[]
-    loading: boolean
-    totalOrders: number
-  }
+    page: number;
+    maxPages: null;
+    data: OpenOrder[];
+    loading: boolean;
+    totalOrders: number;
+  };
   completed: {
-    page: number
-    maxPages: null
-    data: OpenOrder[]
-    loading: boolean
-    totalOrders: number
-  }
+    page: number;
+    maxPages: null;
+    data: OpenOrder[];
+    loading: boolean;
+    totalOrders: number;
+  };
 }
 
 interface OpenOrder {
-  tokenIn: Token
-  tokenOut: Token
-  filledPercent: string
-  limitOrder: LimitOrder
-  status: OrderStatus
-  rate: string
+  tokenIn: Token;
+  tokenOut: Token;
+  filledPercent: string;
+  limitOrder: LimitOrder;
+  status: OrderStatus;
+  rate: string;
 }
 
-const denominator = (decimals: number = 18) => JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(decimals))
+const denominator = (decimals: number = 18) =>
+  JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(decimals));
 
-const viewUrl = `${LAMBDA_URL}/orders/view`
+const viewUrl = `${LAMBDA_URL}/orders/view`;
 const viewFetcher = (url, account, chainId, pendingPage, page) => {
   return fetch(url, {
     method: 'POST',
     body: JSON.stringify({ address: account, chainId, page, pendingPage }),
   })
     .then((r) => r.json())
-    .then((j) => j.data)
-}
+    .then((j) => j.data);
+};
 
 const useLimitOrders = () => {
-  const { account, chainId } = useActiveWeb3React()
-  const limitOrderContract = useLimitOrderContract()
-  const tokens = useAllTokens()
+  const { account, chainId } = useActiveWeb3React();
+  const limitOrderContract = useLimitOrderContract();
+  const tokens = useAllTokens();
 
   const [state, setState] = useState<State>({
     pending: {
@@ -64,15 +65,20 @@ const useLimitOrders = () => {
       loading: true,
       totalOrders: 0,
     },
-  })
+  });
 
   const shouldFetch = useMemo(
     () =>
-      viewUrl && account && chainId ? [viewUrl, account, chainId, state.pending.page, state.completed.page] : null,
-    [account, chainId, state.completed.page, state.pending.page]
-  )
+      viewUrl && account && chainId
+        ? [viewUrl, account, chainId, state.pending.page, state.completed.page]
+        : null,
+    [account, chainId, state.completed.page, state.pending.page],
+  );
 
-  const { data: ordersData, mutate }: SWRResponse<any, Error> = useSWR(shouldFetch, viewFetcher)
+  const { data: ordersData, mutate }: SWRResponse<any, Error> = useSWR(
+    shouldFetch,
+    viewFetcher,
+  );
 
   const setPendingPage = useCallback((page: number) => {
     setState((prevState) => ({
@@ -82,8 +88,8 @@ const useLimitOrders = () => {
         page,
         loading: true,
       },
-    }))
-  }, [])
+    }));
+  }, []);
 
   const setCompletedPage = useCallback((page: number) => {
     setState((prevState) => ({
@@ -93,8 +99,8 @@ const useLimitOrders = () => {
         page,
         loading: true,
       },
-    }))
-  }, [])
+    }));
+  }, []);
 
   useEffect(() => {
     if (
@@ -106,7 +112,7 @@ const useLimitOrders = () => {
       !Array.isArray(ordersData.pendingOrders.orders) ||
       !Array.isArray(ordersData.otherOrders.orders)
     )
-      return
+      return;
 
     const transform = async (order: any) => {
       const limitOrder = LimitOrder.getLimitOrder({
@@ -114,35 +120,59 @@ const useLimitOrders = () => {
         chainId: +order.chainId,
         tokenInDecimals: +order.tokenInDecimals,
         tokenOutDecimals: +order.tokenOutDecimals,
-      })
+      });
 
-      const tokenIn = limitOrder.amountIn.currency
-      const tokenOut = limitOrder.amountOut.currency
+      const tokenIn = limitOrder.amountIn.currency;
+      const tokenOut = limitOrder.amountOut.currency;
 
       const openOrder = {
         tokenIn:
           tokens[tokenIn.address] ||
-          new Token(chainId, tokenIn.address.toLowerCase(), tokenIn.decimals, tokenIn.symbol),
+          new Token(
+            chainId,
+            tokenIn.address.toLowerCase(),
+            tokenIn.decimals,
+            tokenIn.symbol,
+          ),
         tokenOut:
           tokens[tokenOut.address] ||
-          new Token(chainId, tokenOut.address.toLowerCase(), tokenOut.decimals, tokenOut.symbol),
+          new Token(
+            chainId,
+            tokenOut.address.toLowerCase(),
+            tokenOut.decimals,
+            tokenOut.symbol,
+          ),
         limitOrder,
         filledPercent: order.filledAmount
-          ? order.filledAmount.mul(BigNumber.from('100')).div(BigNumber.from(order.amountIn)).toString()
+          ? order.filledAmount
+              .mul(BigNumber.from('100'))
+              .div(BigNumber.from(order.amountIn))
+              .toString()
           : '0',
         status: order.status,
-        rate: new Percent(limitOrder.amountOut.quotient, denominator(tokenOut.decimals))
-          .divide(new Percent(limitOrder.amountIn.quotient, denominator(tokenIn.decimals)))
+        rate: new Percent(
+          limitOrder.amountOut.quotient,
+          denominator(tokenOut.decimals),
+        )
+          .divide(
+            new Percent(
+              limitOrder.amountIn.quotient,
+              denominator(tokenIn.decimals),
+            ),
+          )
           .divide(denominator(2))
           .toSignificant(6),
-      }
+      };
 
-      return openOrder as OpenOrder
-    }
-
-    ;(async () => {
-      const openOrders = await Promise.all<OpenOrder>(ordersData.pendingOrders.orders.map((el) => transform(el)))
-      const completedOrders = await Promise.all<OpenOrder>(ordersData.otherOrders.orders.map((el) => transform(el)))
+      return openOrder as OpenOrder;
+    };
+    (async () => {
+      const openOrders = await Promise.all<OpenOrder>(
+        ordersData.pendingOrders.orders.map((el) => transform(el)),
+      );
+      const completedOrders = await Promise.all<OpenOrder>(
+        ordersData.otherOrders.orders.map((el) => transform(el)),
+      );
 
       setState((prevState) => ({
         pending: {
@@ -159,11 +189,18 @@ const useLimitOrders = () => {
           loading: false,
           totalOrders: ordersData.otherOrders.totalOrders,
         },
-      }))
-    })()
+      }));
+    })();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account, chainId, ordersData, limitOrderContract, setPendingPage, setCompletedPage])
+  }, [
+    account,
+    chainId,
+    ordersData,
+    limitOrderContract,
+    setPendingPage,
+    setCompletedPage,
+  ]);
 
   return useMemo(
     () => ({
@@ -178,8 +215,8 @@ const useLimitOrders = () => {
       },
       mutate,
     }),
-    [mutate, setCompletedPage, setPendingPage, state]
-  )
-}
+    [mutate, setCompletedPage, setPendingPage, state],
+  );
+};
 
-export default useLimitOrders
+export default useLimitOrders;

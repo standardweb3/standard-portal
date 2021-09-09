@@ -1,5 +1,11 @@
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/outline';
-import { CurrencyAmount, JSBI, Pair, Percent, Token } from '@sushiswap/sdk';
+import {
+  CurrencyAmount,
+  JSBI,
+  Pair,
+  Percent,
+  Token,
+} from '@digitalnativeinc/standard-protocol-sdk';
 import React, { useState } from 'react';
 import { currencyId, unwrappedToken } from '../../functions/currency';
 
@@ -74,38 +80,59 @@ export function MinimalPositionCard({
     <>
       {userPoolBalance &&
       JSBI.greaterThan(userPoolBalance.quotient, JSBI.BigInt(0)) ? (
-        <div className="p-5 rounded-xl bg-opaque">
-          <div>
-            <div className="text-lg mb-2">Your Position</div>
-            <div className="flex flex-col md:flex-row md:justify-between">
-              <div className="flex items-center space-x-4">
-                <DoubleCurrencyLogo
-                  currency0={pair.token0}
-                  currency1={pair.token1}
-                  size={40}
-                />
-                <div className="text-2xl font-semibold">
-                  {currency0.symbol}/{currency1.symbol}
-                </div>
-              </div>
-              <div className="flex items-center mt-3 space-x-2 text-base md:mt-0">
-                <div>
-                  {userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}{' '}
-                </div>
-                <div>Pool Tokens</div>
+        <div className="rounded-20 bg-opaque">
+          <div
+            className="
+              flex flex-col md:flex-row md:justify-between
+              bg-opaque-secondary rounded-20 
+              p-5
+              "
+          >
+            <div className="flex items-center space-x-4">
+              <DoubleCurrencyLogo
+                currency0={pair.token0}
+                currency1={pair.token1}
+                currencyClassName="rounded-full"
+                size={40}
+              />
+              <div className="font-bold">
+                {currency0.symbol}-{currency1.symbol}
               </div>
             </div>
-            <div className="flex flex-col w-full p-3 mt-3 space-y-1 text-sm rounded bg-dark-900 text-high-emphesis">
-              <div className="flex items-center">
+            <div
+              className="
+                flex items-center 
+                md:mt-0 mt-3 space-x-2 
+                text-base"
+            >
+              <div className="text-primary font-bold">
+                {userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}{' '}
+              </div>
+              <div>Pool Tokens</div>
+            </div>
+          </div>
+          <div
+            className="
+            flex flex-col items-center
+            w-full 
+            p-3 mt-3
+            text-sm"
+          >
+            <div className="space-y-1">
+              <div className="flex items-center justify-between font-bold">
                 <div>{`Your pool share`}&nbsp;</div>
-                <div className="font-bold">
+                <div>
                   {poolTokenPercentage
                     ? poolTokenPercentage.toFixed(6) + '%'
                     : '-'}
                 </div>
               </div>
-              <div className="flex items-center">
-                <div>{currency0.symbol}:&nbsp;</div>
+              <div
+                className="
+                flex items-center justify-between 
+                text-grey"
+              >
+                <div>{`Pooled ${currency0.symbol}: `}&nbsp;</div>
                 {token0Deposited ? (
                   <div className="flex items-center space-x-2 font-bold">
                     <div> {token0Deposited?.toSignificant(6)}</div>
@@ -115,8 +142,12 @@ export function MinimalPositionCard({
                   '-'
                 )}
               </div>
-              <div className="flex items-center">
-                <div>{currency1.symbol}:&nbsp;</div>
+              <div
+                className="
+                flex items-center justify-between 
+                text-grey"
+              >
+                <div>{`Pooled ${currency1.symbol}: `}&nbsp;</div>
                 {token1Deposited ? (
                   <div className="flex items-center space-x-2 font-bold">
                     <div>{token1Deposited?.toSignificant(6)}</div>
@@ -212,7 +243,7 @@ export function FullPositionCard({
           <div className="text-xl font-semibold">
             {!currency0 || !currency1
               ? `Loading`
-              : `${currency0.symbol}/${currency1.symbol}`}
+              : `${currency0.symbol}-${currency1.symbol}`}
           </div>
         </div>
         <div className="flex items-center space-x-4">

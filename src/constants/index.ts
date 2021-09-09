@@ -1,4 +1,8 @@
-import { ChainId, JSBI, Percent } from '@sushiswap/sdk';
+import {
+  ChainId,
+  JSBI,
+  Percent,
+} from '@digitalnativeinc/standard-protocol-sdk';
 import {
   binance,
   fortmatic,

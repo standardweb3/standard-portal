@@ -1,4 +1,7 @@
-import { Currency, CurrencyAmount } from '@sushiswap/sdk';
+import {
+  Currency,
+  CurrencyAmount,
+} from '@digitalnativeinc/standard-protocol-sdk';
 
 import { useActiveWeb3React } from './useActiveWeb3React';
 import { useCallback } from 'react';
@@ -11,7 +14,14 @@ const useZapper = (currency?: Currency) => {
   const addTransaction = useTransactionAdder();
 
   const zapIn = useCallback(
-    async (fromTokenContractAddress, pairAddress, amount, swapTarget, minPoolTokens, swapData) => {
+    async (
+      fromTokenContractAddress,
+      pairAddress,
+      amount,
+      swapTarget,
+      minPoolTokens,
+      swapData,
+    ) => {
       const tx = await zapperContract?.ZapIn(
         fromTokenContractAddress,
         pairAddress,
@@ -26,7 +36,11 @@ const useZapper = (currency?: Currency) => {
         true,
         {
           // Value for transfer should be 0 unless it's an ETH transfer
-          value: fromTokenContractAddress === '0x0000000000000000000000000000000000000000' ? amount?.raw.toString() : 0,
+          value:
+            fromTokenContractAddress ===
+            '0x0000000000000000000000000000000000000000'
+              ? amount?.raw.toString()
+              : 0,
         },
       );
       return addTransaction(tx, {

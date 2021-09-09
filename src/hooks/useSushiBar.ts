@@ -1,4 +1,8 @@
-import { Currency, CurrencyAmount, Token } from '@sushiswap/sdk';
+import {
+  Currency,
+  CurrencyAmount,
+  Token,
+} from '@digitalnativeinc/standard-protocol-sdk';
 
 import { useCallback } from 'react';
 import { useSushiBarContract } from './useContract';

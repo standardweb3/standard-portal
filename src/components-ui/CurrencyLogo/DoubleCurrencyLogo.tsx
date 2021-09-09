@@ -1,6 +1,7 @@
-import { Currency } from '@sushiswap/sdk';
+import { Currency } from '@digitalnativeinc/standard-protocol-sdk';
 import { CurrencyLogo } from '../CurrencyLogo';
 import React from 'react';
+import { classNames } from '../../functions';
 
 interface DoubleCurrencyLogoProps {
   margin?: boolean;
@@ -17,17 +18,21 @@ export function DoubleCurrencyLogo({
   currencyClassName,
 }: DoubleCurrencyLogoProps) {
   return (
-    <div className="flex items-center space-x-2">
-      <CurrencyLogo
-        currency={currency0}
-        size={size.toString() + 'px'}
-        className={currencyClassName}
-      />
-      <CurrencyLogo
-        currency={currency1}
-        size={size.toString() + 'px'}
-        className={currencyClassName}
-      />
+    <div className="flex items-center">
+      <div className="z-10">
+        <CurrencyLogo
+          currency={currency0}
+          size={size.toString() + 'px'}
+          className={currencyClassName}
+        />
+      </div>
+      <div className="-ml-2">
+        <CurrencyLogo
+          currency={currency1}
+          size={size.toString() + 'px'}
+          className={currencyClassName}
+        />
+      </div>
     </div>
   );
 }

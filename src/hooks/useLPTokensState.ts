@@ -1,5 +1,13 @@
-import { ChainId, CurrencyAmount, Token } from '@sushiswap/sdk';
-import { useBoringHelperContract, useDashboardContract, useQuickSwapFactoryContract } from './useContract';
+import {
+  ChainId,
+  CurrencyAmount,
+  Token,
+} from '@digitalnativeinc/standard-protocol-sdk';
+import {
+  useBoringHelperContract,
+  useDashboardContract,
+  useQuickSwapFactoryContract,
+} from './useContract';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import LPToken from '../types/LPToken';
@@ -47,14 +55,27 @@ const useLPTokensState = () => {
           )
         )
           .flat()
-          .filter((pair) => pair.token0 !== '0x1f6c3E047f529f82f743a7378A212a3d62fAA390');
+          .filter(
+            (pair) =>
+              pair.token0 !== '0x1f6c3E047f529f82f743a7378A212a3d62fAA390',
+          );
 
         const pairAddresses = pairs.map((pair) => pair[0]);
-        const pollPairs = await boringHelperContract?.pollPairs(account, pairAddresses);
+        const pollPairs = await boringHelperContract?.pollPairs(
+          account,
+          pairAddresses,
+        );
         const tokenAddresses = Array.from(
-          new Set(pairs.reduce((a: any, b: any) => a.push(b.token, b.token0, b.token1) && a, [])),
+          new Set(
+            pairs.reduce(
+              (a: any, b: any) => a.push(b.token, b.token0, b.token1) && a,
+              [],
+            ),
+          ),
         ).flat();
-        const tokenDetails = (await boringHelperContract?.getTokenInfo(tokenAddresses)).reduce((acc: any, cur: any) => {
+        const tokenDetails = (
+          await boringHelperContract?.getTokenInfo(tokenAddresses)
+        ).reduce((acc: any, cur: any) => {
           acc[cur[0]] = cur;
           return acc;
         }, {});
@@ -76,10 +97,25 @@ const useLPTokensState = () => {
             decimals: token.decimals,
             name: token.name,
             symbol: token.symbol,
-            balance: CurrencyAmount.fromRawAmount(token, pollPairs[index].balance),
+            balance: CurrencyAmount.fromRawAmount(
+              token,
+              pollPairs[index].balance,
+            ),
             totalSupply: pair.totalSupply,
-            tokenA: new Token(chainId as ChainId, tokenA.token, tokenA.decimals, tokenA.symbol, tokenA.name),
-            tokenB: new Token(chainId as ChainId, tokenB.token, tokenB.decimals, tokenB.symbol, tokenB.name),
+            tokenA: new Token(
+              chainId as ChainId,
+              tokenA.token,
+              tokenA.decimals,
+              tokenA.symbol,
+              tokenA.name,
+            ),
+            tokenB: new Token(
+              chainId as ChainId,
+              tokenB.token,
+              tokenB.decimals,
+              tokenB.symbol,
+              tokenB.name,
+            ),
           } as LPToken;
         });
 
@@ -103,7 +139,9 @@ const useLPTokensState = () => {
           ],
         };
 
-        const responses: any = await Promise.all(requests[chainId].map((request: any) => fetch(request)));
+        const responses: any = await Promise.all(
+          requests[chainId].map((request: any) => fetch(request)),
+        );
 
         let userLP = [];
 
@@ -141,7 +179,11 @@ const useLPTokensState = () => {
               new Set(
                 userLP?.reduce(
                   (a: any, b: any) =>
-                    a.push(b.pool_token.contract_address, b.token_0.contract_address, b.token_1.contract_address) && a,
+                    a.push(
+                      b.pool_token.contract_address,
+                      b.token_0.contract_address,
+                      b.token_1.contract_address,
+                    ) && a,
                   [],
                 ),
               ),
@@ -160,18 +202,35 @@ const useLPTokensState = () => {
             tokenDetails[getAddress(pair.pool_token.contract_address)].symbol,
             tokenDetails[getAddress(pair.pool_token.contract_address)].name,
           );
-          const tokenA = tokenDetails[getAddress(pair.token_0.contract_address)];
-          const tokenB = tokenDetails[getAddress(pair.token_1.contract_address)];
+          const tokenA =
+            tokenDetails[getAddress(pair.token_0.contract_address)];
+          const tokenB =
+            tokenDetails[getAddress(pair.token_1.contract_address)];
 
           return {
             address: getAddress(pair.pool_token.contract_address),
             decimals: token.decimals,
             name: `${tokenA.symbol}-${tokenB.symbol} LP Token`,
             symbol: `${tokenA.symbol}-${tokenB.symbol}`,
-            balance: CurrencyAmount.fromRawAmount(token, pair.pool_token.balance),
+            balance: CurrencyAmount.fromRawAmount(
+              token,
+              pair.pool_token.balance,
+            ),
             totalSupply: pair.pool_token.total_supply,
-            tokenA: new Token(chainId as ChainId, tokenA.token, tokenA.decimals, tokenA.symbol, tokenA.name),
-            tokenB: new Token(chainId as ChainId, tokenB.token, tokenB.decimals, tokenB.symbol, tokenB.name),
+            tokenA: new Token(
+              chainId as ChainId,
+              tokenA.token,
+              tokenA.decimals,
+              tokenA.symbol,
+              tokenA.name,
+            ),
+            tokenB: new Token(
+              chainId as ChainId,
+              tokenB.token,
+              tokenB.decimals,
+              tokenB.symbol,
+              tokenB.name,
+            ),
             version: pair.version,
           } as LPToken;
         });
@@ -183,10 +242,21 @@ const useLPTokensState = () => {
       setLoading(false);
       updatingLPTokens.current = false;
     }
-  }, [chainId, account, boringHelperContract, dashboardContract, quickSwapFactoryContract]);
+  }, [
+    chainId,
+    account,
+    boringHelperContract,
+    dashboardContract,
+    quickSwapFactoryContract,
+  ]);
 
   useEffect(() => {
-    if (chainId && account && boringHelperContract && !updatingLPTokens.current) {
+    if (
+      chainId &&
+      account &&
+      boringHelperContract &&
+      !updatingLPTokens.current
+    ) {
       updateLPTokens();
     }
   }, [account, chainId, boringHelperContract, updateLPTokens]);

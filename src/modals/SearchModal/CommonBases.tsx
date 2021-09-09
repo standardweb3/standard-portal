@@ -1,5 +1,10 @@
 import React from 'react';
-import { ChainId, Currency, Token, currencyEquals } from '@sushiswap/sdk';
+import {
+  ChainId,
+  Currency,
+  Token,
+  currencyEquals,
+} from '@digitalnativeinc/standard-protocol-sdk';
 
 import { Button } from '../../components-ui/Button';
 import { COMMON_BASES } from '../../constants/routing';

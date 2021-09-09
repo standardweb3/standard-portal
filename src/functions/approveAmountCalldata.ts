@@ -1,14 +1,19 @@
-import { BigintIsh, Currency, CurrencyAmount, JSBI } from '@sushiswap/sdk'
+import {
+  BigintIsh,
+  Currency,
+  CurrencyAmount,
+  JSBI,
+} from '@digitalnativeinc/standard-protocol-sdk';
 
-import { Interface } from '@ethersproject/abi'
+import { Interface } from '@ethersproject/abi';
 
 export function toHex(bigintIsh: BigintIsh) {
-  const bigInt = JSBI.BigInt(bigintIsh)
-  let hex = bigInt.toString(16)
+  const bigInt = JSBI.BigInt(bigintIsh);
+  let hex = bigInt.toString(16);
   if (hex.length % 2 !== 0) {
-    hex = `0${hex}`
+    hex = `0${hex}`;
   }
-  return `0x${hex}`
+  return `0x${hex}`;
 }
 
 const ERC20_INTERFACE = new Interface([
@@ -24,17 +29,21 @@ const ERC20_INTERFACE = new Interface([
     stateMutability: 'nonpayable',
     type: 'function',
   },
-])
+]);
 
 export default function approveAmountCalldata(
   amount: CurrencyAmount<Currency>,
-  spender: string
+  spender: string,
 ): { to: string; data: string; value: '0x0' } {
-  if (!amount.currency.isToken) throw new Error('Must call with an amount of token')
-  const approveData = ERC20_INTERFACE.encodeFunctionData('approve', [spender, toHex(amount.quotient)])
+  if (!amount.currency.isToken)
+    throw new Error('Must call with an amount of token');
+  const approveData = ERC20_INTERFACE.encodeFunctionData('approve', [
+    spender,
+    toHex(amount.quotient),
+  ]);
   return {
     to: amount.currency.address,
     data: approveData,
     value: '0x0',
-  }
+  };
 }

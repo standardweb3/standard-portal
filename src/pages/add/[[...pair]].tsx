@@ -7,7 +7,7 @@ import {
   currencyEquals,
   Percent,
   WNATIVE,
-} from '@sushiswap/sdk';
+} from '@digitalnativeinc/standard-protocol-sdk';
 import { BigNumber } from 'ethers';
 import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
@@ -57,6 +57,8 @@ import { ExchangeHeader } from '../../components-ui/Exchange/ExchangeHeader';
 import { ChevronRightIcon } from '@heroicons/react/solid';
 import {
   ArrowCircleRightIcon,
+  ArrowRightIcon,
+  MinusIcon,
   PlusCircleIcon,
   PlusIcon,
 } from '@heroicons/react/outline';
@@ -65,6 +67,7 @@ import { MinimalPositionCard } from '../../components-ui/PositionCard';
 import UnsupportedCurrencyFooter from '../../features/swap/UnsupportedCurrencyFooter';
 import { RippleSpinner } from '../../components-ui/Spinner/RippleSpinner';
 import { Typographies } from '../../utils/Typography';
+import { TradeAmountInfo } from '../../components-ui/TradeAmountInfo';
 
 const DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE = new Percent(50, 10_000);
 
@@ -155,6 +158,7 @@ export default function Liquidity() {
   }, {});
 
   const routerContract = useRouterContract();
+  console.log(routerContract.address);
 
   // check whether the user has approved the router on the tokens
   const [approvalA, approveACallback] = useApproveCallback(
@@ -340,13 +344,31 @@ export default function Liquidity() {
     );
   };
 
-  const pendingText = `Supplying ${parsedAmounts[
-    Field.CURRENCY_A
-  ]?.toSignificant(6)} ${
-    currencies[Field.CURRENCY_A]?.symbol
-  } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)} ${
-    currencies[Field.CURRENCY_B]?.symbol
-  }`;
+  const pendingMessage = () => (
+    <div className="flex flex-col justify-center items-center space-y-3">
+      <div className="flex items-center space-x-3">
+        <TradeAmountInfo amount={parsedAmounts[Field.CURRENCY_A]} />
+      </div>
+      <div className="flex items-center space-x-3">
+        <TradeAmountInfo amount={parsedAmounts[Field.CURRENCY_B]} />
+      </div>
+      <ArrowRightIcon className="w-3 h-3" />
+      <div className="flex items-center space-x-3">
+        <DoubleCurrencyLogo
+          currency0={currencyA}
+          currency1={currencyB}
+          currencyClassName="rounded-full"
+          size={24}
+        />
+        <div>
+          {liquidityMinted?.toSignificant(6)}&nbsp;
+          {currencies[Field.CURRENCY_A]?.symbol +
+            '-' +
+            currencies[Field.CURRENCY_B]?.symbol}
+        </div>
+      </div>
+    </div>
+  );
 
   const handleCurrencyASelect = useCallback(
     (currencyA: Currency) => {
@@ -484,7 +506,7 @@ export default function Liquidity() {
                   bottomContent={modalBottom}
                 />
               )}
-              pendingText={pendingText}
+              pendingText={pendingMessage()}
             />
             <div className="grid gap-3">
               {pair && pairState !== PairState.INVALID && (

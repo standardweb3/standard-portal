@@ -17,17 +17,17 @@ export type ButtonProps = {
 };
 
 const BORDERED = {
-  primary: 'bg-transparent border border-primary text-text',
-  secondary: 'bg-transparent border border-secondary text-text',
-  danger: 'bg-transparent border border-danger text-text',
-  warn: 'bg-transparent border border-warn text-text',
-  dark: 'bg-transparent border border-dark text-text',
-  info: 'bg-transparent border border-info text-text',
-  link: 'bg-transparent border border-link text-text',
+  primary: 'bg-transparent border border-primary text-primary',
+  secondary: 'bg-transparent border border-secondary text-secondary',
+  danger: 'bg-transparent border border-danger text-danger',
+  warn: 'bg-transparent border border-warn text-warn',
+  dark: 'bg-transparent border border-dark text-dark',
+  info: 'bg-transparent border border-info text-info',
+  link: 'bg-transparent border border-link text-link',
   white: 'bg-transparent border border-white text-text',
-  success: 'bg-transparent border border-success text-text',
+  success: 'bg-transparent border border-success text-success',
   disabled: 'bg-transparent border border-info text-info',
-  green: 'bg-transparent border border-green text-text',
+  green: 'bg-transparent border border-green text-green',
 };
 
 const DEFAULT = {

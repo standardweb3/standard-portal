@@ -1,5 +1,9 @@
 import React, { FC, useCallback, useMemo } from 'react';
-import { ChainId, CurrencyAmount, Ether } from '@sushiswap/sdk';
+import {
+  ChainId,
+  CurrencyAmount,
+  Ether,
+} from '@digitalnativeinc/standard-protocol-sdk';
 import {
   XCircleIcon,
   MinusCircleIcon,

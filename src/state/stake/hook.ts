@@ -1,4 +1,4 @@
-// import { CurrencyAmount, JSBI, Token } from '@sushiswap/sdk'
+// import { CurrencyAmount, JSBI, Token } from '@digitalnativeinc/standard-protocol-sdk'
 
 // import { t } from '@lingui/macro'
 // import { tryParseAmount } from '../../functions'
@@ -67,4 +67,4 @@
 //   }
 // }
 
-export {}
+export {};

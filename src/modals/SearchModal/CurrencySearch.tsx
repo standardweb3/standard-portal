@@ -1,4 +1,9 @@
-import { ChainId, Currency, NATIVE, Token } from '@sushiswap/sdk';
+import {
+  ChainId,
+  Currency,
+  NATIVE,
+  Token,
+} from '@digitalnativeinc/standard-protocol-sdk';
 import React, {
   KeyboardEvent,
   RefObject,

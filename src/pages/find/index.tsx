@@ -5,7 +5,7 @@ import {
   JSBI,
   NATIVE,
   Token,
-} from '@sushiswap/sdk';
+} from '@digitalnativeinc/standard-protocol-sdk';
 import { PairState, useV2Pair } from '../../hooks/useV2Pairs';
 import React, { useCallback, useEffect, useState } from 'react';
 

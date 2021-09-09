@@ -207,7 +207,6 @@ const ListRow = memo(({ listUrl }: { listUrl: string }) => {
           </StyledListUrlText>
           <StyledMenu ref={node as any}>
             <Button
-              color="transprent"
               className="px-0 py-0 bg-transparent ml-2"
               onClick={toggle}
               ref={setReferenceElement}

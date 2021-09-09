@@ -1,21 +1,21 @@
-import { useAppSelector } from '../hooks'
-import { Token } from '@sushiswap/sdk'
-import { tryParseAmount } from '../../functions'
-import useStakeSushiToBentoStrategy from './strategies/useStakeSushiToBentoStrategy'
-import { DerivedInariState, InariState } from './types'
-import useStakeSushiToCreamStrategy from './strategies/useStakeSushiToCreamStrategy'
-import useStakeSushiToCreamToBentoStrategy from './strategies/useStakeSushiToCreamToBentoStrategy'
-import useStakeSushiToAaveStrategy from './strategies/useStakeSushiToAaveStrategy'
-import { useMemo } from 'react'
+import { useAppSelector } from '../hooks';
+import { Token } from '@digitalnativeinc/standard-protocol-sdk';
+import { tryParseAmount } from '../../functions';
+import useStakeSushiToBentoStrategy from './strategies/useStakeSushiToBentoStrategy';
+import { DerivedInariState, InariState } from './types';
+import useStakeSushiToCreamStrategy from './strategies/useStakeSushiToCreamStrategy';
+import useStakeSushiToCreamToBentoStrategy from './strategies/useStakeSushiToCreamToBentoStrategy';
+import useStakeSushiToAaveStrategy from './strategies/useStakeSushiToAaveStrategy';
+import { useMemo } from 'react';
 
 export function useInariState(): InariState {
-  return useAppSelector((state) => state.inari)
+  return useAppSelector((state) => state.inari);
 }
 
 // Redux doesn't allow for non-serializable classes so use a derived state hook for complex values
 // Derived state may not use any of the strategy hooks to avoid an infinite loop
 export function useDerivedInariState(): DerivedInariState {
-  const { inputValue, outputValue, tokens, general, ...rest } = useInariState()
+  const { inputValue, outputValue, tokens, general, ...rest } = useInariState();
 
   // BalancePanel input token
   const inputToken = useMemo(
@@ -24,10 +24,15 @@ export function useDerivedInariState(): DerivedInariState {
         tokens.inputToken.chainId,
         tokens.inputToken.address,
         tokens.inputToken.decimals,
-        tokens.inputToken.symbol
+        tokens.inputToken.symbol,
       ),
-    [tokens.inputToken.address, tokens.inputToken.chainId, tokens.inputToken.decimals, tokens.inputToken.symbol]
-  )
+    [
+      tokens.inputToken.address,
+      tokens.inputToken.chainId,
+      tokens.inputToken.decimals,
+      tokens.inputToken.symbol,
+    ],
+  );
 
   // BalancePanel output token
   const outputToken = useMemo(
@@ -36,10 +41,15 @@ export function useDerivedInariState(): DerivedInariState {
         tokens.outputToken.chainId,
         tokens.outputToken.address,
         tokens.outputToken.decimals,
-        tokens.outputToken.symbol
+        tokens.outputToken.symbol,
       ),
-    [tokens.outputToken.address, tokens.outputToken.chainId, tokens.outputToken.decimals, tokens.outputToken.symbol]
-  )
+    [
+      tokens.outputToken.address,
+      tokens.outputToken.chainId,
+      tokens.outputToken.decimals,
+      tokens.outputToken.symbol,
+    ],
+  );
 
   return useMemo(
     () => ({
@@ -52,22 +62,25 @@ export function useDerivedInariState(): DerivedInariState {
         outputToken,
       },
     }),
-    [general, inputToken, inputValue, outputToken, outputValue, rest]
-  )
+    [general, inputToken, inputValue, outputToken, outputValue, rest],
+  );
 }
 
 export function useSelectedInariStrategy() {
-  const { id: selectedStrategy } = useInariState()
-  const strategies = useInariStrategies()
-  return useMemo(() => strategies[selectedStrategy], [selectedStrategy, strategies])
+  const { id: selectedStrategy } = useInariState();
+  const strategies = useInariStrategies();
+  return useMemo(() => strategies[selectedStrategy], [
+    selectedStrategy,
+    strategies,
+  ]);
 }
 
 // Use this hook to register all strategies
 export function useInariStrategies() {
-  const stakeSushiToBentoStrategy = useStakeSushiToBentoStrategy()
-  const stakeSushiToCreamStrategy = useStakeSushiToCreamStrategy()
+  const stakeSushiToBentoStrategy = useStakeSushiToBentoStrategy();
+  const stakeSushiToCreamStrategy = useStakeSushiToCreamStrategy();
   // const stakeSushiToCreamToBentoStrategy = useStakeSushiToCreamToBentoStrategy()
-  const stakeSushiToAaveStrategy = useStakeSushiToAaveStrategy()
+  const stakeSushiToAaveStrategy = useStakeSushiToAaveStrategy();
 
   return useMemo(
     () => ({
@@ -76,6 +89,10 @@ export function useInariStrategies() {
       // [stakeSushiToCreamToBentoStrategy.id]: stakeSushiToCreamToBentoStrategy,
       [stakeSushiToAaveStrategy.id]: stakeSushiToAaveStrategy,
     }),
-    [stakeSushiToAaveStrategy, stakeSushiToBentoStrategy, stakeSushiToCreamStrategy]
-  )
+    [
+      stakeSushiToAaveStrategy,
+      stakeSushiToBentoStrategy,
+      stakeSushiToCreamStrategy,
+    ],
+  );
 }

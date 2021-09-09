@@ -1,4 +1,4 @@
-import { ChainId } from '@sushiswap/sdk';
+import { ChainId } from '@digitalnativeinc/standard-protocol-sdk';
 import cookie from 'cookie-cutter';
 // next
 import Image from 'next/image';

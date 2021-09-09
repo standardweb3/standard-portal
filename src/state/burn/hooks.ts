@@ -5,7 +5,7 @@ import {
   Pair,
   Percent,
   Token,
-} from '@sushiswap/sdk';
+} from '@digitalnativeinc/standard-protocol-sdk';
 import { Field, typeInput } from './actions';
 import { useAppDispatch, useAppSelector } from '../hooks';
 

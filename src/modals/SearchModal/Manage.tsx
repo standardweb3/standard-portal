@@ -5,7 +5,7 @@ import CurrencyModalView from './CurrencyModalView';
 import ManageLists from './ManageLists';
 import ManageTokens from './ManageTokens';
 import { ModalHeader } from '../../components-ui/Modal/ModalHeader';
-import { Token } from '@sushiswap/sdk';
+import { Token } from '@digitalnativeinc/standard-protocol-sdk';
 import { TokenList } from '@uniswap/token-lists';
 import styled from '@emotion/styled';
 import 'react-tabs/style/react-tabs.css';

@@ -1,4 +1,9 @@
-import { Currency, NATIVE, WNATIVE, currencyEquals } from '@sushiswap/sdk';
+import {
+  Currency,
+  NATIVE,
+  WNATIVE,
+  currencyEquals,
+} from '@digitalnativeinc/standard-protocol-sdk';
 
 import Link from 'next/link';
 import React from 'react';

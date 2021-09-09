@@ -1,4 +1,8 @@
-import { ChainId, Currency, Percent } from '@sushiswap/sdk';
+import {
+  ChainId,
+  Currency,
+  Percent,
+} from '@digitalnativeinc/standard-protocol-sdk';
 import React, { FC, useState } from 'react';
 
 import { Gas } from '../Gas';

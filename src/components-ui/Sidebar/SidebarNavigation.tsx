@@ -9,7 +9,6 @@ export function SidebarNavigation({ routes }) {
   return (
     <div>
       {routes.map((route) => {
-        console.log(router.pathname, route.url);
         const active = route.urls.find((url: string) => {
           return router.pathname.startsWith(url);
         });

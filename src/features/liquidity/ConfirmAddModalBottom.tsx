@@ -1,4 +1,9 @@
-import { Currency, CurrencyAmount, Fraction, Percent } from '@sushiswap/sdk';
+import {
+  Currency,
+  CurrencyAmount,
+  Fraction,
+  Percent,
+} from '@digitalnativeinc/standard-protocol-sdk';
 
 import { Field } from '../../state/mint/actions';
 import React from 'react';

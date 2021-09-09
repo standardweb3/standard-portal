@@ -1,5 +1,5 @@
 import React from 'react';
-import { Currency, Token } from '@sushiswap/sdk';
+import { Currency, Token } from '@digitalnativeinc/standard-protocol-sdk';
 
 import { TokenList } from '@uniswap/token-lists/dist/types';
 import { getExplorerLink } from '../../functions/explorer';

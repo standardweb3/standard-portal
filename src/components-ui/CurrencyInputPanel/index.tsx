@@ -1,4 +1,10 @@
-import { Currency, CurrencyAmount, Pair, Percent, Token } from '@sushiswap/sdk';
+import {
+  Currency,
+  CurrencyAmount,
+  Pair,
+  Percent,
+  Token,
+} from '@digitalnativeinc/standard-protocol-sdk';
 import React, { ReactNode, useCallback, useState } from 'react';
 import { classNames, formatCurrencyAmount } from '../../functions';
 
