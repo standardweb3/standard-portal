@@ -21,7 +21,7 @@ export default function LiquidityHeader({
           px-1
           text-base font-medium text-center
           border-b-4
-          ${isAddActive ? 'border-primary' : 'border-transparent'}
+          ${isAddActive ? 'border-primary' : 'border-opaque-border-secondary'}
           `}
         >
           Add
@@ -40,7 +40,7 @@ export default function LiquidityHeader({
           px-1
           text-base font-medium text-center 
           border-b-4
-          ${!isAddActive ? 'border-primary' : 'border-transparent'}
+          ${!isAddActive ? 'border-primary' : 'border-opaque-border-secondary'}
           `}
         >
           Remove

@@ -24,9 +24,9 @@ export default function PercentInputPanel({
     return presetPercentages.map((percent) => {
       return (
         <Button
+          key={percent}
           type="bordered"
           color="primary"
-          key="percent"
           className="px-3 py-2"
           onClick={() => onUserInput(percent)}
         >

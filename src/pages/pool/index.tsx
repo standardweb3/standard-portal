@@ -111,8 +111,6 @@ export default function Pool() {
         <PageContent>
           <div className="p-4 mb-3 space-y-3">
             <Back />
-
-            <div>{`My Liquidity Positions`}</div>
           </div>
 
           <Alert
@@ -126,12 +124,15 @@ export default function Pool() {
 
           <div
             className="
-              max-w-[600px] 
-              bg-swap-background 
-              rounded-xl p-8
-              shadow-primary-glow text-text"
+            md:min-w-[600px] 
+            max-w-[1000px]
+            bg-opaque
+            rounded-20 p-8
+            text-text"
           >
             <div className="grid grid-flow-row gap-3">
+              <div className="font-bold">My Liquidity Positions</div>
+
               {!account ? (
                 <WalletConnector />
               ) : v2IsLoading ? (
@@ -142,7 +143,7 @@ export default function Pool() {
                   <ExternalLink
                     href={"https://analytics.sushi.com/user/" + account}
                   >
-                    Account analytics and accrued fees <span> ↗</span>
+                  Account analytics and accrued fees <span> ↗</span>
                   </ExternalLink>
                 </div> */}
                   {allV2PairsWithLiquidity.map((v2Pair) => (
@@ -166,6 +167,7 @@ export default function Pool() {
                 )}
               >
                 <Button
+                  type="bordered"
                   id="add-pool-button"
                   className="grid items-center justify-center grid-flow-col gap-2 whitespace-nowrap"
                   onClick={() =>
@@ -175,6 +177,7 @@ export default function Pool() {
                   {`Add`}
                 </Button>
                 <Button
+                  type="bordered"
                   id="add-pool-button"
                   onClick={() => router.push(`/find`)}
                 >
@@ -183,6 +186,7 @@ export default function Pool() {
 
                 {migrationSupported && (
                   <Button
+                    type="bordered"
                     id="create-pool-button"
                     onClick={() => router.push(`/migrate`)}
                   >

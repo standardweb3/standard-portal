@@ -21,6 +21,7 @@ import { useTokenBalance } from '../../state/wallet/hooks';
 import { useTotalSupply } from '../../hooks/useTotalSupply';
 import { classNames } from '../../functions';
 import { Transition } from '@headlessui/react';
+import { Typographies } from '../../utils/Typography';
 
 interface PositionCardProps {
   pair: Pair;
@@ -223,14 +224,17 @@ export function FullPositionCard({
 
   return (
     <div
-      className="rounded bg-dark-800"
+      className="rounded-20 bg-opaque"
       // style={{ backgroundColor }}
     >
       <Button
-        className={classNames(
-          'flex items-center justify-between w-full px-4 py-6 cursor-pointer bg-dark-800 hover:bg-dark-700',
-          showMore && '!bg-dark-700',
-        )}
+        className="
+          w-full
+          flex justify-between
+          space-x-3
+          items-center
+          bg-opaque-secondary rounded-20 
+          px-5 py-5"
         style={{ boxShadow: 'none' }}
         onClick={() => setShowMore(!showMore)}
       >
@@ -238,16 +242,17 @@ export function FullPositionCard({
           <DoubleCurrencyLogo
             currency0={currency0}
             currency1={currency1}
+            currencyClassName="rounded-full"
             size={40}
           />
-          <div className="text-xl font-semibold">
+          <div className="text-base font-bold">
             {!currency0 || !currency1
               ? `Loading`
               : `${currency0.symbol}-${currency1.symbol}`}
           </div>
         </div>
         <div className="flex items-center space-x-4">
-          {`Manage`}
+          Manage
           {showMore ? (
             <ChevronUpIcon width="20px" height="20px" className="ml-4" />
           ) : (
@@ -266,52 +271,16 @@ export function FullPositionCard({
         leaveTo="opacity-0"
       >
         <div className="p-4 space-y-4">
-          <div className="px-4 py-4 space-y-1 text-sm rounded text-high-emphesis bg-dark-900">
-            <div className="flex items-center justify-between">
+          <div className="px-4 py-4 space-y-1">
+            <div className="flex items-center justify-between font-bold">
               <div>{`Your total pool tokens`}:</div>
-              <div className="font-semibold">
+              <div>
                 {userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}
               </div>
             </div>
-            {stakedBalance && (
-              <div className="flex items-center justify-between">
-                <div>{`Pool tokens in rewards pool`}:</div>
-                <div className="font-semibold">
-                  {stakedBalance.toSignificant(4)}
-                </div>
-              </div>
-            )}
-            <div className="flex items-center justify-between">
-              <div>{`Pooled ${currency0?.symbol}`}:</div>
-              {token0Deposited ? (
-                <div className="flex items-center space-x-2">
-                  <div className="font-semibold">
-                    {token0Deposited?.toSignificant(6)}
-                  </div>
-                  <CurrencyLogo size="20px" currency={currency0} />
-                </div>
-              ) : (
-                '-'
-              )}
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div>{`Pooled ${currency1?.symbol}`}:</div>
-              {token1Deposited ? (
-                <div className="flex items-center space-x-2">
-                  <div className="font-semibold ">
-                    {token1Deposited?.toSignificant(6)}
-                  </div>
-                  <CurrencyLogo size="20px" currency={currency1} />
-                </div>
-              ) : (
-                '-'
-              )}
-            </div>
-
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between font-bold">
               <div>{`Your pool share`}:</div>
-              <div className="font-semibold">
+              <div>
                 {poolTokenPercentage
                   ? (poolTokenPercentage.toFixed(2) === '0.00'
                       ? '<0.01'
@@ -319,11 +288,49 @@ export function FullPositionCard({
                   : '-'}
               </div>
             </div>
+            {stakedBalance && (
+              <div className="flex items-center justify-between text-grey">
+                <div>{`Pool tokens in rewards pool`}:</div>
+                <div>{stakedBalance.toSignificant(4)}</div>
+              </div>
+            )}
+            <div className="flex items-center justify-between text-grey">
+              <div>{`Pooled ${currency0?.symbol}`}:</div>
+              {token0Deposited ? (
+                <div className="flex items-center space-x-2">
+                  <div>{token0Deposited?.toSignificant(6)}</div>
+                  <CurrencyLogo
+                    size="20px"
+                    currency={currency0}
+                    className="rounded-full"
+                  />
+                </div>
+              ) : (
+                '-'
+              )}
+            </div>
+
+            <div className="flex items-center justify-between text-grey">
+              <div>{`Pooled ${currency1?.symbol}`}:</div>
+              {token1Deposited ? (
+                <div className="flex items-center space-x-2">
+                  <div>{token1Deposited?.toSignificant(6)}</div>
+                  <CurrencyLogo
+                    size="20px"
+                    currency={currency1}
+                    className="rounded-full"
+                  />
+                </div>
+              ) : (
+                '-'
+              )}
+            </div>
           </div>
           {userDefaultPoolBalance &&
             JSBI.greaterThan(userDefaultPoolBalance.quotient, BIG_INT_ZERO) && (
               <div className="grid grid-cols-2 gap-4">
                 <Button
+                  className={Typographies.liquidityButton}
                   onClick={() => {
                     router.push(`/add/${pair.liquidityToken.address}`);
                   }}
@@ -331,6 +338,7 @@ export function FullPositionCard({
                   {`Add`}
                 </Button>
                 <Button
+                  className={Typographies.liquidityButton}
                   onClick={() => {
                     router.push(
                       `/remove/${currencyId(currency0)}/${currencyId(
