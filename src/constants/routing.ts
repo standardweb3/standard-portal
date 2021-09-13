@@ -21,6 +21,7 @@ import {
   HBTC,
   HECO,
   IBETH,
+  KOVAN,
   LFBTC,
   LIFT,
   MATIC,

@@ -17,9 +17,11 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
     currencyA,
     currencyB,
   );
+  console.log('bjhl allCurrencyCombinations', allCurrencyCombinations);
 
   const allPairs = useV2Pairs(allCurrencyCombinations);
 
+  console.log('bjhl allPairs', allPairs);
   // only pass along valid pairs, non-duplicated pairs
   return useMemo(
     () =>

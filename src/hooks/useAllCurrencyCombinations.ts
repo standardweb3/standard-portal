@@ -21,7 +21,6 @@ export function useAllCurrencyCombinations(
 
   const bases: Token[] = useMemo(() => {
     if (!chainId) return [];
-
     const common = BASES_TO_CHECK_TRADES_AGAINST[chainId] ?? [];
     const additionalA = tokenA
       ? ADDITIONAL_BASES[chainId]?.[tokenA.address] ?? []
@@ -79,7 +78,6 @@ export function useAllCurrencyCombinations(
                 !customBasesB.find((base) => tokenA.equals(base))
               )
                 return false;
-
               return true;
             })
         : [],

@@ -55,6 +55,7 @@ export function useV2Pairs(
     PAIR_INTERFACE,
     'getReserves',
   );
+  console.log('results', results);
 
   return useMemo(() => {
     return results.map((result, i) => {

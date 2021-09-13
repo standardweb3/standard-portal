@@ -74,6 +74,7 @@ import { getContract } from '../functions/contract';
 import { getVerifyingContract } from 'limitorderv2-sdk';
 import { useActiveWeb3React } from './useActiveWeb3React';
 import { useMemo } from 'react';
+import { Console } from 'console';
 
 const UNI_FACTORY_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f';
 
@@ -258,10 +259,10 @@ export function useRouterContract(
   withSignerIfPossible?: boolean,
 ): Contract | null {
   const { chainId } = useActiveWeb3React();
-
   const address = useArcher
     ? ARCHER_ROUTER_ADDRESS[chainId]
     : ROUTER_ADDRESS[chainId];
+
   const abi = useArcher ? ARCHER_ROUTER_ABI : ROUTER_ABI;
 
   return useContract(address, abi, withSignerIfPossible);

@@ -9,6 +9,23 @@ import {
 
 import { SupportedChainId } from '../chains';
 
+export const KOVAN: { [key: string]: Token } = {
+  USDC: new Token(
+    ChainId.KOVAN,
+    '0xb7a4f3e9097c08da09517b5ab877f7a917224ede',
+    6,
+    'USDC',
+    'USD Coin',
+  ),
+  USDT: new Token(
+    ChainId.KOVAN,
+    '0x07de306ff27a2b630b1141956844eb1552b956b5',
+    6,
+    'USDT',
+    'Tether USD',
+  ),
+};
+
 export const CELO: { [key: string]: Token } = {
   mCUSD: new Token(
     ChainId.CELO,
