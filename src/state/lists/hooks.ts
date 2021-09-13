@@ -77,6 +77,7 @@ function combineMaps(
     4: { ...map1[4], ...map2[4] }, // rinkeby
     5: { ...map1[5], ...map2[5] }, // goerli
     42: { ...map1[42], ...map2[42] }, // kovan
+    81: { ...map1[81], ...map2[81] },
     250: { ...map1[250], ...map2[250] }, // fantom
     4002: { ...map1[4002], ...map2[4002] }, // fantom testnet
     137: { ...map1[137], ...map2[137] }, // matic

@@ -62,6 +62,7 @@ export const injected = new InjectedConnector({
     4, // rinkeby
     5, // goreli
     42, // kovan
+    81, // shibuya
     250, // fantom
     4002, // fantom testnet
     137, // matic

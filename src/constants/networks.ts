@@ -17,6 +17,8 @@ const Rinkeby = '/img/networks/rinkeby-network.jpg';
 const Ropsten = '/img/networks/ropsten-network.jpg';
 const xDai = '/img/networks/xdai-network.jpg';
 const Celo = '/img/networks/celo-network.jpg';
+const Shibuya = '/img/networks/shibuya-network.jpg';
+
 // const Palm =
 // 'https://raw.githubusercontent.com/sushiswap/icons/master/network/palm.jpg';
 
@@ -26,6 +28,7 @@ export const NETWORK_ICON = {
   [ChainId.RINKEBY]: Rinkeby,
   [ChainId.GÖRLI]: Goerli,
   [ChainId.KOVAN]: Kovan,
+  [ChainId.SHIBUYA]: Shibuya,
   [ChainId.FANTOM]: Fantom,
   [ChainId.FANTOM_TESTNET]: Fantom,
   [ChainId.BSC]: Bsc,
@@ -54,6 +57,7 @@ export const NETWORK_LABEL: { [chainId in ChainId]?: string } = {
   [ChainId.ROPSTEN]: 'Ropsten',
   [ChainId.GÖRLI]: 'Görli',
   [ChainId.KOVAN]: 'Kovan',
+  [ChainId.SHIBUYA]: 'Shibuya',
   [ChainId.FANTOM]: 'Fantom',
   [ChainId.FANTOM_TESTNET]: 'Fantom Testnet',
   [ChainId.MATIC]: 'Polygon (Matic)',

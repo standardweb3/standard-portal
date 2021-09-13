@@ -11,6 +11,8 @@ import { ParticlesBackground, ParticlesBackgroundMemoized } from '../Particles';
 import { networkModalParticles } from '../../theme/particles';
 import { SidebarNavigation } from './SidebarNavigation';
 import { sidebarRoutes } from '../../routes';
+import { useSwitchProtocol } from '../../state/protocol/hooks';
+import { Protocol } from '@digitalnativeinc/standard-protocol-sdk';
 
 export function Sidebar() {
   const theme = useTheme();
@@ -18,6 +20,8 @@ export function Sidebar() {
   const userEthBalance = useETHBalances(account ? [account] : [])?.[
     account ?? ''
   ];
+
+  const [protocol, switchProtocol] = useSwitchProtocol();
 
   return (
     <div
@@ -39,6 +43,23 @@ export function Sidebar() {
       </div>
       <div className="py-2">
         <SidebarNavigation routes={sidebarRoutes} />
+      </div>
+      <div className="flex flex-col">
+        <div>{`current: ${protocol}`}</div>
+        <button
+          onClick={() => {
+            switchProtocol(Protocol.SUSHISWAP);
+          }}
+        >
+          sushi
+        </button>
+        <button
+          onClick={() => {
+            switchProtocol(Protocol.STANDARD_PROTOCOL);
+          }}
+        >
+          standard
+        </button>
       </div>
     </div>
   );

@@ -75,6 +75,7 @@ import { getVerifyingContract } from 'limitorderv2-sdk';
 import { useActiveWeb3React } from './useActiveWeb3React';
 import { useMemo } from 'react';
 import { Console } from 'console';
+import { useFactoryAddress, useRouterAddressWithChainId } from '.';
 
 const UNI_FACTORY_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f';
 
@@ -250,8 +251,8 @@ export function useMiniChefContract(
 }
 
 export function useFactoryContract(): Contract | null {
-  const { chainId } = useActiveWeb3React();
-  return useContract(chainId && FACTORY_ADDRESS[chainId], FACTORY_ABI, false);
+  const factoryAddress = useFactoryAddress();
+  return useContract(factoryAddress, FACTORY_ABI, false);
 }
 
 export function useRouterContract(
@@ -259,9 +260,7 @@ export function useRouterContract(
   withSignerIfPossible?: boolean,
 ): Contract | null {
   const { chainId } = useActiveWeb3React();
-  const address = useArcher
-    ? ARCHER_ROUTER_ADDRESS[chainId]
-    : ROUTER_ADDRESS[chainId];
+  const address = useRouterAddressWithChainId(chainId, useArcher);
 
   const abi = useArcher ? ARCHER_ROUTER_ABI : ROUTER_ABI;
 

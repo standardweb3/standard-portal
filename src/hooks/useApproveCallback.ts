@@ -19,6 +19,7 @@ import { calculateGasMargin } from '../functions/trade';
 import { useActiveWeb3React } from './useActiveWeb3React';
 import { useTokenAllowance } from './useTokenAllowance';
 import { useTokenContract } from './useContract';
+import { useRouterAddressWithChainId } from '.';
 
 export enum ApprovalState {
   UNKNOWN = 'UNKNOWN',
@@ -136,6 +137,8 @@ export function useApproveCallbackFromTrade(
   doArcher: boolean = false,
 ) {
   const { chainId } = useActiveWeb3React();
+  const routerAddress = useRouterAddressWithChainId(chainId, doArcher);
+
   const amountToApprove = useMemo(
     () =>
       trade && trade.inputAmount.currency.isToken
@@ -147,9 +150,7 @@ export function useApproveCallbackFromTrade(
     amountToApprove,
     chainId
       ? trade instanceof V2Trade
-        ? !doArcher
-          ? ROUTER_ADDRESS[chainId]
-          : ARCHER_ROUTER_ADDRESS[chainId]
+        ? routerAddress
         : undefined
       : undefined,
   );

@@ -4,12 +4,14 @@ import {
   FACTORY_ADDRESS,
   Pair,
   computePairAddress,
+  PROTOCOLS,
 } from '@digitalnativeinc/standard-protocol-sdk';
 
 import IUniswapV2PairABI from '@sushiswap/core/abi/IUniswapV2Pair.json';
 import { Interface } from '@ethersproject/abi';
 import { useMemo } from 'react';
 import { useMultipleContractSingleData } from '../state/multicall/hooks';
+import { useProtocol } from '../state/protocol/hooks';
 
 const PAIR_INTERFACE = new Interface(IUniswapV2PairABI);
 
@@ -23,6 +25,8 @@ export enum PairState {
 export function useV2Pairs(
   currencies: [Currency | undefined, Currency | undefined][],
 ): [PairState, Pair | null][] {
+  const protocol = useProtocol();
+
   const tokens = useMemo(
     () =>
       currencies.map(([currencyA, currencyB]) => [
@@ -35,15 +39,18 @@ export function useV2Pairs(
   const pairAddresses = useMemo(
     () =>
       tokens.map(([tokenA, tokenB]) => {
+        const factoryAddress =
+          PROTOCOLS[protocol].FACTORY_ADDRESS[tokenA.chainId];
         return tokenA &&
           tokenB &&
           tokenA.chainId === tokenB.chainId &&
           !tokenA.equals(tokenB) &&
-          FACTORY_ADDRESS[tokenA.chainId]
+          factoryAddress
           ? computePairAddress({
-              factoryAddress: FACTORY_ADDRESS[tokenA.chainId],
+              factoryAddress: factoryAddress,
               tokenA,
               tokenB,
+              protocol,
             })
           : undefined;
       }),
@@ -75,6 +82,7 @@ export function useV2Pairs(
         new Pair(
           CurrencyAmount.fromRawAmount(token0, reserve0.toString()),
           CurrencyAmount.fromRawAmount(token1, reserve1.toString()),
+          protocol,
         ),
       ];
     });

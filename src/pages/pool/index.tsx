@@ -27,10 +27,12 @@ import { Page } from '../../components-ui/Page';
 import { PageHeader } from '../../components-ui/PageHeader';
 import { WalletConnector } from '../../components-ui/WalletConnector';
 import { PageContent } from '../../components-ui/PageContent';
+import { useProtocol } from '../../state/protocol/hooks';
 
 export default function Pool() {
   const router = useRouter();
   const { account, chainId } = useActiveWeb3React();
+  const protocol = useProtocol();
 
   const userEthBalance = useETHBalances(account ? [account] : [])?.[
     account ?? ''
@@ -41,7 +43,7 @@ export default function Pool() {
   const tokenPairsWithLiquidityTokens = useMemo(
     () =>
       trackedTokenPairs.map((tokens) => ({
-        liquidityToken: toV2LiquidityToken(tokens),
+        liquidityToken: toV2LiquidityToken({ tokens, protocol }),
         tokens,
       })),
     [trackedTokenPairs],

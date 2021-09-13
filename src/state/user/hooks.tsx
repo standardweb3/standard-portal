@@ -8,6 +8,8 @@ import {
   Percent,
   Token,
   computePairAddress,
+  Protocol,
+  PROTOCOLS,
 } from '@digitalnativeinc/standard-protocol-sdk';
 import {
   SerializedPair,
@@ -246,19 +248,26 @@ export function useURLWarningToggle(): () => void {
  * @param tokenA one of the two tokens
  * @param tokenB the other token
  */
-export function toV2LiquidityToken([tokenA, tokenB]: [Token, Token]): Token {
+export function toV2LiquidityToken({
+  tokens: [tokenA, tokenB],
+  protocol,
+}: {
+  tokens: [Token, Token];
+  protocol: Protocol;
+}): Token {
   if (tokenA.chainId !== tokenB.chainId)
     throw new Error('Not matching chain IDs');
   if (tokenA.equals(tokenB)) throw new Error('Tokens cannot be equal');
-  if (!FACTORY_ADDRESS[tokenA.chainId])
-    throw new Error('No V2 factory address on this chain');
+  const factoryAddress = PROTOCOLS[protocol].FACTORY_ADDRESS[tokenA.chainId];
+  if (!factoryAddress) throw new Error('No V2 factory address on this chain');
 
   return new Token(
     tokenA.chainId,
     computePairAddress({
-      factoryAddress: FACTORY_ADDRESS[tokenA.chainId],
+      factoryAddress: factoryAddress,
       tokenA,
       tokenB,
+      protocol,
     }),
     18,
     'UNI-V2',
