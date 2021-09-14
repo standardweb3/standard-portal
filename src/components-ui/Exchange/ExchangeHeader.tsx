@@ -14,7 +14,7 @@ import { CalculatorIcon } from '@heroicons/react/solid';
 import { useRouter } from 'next/router';
 // import MyOrders from '../features/limit-order/MyOrders';
 import { NavigationLink } from '../NavigationLink';
-import { default as GasIcon } from '../../../public/icons/outlined/gas.svg';
+import { default as GasIcon } from '../../../public/icons/outlined/Gas.svg';
 import Settings from '../Settings';
 
 const getQuery = (input, output) => {
