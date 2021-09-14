@@ -271,7 +271,6 @@ export default function CurrencyList({
     if (isBreakLine(currency)) return BREAK_LINE;
     return currencyKey(currency);
   }, []);
-
   return (
     <FixedSizeList
       className="

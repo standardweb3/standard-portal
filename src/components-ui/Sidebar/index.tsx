@@ -44,7 +44,7 @@ export function Sidebar() {
       <div className="py-2">
         <SidebarNavigation routes={sidebarRoutes} />
       </div>
-      <div className="flex flex-col">
+      {/* <div className="flex flex-col">
         <div>{`current: ${protocol}`}</div>
         <button
           onClick={() => {
@@ -60,7 +60,7 @@ export function Sidebar() {
         >
           standard
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }

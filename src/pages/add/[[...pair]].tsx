@@ -158,7 +158,6 @@ export default function Liquidity() {
   }, {});
 
   const routerContract = useRouterContract();
-  console.log(routerContract.address);
 
   // check whether the user has approved the router on the tokens
   const [approvalA, approveACallback] = useApproveCallback(

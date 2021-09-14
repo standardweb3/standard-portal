@@ -15,6 +15,19 @@ const builders = {
         return `${prefix}/${type}/${data}`;
     }
   },
+  shiden: (
+    chainName: string,
+    data: string,
+    type: 'transaction' | 'token' | 'address' | 'block',
+  ) => {
+    const prefix = 'https://shiden.subscan.io';
+    switch (type) {
+      case 'transaction':
+        return `${prefix}/tx/${data}`;
+      default:
+        return `${prefix}/${type}/${data}`;
+    }
+  },
 
   fantom: (
     chainName: string,
@@ -275,6 +288,10 @@ const chains: ChainObject = {
   [ChainId.KOVAN]: {
     chainName: 'kovan',
     builder: builders.etherscan,
+  },
+  [ChainId.SHIBUYA]: {
+    chainName: '',
+    builder: builders.shiden,
   },
   [ChainId.MATIC]: {
     chainName: 'mainnet',

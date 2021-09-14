@@ -790,16 +790,16 @@ export function useMeowshiContract(
   );
 }
 
-export function useLimitOrderContract(
-  withSignerIfPossibe?: boolean,
-): Contract | null {
-  const { chainId } = useActiveWeb3React();
-  return useContract(
-    getVerifyingContract(chainId),
-    LIMIT_ORDER_ABI,
-    withSignerIfPossibe,
-  );
-}
+// export function useLimitOrderContract(
+//   withSignerIfPossibe?: boolean,
+// ): Contract | null {
+//   const { chainId } = useActiveWeb3React();
+//   return useContract(
+//     getVerifyingContract(chainId),
+//     LIMIT_ORDER_ABI,
+//     withSignerIfPossibe,
+//   );
+// }
 
 export function useLimitOrderHelperContract(
   withSignerIfPossible?: boolean,

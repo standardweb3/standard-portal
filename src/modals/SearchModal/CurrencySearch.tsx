@@ -82,7 +82,6 @@ export function CurrencySearch({
   const [invertSearchOrder] = useState<boolean>(false);
 
   let allTokens = useAllTokens();
-
   const router = useRouter();
 
   if (router.asPath.startsWith('/kashi/create')) {

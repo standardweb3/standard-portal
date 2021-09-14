@@ -9,6 +9,17 @@ import {
 
 import { SupportedChainId } from '../chains';
 
+
+export const SHIBUYA: { [key: string]: Token } = {
+    USDC: new Token(
+    ChainId.SHIBUYA,
+    '0xA4F42578c723A5B6781A9F49d586B8645ba85C31',
+    6,
+    'USDC',
+    'USD Coin'
+  )
+}
+
 export const KOVAN: { [key: string]: Token } = {
   USDC: new Token(
     ChainId.KOVAN,

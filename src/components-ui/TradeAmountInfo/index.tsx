@@ -9,7 +9,6 @@ export function TradeAmountInfo({
 }: {
   amount?: CurrencyAmount<Currency>;
 }) {
-  console.log(amount, amount?.toSignificant(6));
   return (
     <div className="flex items-center space-x-3">
       <CurrencyLogo currency={amount?.currency} className="rounded-full" />

@@ -44,24 +44,25 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
   return map;
 }
 
-// const _DEFAULT_TOKEN_LIST = {
-//   ...DEFAULT_TOKEN_LIST,
-//   tokens: [
-//     {
-//       address: '0x5260B7c335859f2791545b86135B9A6b8eFa7719',
-//       chainId: 42,
-//       name: 'STND',
-//       symbol: 'STND',
-//       decimals: 18,
-//       logoURI: '',
-//     },
-//     ...DEFAULT_TOKEN_LIST.tokens,
-//   ],
-// };
+const _DEFAULT_TOKEN_LIST = {
+  ...DEFAULT_TOKEN_LIST,
+  tokens: [
+    {
+      address: '0xA4F42578c723A5B6781A9F49d586B8645ba85C31',
+      chainId: 81,
+      name: 'USD Coin USDC',
+      symbol: 'USDC',
+      decimals: 6,
+      logoURI:
+        'https://raw.githubusercontent.com/compound-finance/token-list/master/assets/asset_USDC.svg',
+    },
+    ...DEFAULT_TOKEN_LIST.tokens,
+  ],
+};
 
-const TRANSFORMED_DEFAULT_TOKEN_LIST = listToTokenMap(DEFAULT_TOKEN_LIST);
+// const TRANSFORMED_DEFAULT_TOKEN_LIST = listToTokenMap(DEFAULT_TOKEN_LIST);
 // bjhl
-// const TRANSFORMED_DEFAULT_TOKEN_LIST = listToTokenMap(_DEFAULT_TOKEN_LIST);
+const TRANSFORMED_DEFAULT_TOKEN_LIST = listToTokenMap(_DEFAULT_TOKEN_LIST);
 
 export function useAllLists(): AppState['lists']['byUrl'] {
   return useAppSelector((state) => state.lists.byUrl);

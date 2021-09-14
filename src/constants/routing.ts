@@ -44,6 +44,7 @@ import {
   WBTC,
   XDAI,
   XSUSHI,
+  SHIBUYA,
 } from './tokens';
 // a list of tokens by chain
 import {
@@ -96,6 +97,7 @@ const WRAPPED_NATIVE_ONLY: ChainTokenList = {
   [ChainId.RINKEBY]: [WNATIVE[ChainId.RINKEBY]],
   [ChainId.GÖRLI]: [WNATIVE[ChainId.GÖRLI]],
   [ChainId.KOVAN]: [WNATIVE[ChainId.KOVAN]],
+  [ChainId.SHIBUYA]: [WNATIVE[ChainId.SHIBUYA]],
   [ChainId.FANTOM]: [WNATIVE[ChainId.FANTOM]],
   [ChainId.FANTOM_TESTNET]: [WNATIVE[ChainId.FANTOM_TESTNET]],
   [ChainId.MATIC]: [WNATIVE[ChainId.MATIC]],
@@ -288,6 +290,7 @@ export const COMMON_BASES: ChainTokenList = {
     USDT,
     WBTC,
   ],
+  [ChainId.SHIBUYA]: [...WRAPPED_NATIVE_ONLY[ChainId.SHIBUYA], SHIBUYA.USDC],
   [ChainId.MATIC]: [
     ...WRAPPED_NATIVE_ONLY[ChainId.MATIC],
     MATIC.USDC,

@@ -39,15 +39,14 @@ export function useV2Pairs(
   const pairAddresses = useMemo(
     () =>
       tokens.map(([tokenA, tokenB]) => {
-        const factoryAddress =
-          PROTOCOLS[protocol].FACTORY_ADDRESS[tokenA.chainId];
         return tokenA &&
           tokenB &&
           tokenA.chainId === tokenB.chainId &&
           !tokenA.equals(tokenB) &&
-          factoryAddress
+          PROTOCOLS[protocol].FACTORY_ADDRESS[tokenA.chainId]
           ? computePairAddress({
-              factoryAddress: factoryAddress,
+              factoryAddress:
+                PROTOCOLS[protocol].FACTORY_ADDRESS[tokenA.chainId],
               tokenA,
               tokenB,
               protocol,
@@ -62,7 +61,6 @@ export function useV2Pairs(
     PAIR_INTERFACE,
     'getReserves',
   );
-  console.log('results', results);
 
   return useMemo(() => {
     return results.map((result, i) => {
