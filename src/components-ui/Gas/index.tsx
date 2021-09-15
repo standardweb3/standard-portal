@@ -1,7 +1,7 @@
 import React from 'react';
 import useSWR, { SWRResponse } from 'swr';
 
-export function Gas() {
+export function Gas({ className }: { className?: string }) {
   const {
     data,
     error,
@@ -15,5 +15,5 @@ export function Gas() {
   if (error) return <div>failed to load</div>;
   if (!data) return <div>loading...</div>;
 
-  return <div>{data.average / 10}</div>;
+  return <div className={className}>{data.average / 10}</div>;
 }

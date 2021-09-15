@@ -9,7 +9,7 @@ import {
   Trade as V2Trade,
 } from '@digitalnativeinc/standard-protocol-sdk';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   ApprovalState,
   useActiveWeb3React,
@@ -74,6 +74,10 @@ import { WalletConnector } from '../../components-ui/WalletConnector';
 import { RippleSpinner } from '../../components-ui/Spinner/RippleSpinner';
 import { ProgressCircles } from '../../components-ui/ProgressSteps';
 import { Typographies } from '../../utils/Typography';
+
+import switchIcon from '../../../public/icons/outlined/Switch.svg';
+import { PriceImpact } from '../../components-ui/PriceImpact';
+import { Question } from '../../components-ui/Question';
 
 export default function Swap() {
   /** PARSE TOKENS FROM CONTRACT ADDRESSES PROVIDED IN URL */
@@ -564,7 +568,9 @@ export default function Swap() {
                     }}
                   >
                     <div className="rounded-full p-3 bg-icon-btn-grey">
-                      <SwitchVerticalIcon className="w-6 h-6" />
+                      {React.createElement(switchIcon, {
+                        className: 'stroke-current',
+                      })}
                     </div>
                     {/* <Lottie
                           animationData={swapArrowsAnimationData}
@@ -609,7 +615,6 @@ export default function Swap() {
                     showMaxButton={false}
                     hideBalance={false}
                     fiatValue={fiatValueOutput ?? undefined}
-                    priceImpact={priceImpact}
                     currency={currencies[Field.OUTPUT]}
                     onCurrencySelect={handleOutputSelect}
                     otherCurrency={currencies[Field.INPUT]}
@@ -617,16 +622,23 @@ export default function Swap() {
                     id="swap-currency-output"
                   />
                   {Boolean(trade) && (
-                    <div className="p-1 mt-2 cursor-pointer">
+                    <div className="p-1 mt-2 cursor-pointer flex flex-col items-end">
+                      {priceImpact && (
+                        <PriceImpact
+                          priceImpact={priceImpact}
+                          className="inline-block text-sm"
+                          showTip
+                        />
+                      )}
                       <TradePrice
                         price={trade?.executionPrice}
                         showInverted={showInverted}
                         setShowInverted={setShowInverted}
                         className="w-full text-sm justify-end"
                         icon={
-                          <div className="bg-opaque-secondary p-2 rounded-20 text-text">
-                            <SwitchHorizontalIcon className="w-4 h-4" />
-                          </div>
+                          <SwitchHorizontalIcon
+                            className={`w-4 h-4 ${Typographies.tradePriceSwitcher}`}
+                          />
                         }
                       />
                     </div>

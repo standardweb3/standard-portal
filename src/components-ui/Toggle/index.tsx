@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch } from '@headlessui/react';
 import { classNames } from '../../functions';
-import { CheckIcon, XIcon } from '@heroicons/react/outline';
+import { XIcon } from '@heroicons/react/outline';
 
 export interface ToggleProps {
   id?: string;
@@ -15,7 +15,7 @@ export default function Toggle({ id, isActive, toggle }: ToggleProps) {
       checked={isActive}
       onChange={toggle}
       className={classNames(
-        'bg-toggle-background',
+        'bg-background-3',
         `relative inline-flex flex-shrink-0 
          h-6 w-11
         border-2 border-transparent 
@@ -27,8 +27,12 @@ export default function Toggle({ id, isActive, toggle }: ToggleProps) {
       <span className="sr-only">Use setting</span>
       <span
         className={classNames(
-          isActive ? 'translate-x-5 bg-green' : 'translate-x-0 bg-dark',
-          `pointer-events-none relative inline-block 
+          isActive
+            ? 'translate-x-5 border-primary'
+            : 'translate-x-0 border-white',
+          `bg-transparent
+          border
+          pointer-events-none relative inline-block 
            h-5 w-5 
            rounded-full
            shadow
@@ -36,11 +40,7 @@ export default function Toggle({ id, isActive, toggle }: ToggleProps) {
           transition ease-in-out duration-200`,
         )}
       >
-        {isActive ? (
-          <CheckIcon className="w-3 h-3" />
-        ) : (
-          <XIcon className="w-3 h-3" />
-        )}
+        <XIcon className="w-3 h-3" />
       </span>
     </Switch>
   );

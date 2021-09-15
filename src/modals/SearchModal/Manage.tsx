@@ -9,6 +9,8 @@ import { Token } from '@digitalnativeinc/standard-protocol-sdk';
 import { TokenList } from '@uniswap/token-lists';
 import styled from '@emotion/styled';
 import 'react-tabs/style/react-tabs.css';
+import { Typographies } from '../../utils/Typography';
+import { classNames } from '../../functions';
 
 const ContentWrapper = styled.div`
   height: 100%;
@@ -48,38 +50,25 @@ function Manage({
         onSelect={(index: number) => setTabIndex(index)}
         className="flex flex-col flex-grow mt-6"
       >
-        <TabList className="flex flex-shrink-0 p-1 rounded-xl">
+        <TabList
+          className="
+        rounded-full
+        text-grey
+        self-start
+        flex items-center
+        bg-opaque-inactive"
+        >
           <Tab
-            className={`
-            flex items-center justify-center flex-1
-            px-1 py-2 
-            text-lg 
-            rounded-xl
-            cursor-pointer 
-            select-none 
-            focus:outline-none
-            transition
-            duration-500
-            `}
-            selectedClassName="bg-primary"
+            className={Typographies.manageTab}
+            selectedClassName={Typographies.manageTabActive}
           >
-            {`Lists`}
+            Lists
           </Tab>
           <Tab
-            className={`
-            flex items-center justify-center flex-1 
-            px-1 py-2 
-            text-lg 
-            rounded-xl 
-            cursor-pointer 
-            select-none 
-            focus:outline-none
-            transition
-            duration-500
-            `}
-            selectedClassName="bg-primary"
+            className={Typographies.manageTab}
+            selectedClassName={Typographies.manageTabActive}
           >
-            {`Tokens`}
+            Tokens
           </Tab>
         </TabList>
         <TabPanel style={{ flexGrow: 1 }}>

@@ -10,6 +10,7 @@ import { Percent } from '@digitalnativeinc/standard-protocol-sdk';
 import { classNames } from '../../functions';
 import { Button } from '../Button';
 import { Question } from '../Question';
+import { Typographies } from '../../utils/Typography';
 
 enum SlippageError {
   InvalidInput = 'InvalidInput',
@@ -102,10 +103,18 @@ export function TransactionSettings({
           <div className="text-sm font-semibold">Slippage tolerance</div>
 
           <Question
-            text={`Your transaction will revert 23if the price changes unfavorably by more than this percentage.`}
+            className={Typographies['txSettings-question']}
+            text={`Your transaction will revert if the price changes unfavorably by more than this percentage.`}
           />
         </div>
-        <div className="flex items-center space-x-2">
+        <div
+          className="
+          flex items-center 
+          space-x-2 
+          bg-opaque-secondary 
+          rounded-xl
+          px-3 py-2"
+        >
           <div
             className={classNames(
               // !!slippageError
@@ -115,20 +124,11 @@ export function TransactionSettings({
               //   : userSlippageTolerance !== 'auto'
               //   ? 'border-green'
               //   : 'border-transparent',
-              'p-2 rounded-xl bg-transparent',
+              'flex-1',
             )}
             tabIndex={-1}
           >
             <div className="flex justify-between items-center">
-              {/* {tooLow || tooHigh ? (
-                <span
-                  className="sm:inline text-warn"
-                  role="img"
-                  aria-label="warning"
-                >
-                  ⚠️
-                </span>
-              ) : null} */}
               <input
                 className={classNames(
                   slippageError
@@ -136,7 +136,10 @@ export function TransactionSettings({
                     : tooLow || tooHigh
                     ? 'text-warn'
                     : 'text-green',
-                  'bg-transparent outline-none',
+                  `bg-background-3
+                   px-2 py-1 
+                   rounded-xl 
+                   outline-none min-w-[62px] max-w-[72px]`,
                 )}
                 placeholder={placeholderSlippage?.toFixed(2)}
                 value={
@@ -153,7 +156,7 @@ export function TransactionSettings({
                 }}
                 color={slippageError ? 'red' : ''}
               />
-              %
+              <span className={Typographies['txSettings-text']}>%</span>
             </div>
           </div>
           <Button
@@ -162,9 +165,9 @@ export function TransactionSettings({
             onClick={() => {
               parseSlippageInput('');
             }}
-            className="text-md"
+            className={Typographies['txSettings-auto']}
           >
-            {`Auto`}
+            Auto
           </Button>
         </div>
         {slippageError || tooLow || tooHigh ? (
@@ -192,36 +195,36 @@ export function TransactionSettings({
           <div className="text-text text-sm font-semibold">{`Transaction deadline`}</div>
 
           <Question
+            className={Typographies['txSettings-question']}
             text={`Your transaction will revert if it is pending for more than this long.`}
           />
         </div>
-        <div className="flex items-center">
+        <div
+          className="flex items-center bg-opaque-secondary rounded-xl px-3 py-2"
+          tabIndex={-1}
+        >
+          <input
+            className={classNames(
+              deadlineError ? 'text-danger' : 'text-green',
+              'px-2 py-1 rounded-xl bg-background-3 min-w-[62px] max-w-[72px]',
+            )}
+            placeholder={(DEFAULT_DEADLINE_FROM_NOW / 60).toString()}
+            value={
+              deadlineInput.length > 0
+                ? deadlineInput
+                : deadline === DEFAULT_DEADLINE_FROM_NOW
+                ? ''
+                : (deadline / 60).toString()
+            }
+            onChange={(e) => parseCustomDeadline(e.target.value)}
+            onBlur={() => {
+              setDeadlineInput('');
+              setDeadlineError(false);
+            }}
+          />
           <div
-            className="p-2 rounded bg-dark-800 min-w-[82px] max-w-[102px]"
-            style={{ maxWidth: '40px', marginRight: '8px' }}
-            tabIndex={-1}
-          >
-            <input
-              className={classNames(
-                deadlineError ? 'text-danger' : 'text-green',
-                'bg-transparent placeholder-low-emphesis w-full',
-              )}
-              placeholder={(DEFAULT_DEADLINE_FROM_NOW / 60).toString()}
-              value={
-                deadlineInput.length > 0
-                  ? deadlineInput
-                  : deadline === DEFAULT_DEADLINE_FROM_NOW
-                  ? ''
-                  : (deadline / 60).toString()
-              }
-              onChange={(e) => parseCustomDeadline(e.target.value)}
-              onBlur={() => {
-                setDeadlineInput('');
-                setDeadlineError(false);
-              }}
-            />
-          </div>
-          <div>{`minutes`}</div>
+            className={`flex-1 text-right ${Typographies['txSettings-text']}`}
+          >{`minutes`}</div>
         </div>
       </div>
     </div>

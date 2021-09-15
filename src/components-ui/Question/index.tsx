@@ -1,8 +1,14 @@
 import React, { FC, useCallback, useState } from 'react';
 import { QuestionMarkCircleIcon as SolidQuestionMarkCircleIcon } from '@heroicons/react/solid';
 import { Tooltip } from '../Tooltip';
+import { classNames } from '../../functions';
+import { ExclamationCircleIcon } from '@heroicons/react/outline';
 
-export const Question: FC<{ text: any }> = ({ children, text }) => {
+export const Question: FC<{ text: any; className?: string }> = ({
+  children,
+  text,
+  className,
+}) => {
   const [show, setShow] = useState<boolean>(false);
 
   const open = useCallback(() => setShow(true), [setShow]);
@@ -24,7 +30,7 @@ export const Question: FC<{ text: any }> = ({ children, text }) => {
   }
 
   return (
-    <span className="flex items-center justify-center">
+    <span className={classNames('flex items-center justify-center', className)}>
       <Tooltip text={text} show={show}>
         <div
           className="flex items-center justify-center outline-none cursor-help"
@@ -32,7 +38,7 @@ export const Question: FC<{ text: any }> = ({ children, text }) => {
           onMouseEnter={open}
           onMouseLeave={close}
         >
-          <SolidQuestionMarkCircleIcon width={16} height={16} />
+          <ExclamationCircleIcon className="w-4 h-4" />
         </div>
       </Tooltip>
     </span>

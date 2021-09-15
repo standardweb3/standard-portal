@@ -114,9 +114,9 @@ export const ExchangeHeader: FC<ExchangeHeaderProps> = ({
           } */}
 
           {chainId === ChainId.MAINNET && (
-            <div className="flex items-center text-green space-x-1 font-semibold">
+            <div className="flex items-center text-green space-x-2 font-semibold">
               <GasIcon className="fill-current stroke-current text-green" />
-              <Gas />
+              <Gas className="text-base opacity-60" />
             </div>
           )}
           <div className="relative w-full h-full rounded flex items-center">

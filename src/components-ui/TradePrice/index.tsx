@@ -51,7 +51,7 @@ export function TradePrice({
       onClick={flipPrice}
       title={text}
       className={classNames(
-        'flex items-center py-1 cursor-pointer space-x-4',
+        'flex items-center py-1 cursor-pointer space-x-2',
         className,
       )}
     >

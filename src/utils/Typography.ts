@@ -5,4 +5,29 @@ export const Typographies = {
   swapButton: 'font-bold !py-5 !px-4 !text-lg w-full',
   liquidityButton: 'font-bold text-base !px-3 !py-3',
   divider: 'border-t border-divider mt-2 mb-2',
+  'txSettings-text': 'text-white !text-opacity-50',
+  'txSettings-auto': '!text-white text-md',
+  'txSettings-question': 'text-white !text-opacity-50',
+  tradePriceSwitcher: 'text-white !text-opacity-50',
+  manageTab: ` 
+    flex items-center justify-center 
+    px-4 py-2
+    rounded-full
+    cursor-pointer
+   `,
+  manageTabActive: `
+    bg-opaque
+    border
+    border-opaque-border
+    text-text
+    font-bold
+  `,
+  importList: `
+    border 
+    bg-opaque-xs 
+    rounded-20 
+    flex items-center p-4
+    duration-200
+    cursor-pointer
+  `,
 };

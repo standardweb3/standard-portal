@@ -25,6 +25,7 @@ import { ModalHeader } from '../Modal/ModalHeader';
 import { Button } from '../Button';
 import { Question } from '../Question';
 import { TransactionSettings } from '../Exchange/TransactionSettings';
+import { Typographies } from '../../utils/Typography';
 
 export default function Settings({
   placeholderSlippage,
@@ -57,7 +58,7 @@ export default function Settings({
         onClick={toggle}
         id="open-settings-dialog-button"
       >
-        <CogIcon className="w-[26px] h-[26px] text-grey" />
+        <CogIcon className="w-[26px] h-[26px] text-grey  opacity-30" />
       </div>
       {open && (
         <div
@@ -65,18 +66,19 @@ export default function Settings({
             absolute 
             top-14 right-0 z-50 
             -mr-2.5 min-w-20 md:m-w-22 md:-mr-5 
-            bg-background
-            shadow-primary-glow
+            bg-background-2
             rounded-xl w-80 
+            shadow-dark
         `}
         >
           <div className="p-4 space-y-4">
-            <div className="text-primary font-bold">{`Transaction Settings`}</div>
+            <div className="font-bold">{`Transaction Settings`}</div>
             <TransactionSettings placeholderSlippage={placeholderSlippage} />
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <div className="text-text text-sm font-semibold">{`Toggle Expert Mode`}</div>
                 <Question
+                  className={Typographies['txSettings-question']}
                   text={`Bypasses confirmation modals and allows high slippage trades. Use at your own risk.`}
                 />
               </div>
@@ -99,7 +101,10 @@ export default function Settings({
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <div className="text-text text-sm font-semibold">{`Disable Multihops`}</div>
-                <Question text={`Restricts swaps to direct pairs only.`} />
+                <Question
+                  className={Typographies['txSettings-question']}
+                  text={`Restricts swaps to direct pairs only.`}
+                />
               </div>
               <Toggle
                 id="toggle-disable-multihop-button"

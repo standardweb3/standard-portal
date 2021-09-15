@@ -40,6 +40,8 @@ import { useOnClickOutside } from '../../hooks/useOnClickOutside';
 import { usePopper } from 'react-popper';
 import useToggle from '../../hooks/useToggle';
 import { CheckCircleIcon, CogIcon } from '@heroicons/react/outline';
+import { classNames } from '../../functions';
+import { Typographies } from '../../utils/Typography';
 
 const Wrapper = styled.div`
   display: flex;
@@ -95,7 +97,6 @@ const RowWrapper = styled.div<{ bgColor: string; active: boolean }>`
   transition: 200ms;
   align-items: center;
   padding: 1rem;
-  border-radius: 10px;
 `;
 
 function listUrlRowHTMLId(listUrl: string) {
@@ -173,84 +174,92 @@ const ListRow = memo(({ listUrl }: { listUrl: string }) => {
     dispatch(disableList(listUrl));
   }, [dispatch, listUrl]);
 
+  const toggleList = useCallback(() => {
+    isActive ? handleDisableList() : handleEnableList();
+  }, [isActive]);
+
+  const toggleInfo = useCallback((e) => {
+    e.stopPropagation();
+    toggle();
+  }, []);
+
   if (!list) return null;
 
   return (
-    <RowWrapper
-      id={listUrlRowHTMLId(listUrl)}
-      active={isActive}
-      bgColor={''}
-      key={listUrl}
-      className={`border bg-opaque-xs ${
-        isActive ? 'text-text border-success' : 'text-text border-info'
-      }`}
-    >
-      {list.logoURI ? (
-        <ListLogo
-          size="40px"
-          logoURI={list.logoURI}
-          alt={`${list.name} list logo`}
-        />
-      ) : (
-        <div style={{ width: '24px', height: '24px' }} />
-      )}
+    <div>
       <div
-        className="flex flex-col justify-center"
-        style={{ flex: '1', marginLeft: '1rem' }}
+        id={listUrlRowHTMLId(listUrl)}
+        key={listUrl}
+        onClick={toggleList}
+        className={classNames(
+          Typographies.importList,
+          isActive
+            ? 'text-text border-success'
+            : 'text-text border-info opacity-50',
+        )}
       >
-        <div className="flex items-center">
-          <StyledTitleText active={isActive}>{list.name}</StyledTitleText>
-        </div>
-        <div className="flex items-center mt-4">
-          <StyledListUrlText active={isActive}>
-            {list.tokens.length} tokens
-          </StyledListUrlText>
-          <StyledMenu ref={node as any}>
-            <Button
-              className="px-0 py-0 bg-transparent ml-2"
-              onClick={toggle}
-              ref={setReferenceElement}
-            >
-              <CogIcon className="w-4 h-4" />
-            </Button>
-            {open && (
-              <PopoverContainer
-                show={true}
-                ref={setPopperElement as any}
-                style={styles.popper}
-                {...attributes.popper}
+        {list.logoURI ? (
+          <ListLogo
+            size="40px"
+            logoURI={list.logoURI}
+            alt={`${list.name} list logo`}
+          />
+        ) : (
+          <div style={{ width: '24px', height: '24px' }} />
+        )}
+        <div
+          className="flex flex-col justify-center"
+          style={{ flex: '1', marginLeft: '1rem' }}
+        >
+          <div className="flex items-center">
+            <StyledTitleText active={isActive}>{list.name}</StyledTitleText>
+          </div>
+          <div className="flex items-center mt-1">
+            <StyledListUrlText active={isActive}>
+              {list.tokens.length} tokens
+            </StyledListUrlText>
+            <StyledMenu ref={node as any}>
+              <button
+                className="px-0 py-0 bg-transparent ml-2"
+                onClick={toggleInfo}
+                ref={setReferenceElement}
               >
-                <div>{list && listVersionLabel(list.version)}</div>
-                <div>DARK SEPERATOR</div>
-                <ExternalLink
-                  href={`https://tokenlists.org/token-list?url=${listUrl}`}
-                >
-                  View list
-                </ExternalLink>
-                <UnpaddedLinkStyledButton
-                  onClick={handleRemoveList}
-                  disabled={Object.keys(listsByUrl).length === 1}
-                >
-                  Remove list
-                </UnpaddedLinkStyledButton>
-                {pending && (
-                  <UnpaddedLinkStyledButton onClick={handleAcceptListUpdate}>
-                    Update list
-                  </UnpaddedLinkStyledButton>
-                )}
-              </PopoverContainer>
-            )}
-          </StyledMenu>
+                <CogIcon className="w-4 h-4" />
+              </button>
+            </StyledMenu>
+          </div>
         </div>
+        <ListToggle isActive={isActive} bgColor={listColor} />
       </div>
-      <ListToggle
-        isActive={isActive}
-        bgColor={listColor}
-        toggle={() => {
-          isActive ? handleDisableList() : handleEnableList();
-        }}
-      />
-    </RowWrapper>
+      {open && (
+        <PopoverContainer
+          show={true}
+          className="bg-background-3 rounded-20 shadow-dark"
+          ref={setPopperElement as any}
+          style={styles.popper}
+          {...attributes.popper}
+        >
+          <div>{list && listVersionLabel(list.version)}</div>
+          <ExternalLink
+            href={`https://tokenlists.org/token-list?url=${listUrl}`}
+          >
+            View list
+          </ExternalLink>
+          <button
+            className="hover:brightness-125"
+            onClick={handleRemoveList}
+            disabled={Object.keys(listsByUrl).length === 1}
+          >
+            Remove list
+          </button>
+          {pending && (
+            <UnpaddedLinkStyledButton onClick={handleAcceptListUpdate}>
+              Update list
+            </UnpaddedLinkStyledButton>
+          )}
+        </PopoverContainer>
+      )}
+    </div>
   );
 });
 
@@ -376,7 +385,7 @@ function ManageLists({
         className={`
         mt-4 w-full
         bg-opaque 
-        rounded-xl
+        rounded-20
         placeholder-info 
         focus:placeholder-text 
         font-bold

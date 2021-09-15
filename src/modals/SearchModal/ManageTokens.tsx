@@ -61,22 +61,38 @@ function ManageTokens({
     return (
       chainId &&
       userAddedTokens.map((token) => (
-        <div className="flex items-between" key={token.address}>
-          <div className="flex items-between">
-            <CurrencyLogo currency={token} size={'20px'} />
-            <ExternalLink
-              href={getExplorerLink(chainId, token.address, 'address')}
-            >
-              <div className="ml-2.5 font-semibold">{token.symbol}</div>
-            </ExternalLink>
+        <div
+          className="
+            flex justify-between items-center 
+            space-x-2 w-full
+            bg-opaque
+            rounded-20
+            p-3
+            box-border
+            "
+          key={token.address}
+        >
+          <CurrencyLogo currency={token} className="rounded-full" size={36} />
+
+          <div>
+            <div className="flex items-center space-x-2">
+              <ExternalLink
+                className="!text-white"
+                href={getExplorerLink(chainId, token.address, 'address')}
+              >
+                <div className="font-semibold">{token.symbol}</div>
+              </ExternalLink>
+              <ExternalLinkIcon
+                className="text-primary"
+                href={getExplorerLink(chainId, token.address, 'address')}
+              />
+            </div>
+            <div className="text-xs truncate">{token.address}</div>
           </div>
-          <div className="flex items-between">
+          <div className="p-1 bg-opaque-secondary rounded-full">
             <TrashIcon
               onClick={() => removeToken(chainId, token.address)}
               className="w-4 h-4"
-            />
-            <ExternalLinkIcon
-              href={getExplorerLink(chainId, token.address, 'address')}
             />
           </div>
         </div>
@@ -86,7 +102,7 @@ function ManageTokens({
 
   return (
     <div className="relative flex-1 w-full h-full mt-4 space-y-4 overflow-y-hidden">
-      <div className="space-y-3">
+      <div className="grid gap-4">
         <input
           id="token-search-input"
           type="text"

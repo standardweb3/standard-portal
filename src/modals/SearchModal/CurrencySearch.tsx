@@ -207,6 +207,7 @@ export function CurrencySearch({
       relative 
       flex flex-col justify-center
       w-full h-full 
+      space-y-6
       flex-1`}
     >
       <ModalHeader onClose={onDismiss} title="Select a token" />
@@ -254,7 +255,7 @@ export function CurrencySearch({
         </div>
       )}
 
-      <div className="border-t border-divider my-5" />
+      <div className="border-t border-divider" />
 
       {searchToken && !searchTokenIsAdded ? (
         <div
@@ -302,10 +303,9 @@ export function CurrencySearch({
         </div>
       )}
       {allowManageTokenList && (
-        <div className="mt-3">
+        <div>
           <Button
             type="bordered"
-            color="white"
             id="list-token-manage-button"
             onClick={showManageView}
           >
