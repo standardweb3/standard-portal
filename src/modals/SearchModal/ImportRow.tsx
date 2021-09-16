@@ -30,7 +30,7 @@ export default function ImportRow({
   dim?: boolean;
   showImportView: () => void;
   setImportToken: (token: Token) => void;
-  handleRemove: () => void;
+  handleRemove?: () => void;
 }) {
   // check if already active on list or local storage tokens
   const isAdded = useIsUserAddedToken(token);
