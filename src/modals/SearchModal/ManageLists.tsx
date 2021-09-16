@@ -264,11 +264,7 @@ const ListRow = memo(({ listUrl }: { listUrl: string }) => {
 });
 
 const ListContainer = styled.div`
-  // padding: 1rem;
-  height: 100%;
-  overflow-y: auto;
-
-  padding-bottom: 80px;
+  // padding: 1rem
 `;
 
 function ManageLists({
@@ -377,7 +373,13 @@ function ManageLists({
   }, [listUrlInput, setImportList, setListUrl, setModalView, tempList]);
 
   return (
-    <div className="relative flex-1 w-full h-full space-y-4 overflow-y-hidden">
+    <div
+      className="
+      relative 
+      flex flex-col 
+      flex-1 w-full h-full 
+      space-y-4"
+    >
       <input
         id="list-add-input"
         type="text"
@@ -437,8 +439,10 @@ function ManageLists({
           </div>
         </div>
       )}
-      <ListContainer>
-        <div className="h-full">
+      <ListContainer className="flex-1 rounded-20 h-full bg-opaque-secondary py-6 px-3 mt-2">
+        <div
+          className={classNames('h-full py-0 px-4', Typographies.scrollPrimary)}
+        >
           <AutoSizer disableWidth>
             {({ height }) => (
               <div style={{ height }} className="space-y-4">

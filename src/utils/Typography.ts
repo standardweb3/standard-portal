@@ -24,10 +24,14 @@ export const Typographies = {
   `,
   importList: `
     border 
-    bg-opaque-xs 
     rounded-20 
     flex items-center p-4
     duration-200
     cursor-pointer
   `,
+  scrollPrimary: `
+    scrollbar-thin scrollbar-thumb-primary 
+    scrollbar-thumb-rounded-20 
+    scrollbar-track-scrollbar-track 
+    scrollbar-track-rounded-20`,
 };

@@ -6,6 +6,7 @@ import { CurrencyLogo } from '../CurrencyLogo';
 import CurrencySearchModal from '../../modals/SearchModal/CurrencySearchModal';
 import styled from '@emotion/styled';
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
+import { BoxSpinner } from '../Spinner/BoxSpinner';
 
 const CurrencySelect = styled.button<{ selected: boolean }>`
   align-items: center;
@@ -45,7 +46,7 @@ export function CurrencySelectPanel({
   }, [setModalOpen]);
 
   return (
-    <div id={id} className="p-5 rounded bg-dark-800">
+    <div id={id} className="px-4 py-1 rounded-20 bg-opaque-secondary">
       <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
         <div className="w-full" onClick={onClick}>
           <CurrencySelect
@@ -57,21 +58,28 @@ export function CurrencySelectPanel({
               }
             }}
           >
-            <div className="flex">
+            <div
+              className={`
+            flex 
+            rounded-20
+            bg-opaque-inactive
+            items-center
+            px-3 py-3
+            `}
+            >
+              {' '}
               {currency ? (
-                <CurrencyLogo currency={currency} size={'54px'} />
+                <CurrencyLogo
+                  currency={currency}
+                  size={'36px'}
+                  className="rounded-full"
+                />
               ) : (
-                <div
-                  className="rounded bg-dark-700"
-                  style={{ maxWidth: 54, maxHeight: 54 }}
-                >
-                  <div style={{ width: 54, height: 54 }}>amnnimation</div>
-                </div>
+                <BoxSpinner size={36} />
               )}
-
-              <div className="flex flex-col items-start justify-center mx-3.5">
-                <div className="flex items-center">
-                  <div className="mr-1 text-lg font-bold md:text-2xl">
+              <div className="flex flex-1 flex-col items-start justify-center ml-3">
+                <div className="flex items-center text-text">
+                  <div className="text-base">
                     {(currency && currency.symbol && currency.symbol.length > 20
                       ? currency.symbol.slice(0, 4) +
                         '...' +
@@ -79,17 +87,11 @@ export function CurrencySelectPanel({
                           currency.symbol.length - 5,
                           currency.symbol.length,
                         )
-                      : currency?.symbol) || (
-                      <div className="px-2 py-1 mt-1 text-xs font-medium bg-transparent border rounded-full hover:bg-primary border-low-emphesis text-secondary whitespace-nowrap">
-                        {`Select a token`}
-                      </div>
-                    )}
+                      : currency?.symbol) || 'Select'}
                   </div>
-                  {!disableCurrencySelect && currency && (
+                  {!disableCurrencySelect && (
                     <ChevronDownIcon
-                      className={`${
-                        currency ? 'text-primary' : 'text-high-emphesis'
-                      } stroke-current`}
+                      className="stroke-current text-text ml-4"
                       width={16}
                       height={16}
                     />

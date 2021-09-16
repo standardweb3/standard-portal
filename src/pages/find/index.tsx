@@ -14,7 +14,10 @@ import { Back } from '../../components-ui/Back';
 import { CurrencySelectPanel } from '../../components-ui/CurrencySelectPanel';
 import Head from 'next/head';
 import Link from 'next/link';
-import { MinimalPositionCard } from '../../components-ui/PositionCard';
+import {
+  FullPositionCard,
+  MinimalPositionCard,
+} from '../../components-ui/PositionCard';
 import { currencyId } from '../../functions/currency';
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
 import { usePairAdder } from '../../state/user/hooks';
@@ -23,6 +26,8 @@ import { WalletConnector } from '../../components-ui/WalletConnector';
 import { PageContent } from '../../components-ui/PageContent';
 import { Page } from '../../components-ui/Page';
 import { PlusIcon } from '@heroicons/react/outline';
+import { PageHeader } from '../../components-ui/PageHeader';
+import { Button } from '../../components-ui/Button';
 
 enum Fields {
   TOKEN0 = 0,
@@ -90,13 +95,11 @@ export default function PoolFinder() {
         <meta key="description" name="description" content="Find pool" />
       </Head>
       <Page id="find-pool-page">
-        <PageContent>
-          <div className="p-4 mb-3 space-y-3">
-            <Back />
+        <PageHeader title="Import Pair" />
 
-            <div>{`Import Pool`}</div>
-          </div>
+        <PageContent>
           <Alert
+            className="mb-10  max-w-[600px]"
             message={
               <>
                 <b>{`Tip:`}</b>{' '}
@@ -105,90 +108,105 @@ export default function PoolFinder() {
             }
             type="information"
           />
-          <div className="relative p-4 space-y-4 rounded bg-dark-900 shadow-liquidity">
-            <div>
-              <CurrencySelectPanel
-                currency={currency0}
-                onClick={() => setActiveField(Fields.TOKEN0)}
-                onCurrencySelect={handleCurrencySelect}
-                otherCurrency={currency1}
-                id="pool-currency-input"
-              />
-              <div className="flex flex-col justify-between">
-                <div
-                  className="flex items-center"
-                  style={{ padding: '0 1rem' }}
-                >
-                  <button className="z-10 -mt-6 -mb-6 rounded-full bg-dark-900 p-3px">
-                    <div className="p-3 rounded-full bg-dark-800 hover:bg-dark-700">
-                      <PlusIcon className="w-4 h-4" />
+          <div
+            className="
+              md:min-w-[600px] 
+              max-w-[1000px]
+              bg-opaque
+              rounded-20 p-8
+              text-text"
+          >
+            <div className="grid gap-3">
+              <div>
+                <CurrencySelectPanel
+                  currency={currency0}
+                  onClick={() => setActiveField(Fields.TOKEN0)}
+                  onCurrencySelect={handleCurrencySelect}
+                  otherCurrency={currency1}
+                  id="pool-currency-input"
+                />
+                <div className="flex justify-center items-center">
+                  <button
+                    className="
+                      z-10 rounded-20 px-3 py-6 -mt-10 -mb-10 text-text
+                      cursor-default
+                    "
+                  >
+                    <div className="rounded-full p-3 bg-icon-btn-grey">
+                      <PlusIcon className="w-6 h-6" />
                     </div>
                   </button>
                 </div>
+                <CurrencySelectPanel
+                  currency={currency1}
+                  onClick={() => setActiveField(Fields.TOKEN1)}
+                  onCurrencySelect={handleCurrencySelect}
+                  otherCurrency={currency0}
+                  id="pool-currency-output"
+                />
               </div>
-              <CurrencySelectPanel
-                currency={currency1}
-                onClick={() => setActiveField(Fields.TOKEN1)}
-                onCurrencySelect={handleCurrencySelect}
-                otherCurrency={currency0}
-                id="pool-currency-output"
-              />
-            </div>
+              {hasPosition && (
+                <div className="flex items-center">Pool Found!</div>
+              )}
 
-            {hasPosition && (
-              <div className="flex items-center">
-                {`Pool Found!`}
-                <Link href={`/pool`}>
-                  <a className="text-center">{`Manage this pool`}</a>
-                </Link>
-              </div>
-            )}
-
-            {currency0 && currency1 ? (
-              pairState === PairState.EXISTS ? (
-                hasPosition && pair ? (
-                  <MinimalPositionCard pair={pair} border="1px solid #CED0D9" />
-                ) : (
-                  <div className="p-5 rounded bg-dark-800">
-                    <div className="flex flex-col justify-center">
-                      {`You don’t have liquidity in this pool yet`}
+              {currency0 && currency1 ? (
+                pairState === PairState.EXISTS ? (
+                  hasPosition && pair ? (
+                    <FullPositionCard pair={pair} />
+                  ) : (
+                    <div className="flex flex-col items-start space-y-3">
+                      <div>You don’t have liquidity in this pool yet</div>
                       <Link
                         href={`/add/${currencyId(currency0)}/${currencyId(
                           currency1,
                         )}`}
                       >
-                        <a className="text-center text-blue text-opacity-80 hover:text-opacity-100">
-                          {`Add liquidity`}
-                        </a>
+                        <div
+                          className="
+                          cursor-pointer
+                        rounded-full 
+                        text-primary text-sm
+                        border
+                        border-primary px-2 py-1"
+                        >
+                          Add liquidity
+                        </div>
                       </Link>
                     </div>
-                  </div>
-                )
-              ) : validPairNoLiquidity ? (
-                <div className="p-5 rounded bg-dark-800">
-                  <div className="flex flex-col justify-center">
-                    {`No pool found`}
+                  )
+                ) : validPairNoLiquidity ? (
+                  <div className="flex flex-col items-start space-y-3">
+                    <div>No pool found</div>
                     <Link
                       href={`/add/${currencyId(currency0)}/${currencyId(
                         currency1,
                       )}`}
                     >
-                      <a className="text-center">{`Create pool`}</a>
+                      <div
+                        className="
+                          cursor-pointer
+                        rounded-full 
+                        text-primary text-sm
+                        border
+                        border-primary px-2 py-1"
+                      >
+                        Create pool
+                      </div>
                     </Link>
                   </div>
-                </div>
-              ) : pairState === PairState.INVALID ? (
-                <div className="p-5 text-center rounded bg-dark-800">{`Invalid pair`}</div>
-              ) : pairState === PairState.LOADING ? (
-                <div className="p-5 text-center rounded bg-dark-800">
-                  Loading
-                </div>
-              ) : null
-            ) : !account ? (
-              <WalletConnector />
-            ) : (
-              prerequisiteMessage
-            )}
+                ) : pairState === PairState.INVALID ? (
+                  <div className="p-5 text-center rounded bg-dark-800">{`Invalid pair`}</div>
+                ) : pairState === PairState.LOADING ? (
+                  <div className="p-5 text-center rounded bg-dark-800">
+                    Loading
+                  </div>
+                ) : null
+              ) : !account ? (
+                <WalletConnector />
+              ) : (
+                prerequisiteMessage
+              )}
+            </div>
           </div>
         </PageContent>
       </Page>

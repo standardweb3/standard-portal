@@ -7,18 +7,27 @@ import { useRouter } from 'next/router';
 export default function LiquidityHeader({
   input = undefined,
   output = undefined,
+  isPairValid = false,
 }: any): JSX.Element {
   const { chainId } = useActiveWeb3React();
   const router = useRouter();
   const isAddActive = router.asPath.startsWith('/add');
+  const path = input
+    ? output
+      ? `/${currencyId(input)}/${currencyId(output)}`
+      : `/${currencyId(input)}`
+    : output
+    ? `/${currencyId(output)}`
+    : '';
+
   return (
     <div className="flex items-center justify-center p-3px">
-      <NavigationLink href={`/add/${currencyId(input)}/${currencyId(output)}`}>
+      <NavigationLink href={`/add${path}`}>
         <a
           className={`
           flex items-center justify-center 
           py-1
-          px-1
+          px-2
           text-base font-medium text-center
           border-b-4
           ${isAddActive ? 'border-primary' : 'border-opaque-border-secondary'}
@@ -27,23 +36,44 @@ export default function LiquidityHeader({
           Add
         </a>
       </NavigationLink>
+      {isPairValid && (
+        <NavigationLink
+          onClick={(event) => {
+            if (!output) event.preventDefault();
+          }}
+          href={`/remove${path}`}
+        >
+          <a
+            className={`
+          flex items-center justify-center 
+          py-1
+          px-2
+          text-base font-medium text-center 
+          border-b-4
+          ${!isAddActive ? 'border-primary' : 'border-opaque-border-secondary'}
+          `}
+          >
+            Remove
+          </a>
+        </NavigationLink>
+      )}
       <NavigationLink
         onClick={(event) => {
           if (!output) event.preventDefault();
         }}
-        href={`/remove/${currencyId(input)}/${currencyId(output)}`}
+        href={`/pool`}
       >
         <a
           className={`
           flex items-center justify-center 
           py-1
-          px-1
+          px-2
           text-base font-medium text-center 
           border-b-4
           ${!isAddActive ? 'border-primary' : 'border-opaque-border-secondary'}
           `}
         >
-          Remove
+          Positions
         </a>
       </NavigationLink>
     </div>

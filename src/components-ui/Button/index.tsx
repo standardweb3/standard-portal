@@ -79,8 +79,9 @@ export function Button({
   ref,
   ...rest
 }: ButtonProps) {
+  console.log('onClick', children, onClick);
   const handleClick = useCallback(() => {
-    if (!disabled) onClick();
+    if (!disabled && onClick) onClick();
   }, [disabled, onClick]);
 
   return (

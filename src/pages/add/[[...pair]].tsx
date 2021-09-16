@@ -89,6 +89,8 @@ export default function Liquidity() {
         (currencyB && currencyEquals(currencyB, WNATIVE[chainId]))),
   );
 
+  console.log(oneCurrencyIsWETH);
+
   const toggleWalletModal = useWalletModalToggle(); // toggle wallet when disconnected
   const [isExpertMode] = useExpertModeManager();
 
@@ -413,6 +415,7 @@ export default function Liquidity() {
     currencies?.CURRENCY_B,
   );
 
+  const isPairValid = pair && pairState !== PairState.INVALID;
   return (
     <>
       <Head>
@@ -508,12 +511,11 @@ export default function Liquidity() {
               pendingText={pendingMessage()}
             />
             <div className="grid gap-3">
-              {pair && pairState !== PairState.INVALID && (
-                <LiquidityHeader
-                  input={currencies[Field.CURRENCY_A]}
-                  output={currencies[Field.CURRENCY_B]}
-                />
-              )}
+              <LiquidityHeader
+                input={currencies[Field.CURRENCY_A]}
+                output={currencies[Field.CURRENCY_B]}
+                isPairValid={isPairValid}
+              />
 
               <div>
                 <CurrencyInputPanel

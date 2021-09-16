@@ -106,10 +106,7 @@ export function CurrencyInputPanel({
     <div>
       <div
         id={id}
-        className={classNames(
-          hideInput ? 'px-4 py-1' : 'px-4 py-1',
-          'rounded-20 bg-opaque-secondary',
-        )}
+        className={classNames('px-4 py-1', 'rounded-20 bg-opaque-secondary')}
       >
         <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
           <div>

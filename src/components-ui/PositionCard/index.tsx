@@ -252,7 +252,12 @@ export function FullPositionCard({
           </div>
         </div>
         <div className="flex items-center space-x-4">
-          Manage
+          <div className="flex items-center space-x-1">
+            <span className="text-primary text-base font-bold">
+              {userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}{' '}
+            </span>
+            <span>Pool Tokens</span>
+          </div>
           {showMore ? (
             <ChevronUpIcon width="20px" height="20px" className="ml-4" />
           ) : (
@@ -270,8 +275,8 @@ export function FullPositionCard({
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <div className="p-4 space-y-4">
-          <div className="px-4 py-4 space-y-1">
+        <div className="px-12 py-4 space-y-4">
+          <div>
             <div className="flex items-center justify-between font-bold">
               <div>{`Your total pool tokens`}:</div>
               <div>

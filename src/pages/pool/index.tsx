@@ -28,6 +28,8 @@ import { PageHeader } from '../../components-ui/PageHeader';
 import { WalletConnector } from '../../components-ui/WalletConnector';
 import { PageContent } from '../../components-ui/PageContent';
 import { useProtocol } from '../../state/protocol/hooks';
+import { LiquidityHeader } from '../../features/liquidity';
+import { LogoSpinner } from '../../components-ui/Spinner/LogoSpinner';
 
 export default function Pool() {
   const router = useRouter();
@@ -111,9 +113,9 @@ export default function Pool() {
       <Page id="pool-page">
         <PageHeader title="Liquidity Positions" />
         <PageContent>
-          <div className="p-4 mb-3 space-y-3">
+          {/* <div className="p-4 mb-3 space-y-3">
             <Back />
-          </div>
+          </div> */}
 
           <Alert
             className="max-w-[600px]"
@@ -132,13 +134,15 @@ export default function Pool() {
             rounded-20 p-8
             text-text"
           >
-            <div className="grid grid-flow-row gap-3">
+            <div className="grid grid-flow-row gap-4">
               <div className="font-bold">My Liquidity Positions</div>
-
+              <LiquidityHeader />
               {!account ? (
                 <WalletConnector />
               ) : v2IsLoading ? (
-                `Loading`
+                <div className="flex justify-center my-2">
+                  <LogoSpinner width={92} height={114} rot />
+                </div>
               ) : allV2PairsWithLiquidity?.length > 0 ? (
                 <>
                   {/* <div className="flex items-center justify-center">
@@ -160,30 +164,15 @@ export default function Pool() {
                   ))}
                 </>
               ) : (
-                <div className="px-4 py-2">{`No liquidity was found. `}</div>
+                <div className="px-4 py-2 text-center">{`No liquidity was found. `}</div>
               )}
-              <div
-                className={classNames(
-                  'grid gap-4',
-                  migrationSupported ? 'grid-cols-3' : 'grid-cols-2',
-                )}
-              >
-                <Button
-                  type="bordered"
-                  id="add-pool-button"
-                  className="grid items-center justify-center grid-flow-col gap-2 whitespace-nowrap"
-                  onClick={() =>
-                    router.push(`/add/${currencyId(NATIVE[chainId])}`)
-                  }
-                >
-                  {`Add`}
-                </Button>
+              <div className="flex items-center space-x-3">
                 <Button
                   type="bordered"
                   id="add-pool-button"
                   onClick={() => router.push(`/find`)}
                 >
-                  {`Import`}
+                  Import pair
                 </Button>
 
                 {migrationSupported && (
@@ -192,7 +181,7 @@ export default function Pool() {
                     id="create-pool-button"
                     onClick={() => router.push(`/migrate`)}
                   >
-                    {`Migrate`}
+                    Migrate
                   </Button>
                 )}
               </div>

@@ -26,6 +26,7 @@ import { useCurrencyBalance } from '../../state/wallet/hooks';
 import { useIsUserAddedToken } from '../../hooks/Tokens';
 import { Question } from '../../components-ui/Question';
 import { RippleSpinner } from '../../components-ui/Spinner/RippleSpinner';
+import { Typographies } from '../../utils/Typography';
 
 function currencyKey(currency: Currency): string {
   return currency.isToken ? currency.address : 'ETHER';
@@ -273,11 +274,7 @@ export default function CurrencyList({
   }, []);
   return (
     <FixedSizeList
-      className="
-      scrollbar-thin scrollbar-thumb-primary 
-      scrollbar-thumb-rounded-20 
-      scrollbar-track-scrollbar-track 
-      scrollbar-track-rounded-20"
+      className={Typographies.scrollPrimary}
       height={height}
       ref={fixedListRef as any}
       width="100%"
