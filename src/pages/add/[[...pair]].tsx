@@ -89,8 +89,6 @@ export default function Liquidity() {
         (currencyB && currencyEquals(currencyB, WNATIVE[chainId]))),
   );
 
-  console.log(oneCurrencyIsWETH);
-
   const toggleWalletModal = useWalletModalToggle(); // toggle wallet when disconnected
   const [isExpertMode] = useExpertModeManager();
 
@@ -109,7 +107,7 @@ export default function Liquidity() {
     poolTokenPercentage,
     error,
   } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined);
-
+  console.log(error);
   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity);
 
   const isValid = !error;
@@ -413,6 +411,14 @@ export default function Liquidity() {
   const addIsUnsupported = useIsSwapUnsupported(
     currencies?.CURRENCY_A,
     currencies?.CURRENCY_B,
+  );
+  console.log(isValid);
+  console.log(
+    approvalA === ApprovalState.NOT_APPROVED ||
+      approvalA === ApprovalState.PENDING ||
+      approvalB === ApprovalState.NOT_APPROVED ||
+      approvalB === ApprovalState.PENDING ||
+      isValid,
   );
 
   const isPairValid = pair && pairState !== PairState.INVALID;

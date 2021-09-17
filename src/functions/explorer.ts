@@ -20,7 +20,7 @@ const builders = {
     data: string,
     type: 'transaction' | 'token' | 'address' | 'block',
   ) => {
-    const prefix = 'https://shiden.subscan.io';
+    const prefix = 'https://shibuya.subscan.io';
     switch (type) {
       case 'transaction':
         return `${prefix}/tx/${data}`;
