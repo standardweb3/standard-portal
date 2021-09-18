@@ -1562,10 +1562,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha512-5a6wqoJV/xEdbRNKVo6I4hO3VjyDq//8q2f9I6PBAvMesJHFauXDorcNCsr9RzvsZnaWi5NYCcfyqP1QeFHFbw==
 
-"@digitalnative/standard-protocol-sdk@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@digitalnative/standard-protocol-sdk/-/standard-protocol-sdk-0.0.2.tgz#4e014be240e88530811baf0523309aebeac6ff93"
-  integrity sha512-CN5eHlf7MDQhza/Jcgfv3Vh+aClJwpCrhrgvp3C1BTKk1sE5hpZFUNTqYUw4IljtBt7PtjV3Al9CmY0SpOZoJw==
+"@digitalnative/standard-protocol-sdk@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@digitalnative/standard-protocol-sdk/-/standard-protocol-sdk-0.0.8.tgz#8b778988ff8ee5fef1c4c8b4d83b7a4830363bfe"
+  integrity sha512-TwOzwdUT5nQ4jlux0WFxaT7kGHSjc+63wZl5nhsHgcAG/2OTjRXPAVO0ZBXROF4SA5gTkGL3z1W3QzeueWOzGw==
   dependencies:
     big.js "^6.1.0"
     decimal.js-light "^2.5.0"
