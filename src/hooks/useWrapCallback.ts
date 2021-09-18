@@ -3,7 +3,7 @@ import {
   Currency,
   NATIVE,
   WNATIVE,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 
 import { WETH9_EXTENDED } from '../constants/tokens';
 import { tryParseAmount } from '../functions/parse';

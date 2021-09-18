@@ -1,4 +1,4 @@
-import { ChainId, Percent } from '@digitalnativeinc/standard-protocol-sdk';
+import { ChainId, Percent } from '@digitalnative/standard-protocol-sdk';
 import React, { useRef, useState } from 'react';
 import {
   useExpertModeManager,

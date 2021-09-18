@@ -4,7 +4,7 @@ import {
   ChainId,
   Currency,
   Token,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 
 import { BigNumber } from 'ethers';
 import { TokenAddressMap } from '../state/lists/hooks';

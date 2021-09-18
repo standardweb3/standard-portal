@@ -11,7 +11,7 @@ import {
 
 import { getTokenSubset } from './exchange';
 
-import { ChainId } from '@digitalnativeinc/standard-protocol-sdk';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import { GRAPH_HOST } from '../constants';
 import { request } from 'graphql-request';
 

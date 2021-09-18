@@ -7,7 +7,7 @@ import {
   currencyEquals,
   Percent,
   WNATIVE,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 import { BigNumber } from 'ethers';
 import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';

@@ -1,4 +1,4 @@
-import { Protocol } from '@digitalnativeinc/standard-protocol-sdk';
+import { Protocol } from '@digitalnative/standard-protocol-sdk';
 import { useCallback } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { switchProtocol as switchProtocolAction } from './actions';

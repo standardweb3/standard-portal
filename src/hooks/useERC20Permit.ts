@@ -6,7 +6,7 @@ import {
   Token,
   TradeType,
   Trade as V2Trade,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 import { DAI, SUSHI, USDC } from '../constants/tokens';
 import { useMemo, useState } from 'react';
 

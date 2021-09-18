@@ -4,7 +4,7 @@ import {
   JSBI,
   NATIVE,
   Pair,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 import React, { useMemo } from 'react';
 import { classNames, currencyId } from '../../functions';
 import {

@@ -2,7 +2,7 @@ import {
   Currency,
   Percent,
   Price,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 
 import { Field } from '../../state/mint/actions';
 import { ONE_BIPS } from '../../constants';

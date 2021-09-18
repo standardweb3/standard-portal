@@ -3,7 +3,7 @@ import {
   SUSHISWAP_TWAP_0_ORACLE_ADDRESS,
   SUSHISWAP_TWAP_1_ORACLE_ADDRESS,
 } from '../constants/kashi';
-import { ChainId, Token } from '@digitalnativeinc/standard-protocol-sdk';
+import { ChainId, Token } from '@digitalnative/standard-protocol-sdk';
 
 import { CHAINLINK_MAPPING } from '../constants/chainlink';
 import { e10 } from '../functions/math';

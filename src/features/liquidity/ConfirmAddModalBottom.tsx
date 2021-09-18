@@ -3,7 +3,7 @@ import {
   CurrencyAmount,
   Fraction,
   Percent,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 
 import { Field } from '../../state/mint/actions';
 import React from 'react';

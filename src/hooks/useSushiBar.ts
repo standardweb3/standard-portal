@@ -2,7 +2,7 @@ import {
   Currency,
   CurrencyAmount,
   Token,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 
 import { useCallback } from 'react';
 import { useSushiBarContract } from './useContract';

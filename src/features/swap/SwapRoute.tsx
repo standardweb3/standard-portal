@@ -5,7 +5,7 @@ import {
   Currency,
   TradeType,
   Trade,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 import { unwrappedToken } from '../../functions/currency/wrappedCurrency';
 
 const SwapRoute = memo(

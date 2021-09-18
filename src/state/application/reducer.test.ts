@@ -1,4 +1,4 @@
-import { ChainId } from '@digitalnativeinc/standard-protocol-sdk';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import { createStore, Store } from 'redux';
 import {
   addPopup,

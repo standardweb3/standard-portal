@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import useSWR, { SWRConfiguration } from 'swr';
 
-import { ChainId } from '@digitalnativeinc/standard-protocol-sdk';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import { getKashiPairs } from '../fetchers/bentobox';
 import { useActiveWeb3React } from '../../../hooks';
 

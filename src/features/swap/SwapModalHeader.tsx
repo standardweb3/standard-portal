@@ -3,7 +3,7 @@ import {
   Percent,
   TradeType,
   Trade as V2Trade,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 import React, { useState } from 'react';
 import { isAddress, shortenAddress } from '../../functions';
 

@@ -1,4 +1,4 @@
-import { Currency, Token } from '@digitalnativeinc/standard-protocol-sdk';
+import { Currency, Token } from '@digitalnative/standard-protocol-sdk';
 import { Tags, TokenInfo } from '@uniswap/token-lists';
 
 import { TokenList } from '@uniswap/token-lists/dist/types';
