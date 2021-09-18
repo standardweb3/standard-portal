@@ -1,4 +1,4 @@
-import { Currency, NATIVE, WNATIVE } from '@digitalnativeinc/standard-protocol-sdk'
+import { Currency, NATIVE, WNATIVE } from '@digitalnative/standard-protocol-sdk'
 import { ExtendedEther, WETH9_EXTENDED } from '../../constants/tokens'
 
 import { supportedChainId } from '../chain'

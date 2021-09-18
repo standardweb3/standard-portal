@@ -4,7 +4,7 @@ import {
   CurrencyAmount,
   Price,
   Token,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 
 import { useActiveWeb3React } from '../hooks/useActiveWeb3React';
 import { useMemo } from 'react';

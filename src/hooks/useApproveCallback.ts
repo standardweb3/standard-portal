@@ -5,7 +5,7 @@ import {
   ROUTER_ADDRESS,
   TradeType,
   Trade as V2Trade,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 import { useCallback, useMemo } from 'react';
 import {
   useHasPendingApproval,

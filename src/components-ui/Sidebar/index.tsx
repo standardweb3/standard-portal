@@ -12,7 +12,7 @@ import { networkModalParticles } from '../../theme/particles';
 import { SidebarNavigation } from './SidebarNavigation';
 import { sidebarRoutes } from '../../routes';
 import { useSwitchProtocol } from '../../state/protocol/hooks';
-import { Protocol } from '@digitalnativeinc/standard-protocol-sdk';
+import { Protocol } from '@digitalnative/standard-protocol-sdk';
 
 export function Sidebar() {
   const theme = useTheme();

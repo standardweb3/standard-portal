@@ -1,4 +1,4 @@
-import { JSBI, Percent } from '@digitalnativeinc/standard-protocol-sdk';
+import { JSBI, Percent } from '@digitalnative/standard-protocol-sdk';
 
 // converts a basis points value to a sdk percent
 export function basisPointsToPercent(num: number): Percent {

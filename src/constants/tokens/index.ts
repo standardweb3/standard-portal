@@ -5,7 +5,7 @@ import {
   Token,
   WETH9,
   WNATIVE,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 
 import { SupportedChainId } from '../chains';
 

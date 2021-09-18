@@ -52,7 +52,7 @@ import {
   Currency,
   Token,
   WNATIVE,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 
 import { SupportedChainId } from './chains';
 

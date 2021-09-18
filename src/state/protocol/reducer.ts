@@ -1,4 +1,4 @@
-import { Protocol } from '@digitalnativeinc/standard-protocol-sdk';
+import { Protocol } from '@digitalnative/standard-protocol-sdk';
 import { switchProtocol } from './actions';
 
 import { createReducer } from '@reduxjs/toolkit';

@@ -18,7 +18,7 @@ import {
   SUSHI_ADDRESS,
   TIMELOCK_ADDRESS,
   WNATIVE,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 import {
   BENTOBOX_ADDRESS,
   BORING_HELPER_ADDRESS,

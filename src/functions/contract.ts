@@ -3,7 +3,7 @@
 import {
   ChainId,
   ROUTER_ADDRESS,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
 
 import { ARCHER_ROUTER_ADDRESS } from '../constants';

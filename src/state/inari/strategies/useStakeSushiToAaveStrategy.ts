@@ -3,7 +3,7 @@ import { AXSUSHI, SUSHI } from '../../../constants';
 import {
   ChainId,
   SUSHI_ADDRESS,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 import { useActiveWeb3React } from '../../../hooks';
 import { useTokenBalances } from '../../wallet/hooks';
 import {

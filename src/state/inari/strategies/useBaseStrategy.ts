@@ -13,7 +13,7 @@ import {
 } from '../types';
 import { useDerivedInariState } from '../hooks';
 import { useCallback, useMemo, useState } from 'react';
-import { CurrencyAmount, Token } from '@digitalnativeinc/standard-protocol-sdk';
+import { CurrencyAmount, Token } from '@digitalnative/standard-protocol-sdk';
 import { e10, tryParseAmount } from '../../../functions';
 import useSushiPerXSushi from '../../../hooks/useXSushiPerSushi';
 import { BentoPermit } from '../../../hooks/useBentoMasterApproveCallback';

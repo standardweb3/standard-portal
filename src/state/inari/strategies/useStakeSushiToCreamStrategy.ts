@@ -5,7 +5,7 @@ import {
   CurrencyAmount,
   SUSHI_ADDRESS,
   Token,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 import { tryParseAmount } from '../../../functions';
 import {
   useActiveWeb3React,
