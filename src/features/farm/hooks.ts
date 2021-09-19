@@ -111,24 +111,24 @@ export function usePendingSushi(farm) {
     : undefined;
 }
 
-export function usePendingToken(farm, contract) {
-  const { account } = useActiveWeb3React();
+// export function usePendingToken(farm, contract) {
+//   const { account } = useActiveWeb3React();
 
-  const args = useMemo(() => {
-    if (!account || !farm) {
-      return;
-    }
-    return [String(farm.pid), String(account)];
-  }, [farm, account]);
+//   const args = useMemo(() => {
+//     if (!account || !farm) {
+//       return;
+//     }
+//     return [String(farm.pid), String(account)];
+//   }, [farm, account]);
 
-  const pendingTokens = useSingleContractMultipleData(
-    args ? contract : null,
-    'pendingTokens',
-    args.map((arg) => [...arg, '0']),
-  );
+//   const pendingTokens = useSingleContractMultipleData(
+//     args ? contract : null,
+//     'pendingTokens',
+//     args.map((arg) => [...arg, '0']),
+//   );
 
-  return useMemo(() => pendingTokens, [pendingTokens]);
-}
+//   return useMemo(() => pendingTokens, [pendingTokens]);
+// }
 
 export function useChefPositions(
   contract?: Contract | null,
