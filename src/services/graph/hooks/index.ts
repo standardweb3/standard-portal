@@ -1,8 +1,8 @@
 import {
   getMasterChefV1Farms,
   getMasterChefV1PairAddreses,
-  getMasterChefV1SushiPerBlock,
-  getMasterChefV1TotalAllocPoint,
+  getMasterChefV2SushiPerBlock,
+  getMasterChefV2TotalAllocPoint,
   getMasterChefV2Farms,
   getMasterChefV2PairAddreses,
   getMiniChefFarms,
@@ -11,7 +11,7 @@ import {
 import { useEffect, useMemo } from 'react';
 import useSWR, { SWRConfiguration } from 'swr';
 
-import { ChainId } from '@digitalnativeinc/standard-protocol-sdk';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import { Chef } from '../../../features/farm/enum';
 import concat from 'lodash/concat';
 import useActiveWeb3React from '../../../hooks/useActiveWeb3React';
@@ -20,23 +20,25 @@ export * from './bentobox';
 export * from './blocks';
 export * from './exchange';
 
-export function useMasterChefV1TotalAllocPoint(swrConfig = undefined) {
+export function useMasterChefV2TotalAllocPoint(swrConfig = undefined) {
   const { chainId } = useActiveWeb3React();
-  const shouldFetch = chainId && chainId === ChainId.MAINNET;
+  const shouldFetch =
+    chainId && [ChainId.MAINNET, ChainId.RINKEBY].includes(chainId);
   const { data } = useSWR(
-    shouldFetch ? 'masterChefV1TotalAllocPoint' : null,
-    () => getMasterChefV1TotalAllocPoint(),
+    shouldFetch ? 'masterChefV2TotalAllocPoint' : null,
+    () => getMasterChefV2TotalAllocPoint(chainId),
     swrConfig,
   );
   return data;
 }
 
-export function useMasterChefV1SushiPerBlock(swrConfig = undefined) {
+export function useMasterChefV2SushiPerBlock(swrConfig = undefined) {
   const { chainId } = useActiveWeb3React();
-  const shouldFetch = chainId && chainId === ChainId.MAINNET;
+  const shouldFetch =
+    chainId && [ChainId.MAINNET, ChainId.RINKEBY].includes(chainId);
   const { data } = useSWR(
-    shouldFetch ? 'masterChefV1SushiPerBlock' : null,
-    () => getMasterChefV1SushiPerBlock(),
+    shouldFetch ? 'masterChefV2SushiPerBlock' : null,
+    () => getMasterChefV2SushiPerBlock(chainId),
     swrConfig,
   );
   return data;
@@ -58,10 +60,11 @@ export function useMasterChefV1Farms(swrConfig = undefined) {
 
 export function useMasterChefV2Farms(swrConfig: SWRConfiguration = undefined) {
   const { chainId } = useActiveWeb3React();
-  const shouldFetch = chainId && chainId === ChainId.MAINNET;
+  const shouldFetch =
+    chainId && [ChainId.MAINNET, ChainId.RINKEBY].includes(ChainId.MAINNET);
   const { data } = useSWR(
     shouldFetch ? 'masterChefV2Farms' : null,
-    () => getMasterChefV2Farms(),
+    () => getMasterChefV2Farms(chainId),
     swrConfig,
   );
   return useMemo(() => {
@@ -86,18 +89,15 @@ export function useMiniChefFarms(swrConfig: SWRConfiguration = undefined) {
 }
 
 export function useFarms(swrConfig: SWRConfiguration = undefined) {
-  const masterChefV1Farms = useMasterChefV1Farms();
+  // const masterChefV1Farms = useMasterChefV1Farms();
   const masterChefV2Farms = useMasterChefV2Farms();
-  const miniChefFarms = useMiniChefFarms();
+  // const miniChefFarms = useMiniChefFarms();
   // useEffect(() => {
   //   console.log('debug', { masterChefV1Farms, masterChefV2Farms, miniChefFarms })
   // }, [masterChefV1Farms, masterChefV2Farms, miniChefFarms])
   return useMemo(
-    () =>
-      concat(masterChefV1Farms, masterChefV2Farms, miniChefFarms).filter(
-        (pool) => pool && pool.pair,
-      ),
-    [masterChefV1Farms, masterChefV2Farms, miniChefFarms],
+    () => concat(masterChefV2Farms).filter((pool) => pool && pool.pair),
+    [masterChefV2Farms],
   );
 }
 
@@ -116,10 +116,11 @@ export function useMasterChefV1PairAddresses() {
 
 export function useMasterChefV2PairAddresses() {
   const { chainId } = useActiveWeb3React();
-  const shouldFetch = chainId && chainId === ChainId.MAINNET;
+  const shouldFetch =
+    chainId && [ChainId.MAINNET, ChainId.RINKEBY].includes(chainId);
   const { data } = useSWR(
     shouldFetch ? ['masterChefV2PairAddresses', chainId] : null,
-    (_) => getMasterChefV2PairAddreses(),
+    (_) => getMasterChefV2PairAddreses(chainId),
   );
   return useMemo(() => {
     if (!data) return [];
@@ -142,20 +143,20 @@ export function useMiniChefPairAddresses() {
 }
 
 export function useFarmPairAddresses() {
-  const masterChefV1PairAddresses = useMasterChefV1PairAddresses();
+  // const masterChefV1PairAddresses = useMasterChefV1PairAddresses();
   const masterChefV2PairAddresses = useMasterChefV2PairAddresses();
-  const miniChefPairAddresses = useMiniChefPairAddresses();
+  // const miniChefPairAddresses = useMiniChefPairAddresses();
   return useMemo(
     () =>
       concat(
-        masterChefV1PairAddresses,
+        // masterChefV1PairAddresses,
         masterChefV2PairAddresses,
-        miniChefPairAddresses,
+        // miniChefPairAddresses,
       ),
     [
-      masterChefV1PairAddresses,
+      // masterChefV1PairAddresses,
       masterChefV2PairAddresses,
-      miniChefPairAddresses,
+      // miniChefPairAddresses,
     ],
   );
 }

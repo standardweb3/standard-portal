@@ -23,7 +23,7 @@ import {
 import { getEthPrice, getPairs } from '../fetchers';
 import useSWR, { SWRConfiguration } from 'swr';
 
-import { ChainId } from '@digitalnativeinc/standard-protocol-sdk';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import { ethPriceQuery } from '../queries';
 import { useActiveWeb3React } from '../../../hooks';
 

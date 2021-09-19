@@ -12,6 +12,7 @@ export default function LiquidityHeader({
   const { chainId } = useActiveWeb3React();
   const router = useRouter();
   const isAddActive = router.asPath.startsWith('/add');
+  const isPoolActive = router.asPath.startsWith('/pool');
   const path = input
     ? output
       ? `/${currencyId(input)}/${currencyId(output)}`
@@ -70,7 +71,7 @@ export default function LiquidityHeader({
           px-2
           text-base font-medium text-center 
           border-b-4
-          ${!isAddActive ? 'border-primary' : 'border-opaque-border-secondary'}
+          ${isPoolActive ? 'border-primary' : 'border-opaque-border-secondary'}
           `}
         >
           Positions

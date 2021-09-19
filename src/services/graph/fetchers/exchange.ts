@@ -12,13 +12,14 @@ import {
   transactionsQuery,
 } from '../queries';
 
-import { ChainId } from '@digitalnativeinc/standard-protocol-sdk';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import { GRAPH_HOST } from '../constants';
 import { request } from 'graphql-request';
 
 export const EXCHANGE = {
   [ChainId.MAINNET]: 'sushiswap/exchange',
   [ChainId.KOVAN]: 'digitalnative/standardprotocol',
+  [ChainId.RINKEBY]: 'digitalnative/standardprotocol',
   [ChainId.XDAI]: 'sushiswap/xdai-exchange',
   [ChainId.MATIC]: 'sushiswap/matic-exchange',
   [ChainId.FANTOM]: 'sushiswap/fantom-exchange',
@@ -93,9 +94,7 @@ export const getEthPrice = async (
   chainId = ChainId.MAINNET,
   variables = undefined,
 ) => {
-  // console.log('getEthPrice')
   const data = await getBundle(chainId, undefined, variables);
-  console.log(data);
   return data?.bundles?.[0]?.ethPrice;
 };
 

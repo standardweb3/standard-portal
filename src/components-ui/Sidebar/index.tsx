@@ -1,18 +1,13 @@
 import { css, useTheme } from '@emotion/react';
-import styled from '@emotion/styled';
 import { Logo } from '../Logo';
-import { mq } from '../../theme/breakpoints';
-import { Button } from '../Button';
 import { ConnectionStatus } from '../ConnectionStatus';
 import { useActiveWeb3React } from '../../hooks';
 import { useETHBalances } from '../../state/wallet/hooks';
 import { NetworkStatus } from '../NetworkStatus';
-import { ParticlesBackground, ParticlesBackgroundMemoized } from '../Particles';
-import { networkModalParticles } from '../../theme/particles';
 import { SidebarNavigation } from './SidebarNavigation';
 import { sidebarRoutes } from '../../routes';
 import { useSwitchProtocol } from '../../state/protocol/hooks';
-import { Protocol } from '@digitalnativeinc/standard-protocol-sdk';
+import { Protocol } from '@digitalnative/standard-protocol-sdk';
 
 export function Sidebar() {
   const theme = useTheme();
@@ -42,9 +37,9 @@ export function Sidebar() {
         <ConnectionStatus />
       </div>
       <div className="py-2">
-        <SidebarNavigation routes={sidebarRoutes} />
+        <SidebarNavigation routes={sidebarRoutes} chainId={chainId} />
       </div>
-      <div className="flex flex-col">
+      {/* <div className="flex flex-col">
         <div>{`current: ${protocol}`}</div>
         <button
           onClick={() => {
@@ -60,7 +55,7 @@ export function Sidebar() {
         >
           standard
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }

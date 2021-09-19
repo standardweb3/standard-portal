@@ -1,4 +1,4 @@
-import { ChainId } from '@digitalnativeinc/standard-protocol-sdk';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
 const Arbitrum = '/img/networks/arbitrum-network.jpg';
 const Avalanche = '/img/networks/avalanche-network.jpg';

@@ -3,10 +3,12 @@ import { useIsTokenActive, useIsUserAddedToken } from '../../hooks/Tokens';
 import { Button } from '../../components-ui/Button';
 import { CurrencyLogo } from '../../components-ui/CurrencyLogo';
 import { ListLogo } from '../../components-ui/Logo/ListLogo';
-import { Token } from '@digitalnativeinc/standard-protocol-sdk';
+import { Token } from '@digitalnative/standard-protocol-sdk';
 import styled from '@emotion/styled';
 import { WrappedTokenInfo } from '../../state/lists/wrappedTokenInfo';
 import { CheckCircleIcon, TrashIcon } from '@heroicons/react/outline';
+import { Typographies } from '../../utils/Typography';
+import { Question } from '../../components-ui/Question';
 
 const NameOverflow = styled.div`
   white-space: nowrap;
@@ -20,14 +22,14 @@ const NameOverflow = styled.div`
 export default function ImportRow({
   token,
   style,
-  dim,
+  transparent,
   showImportView,
   setImportToken,
   handleRemove,
 }: {
   token: Token;
   style?: CSSProperties;
-  dim?: boolean;
+  transparent?: boolean;
   showImportView: () => void;
   setImportToken: (token: Token) => void;
   handleRemove?: () => void;
@@ -40,12 +42,9 @@ export default function ImportRow({
 
   return (
     <div
-      className="
-      flex items-center 
-      space-x-3
-      bg-opaque-secondary 
-      rounded-20
-      p-3"
+      className={
+        transparent ? Typographies.importRowTransparent : Typographies.importRow
+      }
     >
       <CurrencyLogo currency={token} size={'36px'} className="rounded-full" />
       <div className="flex justify-center items-center">
@@ -55,10 +54,14 @@ export default function ImportRow({
         </div>
       </div>
       {list && list.logoURI && (
-        <div className="flex items-center">
-          <div className="mr-1 text-sm">via {list.name}</div>
-          <ListLogo logoURI={list.logoURI} size="12px" />
-        </div>
+        <Question
+          text={
+            <div className="flex items-center space-x-1">
+              <div className="mr-1 text-sm">{list.name}</div>
+              <ListLogo logoURI={list.logoURI} size="12px" />
+            </div>
+          }
+        />
       )}
       {!isActive && !isAdded ? (
         <div className="flex-1 flex justify-end">

@@ -3,7 +3,7 @@ import {
   NATIVE,
   WNATIVE,
   currencyEquals,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 
 import Link from 'next/link';
 import React from 'react';

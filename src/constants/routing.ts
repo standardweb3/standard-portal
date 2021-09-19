@@ -45,6 +45,7 @@ import {
   XDAI,
   XSUSHI,
   SHIBUYA,
+  RINKEBY,
 } from './tokens';
 // a list of tokens by chain
 import {
@@ -52,7 +53,7 @@ import {
   Currency,
   Token,
   WNATIVE,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 
 import { SupportedChainId } from './chains';
 
@@ -290,6 +291,7 @@ export const COMMON_BASES: ChainTokenList = {
     USDT,
     WBTC,
   ],
+  [ChainId.RINKEBY]: [...WRAPPED_NATIVE_ONLY[ChainId.RINKEBY], RINKEBY.DAI],
   [ChainId.SHIBUYA]: [...WRAPPED_NATIVE_ONLY[ChainId.SHIBUYA], SHIBUYA.USDC],
   [ChainId.MATIC]: [
     ...WRAPPED_NATIVE_ONLY[ChainId.MATIC],

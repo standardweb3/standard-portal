@@ -1,7 +1,7 @@
 import {
   masterChefV1PairAddressesQuery,
-  masterChefV1SushiPerBlockQuery,
-  masterChefV1TotalAllocPointQuery,
+  masterChefV2SushiPerBlockQuery,
+  masterChefV2TotalAllocPointQuery,
   masterChefV2PairAddressesQuery,
   miniChefPairAddressesQuery,
   miniChefPoolsQuery,
@@ -11,7 +11,10 @@ import {
 
 import { getTokenSubset } from './exchange';
 
-import { ChainId } from '@digitalnativeinc/standard-protocol-sdk';
+import {
+  ChainId,
+  MASTERCHEF_V2_ADDRESS,
+} from '@digitalnative/standard-protocol-sdk';
 import { GRAPH_HOST } from '../constants';
 import { request } from 'graphql-request';
 
@@ -26,12 +29,16 @@ export const miniChef = async (query, chainId = ChainId.MAINNET) =>
 
 export const MASTERCHEF_V2 = {
   [ChainId.MAINNET]: 'sushiswap/master-chefv2',
+  [ChainId.RINKEBY]: 'billjhlee/rinkeby-master-pool',
 };
 
 export const masterChefV2 = async (query, chainId = ChainId.MAINNET) =>
   request(
     `${GRAPH_HOST[chainId]}/subgraphs/name/${MASTERCHEF_V2[chainId]}`,
     query,
+    {
+      id: MASTERCHEF_V2_ADDRESS[chainId],
+    },
   );
 
 export const MASTERCHEF_V1 = {
@@ -44,17 +51,17 @@ export const masterChefV1 = async (query, chainId = ChainId.MAINNET) =>
     query,
   );
 
-export const getMasterChefV1TotalAllocPoint = async () => {
+export const getMasterChefV2TotalAllocPoint = async (chainId: ChainId) => {
   const {
     masterChef: { totalAllocPoint },
-  } = await masterChefV1(masterChefV1TotalAllocPointQuery);
+  } = await masterChefV2(masterChefV2TotalAllocPointQuery, chainId);
   return totalAllocPoint;
 };
 
-export const getMasterChefV1SushiPerBlock = async () => {
+export const getMasterChefV2SushiPerBlock = async (chainId: ChainId) => {
   const {
     masterChef: { sushiPerBlock },
-  } = await masterChefV1(masterChefV1SushiPerBlockQuery);
+  } = await masterChefV2(masterChefV2SushiPerBlockQuery, chainId);
   return sushiPerBlock / 1e18;
 };
 
@@ -68,10 +75,12 @@ export const getMasterChefV1PairAddreses = async () => {
   return pools;
 };
 
-export const getMasterChefV2Farms = async () => {
-  const { pools } = await masterChefV2(poolsV2Query);
+export const getMasterChefV2Farms = async (
+  chainId: ChainId = ChainId.MAINNET,
+) => {
+  const { pools } = await masterChefV2(poolsV2Query, chainId);
 
-  const tokens = await getTokenSubset(ChainId.MAINNET, {
+  const tokens = await getTokenSubset(chainId, {
     tokenAddresses: Array.from(pools.map((pool) => pool.rewarder.rewardToken)),
   });
 
@@ -83,8 +92,10 @@ export const getMasterChefV2Farms = async () => {
   }));
 };
 
-export const getMasterChefV2PairAddreses = async () => {
-  const { pools } = await masterChefV2(masterChefV2PairAddressesQuery);
+export const getMasterChefV2PairAddreses = async (
+  chainId = ChainId.MAINNET,
+) => {
+  const { pools } = await masterChefV2(masterChefV2PairAddressesQuery, chainId);
   return pools;
 };
 

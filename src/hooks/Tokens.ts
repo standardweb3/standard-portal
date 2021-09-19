@@ -5,7 +5,7 @@ import {
   Token,
   WNATIVE,
   currencyEquals,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 import { ExtendedEther, WETH9_EXTENDED } from '../constants';
 import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks';
 import {

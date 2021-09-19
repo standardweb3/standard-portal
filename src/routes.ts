@@ -1,5 +1,10 @@
 import swapIconActive from '../public/icons/filled/Swap.svg';
 import swapIcon from '../public/icons/outlined/Swap.svg';
+import farmIconActive from '../public/icons/filled/Farm.svg';
+import farmIcon from '../public/icons/outlined/Farm.svg';
+import poolIconActive from '../public/icons/filled/Vault.svg';
+import poolIcon from '../public/icons/outlined/Vault.svg';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
 export const sidebarRoutes = [
   {
@@ -11,7 +16,15 @@ export const sidebarRoutes = [
   {
     name: 'Pool',
     urls: ['/pool'],
-    icon: swapIcon,
-    iconActive: swapIconActive,
+    icon: poolIcon,
+    iconActive: poolIconActive,
+  },
+
+  {
+    name: 'Farm',
+    urls: ['/farm'],
+    icon: farmIcon,
+    iconActive: farmIconActive,
+    hidden: [ChainId.SHIBUYA],
   },
 ];

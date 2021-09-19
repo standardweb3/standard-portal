@@ -1,4 +1,4 @@
-import { ChainId } from '@digitalnativeinc/standard-protocol-sdk';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import { useEffect, useState } from 'react';
 import { ARCHER_GAS_URI } from '../constants';
 import useActiveWeb3React from './useActiveWeb3React';

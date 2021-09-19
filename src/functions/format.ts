@@ -6,7 +6,7 @@ import {
   Fraction,
   JSBI,
   Price,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 
 import { BigNumber } from '@ethersproject/bignumber';
 import Numeral from 'numeral';

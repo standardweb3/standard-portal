@@ -1562,10 +1562,15 @@
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha512-5a6wqoJV/xEdbRNKVo6I4hO3VjyDq//8q2f9I6PBAvMesJHFauXDorcNCsr9RzvsZnaWi5NYCcfyqP1QeFHFbw==
 
-"@digitalnativeinc/standard-protocol-sdk@0.0.24":
-  version "0.0.24"
-  resolved "https://npm.pkg.github.com/download/@digitalnativeinc/standard-protocol-sdk/0.0.24/96246f11f468c44f48795b9460520c1ef6dd9f29069eeebd785ea7cd07f7d9e1#c2233746ecdc6350e837f5cd4ced388ad353d21a"
-  integrity sha512-xXFxXGJeHi5mVS9QcM3SYKo/KuoOW3SwGR6nsihq/MQlxljol8QkO3K4efrJ7fMuIzwaIRUHK1iyFxh1OVkxfQ==
+"@digitalnative/default-token-list@0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@digitalnative/default-token-list/-/default-token-list-0.0.1.tgz#3442d6bf7b538973f1f60196bb5414fbbdb7de04"
+  integrity sha512-o9iRz/0Mhf3uifQJqzdgU8dOYzJxrQYNFTm791oYUljkfngkeLmOzBQmjKyJeWSYDxlXGVcRmODQa8tEX4pc8w==
+
+"@digitalnative/standard-protocol-sdk@0.0.19":
+  version "0.0.19"
+  resolved "https://registry.yarnpkg.com/@digitalnative/standard-protocol-sdk/-/standard-protocol-sdk-0.0.19.tgz#3f8b574ca9d389af14053123d5865ec657431693"
+  integrity sha512-QpVG+/uboIjyHdPANJ99FxOUeOiBurEM3bV34gLUR+4sHoZ/54PHjZka2UAKhHYq4rNvK1vKQNAIvYwVmPJchQ==
   dependencies:
     big.js "^6.1.0"
     decimal.js-light "^2.5.0"
@@ -4044,6 +4049,13 @@
     "@web3-react/abstract-connector" "^6.0.7"
     "@web3-react/types" "^6.0.7"
     walletlink "^2.1.6"
+
+"@welldone-software/why-did-you-render@^6.2.0":
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/@welldone-software/why-did-you-render/-/why-did-you-render-6.2.1.tgz#6a87926cc8386b748dc07341cf495caa5be1db28"
+  integrity sha512-eIVKeK6ueS3tuzCqMVTaaNrPYvb9cA8NHiNgLA7Op8SD4TiT31zqNjxmhzLEK+y3sBxcwr6YhsiQGX9EThrvaw==
+  dependencies:
+    lodash "^4"
 
 "@yarnpkg/lockfile@^1.1.0":
   version "1.1.0"
@@ -11577,7 +11589,7 @@ lodash@4.17.20:
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
   integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
 
-lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.17.4:
+lodash@^4, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.17.4:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==

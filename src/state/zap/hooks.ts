@@ -11,7 +11,7 @@ import {
   Trade,
   TradeType,
   WNATIVE,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 import { Field, typeInput } from './actions';
 import { PairState, useV2Pair } from '../../hooks/useV2Pairs';
 import { useCallback, useEffect, useMemo, useState } from 'react';

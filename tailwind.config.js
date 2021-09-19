@@ -3,6 +3,22 @@ module.exports = {
   purge: ['./src/**/*.{js,ts,jsx,tsx}'],
   darkMode: 'class', // or 'media' or 'class'
   theme: {
+    screens: {
+      sm: '640px',
+      // => @media (min-width: 640px) { ... }
+
+      md: '908px',
+      // => @media (min-width: 768px) { ... }
+
+      lg: '1156px',
+      // => @media (min-width: 1024px) { ... }
+
+      xl: '1280px',
+      // => @media (min-width: 1280px) { ... }
+
+      '2xl': '1536px',
+      // => @media (min-width: 1536px) { ... }
+    },
     extend: {
       borderRadius: {
         '20': '20px',
@@ -38,6 +54,7 @@ module.exports = {
         'swap-settings-background': 'rgba(255, 255, 255, 0.2)',
         'background-2': '#4E3E5C',
         'background-3': '#373448',
+        'background-4': '#474771',
         opaque: 'rgba(255,255,255,0.04)',
         'opaque-secondary': 'rgba(222, 199, 239, 0.13)',
         'opaque-inactive': 'rgba(227,200,239,0.02)',

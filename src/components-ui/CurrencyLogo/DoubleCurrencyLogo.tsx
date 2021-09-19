@@ -1,4 +1,4 @@
-import { Currency } from '@digitalnativeinc/standard-protocol-sdk';
+import { Currency } from '@digitalnative/standard-protocol-sdk';
 import { CurrencyLogo } from '../CurrencyLogo';
 import React from 'react';
 import { classNames } from '../../functions';

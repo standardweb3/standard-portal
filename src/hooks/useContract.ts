@@ -14,11 +14,13 @@ import {
   FACTORY_ADDRESS,
   MAKER_ADDRESS,
   MASTERCHEF_ADDRESS,
+  MASTERCHEF_V2_ADDRESS,
   ROUTER_ADDRESS,
+  STND_ADDRESS,
   SUSHI_ADDRESS,
   TIMELOCK_ADDRESS,
   WNATIVE,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 import {
   BENTOBOX_ADDRESS,
   BORING_HELPER_ADDRESS,
@@ -28,7 +30,7 @@ import {
   SUSHISWAP_TWAP_0_ORACLE_ADDRESS,
   SUSHISWAP_TWAP_1_ORACLE_ADDRESS,
 } from '../constants/kashi';
-import { MERKLE_DISTRIBUTOR_ADDRESS, SUSHI } from '../constants';
+import { MERKLE_DISTRIBUTOR_ADDRESS, STND, SUSHI } from '../constants';
 
 import ALCX_REWARDER_ABI from '../constants/abis/alcx-rewarder.json';
 import ARCHER_ROUTER_ABI from '../constants/abis/archer-router.json';
@@ -55,6 +57,7 @@ import LIMIT_ORDER_HELPER_ABI from '../constants/abis/limit-order-helper.json';
 import MAKER_ABI from '../constants/abis/maker.json';
 import MASTERCHEF_ABI from '../constants/abis/masterchef.json';
 import MASTERCHEF_V2_ABI from '../constants/abis/masterchef-v2.json';
+import MASTERPOOL_ABI from '../constants/abis/masterpool.json';
 import MEOWSHI_ABI from '../constants/abis/meowshi.json';
 import MERKLE_DISTRIBUTOR_ABI from '../constants/abis/merkle-distributor.json';
 import MINICHEF_ABI from '../constants/abis/minichef-v2.json';
@@ -65,6 +68,7 @@ import SAAVE_ABI from '../constants/abis/saave.json';
 import SUSHIROLL_ABI from '@sushiswap/core/abi/SushiRoll.json';
 import SUSHISWAP_TWAP_ORACLE_ABI from '../constants/abis/sushiswap-slp-oracle.json';
 import SUSHI_ABI from '../constants/abis/sushi.json';
+import STND_ABI from '../constants/abis/stnd.json';
 import TIMELOCK_ABI from '../constants/abis/timelock.json';
 import UNI_FACTORY_ABI from '../constants/abis/uniswap-v2-factory.json';
 import WETH9_ABI from '../constants/abis/weth.json';
@@ -101,7 +105,7 @@ export function useContract(
         withSignerIfPossible && account ? account : undefined,
       );
     } catch (error) {
-      console.error('Failed to get contract', error);
+      console.error('Failed to get contract', error, address);
       return null;
     }
   }, [address, ABI, library, withSignerIfPossible, account]);
@@ -219,6 +223,15 @@ export function useSushiContract(withSignerIfPossible = true): Contract | null {
   );
 }
 
+export function useSTNDContract(withSignerIfPossibe = true): Contract | null {
+  const { chainId } = useActiveWeb3React();
+  return useContract(
+    chainId && STND_ADDRESS[chainId],
+    STND_ABI,
+    withSignerIfPossibe,
+  );
+}
+
 export function useMasterChefContract(
   withSignerIfPossible?: boolean,
 ): Contract | null {
@@ -233,12 +246,14 @@ export function useMasterChefContract(
 export function useMasterChefV2Contract(
   withSignerIfPossible?: boolean,
 ): Contract | null {
+  const { chainId } = useActiveWeb3React();
   return useContract(
-    '0xEF0881eC094552b2e128Cf945EF17a6752B4Ec5d',
+    chainId && MASTERCHEF_V2_ADDRESS[chainId],
     MASTERCHEF_V2_ABI,
     withSignerIfPossible,
   );
 }
+
 export function useMiniChefContract(
   withSignerIfPossible?: boolean,
 ): Contract | null {

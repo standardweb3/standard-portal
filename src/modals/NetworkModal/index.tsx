@@ -1,4 +1,4 @@
-import { ChainId } from '@digitalnativeinc/standard-protocol-sdk';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import cookie from 'cookie-cutter';
 // next
 import Image from 'next/image';
@@ -28,17 +28,39 @@ export const SUPPORTED_NETWORKS: {
     blockExplorerUrls: string[];
   };
 } = {
-  [ChainId.MAINNET]: {
-    chainId: '0x1',
-    chainName: 'Ethereum',
+  [ChainId.RINKEBY]: {
+    chainId: '0x4',
+    chainName: 'Rinkeby',
     nativeCurrency: {
       name: 'Ethereum',
       symbol: 'ETH',
       decimals: 18,
     },
-    rpcUrls: ['https://mainnet.infura.io/v3'],
-    blockExplorerUrls: ['https://etherscan.com'],
+    rpcUrls: ['https://rinkeby.infura.io/v3'],
+    blockExplorerUrls: ['https://rinkeby.etherscan.io'],
   },
+  [ChainId.SHIBUYA]: {
+    chainId: '0x51',
+    chainName: 'Shibuya',
+    nativeCurrency: {
+      name: 'Shibuya',
+      symbol: 'SBY',
+      decimals: 18,
+    },
+    rpcUrls: ['https://rpc.shibuya.astar.network:8545'],
+    blockExplorerUrls: ['https://shiden.subscan.io'],
+  },
+  // [ChainId.MAINNET]: {
+  //   chainId: '0x1',
+  //   chainName: 'Ethereum',
+  //   nativeCurrency: {
+  //     name: 'Ethereum',
+  //     symbol: 'ETH',
+  //     decimals: 18,
+  //   },
+  //   rpcUrls: ['https://mainnet.infura.io/v3'],
+  //   blockExplorerUrls: ['https://etherscan.com'],
+  // },
   // [ChainId.FANTOM]: {
   //   chainId: '0xfa',
   //   chainName: 'Fantom',
@@ -61,17 +83,17 @@ export const SUPPORTED_NETWORKS: {
   //   rpcUrls: ['https://bsc-dataseed.binance.org'],
   //   blockExplorerUrls: ['https://bscscan.com'],
   // },
-  [ChainId.MATIC]: {
-    chainId: '0x89',
-    chainName: 'Matic',
-    nativeCurrency: {
-      name: 'Matic',
-      symbol: 'MATIC',
-      decimals: 18,
-    },
-    rpcUrls: ['https://rpc-mainnet.maticvigil.com'], // ['https://matic-mainnet.chainstacklabs.com/'],
-    blockExplorerUrls: ['https://explorer-mainnet.maticvigil.com'],
-  },
+  // [ChainId.MATIC]: {
+  //   chainId: '0x89',
+  //   chainName: 'Matic',
+  //   nativeCurrency: {
+  //     name: 'Matic',
+  //     symbol: 'MATIC',
+  //     decimals: 18,
+  //   },
+  //   rpcUrls: ['https://rpc-mainnet.maticvigil.com'], // ['https://matic-mainnet.chainstacklabs.com/'],
+  //   blockExplorerUrls: ['https://explorer-mainnet.maticvigil.com'],
+  // },
   // [ChainId.HECO]: {
   //   chainId: '0x80',
   //   chainName: 'Heco',
@@ -193,8 +215,10 @@ export default function NetworkModal(): JSX.Element | null {
         overflow-y-auto`}
       >
         {[
-          ChainId.MAINNET,
-          ChainId.MATIC,
+          ChainId.RINKEBY,
+          ChainId.SHIBUYA,
+          // ChainId.MAINNET,
+          // ChainId.MATIC,
           // ChainId.FANTOM,
           // ChainId.ARBITRUM,
           // ChainId.OKEX,
@@ -237,9 +261,9 @@ export default function NetworkModal(): JSX.Element | null {
                 toggleNetworkModal();
                 const params = SUPPORTED_NETWORKS[key];
                 cookie.set('chainId', key);
-                if (key === ChainId.MAINNET) {
+                if ([ChainId.MAINNET, ChainId.RINKEBY].includes(key)) {
                   library?.send('wallet_switchEthereumChain', [
-                    { chainId: '0x1' },
+                    { chainId: params.chainId },
                     account,
                   ]);
                 } else {

@@ -6,7 +6,7 @@ import {
   Token,
   TradeType,
   Trade as V2Trade,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 import { DAI, SUSHI, USDC } from '../constants/tokens';
 import { useMemo, useState } from 'react';
 
@@ -202,7 +202,6 @@ export function useERC20Permit(
       signatureData.spender === spender &&
       ('allowed' in signatureData ||
         JSBI.equal(JSBI.BigInt(signatureData.amount), currencyAmount.quotient));
-
     return {
       state: isSignatureDataValid
         ? UseERC20PermitState.SIGNED
@@ -293,7 +292,7 @@ export function useERC20Permit(
 
 const REMOVE_V2_LIQUIDITY_PERMIT_INFO: PermitInfo = {
   version: '1',
-  name: 'SushiSwap LP Token',
+  name: 'Standard LTR Token',
   type: PermitType.AMOUNT,
 };
 

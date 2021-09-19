@@ -8,7 +8,7 @@ import {
   Trade,
   TradeType,
   currencyEquals,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 import { ONE_HUNDRED_PERCENT, ZERO_PERCENT } from '../constants';
 
 import { BigNumber } from 'ethers';

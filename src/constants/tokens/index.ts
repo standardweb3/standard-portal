@@ -2,23 +2,33 @@ import {
   ChainId,
   Ether,
   SUSHI_ADDRESS,
+  STND_ADDRESS,
   Token,
   WETH9,
   WNATIVE,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 
 import { SupportedChainId } from '../chains';
 
+export const RINKEBY: { [key: string]: Token } = {
+  DAI: new Token(
+    ChainId.RINKEBY,
+    '0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735',
+    18,
+    'DAI',
+    'Dai Stablecoin',
+  ),
+};
 
 export const SHIBUYA: { [key: string]: Token } = {
-    USDC: new Token(
+  USDC: new Token(
     ChainId.SHIBUYA,
     '0xA4F42578c723A5B6781A9F49d586B8645ba85C31',
     6,
     'USDC',
-    'USD Coin'
-  )
-}
+    'USD Coin',
+  ),
+};
 
 export const KOVAN: { [key: string]: Token } = {
   USDC: new Token(
@@ -701,6 +711,30 @@ export const AXSUSHI = new Token(
 
 type ChainTokenMap = {
   readonly [chainId in ChainId]?: Token;
+};
+
+export const STND: ChainTokenMap = {
+  [ChainId.MAINNET]: new Token(
+    ChainId.MAINNET,
+    STND_ADDRESS[ChainId.MAINNET],
+    18,
+    'STND',
+    'Standard',
+  ),
+  [ChainId.RINKEBY]: new Token(
+    ChainId.RINKEBY,
+    STND_ADDRESS[ChainId.RINKEBY],
+    18,
+    'STND',
+    'Standard',
+  ),
+  [ChainId.MATIC]: new Token(
+    ChainId.MATIC,
+    STND_ADDRESS[ChainId.MATIC],
+    18,
+    'STND',
+    'Standard',
+  ),
 };
 
 // SUSHI

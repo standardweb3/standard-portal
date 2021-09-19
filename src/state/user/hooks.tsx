@@ -10,7 +10,7 @@ import {
   computePairAddress,
   Protocol,
   PROTOCOLS,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 import {
   SerializedPair,
   SerializedToken,

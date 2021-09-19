@@ -2,7 +2,7 @@ import {
   Currency,
   CurrencyAmount,
   Token,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 import React, {
   CSSProperties,
   MutableRefObject,
@@ -164,22 +164,20 @@ function isBreakLine(x: unknown): x is BreakLine {
   return x === BREAK_LINE;
 }
 
-function BreakLineComponent({ style }: { style: CSSProperties }) {
+function BreakLineComponent({ style }: { style?: CSSProperties }) {
   return (
-    <FixedContentRow style={style}>
-      <div className="flex justify-center items-center">
-        <div>
-          <TokenListLogoWrapper src="/tokenlist.svg" />
-          <div className="ml-3">
-            {`Expanded results from inactive Token Lists`}
-          </div>
-        </div>
-        <Question
-          text={`Tokens from inactive lists. Import specific tokens below or
+    <div
+      className="
+      flex justify-center items-center 
+      space-x-3 
+      p-3 text-sm"
+    >
+      <div>{`Expanded results from inactive Token Lists`}</div>
+      <Question
+        text={`Tokens from inactive lists. Import specific tokens below or
             click Manage to activate more lists.`}
-        />
-      </div>
-    </FixedContentRow>
+      />
+    </div>
   );
 }
 
@@ -216,7 +214,7 @@ export default function CurrencyList({
       const row: Currency | BreakLine = data[index];
 
       if (isBreakLine(row)) {
-        return <BreakLineComponent style={style} />;
+        return <BreakLineComponent />;
       }
 
       const currency = row;
@@ -240,7 +238,7 @@ export default function CurrencyList({
             token={token}
             showImportView={showImportView}
             setImportToken={setImportToken}
-            dim
+            transparent
           />
         );
       } else if (currency) {
@@ -272,6 +270,7 @@ export default function CurrencyList({
     if (isBreakLine(currency)) return BREAK_LINE;
     return currencyKey(currency);
   }, []);
+
   return (
     <FixedSizeList
       className={Typographies.scrollPrimary}

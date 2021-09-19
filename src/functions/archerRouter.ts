@@ -8,7 +8,7 @@ import {
   TradeOptions,
   TradeOptionsDeadline,
   TradeType,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 
 import { getAddress } from '@ethersproject/address';
 import invariant from 'tiny-invariant';

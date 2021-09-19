@@ -1,4 +1,4 @@
-import { Percent } from '@digitalnativeinc/standard-protocol-sdk';
+import { Percent } from '@digitalnative/standard-protocol-sdk';
 import {
   ALLOWED_PRICE_IMPACT_HIGH,
   PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN,

@@ -4,7 +4,7 @@ import {
   JSBI,
   NATIVE,
   Pair,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 import React, { useMemo } from 'react';
 import { classNames, currencyId } from '../../functions';
 import {
@@ -103,11 +103,11 @@ export default function Pool() {
   return (
     <>
       <Head>
-        <title>Pool | Sushi</title>
+        <title>POOL | Standard Protocol</title>
         <meta
           key="description"
           name="description"
-          content="SushiSwap liquidity pools are markets for trades between the two tokens, you can provide these tokens and become a liquidity provider to earn 0.25% of fees from trades."
+          content="Standard Protocol liquidity pools are markets for trades between the two tokens, you can provide these tokens and become a liquidity provider to earn 0.3% of fees from trades."
         />
       </Head>
       <Page id="pool-page">
@@ -118,9 +118,9 @@ export default function Pool() {
           </div> */}
 
           <Alert
-            className="max-w-[600px]"
+            className="max-w-[600px] mb-6"
             title={`Liquidity Provider Rewards`}
-            message={`Liquidity providers earn a 0.25% fee on all trades proportional to their share of
+            message={`Liquidity providers earn a 0.3% fee on all trades proportional to their share of
                         the pool. Fees are added to the pool, accrue in real time and can be claimed by
                         withdrawing your liquidity`}
             type="information"

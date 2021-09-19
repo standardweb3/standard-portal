@@ -5,7 +5,7 @@ import {
   Pair,
   computePairAddress,
   PROTOCOLS,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 
 import IUniswapV2PairABI from '@sushiswap/core/abi/IUniswapV2Pair.json';
 import { Interface } from '@ethersproject/abi';

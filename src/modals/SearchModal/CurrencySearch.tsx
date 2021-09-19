@@ -3,7 +3,7 @@ import {
   Currency,
   NATIVE,
   Token,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 import React, {
   KeyboardEvent,
   RefObject,
@@ -233,9 +233,9 @@ export function CurrencySearch({
               w-full 
               bg-transparent
               border
-              border-border-light
-              focus:border-text
-              rounded-xl 
+              border-border-text
+              focus:border-primary
+              rounded-20 
               placeholder-info
               focus:placeholder-text 
               font-semibold 

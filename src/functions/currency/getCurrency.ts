@@ -1,7 +1,7 @@
-import { ChainId } from '@digitalnativeinc/standard-protocol-sdk'
-import { ethers } from 'ethers'
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
+import { ethers } from 'ethers';
 
-type Currency = { address: string; decimals: number }
+type Currency = { address: string; decimals: number };
 
 // Pricing currency
 // TODO: Check decimals and finish table
@@ -45,7 +45,7 @@ export const USD_CURRENCY: { [chainId in ChainId]?: Currency } = {
   },
   [ChainId.MATIC_TESTNET]: { address: '', decimals: 6 },
   [ChainId.XDAI]: { address: '', decimals: 6 },
-}
+};
 
 export function getCurrency(chainId: ChainId | void): Currency {
   return (
@@ -53,5 +53,5 @@ export function getCurrency(chainId: ChainId | void): Currency {
       address: ethers.constants.AddressZero,
       decimals: 18,
     }
-  )
+  );
 }

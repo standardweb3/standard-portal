@@ -34,4 +34,13 @@ export const Typographies = {
     scrollbar-thumb-rounded-20 
     scrollbar-track-scrollbar-track 
     scrollbar-track-rounded-20`,
+  importRow: `
+  flex items-center 
+  space-x-3
+  bg-opaque-secondary 
+  rounded-20
+  p-3`,
+  importRowTransparent: `
+  flex items-center space-x-3
+  bg-transparent p-3`,
 };

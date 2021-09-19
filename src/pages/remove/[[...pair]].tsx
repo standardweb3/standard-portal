@@ -7,7 +7,7 @@ import {
   NATIVE,
   Percent,
   WNATIVE,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 import { BigNumber, Contract } from 'ethers';
 import { useRouter } from 'next/router';
 import { useState, useMemo, useCallback } from 'react';
@@ -871,7 +871,11 @@ export default function Remove() {
                 )}
                 pendingText={pendingText}
               />
-              <LiquidityHeader input={currencyA} output={currencyB} />
+              <LiquidityHeader
+                input={currencyA}
+                output={currencyB}
+                isPairValid
+              />
 
               <div>
                 <PercentInputPanel

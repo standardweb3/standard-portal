@@ -1,5 +1,9 @@
 import React, { useMemo } from 'react';
-import { Currency, CurrencyAmount, Percent } from '@digitalnativeinc/standard-protocol-sdk';
+import {
+  Currency,
+  CurrencyAmount,
+  Percent,
+} from '@digitalnative/standard-protocol-sdk';
 
 import { warningSeverity } from '../../functions/prices';
 import { classNames } from '../../functions';

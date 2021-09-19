@@ -7,13 +7,14 @@ import {
   subHours,
 } from 'date-fns';
 
-import { ChainId } from '@digitalnativeinc/standard-protocol-sdk';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import { GRAPH_HOST } from '../constants';
 import { blocksQuery } from '../queries';
 import { request } from 'graphql-request';
 
 export const BLOCKS = {
   [ChainId.MAINNET]: 'blocklytics/ethereum-blocks',
+  [ChainId.RINKEBY]: 'digitalnative/ethereum-blocks',
   [ChainId.XDAI]: 'matthewlilley/xdai-blocks',
   [ChainId.MATIC]: 'matthewlilley/polygon-blocks',
   [ChainId.FANTOM]: 'matthewlilley/fantom-blocks',

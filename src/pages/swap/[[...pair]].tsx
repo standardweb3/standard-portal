@@ -7,7 +7,7 @@ import {
   Token,
   TradeType,
   Trade as V2Trade,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {

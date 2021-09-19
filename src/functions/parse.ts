@@ -2,7 +2,7 @@ import {
   Currency,
   CurrencyAmount,
   JSBI,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 
 import { parseUnits } from '@ethersproject/units';
 

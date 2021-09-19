@@ -7,7 +7,7 @@ import {
   currencyEquals,
   Percent,
   WNATIVE,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 import { BigNumber } from 'ethers';
 import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
@@ -107,7 +107,6 @@ export default function Liquidity() {
     poolTokenPercentage,
     error,
   } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined);
-  console.log(error);
   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity);
 
   const isValid = !error;
@@ -412,14 +411,6 @@ export default function Liquidity() {
     currencies?.CURRENCY_A,
     currencies?.CURRENCY_B,
   );
-  console.log(isValid);
-  console.log(
-    approvalA === ApprovalState.NOT_APPROVED ||
-      approvalA === ApprovalState.PENDING ||
-      approvalB === ApprovalState.NOT_APPROVED ||
-      approvalB === ApprovalState.PENDING ||
-      isValid,
-  );
 
   const isPairValid = pair && pairState !== PairState.INVALID;
   return (
@@ -436,35 +427,6 @@ export default function Liquidity() {
         <PageHeader title="add liquidity" />
 
         <PageContent>
-          <div className="flex items-center justify-between mb-8">
-            <NavigationLink href="/pool">
-              <a
-                className={`
-                  flex items-center 
-                  space-x-2 
-                  font-medium 
-                  text-center 
-                  text-blue
-                  cursor-pointer
-                  hover:brightness-125`}
-              >
-                <span>View Liquidity Positions</span>
-                <ArrowCircleRightIcon className="w-5 h-5" />
-              </a>
-            </NavigationLink>
-            {/* <button
-            style={{
-              backgroundColor: 'rgba(167, 85, 221, 0.25)',
-              border: '1px solid #A755DD',
-              borderRadius: 20,
-              padding: '5px 40px',
-              fontSize: 14,
-            }}
-          >
-            FARM THE {currencies[Field.CURRENCY_A]?.symbol}-{currencies[Field.CURRENCY_B]?.symbol} POOL
-          </button> */}
-          </div>
-
           <Alert
             className="mb-10  max-w-[600px]"
             message={

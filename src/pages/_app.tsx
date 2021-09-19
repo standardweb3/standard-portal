@@ -1,3 +1,5 @@
+import '../bootstrap'
+
 import { Fragment, FunctionComponent, useEffect } from 'react';
 // next
 import { NextComponentType, NextPageContext } from 'next';

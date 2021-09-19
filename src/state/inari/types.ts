@@ -2,7 +2,7 @@ import {
   ChainId,
   CurrencyAmount,
   Token,
-} from '@digitalnativeinc/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk';
 import { BaseStrategyWithBentoBoxTraitHook } from './traits/useBentoBoxTrait';
 import { BaseStrategyWithHasPermitTokenHook } from './traits/useHasPermitTokenTrait';
 import { BaseStrategyHook } from './strategies/useBaseStrategy';

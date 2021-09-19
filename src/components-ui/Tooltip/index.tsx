@@ -24,7 +24,7 @@ export function Tooltip({ text, ...rest }: TooltipProps) {
       content={
         <div
           className={`
-            w-[228px] p-2
+            max-w-[228px] p-2
             font-medium 
             bg-background 
             text-text
