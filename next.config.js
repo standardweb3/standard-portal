@@ -1,9 +1,9 @@
 const withPWA = require('next-pwa');
 const runtimeCaching = require('next-pwa/cache');
 
-const linguiConfig = require('./lingui.config.js');
+//const linguiConfig = require('./lingui.config.js');
 
-const { locales, sourceLocale } = linguiConfig;
+//xwconst { locales, sourceLocale } = linguiConfig;
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
@@ -25,10 +25,6 @@ module.exports = withBundleAnalyzer(
       ],
     },
     reactStrictMode: true,
-    i18n: {
-      locales,
-      defaultLocale: sourceLocale,
-    },
     webpack(config) {
       config.module.rules.push({
         test: /\.svg$/,
