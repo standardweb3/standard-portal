@@ -40,6 +40,7 @@ export default function Farm() {
   });
 
   const farms = useFarms();
+  console.log(farms);
 
   const positions = usePositions();
 
@@ -47,7 +48,10 @@ export default function Farm() {
   const averageBlockTime = useAverageBlockTime();
 
   const masterChefV2TotalAllocPoint = useMasterChefV2TotalAllocPoint();
+  console.log(masterChefV2TotalAllocPoint);
   const masterChefV2SushiPerBlock = useMasterChefV2SushiPerBlock();
+  console.log(masterChefV2SushiPerBlock);
+
   const blocksPerDay = 86400 / Number(averageBlockTime);
 
   const map = (pool) => {

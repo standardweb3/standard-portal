@@ -37,7 +37,7 @@ export const masterChefV2 = async (query, chainId = ChainId.MAINNET) =>
     `${GRAPH_HOST[chainId]}/subgraphs/name/${MASTERCHEF_V2[chainId]}`,
     query,
     {
-      id: MASTERCHEF_V2_ADDRESS[chainId],
+      id: MASTERCHEF_V2_ADDRESS[chainId].toLowerCase(),
     },
   );
 
