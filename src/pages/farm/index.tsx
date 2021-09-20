@@ -44,7 +44,6 @@ export default function Farm() {
   const positions = usePositions();
 
   const [ethPrice, stndPrice] = [useEthPrice(), useStandardPrice()];
-  console.log(stndPrice);
   const averageBlockTime = useAverageBlockTime();
 
   const masterChefV2TotalAllocPoint = useMasterChefV2TotalAllocPoint();
