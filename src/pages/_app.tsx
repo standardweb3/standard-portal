@@ -33,10 +33,12 @@ import ListsUpdater from '../state/lists/updater'
 import MulticallUpdater from '../state/multicall/updater'
 import TransactionUpdater from '../state/transactions/updater'
 import UserUpdater from '../state/user/updater'
+import NetworkGuard from '../guards/Network';
 
 
 import '../styles/index.css'
 import '../styles/globals.css';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
 const Web3ProviderNetwork = dynamic(() => import('../components-ui/Web3ProviderNetwork'), { ssr: false })
 
@@ -66,7 +68,7 @@ function MyApp({
 
   const Layout = Component.Layout || DefaultLayout
   const Provider = Component.Provider || Fragment
-  const Guard = Component.Guard || Fragment
+  // const Guard = Component.Guard || Fragment
 
   return (
     <>
@@ -78,7 +80,7 @@ function MyApp({
           name="viewport"
           content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"
         />
-        <title key="title">STND</title>
+        <title key="title">Standard Protocol</title>
 
         <meta
           key="description"
@@ -133,7 +135,9 @@ function MyApp({
                   </>
                   <Provider>
                     <Layout>
-                      <Component {...pageProps} />
+                      <NetworkGuard networks={[ChainId.RINKEBY, ChainId.SHIBUYA]}>
+                        <Component {...pageProps} />
+                      </NetworkGuard>
                     </Layout>
                   </Provider>
                 </PersistGate>
