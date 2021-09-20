@@ -10,7 +10,7 @@
     "commit": "git-cz",
     "extract": "lingui extract",
     "compile": "lingui compile",
-    "netlify-deploy": "next build && next export"
+    "netlify-deploy": "next build"
   },
   "resolutions": {
     "@walletconnect/web3-provider": "1.5.0-rc.5",
@@ -33,6 +33,7 @@
     "@heroicons/react": "^1.0.4",
     "@keystonehq/keystone-connector": "0.8.3",
     "@lingui/react": "^3.10.2",
+    "@netlify/plugin-nextjs": "^3.9.0",
     "@next/bundle-analyzer": "^11.1.0",
     "@popperjs/core": "^2.9.3",
     "@reach/dialog": "^0.16.0",
