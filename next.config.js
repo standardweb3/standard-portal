@@ -37,6 +37,16 @@ module.exports = withBundleAnalyzer(
 
       return config;
     },
+    async redirects() {
+      return [
+        {
+          source: '/',
+          destination: '/swap',
+          permanent: true,
+          locale: false,
+        },
+      ];
+    },
   }),
 );
 
