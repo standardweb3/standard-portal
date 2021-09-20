@@ -10,6 +10,7 @@ import {
   getMphPrice,
   getStakePrice,
   getSushiPrice,
+  getStandardPrice,
   getYggPrice,
   getRulerPrice,
   getTruPrice,
@@ -171,6 +172,16 @@ export function useMaticPrice(swrConfig: SWRConfiguration = undefined) {
 
 export function useSushiPrice(swrConfig: SWRConfiguration = undefined) {
   const { data } = useSWR('sushiPrice', () => getSushiPrice(), swrConfig);
+  return data;
+}
+
+export function useStandardPrice(swrConfig: SWRConfiguration = undefined) {
+  const { chainId } = useActiveWeb3React();
+  const { data } = useSWR(
+    'standardPrice',
+    () => getStandardPrice(chainId),
+    swrConfig,
+  );
   return data;
 }
 

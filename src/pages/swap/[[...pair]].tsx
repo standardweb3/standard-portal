@@ -688,8 +688,7 @@ export default function Swap() {
                   </Button>
                 ) : routeNotFound && userHasSpecifiedInputOutput ? (
                   <div className={Typographies.swapError}>
-                    Insufficient liquidity for this trade. Try enabling
-                    multi-hop trades
+                    Insufficient liquidity for this trade
                   </div>
                 ) : showApproveFlow ? (
                   <div className="flex justify-between items-center">

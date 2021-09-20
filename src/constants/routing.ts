@@ -375,6 +375,12 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
     USDT,
     WBTC,
   ],
+  [ChainId.RINKEBY]: [
+    ...WRAPPED_NATIVE_ONLY[ChainId.RINKEBY],
+    RINKEBY.DAI,
+    RINKEBY.STND,
+  ],
+  [ChainId.SHIBUYA]: [...WRAPPED_NATIVE_ONLY[ChainId.SHIBUYA], SHIBUYA.USDC],
   [ChainId.MATIC]: [
     ...WRAPPED_NATIVE_ONLY[ChainId.MATIC],
     MATIC.USDC,

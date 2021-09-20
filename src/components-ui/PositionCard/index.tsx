@@ -337,7 +337,9 @@ export function FullPositionCard({
                 <Button
                   className={Typographies.liquidityButton}
                   onClick={() => {
-                    router.push(`/add/${pair.liquidityToken.address}`);
+                    router.push(
+                      `/add/${pair.token0.address}/${pair.token1.address}`,
+                    );
                   }}
                 >
                   {`Add`}

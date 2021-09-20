@@ -18,6 +18,13 @@ export const RINKEBY: { [key: string]: Token } = {
     'DAI',
     'Dai Stablecoin',
   ),
+  STND: new Token(
+    ChainId.RINKEBY,
+    '0xccf56fb87850fe6cff0cd16f491933c138b7eadd',
+    18,
+    'STND',
+    'Standard',
+  ),
 };
 
 export const SHIBUYA: { [key: string]: Token } = {

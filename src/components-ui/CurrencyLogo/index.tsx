@@ -1,6 +1,7 @@
 import {
   ChainId,
   Currency,
+  STND_ADDRESS,
   WNATIVE,
 } from '@digitalnative/standard-protocol-sdk';
 import React, { FunctionComponent, useMemo } from 'react';
@@ -9,6 +10,7 @@ import { WrappedTokenInfo } from '../../state/lists/wrappedTokenInfo';
 import { getMaticTokenLogoURL } from '../../constants/maticTokenMapping';
 import useHttpLocations from '../../hooks/useHttpLocations';
 import { SequentialLogo } from '../Logo/SequentialLogo';
+import { getAddress } from '@ethersproject/address';
 
 export const getTokenLogoURL = (address: string, chainId: ChainId) => {
   let imageURL;
@@ -51,6 +53,12 @@ function getCurrencyLogoUrls(currency) {
       currency,
     )}.jpg`,
   );
+  if (
+    getAddress(STND_ADDRESS[currency.chainId]) === getAddress(currency.address)
+  )
+    urls.push(
+      'https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x9040e237C3bF18347bb00957Dc22167D0f2b999d/logo.png',
+    );
   if (currency.chainId in BLOCKCHAIN) {
     urls.push(
       `https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/${

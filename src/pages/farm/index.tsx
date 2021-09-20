@@ -12,6 +12,7 @@ import {
   useFarms,
   useMasterChefV2SushiPerBlock,
   useMasterChefV2TotalAllocPoint,
+  useStandardPrice,
   useSushiPairs,
 } from '../../services/graph';
 import { Page } from '../../components-ui/Page';
@@ -42,8 +43,7 @@ export default function Farm() {
 
   const positions = usePositions();
 
-  const [ethPrice] = [useEthPrice()];
-
+  const [ethPrice, stndPrice] = [useEthPrice(), useStandardPrice()];
   const averageBlockTime = useAverageBlockTime();
 
   const masterChefV2TotalAllocPoint = useMasterChefV2TotalAllocPoint();
@@ -77,14 +77,13 @@ export default function Farm() {
 
       const rewardPerBlock =
         (pool.allocPoint / pool.owner.totalAllocPoint) * sushiPerBlock;
-
       const defaultReward = {
-        token: 'SUSHI',
+        token: 'STND',
         icon:
-          'https://raw.githubusercontent.com/sushiswap/icons/master/token/sushi.jpg',
+          'https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x9040e237C3bF18347bb00957Dc22167D0f2b999d/logo.png',
         rewardPerBlock,
         rewardPerDay: rewardPerBlock * blocksPerDay,
-        rewardPrice: ethPrice, // change to sushiprice
+        rewardPrice: stndPrice, // change to sushiprice
       };
 
       const defaultRewards = [defaultReward];
