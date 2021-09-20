@@ -1,14 +1,14 @@
 import '../bootstrap'
-
-import { Fragment, FunctionComponent, useEffect } from 'react';
+import Head from 'next/head'
+import { Fragment, FunctionComponent } from 'react';
 // next
 import { NextComponentType, NextPageContext } from 'next';
 import { useRouter } from 'next/router'
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic'
 // lingui
-import { I18nProvider } from '@lingui/react'
-import { i18n } from '@lingui/core'
+// import { I18nProvider } from '@lingui/react'
+// import { i18n } from '@lingui/core'
 // emotion
 import { ThemeProvider } from '@emotion/react';
 // redux
@@ -70,6 +70,53 @@ function MyApp({
 
   return (
     <>
+    <Head>
+        <meta charSet="utf-8" />
+        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+
+        <meta
+          name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"
+        />
+        <title key="title">STND</title>
+
+        <meta
+          key="description"
+          name="description"
+          content="Standard Protocol, building the next multichain money"
+        />
+
+        <meta name="application-name" content="Standard Protocol App" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="SUSHI App" />
+
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="msapplication-config" content="/browserconfig.xml" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <meta name="theme-color" content="#F338C3" />
+
+        <meta key="twitter:card" name="twitter:card" content="app" />
+        <meta key="twitter:title" name="twitter:title" content="Standard Protocol App" />
+        <meta key="twitter:url" name="twitter:url" content="https://apps/standard.tech" />
+        <meta
+          key="twitter:description"
+          name="twitter:description"
+          content="Standard Protocol, building the next multichain money"
+        />
+        {/* <meta key="twitter:image" name="twitter:image" content="https://app.sushi.com/icons/icon-192x192.png" /> */}
+        <meta key="twitter:creator" name="twitter:creator" content="@standarddefi" />
+        <meta key="og:type" property="og:type" content="website" />
+        <meta key="og:site_name" property="og:site_name" content="Standard Protocol App" />
+        <meta key="og:url" property="og:url" content="https://apps.standard.tech" />
+        {/* <meta key="og:image" property="og:image" content="https://app.sushi.com/apple-touch-icon.png" /> */}
+        <meta
+          key="og:description"
+          property="og:description"
+          content="Standard Protocol, building the next multichain money"
+        />
+      </Head>
      {/* <I18nProvider i18n={i18n} forceRenderOnLocaleChange={false}> */}
       <ThemeProvider theme={darkTheme}>
         <Web3ReactProvider getLibrary={getLibrary}>
