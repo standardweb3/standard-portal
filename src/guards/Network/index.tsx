@@ -10,6 +10,7 @@ import { NavigationLink } from '../../components-ui/NavigationLink';
 
 interface NetworkGuardProps {
   networks: ChainId[];
+  children: React.ReactNode;
 }
 
 const Component: FC<NetworkGuardProps> = ({ children, networks = [] }) => {
@@ -27,22 +28,14 @@ const Component: FC<NetworkGuardProps> = ({ children, networks = [] }) => {
         isOpen={!!account && !networks.includes(chainId)}
         onDismiss={() => null}
       >
-        <div className="flex flex-col gap-7 justify-center">
+        <div className="flex flex-col gap-7 p-8 rounded-20 bg-opaque items-center justify-center">
           <div className="max-w-2xl text-white text-center">
-            {`Roll it back - this feature is not yet supported on ${NETWORK_LABEL[chainId]}.`}
+            {`The App is not yet supported on ${NETWORK_LABEL[chainId]}`}
           </div>
-          <div className="text-center">
-            <div id="Either return to the {link}, or change to an available network." />
+          <div className="uppercase text-white text-center text-xl tracking-[.2rem]">
+            Available Networks
           </div>
-          <div className="uppercase text-white text-center text-lg tracking-[.2rem]">
-            {`Available Networks`}
-          </div>
-          <div
-            className={`grid gap-5 md:gap-10 md:grid-cols-[${Math.min(
-              6,
-              networks.length,
-            )}] grid-cols-[${Math.min(3, networks.length)}]`}
-          >
+          <div className="flex items-center space-x-8">
             {networks.map((key: ChainId, idx: number) => (
               <button
                 className="text-primary hover:text-white flex items-center flex-col gap-2 justify-start"
@@ -50,9 +43,9 @@ const Component: FC<NetworkGuardProps> = ({ children, networks = [] }) => {
                 onClick={() => {
                   const params = SUPPORTED_NETWORKS[key];
                   cookie.set('chainId', key);
-                  if (key === ChainId.MAINNET) {
+                  if ([ChainId.RINKEBY].includes(key)) {
                     library?.send('wallet_switchEthereumChain', [
-                      { chainId: '0x1' },
+                      { chainId: params.chainId },
                       account,
                     ]);
                   } else {
@@ -64,7 +57,7 @@ const Component: FC<NetworkGuardProps> = ({ children, networks = [] }) => {
                   <Image
                     src={NETWORK_ICON[key]}
                     alt="Switch Network"
-                    className="rounded-md filter drop-shadow-currencyLogo"
+                    className="rounded-full filter drop-shadow-currencyLogo"
                     width="40px"
                     height="40px"
                   />
@@ -80,10 +73,11 @@ const Component: FC<NetworkGuardProps> = ({ children, networks = [] }) => {
   );
 };
 
-const NetworkGuard = (networks: ChainId[]) => {
-  return ({ children }) => (
-    <Component networks={networks}>{children}</Component>
-  );
-};
+export default function NetworkGuard({
+  networks,
+  children,
+}: NetworkGuardProps) {
+  return <Component networks={networks}>{children}</Component>;
+}
 
-export default NetworkGuard;
+// export default NetworkGuard;
