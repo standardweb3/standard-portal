@@ -43,7 +43,6 @@ module.exports = withBundleAnalyzer(
           source: '/',
           destination: '/swap',
           permanent: true,
-          locale: false,
         },
       ];
     },
