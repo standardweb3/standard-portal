@@ -47,7 +47,6 @@ export const getPairs = async (
 };
 
 export const getTokenSubset = async (chainId = ChainId.MAINNET, variables) => {
-  // console.log('getTokenSubset')
   const { tokens } = await exchange(chainId, tokenSubsetQuery, variables);
   return tokens;
 };

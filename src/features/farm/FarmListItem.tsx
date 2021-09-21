@@ -120,7 +120,7 @@ const FarmListItem = ({ farm, ...rest }) => {
                   </div>
                   <div className="text-grey">
                     <div>{farm.pair.token0.symbol}</div>
-                    <div> {farm.pair.token0.symbol}</div>
+                    <div> {farm.pair.token1.symbol}</div>
                   </div>
                 </div>
               </div>

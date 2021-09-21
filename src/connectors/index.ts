@@ -103,7 +103,7 @@ export const fortmatic = new FortmaticConnector({
 // mainnet only
 export const portis = new PortisConnector({
   dAppId: process.env.NEXT_PUBLIC_PORTIS_ID ?? '',
-  networks: [1],
+  networks: [1, 4],
 });
 
 // mainnet only
