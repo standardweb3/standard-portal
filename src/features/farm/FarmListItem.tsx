@@ -11,6 +11,7 @@ import { DoubleCurrencyLogo } from '../../components-ui/CurrencyLogo/DoubleCurre
 const FarmListItem = ({ farm, ...rest }) => {
   const token0 = useCurrency(farm.pair.token0.id);
   const token1 = useCurrency(farm.pair.token1.id);
+
   return (
     <Disclosure {...rest}>
       {({ open }) => (

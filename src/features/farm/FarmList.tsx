@@ -60,8 +60,8 @@ const FarmList = ({ farms, term }) => {
         </div>
       </div>
       <div className="flex-col space-y-4">
-        {items.map((farm, index) => (
-          <FarmListItem key={index} farm={farm} />
+        {items.map((farm) => (
+          <FarmListItem key={farm.pair.id} farm={farm} />
         ))}
       </div>
     </>

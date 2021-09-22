@@ -2,10 +2,14 @@ import { TransactionResponse } from '@ethersproject/providers';
 import Head from 'next/head';
 import ReactGA from 'react-ga';
 import {
+  Contract,
   Currency,
   CurrencyAmount,
   currencyEquals,
+  INIT_CODE_HASH,
   Percent,
+  Protocol,
+  PROTOCOLS,
   WNATIVE,
 } from '@digitalnative/standard-protocol-sdk';
 import { BigNumber } from 'ethers';

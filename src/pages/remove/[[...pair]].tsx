@@ -715,7 +715,7 @@ export default function Remove() {
         )}
         <div className="grid gap-1 pb-6">
           <div className="flex items-center justify-between">
-            <div className="text-sm text-secondary">
+            <div className="text-sm text-text">
               {`${currencyA?.symbol}/${currencyB?.symbol} Burned`}
             </div>
             <div className="text-sm font-bold justify-center items-center flex right-align pl-1.5 text-high-emphasis">
