@@ -7,6 +7,7 @@ import { SUPPORTED_NETWORKS } from '../../modals/NetworkModal';
 import cookie from 'cookie-cutter';
 import HeadlessUIModal from '../../components-ui/Modal/HeadlessUIModal';
 import { NavigationLink } from '../../components-ui/NavigationLink';
+import { Blank } from '../../components-ui/Blank';
 
 interface NetworkGuardProps {
   networks: ChainId[];
@@ -68,7 +69,7 @@ const Component: FC<NetworkGuardProps> = ({ children, networks = [] }) => {
           </div>
         </div>
       </HeadlessUIModal>
-      {children}
+      {networks.includes(chainId) ? children : <Blank />}
     </>
   );
 };

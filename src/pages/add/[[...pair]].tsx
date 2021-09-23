@@ -2,11 +2,15 @@ import { TransactionResponse } from '@ethersproject/providers';
 import Head from 'next/head';
 import ReactGA from 'react-ga';
 import {
+  ChainId,
   Currency,
   CurrencyAmount,
   currencyEquals,
   Percent,
+  Protocol,
+  PROTOCOLS,
   WNATIVE,
+  WNATIVE_ADDRESS,
 } from '@digitalnative/standard-protocol-sdk';
 import { BigNumber } from 'ethers';
 import { useRouter } from 'next/router';
@@ -15,6 +19,7 @@ import { ZERO_PERCENT } from '../../constants';
 import {
   calculateGasMargin,
   calculateSlippageAmount,
+  classNames,
   currencyId,
   maxAmountSpend,
 } from '../../functions';
@@ -89,7 +94,7 @@ export default function Liquidity() {
         (currencyB && currencyEquals(currencyB, WNATIVE[chainId]))),
   );
 
-  const toggleWalletModal = useWalletModalToggle(); // toggle wallet when disconnected
+  // const toggleWalletModal = useWalletModalToggle(); // toggle wallet when disconnected
   const [isExpertMode] = useExpertModeManager();
 
   // mint state - liquidity trade
@@ -207,12 +212,21 @@ export default function Liquidity() {
       )[0],
     };
 
+    console.log(
+      PROTOCOLS[Protocol.STANDARD_PROTOCOL].FACTORY_ADDRESS[ChainId.SHIBUYA],
+    );
+    console.log(routerContract);
+    console.log(WNATIVE_ADDRESS[ChainId.SHIBUYA]);
+    console.log(PROTOCOLS[Protocol.STANDARD_PROTOCOL].INIT_CODE_HASH);
+
     let estimate,
       method: (...args: any) => Promise<TransactionResponse>,
       args: Array<string | string[] | number>,
       value: BigNumber | null;
     if (currencyA.isNative || currencyB.isNative) {
+      console.log('native');
       const tokenBIsETH = currencyB.isNative;
+      console.log('amountsMin', amountsMin[Field.CURRENCY_B]);
       estimate = routerContract.estimateGas.addLiquidityETH;
       method = routerContract.addLiquidityETH;
       args = [
@@ -227,9 +241,11 @@ export default function Liquidity() {
         account,
         deadline.toHexString(),
       ];
+      console.log(args);
       value = BigNumber.from(
         (tokenBIsETH ? parsedAmountB : parsedAmountA).quotient.toString(),
       );
+      console.log(value.toString());
     } else {
       estimate = routerContract.estimateGas.addLiquidity;
       method = routerContract.addLiquidity;
@@ -435,7 +451,7 @@ export default function Liquidity() {
               ) : (
                 <>
                   <b>{`Tip:`}</b>{' '}
-                  {`By adding liquidity you'll earn 0.25% of all trades on this pair
+                  {`By providing liquidity you'll earn 0.3% of all trades on this pair
                 proportional to your share of the pool. Fees are added to the pool, accrue in real time and can be
                 claimed by withdrawing your liquidity.`}
                 </>

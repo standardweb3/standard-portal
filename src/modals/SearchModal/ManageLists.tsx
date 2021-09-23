@@ -1,4 +1,5 @@
 import { AppDispatch, AppState } from '../../state';
+import ReactGA from 'react-ga';
 import React, {
   memo,
   useCallback,
@@ -27,7 +28,6 @@ import { ExternalLink } from '../../components-ui/ExternalLink';
 import { LinkStyledButton } from '../../components-ui/LinkStyledButton';
 import { ListLogo } from '../../components-ui/Logo/ListLogo';
 import { ListToggle } from '../../components-ui/Toggle/ListToggle';
-import ReactGA from 'react-ga';
 import { TokenList } from '@uniswap/token-lists';
 import { UNSUPPORTED_LIST_URLS } from '../../constants/token-lists';
 import { listVersionLabel } from '../../functions/list';

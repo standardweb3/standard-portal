@@ -1,4 +1,5 @@
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
+import ReactGA from 'react-ga';
 import cookie from 'cookie-cutter';
 // next
 import Image from 'next/image';

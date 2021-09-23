@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import ReactGA from 'react-ga';
 import {
   ChainId,
   Currency,
@@ -347,25 +348,27 @@ export default function Swap() {
           txHash: hash,
         });
 
-        // ReactGA.event({
-        //   category: 'Swap',
-        //   action:
-        //     recipient === null
-        //       ? 'Swap w/o Send'
-        //       : (recipientAddress ?? recipient) === account
-        //       ? 'Swap w/o Send + recipient'
-        //       : 'Swap w/ Send',
-        //   label: [
-        //     trade?.inputAmount?.currency?.symbol,
-        //     trade?.outputAmount?.currency?.symbol,
-        //     singleHopOnly ? 'SH' : 'MH',
-        //   ].join('/'),
-        // })
+        ReactGA.event({
+          category: 'Swap',
+          action:
+            recipient === null
+              ? 'Swap w/o Send'
+              : (recipientAddress ?? recipient) === account
+              ? 'Swap w/o Send + recipient'
+              : 'Swap w/ Send',
+          label: [
+            trade?.inputAmount?.currency?.symbol,
+            trade?.outputAmount?.currency?.symbol,
+            singleHopOnly ? 'SH' : 'MH',
+          ].join('/'),
+        });
 
-        // ReactGA.event({
-        //   category: 'Routing',
-        //   action: singleHopOnly ? 'Swap with multihop disabled' : 'Swap with multihop enabled',
-        // })
+        ReactGA.event({
+          category: 'Routing',
+          action: singleHopOnly
+            ? 'Swap with multihop disabled'
+            : 'Swap with multihop enabled',
+        });
       })
       .catch((error) => {
         setSwapState({

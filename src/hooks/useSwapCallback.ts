@@ -398,11 +398,11 @@ export function useSwapCallback(
 
         if (!useArcher) {
           // console.log('SWAP WITHOUT ARCHER');
-          console.log(
-            'gasEstimate' in bestCallOption
-              ? { gasLimit: calculateGasMargin(bestCallOption.gasEstimate) }
-              : {},
-          );
+          // console.log(
+          //   'gasEstimate' in bestCallOption
+          //     ? { gasLimit: calculateGasMargin(bestCallOption.gasEstimate) }
+          //     : {},
+          // );
           return library
             .getSigner()
             .sendTransaction({

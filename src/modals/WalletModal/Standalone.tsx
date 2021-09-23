@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import { fortmatic, injected, portis } from '../../connectors';
 import {

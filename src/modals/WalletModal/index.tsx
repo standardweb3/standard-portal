@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import ReactGA from 'react-ga';
 // emotion
 import styled from '@emotion/styled';
 // next
@@ -126,11 +126,11 @@ export default function WalletModal({
       return true;
     });
     // log selected wallet
-    // ReactGA.event({
-    //   category: 'Wallet',
-    //   action: 'Change Wallet',
-    //   label: name,
-    // });
+    ReactGA.event({
+      category: 'Wallet',
+      action: 'Change Wallet',
+      label: name,
+    });
     setPendingWallet(conn); // set wallet for pending view
     setWalletView(WALLET_VIEWS.PENDING);
 

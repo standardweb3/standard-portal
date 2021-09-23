@@ -1,11 +1,13 @@
 import '../bootstrap'
 import Head from 'next/head'
-import { Fragment, FunctionComponent } from 'react';
+import { Fragment, FunctionComponent, useEffect } from 'react';
 // next
 import { NextComponentType, NextPageContext } from 'next';
 import { useRouter } from 'next/router'
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic'
+import ReactGA from 'react-ga'
+
 // lingui
 // import { I18nProvider } from '@lingui/react'
 // import { i18n } from '@lingui/core'
@@ -20,6 +22,7 @@ import { Web3ReactProvider } from '@web3-react/core'
 
 // web3 component
 import Web3ReactManager from '../components-ui/Web3ReactManager';
+import { NetworkLogger } from '../components-ui/NetworkLogger';
 
 // functions
 import getLibrary from '../functions/getLibrary'
@@ -65,6 +68,26 @@ function MyApp({
   //   }
   //   load(locale)
   // }, [locale])
+
+  useEffect(() => {
+    ReactGA.initialize(process.env.NODE_ENV === 'development' ? process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_DEV : process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_PROD)
+
+    const errorHandler = (error) => {
+      ReactGA.exception({
+        description: `${error.message} @ ${error.filename}:${error.lineno}:${error.colno}`,
+        fatal: true,
+      })
+    }
+
+    window.addEventListener('error', errorHandler)
+
+    return () => window.removeEventListener('error', errorHandler)
+  }, [])
+
+  useEffect(() => {
+    ReactGA.pageview(`${pathname}${query}`)
+  }, [pathname, query])
+
 
   const Layout = Component.Layout || DefaultLayout
   const Provider = Component.Provider || Fragment
@@ -127,6 +150,7 @@ function MyApp({
               <ReduxProvider store={store}>
               <PersistGate loading='loading' persistor={persistor}>
                   <>
+                    <NetworkLogger/>
                     <ListsUpdater />
                     <UserUpdater />
                     <ApplicationUpdater />

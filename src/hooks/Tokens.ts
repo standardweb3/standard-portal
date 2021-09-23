@@ -6,7 +6,7 @@ import {
   WNATIVE,
   currencyEquals,
 } from '@digitalnative/standard-protocol-sdk';
-import { ExtendedEther, WETH9_EXTENDED } from '../constants';
+// import { ExtendedEther, WETH9_EXTENDED } from '../constants';
 import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks';
 import {
   TokenAddressMap,
@@ -14,10 +14,7 @@ import {
   useInactiveListUrls,
   useUnsupportedTokenList,
 } from './../state/lists/hooks';
-import {
-  createTokenFilterFunction,
-  filterTokens,
-} from '../functions/filtering';
+import { createTokenFilterFunction } from '../functions/filtering';
 import { useBytes32TokenContract, useTokenContract } from './useContract';
 
 import { WrappedTokenInfo } from './../state/lists/wrappedTokenInfo';
@@ -256,7 +253,6 @@ export function useCurrency(
   }
 
   const token = useToken(useNative ? undefined : currencyId);
-
   // const extendedEther = useMemo(() => (chainId ? ExtendedEther.onChain(chainId) : undefined), [chainId])
   // const weth = chainId ? WETH9_EXTENDED[chainId] : undefined
 
