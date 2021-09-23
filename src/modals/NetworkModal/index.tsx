@@ -49,7 +49,7 @@ export const SUPPORTED_NETWORKS: {
       decimals: 18,
     },
     rpcUrls: ['https://rpc.shibuya.astar.network:8545'],
-    blockExplorerUrls: ['https://shiden.subscan.io'],
+    blockExplorerUrls: ['https://shibuya.subscan.io'],
   },
   // [ChainId.MAINNET]: {
   //   chainId: '0x1',
