@@ -70,6 +70,7 @@ function MyApp({
   // }, [locale])
 
   useEffect(() => {
+    console.log(process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_PROD)
     ReactGA.initialize(process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_PROD : process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_DEV)
 
     const errorHandler = (error) => {
