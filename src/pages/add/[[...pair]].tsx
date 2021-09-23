@@ -2,14 +2,10 @@ import { TransactionResponse } from '@ethersproject/providers';
 import Head from 'next/head';
 import ReactGA from 'react-ga';
 import {
-  Contract,
   Currency,
   CurrencyAmount,
   currencyEquals,
-  INIT_CODE_HASH,
   Percent,
-  Protocol,
-  PROTOCOLS,
   WNATIVE,
 } from '@digitalnative/standard-protocol-sdk';
 import { BigNumber } from 'ethers';
@@ -182,13 +178,13 @@ export default function Liquidity() {
       [Field.CURRENCY_B]: parsedAmountB,
     } = parsedAmounts;
 
-    console.log({
-      parsedAmountA,
-      parsedAmountB,
-      currencyA,
-      currencyB,
-      deadline,
-    });
+    // console.log({
+    //   parsedAmountA,
+    //   parsedAmountB,
+    //   currencyA,
+    //   currencyB,
+    //   deadline,
+    // });
 
     if (
       !parsedAmountA ||

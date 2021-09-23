@@ -36,7 +36,7 @@ export function useRouterAddressWithChainId(
     : ARCHER_ROUTER_ADDRESS[chainId];
 }
 
-export function useInitCodeHash(): string {
-  const protocol = useProtocol();
-  return getInitCodeHash(protocol);
-}
+// export function useInitCodeHash(): string {
+//   const protocol = useProtocol();
+//   return getInitCodeHash(protocol);
+// }
