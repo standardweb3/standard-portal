@@ -781,7 +781,7 @@ export default function Swap() {
                     {priceImpactSeverity > 2 ? `Swap Anyway` : `Swap`}
                   </ButtonError>
                 )}
-                {showApproveFlow && (
+                {/* {showApproveFlow && (
                   <div
                     className="flex flex-col justify-center"
                     style={{ marginTop: '1rem' }}
@@ -790,7 +790,7 @@ export default function Swap() {
                       steps={[approvalState === ApprovalState.APPROVED]}
                     />
                   </div>
-                )}
+                )} */}
                 {isExpertMode && swapErrorMessage
                   ? 'err'
                   : // <SwapCallbackError error={swapErrorMessage} />
