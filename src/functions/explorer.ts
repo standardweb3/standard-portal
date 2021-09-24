@@ -20,6 +20,19 @@ const builders = {
     data: string,
     type: 'transaction' | 'token' | 'address' | 'block',
   ) => {
+    const prefix = 'https://shiden.subscan.io';
+    switch (type) {
+      case 'transaction':
+        return `${prefix}/tx/${data}`;
+      default:
+        return `${prefix}/${type}/${data}`;
+    }
+  },
+  shibuya: (
+    chainName: string,
+    data: string,
+    type: 'transaction' | 'token' | 'address' | 'block',
+  ) => {
     const prefix = 'https://shibuya.subscan.io';
     switch (type) {
       case 'transaction':
@@ -290,6 +303,10 @@ const chains: ChainObject = {
     builder: builders.etherscan,
   },
   [ChainId.SHIBUYA]: {
+    chainName: '',
+    builder: builders.shibuya,
+  },
+  [ChainId.SHIDEN]: {
     chainName: '',
     builder: builders.shiden,
   },

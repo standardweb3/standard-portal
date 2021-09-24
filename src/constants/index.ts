@@ -24,6 +24,7 @@ export const RPC = {
   [ChainId.KOVAN]:
     'https://eth-kovan.alchemyapi.io/v2/NU1Dxk4vYkOcMmndMTRAPIin-IyKKcYq',
   [ChainId.SHIBUYA]: 'https://rpc.shibuya.astar.network:8545',
+  [ChainId.SHIDEN]: 'https://rpc.shiden.astar.network:8545',
   [ChainId.FANTOM]: 'https://rpcapi.fantom.network',
   [ChainId.FANTOM_TESTNET]: 'https://rpc.testnet.fantom.network',
   [ChainId.MATIC]: 'https://rpc-mainnet.maticvigil.com',

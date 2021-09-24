@@ -111,7 +111,7 @@ function MyApp({
           content="Standard Protocol, building the next multichain money"
         />
 
-        <meta name="application-name" content="Standard Protocol App" />
+        <meta name="application-name" content="Standard" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="Standard Protocol App" />

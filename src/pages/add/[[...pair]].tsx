@@ -2,15 +2,11 @@ import { TransactionResponse } from '@ethersproject/providers';
 import Head from 'next/head';
 import ReactGA from 'react-ga';
 import {
-  ChainId,
   Currency,
   CurrencyAmount,
   currencyEquals,
   Percent,
-  Protocol,
-  PROTOCOLS,
   WNATIVE,
-  WNATIVE_ADDRESS,
 } from '@digitalnative/standard-protocol-sdk';
 import { BigNumber } from 'ethers';
 import { useRouter } from 'next/router';
@@ -212,21 +208,12 @@ export default function Liquidity() {
       )[0],
     };
 
-    console.log(
-      PROTOCOLS[Protocol.STANDARD_PROTOCOL].FACTORY_ADDRESS[ChainId.SHIBUYA],
-    );
-    console.log(routerContract);
-    console.log(WNATIVE_ADDRESS[ChainId.SHIBUYA]);
-    console.log(PROTOCOLS[Protocol.STANDARD_PROTOCOL].INIT_CODE_HASH);
-
     let estimate,
       method: (...args: any) => Promise<TransactionResponse>,
       args: Array<string | string[] | number>,
       value: BigNumber | null;
     if (currencyA.isNative || currencyB.isNative) {
-      console.log('native');
       const tokenBIsETH = currencyB.isNative;
-      console.log('amountsMin', amountsMin[Field.CURRENCY_B]);
       estimate = routerContract.estimateGas.addLiquidityETH;
       method = routerContract.addLiquidityETH;
       args = [
@@ -241,11 +228,9 @@ export default function Liquidity() {
         account,
         deadline.toHexString(),
       ];
-      console.log(args);
       value = BigNumber.from(
         (tokenBIsETH ? parsedAmountB : parsedAmountA).quotient.toString(),
       );
-      console.log(value.toString());
     } else {
       estimate = routerContract.estimateGas.addLiquidity;
       method = routerContract.addLiquidity;

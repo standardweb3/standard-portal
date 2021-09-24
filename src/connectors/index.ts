@@ -21,6 +21,7 @@ const RPC = {
   [ChainId.KOVAN]:
     'https://eth-kovan.alchemyapi.io/v2/NU1Dxk4vYkOcMmndMTRAPIin-IyKKcYq',
   [ChainId.SHIBUYA]: 'https://rpc.shibuya.astar.network:8545',
+  [ChainId.SHIDEN]: 'https://rpc.shiden.astar.network:8545',
   [ChainId.FANTOM]: 'https://rpcapi.fantom.network',
   [ChainId.FANTOM_TESTNET]: 'https://rpc.testnet.fantom.network',
   [ChainId.MATIC]: 'https://rpc-mainnet.maticvigil.com',
@@ -65,6 +66,7 @@ export const injected = new InjectedConnector({
     42, // kovan
     81, // shibuya
     250, // fantom
+    336, // shiden
     4002, // fantom testnet
     137, // matic
     80001, // matic testnet

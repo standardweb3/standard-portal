@@ -99,6 +99,7 @@ const WRAPPED_NATIVE_ONLY: ChainTokenList = {
   [ChainId.GÖRLI]: [WNATIVE[ChainId.GÖRLI]],
   [ChainId.KOVAN]: [WNATIVE[ChainId.KOVAN]],
   [ChainId.SHIBUYA]: [WNATIVE[ChainId.SHIBUYA]],
+  [ChainId.SHIDEN]: [WNATIVE[ChainId.SHIDEN]],
   [ChainId.FANTOM]: [WNATIVE[ChainId.FANTOM]],
   [ChainId.FANTOM_TESTNET]: [WNATIVE[ChainId.FANTOM_TESTNET]],
   [ChainId.MATIC]: [WNATIVE[ChainId.MATIC]],
@@ -293,6 +294,7 @@ export const COMMON_BASES: ChainTokenList = {
   ],
   [ChainId.RINKEBY]: [...WRAPPED_NATIVE_ONLY[ChainId.RINKEBY], RINKEBY.DAI],
   [ChainId.SHIBUYA]: [...WRAPPED_NATIVE_ONLY[ChainId.SHIBUYA], SHIBUYA.USDC],
+  [ChainId.SHIDEN]: [...WRAPPED_NATIVE_ONLY[ChainId.SHIDEN]],
   [ChainId.MATIC]: [
     ...WRAPPED_NATIVE_ONLY[ChainId.MATIC],
     MATIC.USDC,
@@ -381,6 +383,7 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
     RINKEBY.STND,
   ],
   [ChainId.SHIBUYA]: [...WRAPPED_NATIVE_ONLY[ChainId.SHIBUYA], SHIBUYA.USDC],
+  [ChainId.SHIDEN]: [...WRAPPED_NATIVE_ONLY[ChainId.SHIDEN]],
   [ChainId.MATIC]: [
     ...WRAPPED_NATIVE_ONLY[ChainId.MATIC],
     MATIC.USDC,

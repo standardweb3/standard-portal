@@ -33,7 +33,6 @@ function useTokensFromMap(
 ): { [address: string]: Token } {
   const { chainId } = useActiveWeb3React();
   const userAddedTokens = useUserAddedTokens();
-
   return useMemo(() => {
     if (!chainId) return {};
 

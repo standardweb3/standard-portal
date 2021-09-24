@@ -79,6 +79,7 @@ function combineMaps(
     5: { ...map1[5], ...map2[5] }, // goerli
     42: { ...map1[42], ...map2[42] }, // kovan
     81: { ...map1[81], ...map2[81] },
+    336: {},
     250: { ...map1[250], ...map2[250] }, // fantom
     4002: { ...map1[4002], ...map2[4002] }, // fantom testnet
     137: { ...map1[137], ...map2[137] }, // matic
@@ -149,7 +150,7 @@ export function useInactiveListUrls(): string[] {
 export function useCombinedActiveList(): TokenAddressMap {
   const activeListUrls = useActiveListUrls();
   const activeTokens = useCombinedTokenMapFromUrls(activeListUrls);
-  return combineMaps(activeTokens, TRANSFORMED_DEFAULT_TOKEN_LIST);
+  return combineMaps(activeTokens, TRANSFORMED_DEFAULT_TOKEN_LIST ?? {});
 }
 
 // list of tokens not supported on interface, used to show warnings and prevent swaps and adds
