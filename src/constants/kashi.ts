@@ -97,6 +97,7 @@ export const BENTOBOX_ADDRESS: {
   [ChainId.PALM]: '',
   [ChainId.PALM_TESTNET]: '',
   [ChainId.SHIBUYA]: '',
+  [ChainId.SHIDEN]: '',
   [ChainId.MOONRIVER]: '',
 };
 
@@ -130,6 +131,7 @@ export const KASHI_ADDRESS: {
   [ChainId.PALM]: '',
   [ChainId.PALM_TESTNET]: '',
   [ChainId.SHIBUYA]: '',
+  [ChainId.SHIDEN]: '',
   [ChainId.MOONRIVER]: '',
 };
 
@@ -165,6 +167,7 @@ export const SUSHISWAP_SWAPPER_ADDRESS: {
   [ChainId.PALM]: '',
   [ChainId.PALM_TESTNET]: '',
   [ChainId.SHIBUYA]: '',
+  [ChainId.SHIDEN]: '',
   [ChainId.MOONRIVER]: '',
 };
 
@@ -198,6 +201,7 @@ export const SUSHISWAP_MULTISWAPPER_ADDRESS: {
   [ChainId.PALM]: '',
   [ChainId.PALM_TESTNET]: '',
   [ChainId.SHIBUYA]: '',
+  [ChainId.SHIDEN]: '',
   [ChainId.MOONRIVER]: '',
 };
 

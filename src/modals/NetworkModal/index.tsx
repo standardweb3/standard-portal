@@ -51,7 +51,7 @@ export const SUPPORTED_NETWORKS: {
     rpcUrls: ['https://rpc.shibuya.astar.network:8545'],
     blockExplorerUrls: ['https://shibuya.subscan.io'],
   },
-  [ChainId.Shiden]: {
+  [ChainId.SHIDEN]: {
     chainId: '0x150',
     chainName: 'Shiden',
     nativeCurrency: {
@@ -229,6 +229,7 @@ export default function NetworkModal(): JSX.Element | null {
         {[
           ChainId.RINKEBY,
           ChainId.SHIBUYA,
+          ChainId.SHIDEN,
           // ChainId.MAINNET,
           // ChainId.MATIC,
           // ChainId.FANTOM,

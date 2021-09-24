@@ -1567,10 +1567,10 @@
   resolved "https://registry.yarnpkg.com/@digitalnative/default-token-list/-/default-token-list-0.0.1.tgz#3442d6bf7b538973f1f60196bb5414fbbdb7de04"
   integrity sha512-o9iRz/0Mhf3uifQJqzdgU8dOYzJxrQYNFTm791oYUljkfngkeLmOzBQmjKyJeWSYDxlXGVcRmODQa8tEX4pc8w==
 
-"@digitalnative/standard-protocol-sdk@0.0.31":
-  version "0.0.31"
-  resolved "https://registry.yarnpkg.com/@digitalnative/standard-protocol-sdk/-/standard-protocol-sdk-0.0.31.tgz#134e60ea7a709259e168e9ba81ea34b7127ebbde"
-  integrity sha512-PWvzndi/ZtH7fCC7tBwFFVj2qirqaxbi4DJBlA8CM0/cBp5PiCL0qhsWmgZZo1Jp7HT4qDYgcbGfaLCbuEfjlQ==
+"@digitalnative/standard-protocol-sdk@^0.0.39":
+  version "0.0.39"
+  resolved "https://registry.yarnpkg.com/@digitalnative/standard-protocol-sdk/-/standard-protocol-sdk-0.0.39.tgz#5952fb962e17c0db67918f2a92cd4a4dd642b6f5"
+  integrity sha512-oaeqRPBzteWWJKqCAvkciL5LtNGZwYUiLgE5ofsHvpu7J52KLqS7vLeDCqstlyEZEe5KBrYuISzI+3ymWpEGcA==
   dependencies:
     big.js "^6.1.0"
     decimal.js-light "^2.5.0"
