@@ -99,12 +99,8 @@ const CeloLogo =
   'https://raw.githubusercontent.com/sushiswap/icons/master/token/celo.jpg';
 const PalmLogo =
   'https://raw.githubusercontent.com/sushiswap/icons/master/token/palm.jpg';
-<<<<<<< HEAD
-const ShibuyaLogo = 'https://i.imgur.com/6jt5GV1.png';
-=======
 const ShibuyaLogo = 'https://i.imgur.com/offavOc.png';
-const ShidenLogo = 'https://i.imgur.com/9Q7jzvX.jpg'
->>>>>>> 62ff1ee2e97cc4f6856d6ec82bd93e4c60cbce9e
+const ShidenLogo = 'https://i.imgur.com/9Q7jzvX.jpg';
 
 const LOGO: { readonly [chainId in ChainId]?: string } = {
   [ChainId.MAINNET]: EthereumLogo,
