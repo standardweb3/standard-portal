@@ -17,7 +17,7 @@ const Rinkeby = '/img/networks/rinkeby-network.jpg';
 const Ropsten = '/img/networks/ropsten-network.jpg';
 const xDai = '/img/networks/xdai-network.jpg';
 const Celo = '/img/networks/celo-network.jpg';
-const Shibuya = '/img/networks/shibuya-network.jpeg';
+const Shibuya = '/img/networks/shibuya-network.jpg';
 
 // const Palm =
 // 'https://raw.githubusercontent.com/sushiswap/icons/master/network/palm.jpg';
