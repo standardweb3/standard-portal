@@ -3,18 +3,18 @@ import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/outline';
 import FarmListItem from './FarmListItem';
 import React from 'react';
 import useSortableData from '../../hooks/useSortableData';
-import { useSizeMdDown } from '../../components-ui/Responsive';
+import { useSizeMdDown, useSizeXs } from '../../components-ui/Responsive';
 
 const FarmList = ({ farms, term }) => {
   const { items, requestSort, sortConfig } = useSortableData(farms);
-  const isViewportMediumDown = useSizeMdDown();
+  const isViewportXs = useSizeXs();
 
   return items ? (
     <>
-      <div className="grid grid-cols-8 lg:grid-cols-11 text-base text-grey">
+      <div className="grid grid-cols-11 lg:grid-cols-11 text-base text-grey px-4">
         <div
           className="
-          flex items-center col-span-2 
+          flex items-center col-span-3
           lg:col-span-3 px-4 space-x-2
           cursor-pointer 
           text-xs
@@ -37,7 +37,7 @@ const FarmList = ({ farms, term }) => {
           flex items-center justify-start 
           text-xs
           sm:text-base
-          col-span-2 lg:col-span-3 "
+          col-span-3 lg:col-span-3 "
         >
           Rewards (daily)
         </div>
@@ -46,10 +46,10 @@ const FarmList = ({ farms, term }) => {
           flex items-center justify-start 
           text-xs
           sm:text-base
-          col-span-2 cursor-pointer"
+          col-span-3 lg:col-span-2 cursor-pointer"
           onClick={() => requestSort('roiPerYear')}
         >
-          APR{isViewportMediumDown && ' (yearly)'}
+          APR{isViewportXs && ' (yearly)'}
           {sortConfig &&
             sortConfig.key === 'roiPerYear' &&
             ((sortConfig.direction === 'ascending' && (

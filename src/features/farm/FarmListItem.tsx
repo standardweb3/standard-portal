@@ -1,4 +1,9 @@
-import { classNames, formatNumber, formatPercent } from '../../functions';
+import {
+  classNames,
+  formatNumber,
+  formatNumberScale,
+  formatPercent,
+} from '../../functions';
 
 import { Disclosure } from '@headlessui/react';
 import FarmListItemDetails from './FarmListItemDetails';
@@ -14,6 +19,8 @@ import {
   ViewportMediumDown,
   ViewportMediumUp,
   ViewportSmallDown,
+  ViewportSmallUp,
+  ViewportXSmall,
 } from '../../components-ui/Responsive';
 
 const FarmListItem = ({ farm, ...rest }) => {
@@ -38,9 +45,13 @@ const FarmListItem = ({ farm, ...rest }) => {
               text-sm md:text-lg`,
             )}
           >
-            <div className="grid grid-cols-8 lg:grid-cols-11">
-              <div className="col-span-2 lg:col-span-3 flex items-center">
-                <div className="inline-flex flex-col lg:flex-row items-center space-x-4">
+            <div className="grid grid-cols-11 lg:grid-cols-11">
+              <div className="col-span-3 lg:col-span-3 flex items-center">
+                <div
+                  className="
+                inline-flex flex-col lg:flex-row items-center 
+                lg:space-x-4 lg:space-y-0 space-y-2"
+                >
                   <DoubleCurrencyLogo
                     currencyClassName="rounded-full"
                     currency0={token0}
@@ -69,7 +80,7 @@ const FarmListItem = ({ farm, ...rest }) => {
                 flex items-center
                 space-y-2 
                 lg:space-y-0 lg:space-x-2 lg:flex 
-                col-span-2 lg:col-span-3"
+                col-span-3 lg:col-span-3"
               >
                 <ViewportLargeUp>
                   <div className="flex items-center space-x-2">
@@ -104,14 +115,14 @@ const FarmListItem = ({ farm, ...rest }) => {
                   ))}
                 </div>
               </div>
-              <div className="flex items-center col-span-2">
+              <div className="flex items-center col-span-3 lg:col-span-2">
                 <div className="flex items-end justify-center space-x-2">
-                  <ViewportMediumDown>
+                  <ViewportXSmall>
                     <div className="font-bold text-right text-sm lg:text-base">
                       {formatPercent(farm?.roiPerYear * 100)}
                     </div>
-                  </ViewportMediumDown>
-                  <ViewportLargeUp>
+                  </ViewportXSmall>
+                  <ViewportSmallUp>
                     <div className="space-y-1">
                       <div className="font-bold text-right text-base">
                         {formatPercent(farm?.roiPerYear * 100)}
@@ -131,7 +142,7 @@ const FarmListItem = ({ farm, ...rest }) => {
                       <div className="ml-1 text-grey">/day</div>
                       {/* {farm?.roiPerYear > 100 ? '10000%+' : formatPercent(farm?.roiPerYear * 100)} */}
                     </div>
-                  </ViewportLargeUp>
+                  </ViewportSmallUp>
                 </div>
               </div>
               <div
@@ -143,8 +154,10 @@ const FarmListItem = ({ farm, ...rest }) => {
                 lg:items-start
                 "
               >
-                <div className="text-primary font-bold text-sm lg:text-xl">
-                  {formatNumber(farm.tvl, true)}
+                <div className="text-primary font-bold text-sm sm:text-lg lg:text-xl">
+                  {isViewportMediumDown
+                    ? formatNumberScale(farm.tvl, true)
+                    : formatNumber(farm.tvl, true)}
                 </div>
                 <ViewportLargeUp>
                   <div className="flex items-center space-x-1 text-xs">
