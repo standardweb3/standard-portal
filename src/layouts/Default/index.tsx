@@ -22,7 +22,7 @@ const Layout = ({ children }) => {
       <div
         className="z-[1] w-full h-full 
         overflow-auto
-      flex flex-col md:flex-row items-center"
+      flex flex-col md:flex-row"
       >
         <ViewportSmallDown>
           <TopBar />
