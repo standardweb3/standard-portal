@@ -15,6 +15,7 @@ import {
   walletconnect,
   walletlink,
 } from '../../connectors';
+import { isMobile } from 'react-device-detect';
 
 // web3
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
@@ -161,16 +162,18 @@ export const WalletInfo: FC<WalletInfoProps> = ({
                     Disconnect
                   </Button>
                 )}
-              <Button
-                type="bordered"
-                color="white"
-                className="text-sm"
-                onClick={() => {
-                  openOptions();
-                }}
-              >
-                Change
-              </Button>
+              {!isMobile && (
+                <Button
+                  type="bordered"
+                  color="white"
+                  className="text-sm"
+                  onClick={() => {
+                    openOptions();
+                  }}
+                >
+                  Change
+                </Button>
+              )}
             </div>
           </div>
           <div
