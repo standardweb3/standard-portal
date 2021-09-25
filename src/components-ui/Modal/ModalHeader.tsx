@@ -3,8 +3,9 @@ import { classNames } from '../../functions';
 import { Typographies } from '../../utils/Typography';
 
 export type ModalHeaderProps = {
-  title?: string;
+  title?: React.ReactNode;
   className?: string;
+  xIconClassName?: string;
   onClose?: () => void;
   onBack?: () => void;
 };
@@ -12,11 +13,17 @@ export type ModalHeaderProps = {
 export function ModalHeader({
   title,
   className,
+  xIconClassName,
   onClose,
   onBack,
 }: ModalHeaderProps) {
   return (
-    <div className={classNames(`flex items-center justify-between`, className)}>
+    <div
+      className={classNames(
+        `flex w-full items-center justify-between`,
+        className,
+      )}
+    >
       {onBack && (
         <div onClick={onBack}>
           <ArrowLeftIcon className="w-5 h-5" />
@@ -26,8 +33,10 @@ export function ModalHeader({
         <div className={`${Typographies.modalHeader} text-sm`}>{title}</div>
       )}
       {onClose && (
-        <div onClick={onClose}>
-          <XIcon className="w-4 h-4 cursor-pointer" />
+        <div onClick={onClose} className="justify-self-end">
+          <XIcon
+            className={classNames('w-4 h-4 cursor-pointer', xIconClassName)}
+          />
         </div>
       )}
     </div>

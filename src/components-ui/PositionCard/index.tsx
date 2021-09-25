@@ -84,7 +84,7 @@ export function MinimalPositionCard({
         <div className="rounded-20 bg-opaque">
           <div
             className="
-              flex flex-col md:flex-row md:justify-between
+              flex flex-row items-center justify-between
               bg-opaque-secondary rounded-20 
               p-5
               "
@@ -103,7 +103,7 @@ export function MinimalPositionCard({
             <div
               className="
                 flex items-center 
-                md:mt-0 mt-3 space-x-2 
+                space-x-2 
                 text-base"
             >
               <div className="text-primary font-bold">
@@ -233,7 +233,7 @@ export function FullPositionCard({
           flex justify-between
           space-x-3
           items-center
-          bg-opaque-secondary rounded-20 
+          !bg-opaque-secondary rounded-20 
           px-5 py-5"
         style={{ boxShadow: 'none' }}
         onClick={() => setShowMore(!showMore)}

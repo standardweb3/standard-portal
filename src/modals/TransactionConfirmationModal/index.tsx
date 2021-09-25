@@ -26,6 +26,11 @@ import useAddTokenToMetaMask from '../../hooks/useAddTokenToMetaMask';
 import { WavySpinner } from '../../components-ui/Spinner/WavySpinner';
 import { LogoSpinner } from '../../components-ui/Spinner/LogoSpinner';
 import { LogoCrumble } from '../../components-ui/LogoCrumble';
+import {
+  useSizeSm,
+  useSizeSmDown,
+  useSizeXs,
+} from '../../components-ui/Responsive';
 
 interface ConfirmationPendingContentProps {
   onDismiss: () => void;
@@ -194,9 +199,19 @@ const TransactionConfirmationModal: FC<ConfirmationModalProps> = ({
 
   if (!chainId) return null;
 
+  const isViewportXSmall = useSizeXs();
+  const isViewportSmallDown = useSizeSmDown();
+
   // confirmation screen
   return (
-    <Modal isOpen={isOpen} onDismiss={onDismiss}>
+    <Modal
+      isOpen={isOpen}
+      onDismiss={onDismiss}
+      maxWidth="600px"
+      minWidth={
+        isViewportSmallDown ? (isViewportXSmall ? '90vw' : '70vw') : 'none'
+      }
+    >
       {attemptingTxn ? (
         <ConfirmationPendingContent
           onDismiss={onDismiss}

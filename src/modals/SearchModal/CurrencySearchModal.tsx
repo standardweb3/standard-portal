@@ -13,6 +13,7 @@ import useLast from '../../hooks/useLast';
 import usePrevious from '../../hooks/usePrevious';
 import ImportList from './ImportList';
 import Manage from './Manage';
+import { useSizeSmDown } from '../../components-ui/Responsive';
 
 interface CurrencySearchModalProps {
   isOpen: boolean;
@@ -73,6 +74,8 @@ function CurrencySearchModal({
       ? undefined
       : '80vh';
 
+  const isViewportSmallDown = useSizeSmDown();
+
   return (
     <Modal
       isOpen={isOpen}
@@ -80,6 +83,7 @@ function CurrencySearchModal({
       maxWidth="500px"
       minHeight={minHeight}
       maxHeight="80vh"
+      minWidth={isViewportSmallDown ? '90vw' : 'none'}
     >
       {modalView === CurrencyModalView.search ? (
         <CurrencySearch

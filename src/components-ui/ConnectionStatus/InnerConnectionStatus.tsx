@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core';
 import { useMemo } from 'react';
-import { shortenAddress } from '../../functions';
+import { classNames, shortenAddress } from '../../functions';
 import { newTransactionsFirst } from '../../functions/transactions';
 import useENSName from '../../hooks/useENSName';
 import { useWalletModalToggle } from '../../state/application/hooks';
@@ -12,7 +12,13 @@ import { RippleSpinner } from '../Spinner/RippleSpinner';
 import { WalletConnector } from '../WalletConnector';
 import { StatusIcon } from './StatusIcon';
 
-export function InnerConnectionStatus() {
+export type InnerConnectionStatusType = {
+  className?: string;
+};
+
+export function InnerConnectionStatus({
+  className,
+}: InnerConnectionStatusType) {
   const { account, connector } = useWeb3React();
 
   const { ENSName } = useENSName(account ?? undefined);
@@ -44,7 +50,8 @@ export function InnerConnectionStatus() {
     return (
       <div
         id="connection-status-connected"
-        className={`
+        className={classNames(
+          `
         flex items-center 
         px-3 py-2 
         text-sm rounded-xl 
@@ -52,7 +59,9 @@ export function InnerConnectionStatus() {
         border border-primary
         text-text 
         cursor-pointer
-        `}
+        `,
+          className,
+        )}
         onClick={toggleWalletModal}
       >
         {hasPendingTransactions ? (

@@ -10,7 +10,11 @@ import useENSName from '../../hooks/useENSName';
 import { newTransactionsFirst } from '../../functions/transactions';
 import { InnerConnectionStatus } from './InnerConnectionStatus';
 
-export function ConnectionStatus() {
+export type ConnectionStatusType = {
+  className?: string;
+};
+
+export function ConnectionStatus({ className }: ConnectionStatusType) {
   const { active, account } = useWeb3React();
   const contextNetwork = useWeb3React(NetworkContextName);
 
@@ -34,7 +38,7 @@ export function ConnectionStatus() {
 
   return (
     <>
-      <InnerConnectionStatus />
+      <InnerConnectionStatus className={className} />
       <WalletModal
         pendingTransactions={pending}
         confirmedTransactions={confirmed}

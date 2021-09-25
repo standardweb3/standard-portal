@@ -32,6 +32,11 @@ import PendingView from './PendingView';
 import { WalletInfo } from '../../components-ui/WalletInfo';
 import { ModalHeader } from '../../components-ui/Modal/ModalHeader';
 import { Button } from '../../components-ui/Button';
+import {
+  useSizeSm,
+  useSizeSmDown,
+  useSizeXs,
+} from '../../components-ui/Responsive';
 
 const WALLET_VIEWS = {
   OPTIONS: 'options',
@@ -314,11 +319,18 @@ export default function WalletModal({
       </div>
     );
   }
+
+  const isViewportXSmall = useSizeXs();
+  const isViewportSmallDown = useSizeSmDown();
+
   return (
     <Modal
       isOpen={walletModalOpen}
       onDismiss={toggleWalletModal}
       maxWidth="500px"
+      minWidth={
+        isViewportSmallDown ? (isViewportXSmall ? '90vw' : '70vw') : 'none'
+      }
     >
       {getModalContent()}
     </Modal>

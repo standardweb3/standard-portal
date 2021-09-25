@@ -30,6 +30,8 @@ import { PageContent } from '../../components-ui/PageContent';
 import { useProtocol } from '../../state/protocol/hooks';
 import { LiquidityHeader } from '../../features/liquidity';
 import { LogoSpinner } from '../../components-ui/Spinner/LogoSpinner';
+import { Typographies } from '../../utils/Typography';
+import { ViewportMediumUp } from '../../components-ui/Responsive';
 
 export default function Pool() {
   const router = useRouter();
@@ -110,15 +112,17 @@ export default function Pool() {
           content="Standard Protocol liquidity pools are markets for trades between the two tokens, you can provide these tokens and become a liquidity provider to earn 0.3% of fees from trades."
         />
       </Head>
-      <Page id="pool-page">
-        <PageHeader title="Liquidity Positions" />
+      <Page id="pool-page" className={Typographies.page}>
+        <ViewportMediumUp>
+          <PageHeader title="Liquidity Positions" />
+        </ViewportMediumUp>
         <PageContent>
           {/* <div className="p-4 mb-3 space-y-3">
             <Back />
           </div> */}
 
           <Alert
-            className="max-w-[600px] mb-6"
+            className={Typographies.pageAlert}
             title={`Liquidity Provider Rewards`}
             message={`Liquidity providers earn a 0.3% fee on all trades proportional to their share of
                         the pool. Fees are added to the pool, accrue in real time and can be claimed by
@@ -126,14 +130,7 @@ export default function Pool() {
             type="information"
           />
 
-          <div
-            className="
-            md:min-w-[600px] 
-            max-w-[1000px]
-            bg-opaque
-            rounded-20 p-8
-            text-text"
-          >
+          <div className={Typographies.pageContent}>
             <div className="grid grid-flow-row gap-4">
               <div className="font-bold">My Liquidity Positions</div>
               <LiquidityHeader />

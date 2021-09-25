@@ -9,6 +9,17 @@ export const Typographies = {
   'txSettings-auto': '!text-white text-md',
   'txSettings-question': 'text-white !text-opacity-50',
   tradePriceSwitcher: 'text-white !text-opacity-50',
+  'page-outer-content': `
+  w-full md:max-w-[600px] p-8`,
+  pageAlert: 'w-full md:max-w-[600px] mb-6',
+  page: 'pt-[10%] md:pt-0',
+  pageContent: `
+    w-full
+    md:max-w-[600px]
+    bg-opaque
+    rounded-20 p-8
+    text-text
+  `,
   manageTab: ` 
     flex items-center justify-center 
     px-4 py-2

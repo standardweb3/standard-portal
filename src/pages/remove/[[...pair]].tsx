@@ -59,6 +59,12 @@ import { PageHeader } from '../../components-ui/PageHeader';
 import { LiquidityHeader } from '../../features/liquidity';
 import { Typographies } from '../../utils/Typography';
 import { RemoveLiquidityPercentInput } from '../../components-ui/RemoveLiquidityPercentInput';
+import {
+  ViewportMediumUp,
+  ViewportSmallDown,
+} from '../../components-ui/Responsive';
+import { ExchangeNavigation } from '../../components-ui/Exchange/ExchangeNavigation';
+import { TransactionSettingsWithGas } from '../../components-ui/Exchange/TransactionSettingsWithGas';
 
 const DEFAULT_REMOVE_LIQUIDITY_SLIPPAGE_TOLERANCE = new Percent(5, 100);
 
@@ -807,54 +813,35 @@ export default function Remove() {
           content="Remove liquidity from the SushiSwap AMM"
         />
       </Head>
-      <Page id="remove-liquidity-page">
-        <PageHeader title="remove liquidity" />
+      <Page id="remove-liquidity-page" className={Typographies.page}>
+        <ViewportMediumUp>
+          <PageHeader title="remove liquidity" />
+        </ViewportMediumUp>
 
         <PageContent>
-          <div>
-            <NavigationLink href="/pool">
-              <a
-                className={`
-                flex items-center
-                space-x-2 
-                text-base 
-                text-blue
-                font-medium 
-                text-center 
-                hover:brightness-125
-                cursor-pointer`}
-              >
-                <span>{`View Liquidity Positions`}</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-4 h-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M9 5l7 7-7 7"
+          <ViewportSmallDown>
+            <div className="w-full mb-8">
+              <ExchangeNavigation input={currencyA} output={currencyB} />
+            </div>
+          </ViewportSmallDown>
+
+          <div className={Typographies.pageContent}>
+            <div className="mb-4">
+              <ViewportSmallDown>
+                <div className="flex justify-end">
+                  <TransactionSettingsWithGas
+                    allowedSlippage={allowedSlippage}
                   />
-                </svg>
-              </a>
-            </NavigationLink>
-          </div>
-          <div
-            className="
-            mt-[10%]
-            md:min-w-[600px]
-            max-w-[1000px] 
-            bg-opaque
-            rounded-20 py-4 px-8"
-          >
-            <ExchangeHeader
-              input={currencyA}
-              output={currencyB}
-              allowedSlippage={allowedSlippage}
-            />
+                </div>
+              </ViewportSmallDown>
+              <ViewportMediumUp>
+                <ExchangeHeader
+                  input={currencyA}
+                  output={currencyB}
+                  allowedSlippage={allowedSlippage}
+                />
+              </ViewportMediumUp>
+            </div>
             <div className="grid gap-4">
               <TransactionConfirmationModal
                 isOpen={showConfirm}

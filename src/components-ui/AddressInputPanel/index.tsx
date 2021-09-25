@@ -37,7 +37,7 @@ export const AddressInputPanel: FC<AddressInputPanelProps> = ({
         }`}
       id={id}
     >
-      <div
+      {/* <div
         className={`
         flex space-x-2
         items-center
@@ -54,29 +54,28 @@ export const AddressInputPanel: FC<AddressInputPanelProps> = ({
         flex items-center
         w-full h-full
         `}
-      >
-        <input
-          className={`
+      > */}
+      <input
+        className={`
             p-3 
             h-full w-full  
             flex
             overflow-ellipsis 
-            font-bold 
             bg-transparent
             rounded-xl 
+            text-right
             placeholder-info
             focus:placeholder-text`}
-          type="text"
-          autoComplete="off"
-          autoCorrect="off"
-          autoCapitalize="off"
-          spellCheck="false"
-          placeholder="Wallet Address or ENS name"
-          pattern="^(0x[a-fA-F0-9]{40})$"
-          onChange={handleInput}
-          value={value}
-        />
-      </div>
+        type="text"
+        autoComplete="off"
+        autoCorrect="off"
+        autoCapitalize="off"
+        spellCheck="false"
+        placeholder="Wallet Address or ENS name"
+        pattern="^(0x[a-fA-F0-9]{40})$"
+        onChange={handleInput}
+        value={value}
+      />
     </div>
   );
 };

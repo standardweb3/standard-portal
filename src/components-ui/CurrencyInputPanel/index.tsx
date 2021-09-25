@@ -108,7 +108,7 @@ export function CurrencyInputPanel({
         id={id}
         className={classNames('px-4 py-1', 'rounded-20 bg-opaque-secondary')}
       >
-        <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
+        <div className="flex items-center justify-between">
           <div>
             <button
               type="button"

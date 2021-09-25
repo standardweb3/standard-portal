@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import logoLight from '../../../public/img/logos/logo.light.png';
-import logoDark from '../../../public/img/logos/logo.dark.primary.png';
+import logoDark from '../../../public/img/logos/logo.dark.png';
+import logoShortLight from '../../../public/img/logos/logo.short.light.png';
+import logoShortDark from '../../../public/img/logos/logo.short.dark.png';
 
 export const LogosType = {
   light: {
@@ -13,11 +15,33 @@ export const LogosType = {
   },
 };
 
-export type LogoProps = {
-  theme?: 'light' | 'dark';
+export const LogosShortType = {
+  light: {
+    src: logoShortLight,
+    alt: 'Short Logo for Light Theme',
+  },
+  dark: {
+    src: logoShortDark,
+    alt: 'Short Logo for Dark Theme',
+  },
 };
 
-export function Logo({ theme = 'dark' }: LogoProps) {
-  const { src, alt } = LogosType[theme];
-  return <Image src={src} alt={alt} layout="intrinsic" />;
+export type LogoProps = {
+  theme?: 'light' | 'dark';
+  short?: boolean;
+  width?: string;
+  height?: string;
+};
+
+export function Logo({ theme = 'dark', short, width, height }: LogoProps) {
+  const { src, alt } = short ? LogosShortType[theme] : LogosType[theme];
+  return (
+    <Image
+      width={width}
+      height={height}
+      src={src}
+      alt={alt}
+      layout="intrinsic"
+    />
+  );
 }

@@ -219,9 +219,15 @@ const FarmListItem = ({ farm }) => {
             </div>
           </div>
           {pendingSushi && pendingSushi.greaterThan(ZERO) && (
-            <div className="flex items-center justify-between border border-primary p-4 rounded-20">
+            <div
+              className="
+              flex items-center justify-between 
+              border border-primary p-4 
+              rounded-20 
+              col-span-2 lg:col-span-1"
+            >
               <div className="flex spacep-x-2">
-                <div className="text-primary text-xl">
+                <div className="text-primary text-sm lg:text-xl">
                   {formatNumber(pendingSushi.toFixed(18))} STND
                 </div>
               </div>

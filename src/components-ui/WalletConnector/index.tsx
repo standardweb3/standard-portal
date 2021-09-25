@@ -1,8 +1,13 @@
 import { css } from '@emotion/react';
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
+import { classNames } from '../../functions';
 import { useWalletModalToggle } from '../../state/application/hooks';
 
-export function WalletConnector() {
+export type WalletConnectorType = {
+  className?: string;
+};
+
+export function WalletConnector({ className }: WalletConnectorType) {
   const toggleWalletModal = useWalletModalToggle();
   const { error } = useWeb3React();
 
@@ -13,7 +18,8 @@ export function WalletConnector() {
   return (
     <>
       <button
-        className="
+        className={classNames(
+          `
         w-full 
         cursor-pointer
         p-2
@@ -22,7 +28,9 @@ export function WalletConnector() {
         text-text 
         bg-primary bg-opacity-10
         flex items-center justify-center
-        "
+        `,
+          className,
+        )}
         onClick={onClick}
       >
         Connect your wallet

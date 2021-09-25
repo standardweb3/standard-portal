@@ -26,6 +26,7 @@ import { Button } from '../Button';
 import { Question } from '../Question';
 import { TransactionSettings } from '../Exchange/TransactionSettings';
 import { Typographies } from '../../utils/Typography';
+import { useSizeSmDown, useSizeXs } from '../Responsive';
 
 export default function Settings({
   placeholderSlippage,
@@ -50,6 +51,9 @@ export default function Settings({
   const [ttl, setTtl] = useUserTransactionTTL();
 
   const [userUseArcher, setUserUseArcher] = useUserArcherUseRelay();
+
+  const isViewportXSmall = useSizeXs();
+  const isViewportSmallDown = useSizeSmDown();
 
   return (
     <div className="relative flex" ref={node}>
@@ -143,6 +147,9 @@ export default function Settings({
         isOpen={showConfirmation}
         onDismiss={() => setShowConfirmation(false)}
         maxWidth="500px"
+        minWidth={
+          isViewportSmallDown ? (isViewportXSmall ? '90vw' : '70vw') : 'none'
+        }
       >
         <div className="space-y-4">
           <ModalHeader
@@ -153,7 +160,7 @@ export default function Settings({
             {`Expert mode turns off the confirm transaction prompt and allows high slippage trades
                                 that often result in bad rates and lost funds.`}
           </div>
-          <div className="font-medium text-danger">
+          <div className="text-xs text-danger text-center">
             {`ONLY USE THIS MODE IF YOU KNOW WHAT YOU ARE DOING.`}
           </div>
           <Button

@@ -16,6 +16,8 @@ import { useRouter } from 'next/router';
 import { NavigationLink } from '../NavigationLink';
 import { default as GasIcon } from '../../../public/icons/outlined/Gas.svg';
 import Settings from '../Settings';
+import { ExchangeNavigation } from './ExchangeNavigation';
+import { TransactionSettingsWithGas } from './TransactionSettingsWithGas';
 
 const getQuery = (input, output) => {
   if (!input && !output) return;
@@ -52,78 +54,8 @@ export const ExchangeHeader: FC<ExchangeHeaderProps> = ({
       w-full
       mb-6`}
     >
-      <div
-        className={`
-        rounded-full
-        text-grey
-        flex items-center
-        bg-opaque-inactive
-        `}
-      >
-        <NavigationLink
-          activeClassName={`
-            bg-opaque
-            border
-            border-opaque-border
-            text-text
-            font-bold
-          `}
-          href={{
-            pathname: '/swap',
-            query: getQuery(input, output),
-          }}
-        >
-          <a
-            className={`
-            flex items-center justify-center 
-            px-4 py-2
-            rounded-full`}
-          >
-            {`Swap`}
-          </a>
-        </NavigationLink>
-        <NavigationLink
-          activeClassName={`
-          bg-opaque 
-          border 
-          border-opaque-border
-          text-text
-          font-bold
-          `}
-          href={`/${!isRemove ? 'add' : 'remove'}${
-            input ? `/${currencyId(input)}` : ''
-          }${output ? `/${currencyId(output)}` : ''}`}
-        >
-          <a
-            className={`
-            flex items-center justify-center 
-            px-4 py-2
-            rounded-full`}
-          >
-            {`Liquidity`}
-          </a>
-        </NavigationLink>
-      </div>
-      <div className="flex items-center text-lg">
-        <div className="grid grid-flow-col gap-1">
-          {/* {isLimitOrder && (
-            <div className="items-center h-full w-full cursor-pointer hover:bg-dark-800 rounded px-3 py-1.5">
-              myorders
-            </div>
-          )
-          } */}
-
-          {chainId === ChainId.MAINNET && (
-            <div className="flex items-center text-green space-x-2 font-semibold">
-              <GasIcon className="fill-current stroke-current text-green" />
-              <Gas className="text-base opacity-60" />
-            </div>
-          )}
-          <div className="relative w-full h-full rounded flex items-center">
-            <Settings placeholderSlippage={allowedSlippage} />
-          </div>
-        </div>
-      </div>
+      <ExchangeNavigation input={input} output={output} />
+      <TransactionSettingsWithGas allowedSlippage={allowedSlippage} />
     </div>
   );
 };

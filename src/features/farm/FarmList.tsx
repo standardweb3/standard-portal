@@ -3,14 +3,22 @@ import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/outline';
 import FarmListItem from './FarmListItem';
 import React from 'react';
 import useSortableData from '../../hooks/useSortableData';
+import { useSizeMdDown } from '../../components-ui/Responsive';
 
 const FarmList = ({ farms, term }) => {
   const { items, requestSort, sortConfig } = useSortableData(farms);
+  const isViewportMediumDown = useSizeMdDown();
+
   return items ? (
     <>
-      <div className="grid grid-cols-6 md:grid-cols-8 lg:grid-cols-11 text-base text-grey">
+      <div className="grid grid-cols-8 lg:grid-cols-11 text-base text-grey">
         <div
-          className="flex items-center col-span-3 cursor-pointer lg:col-span-3 px-4 space-x-2"
+          className="
+          flex items-center col-span-2 
+          lg:col-span-3 px-4 space-x-2
+          cursor-pointer 
+          text-xs
+          sm:text-base"
           onClick={() => requestSort('symbol')}
         >
           <div>Pair</div>
@@ -24,14 +32,24 @@ const FarmList = ({ farms, term }) => {
               )))}
         </div>
 
-        <div className="items-center justify-start col-span-3 hidden lg:flex">
-          Rewards
+        <div
+          className="
+          flex items-center justify-start 
+          text-xs
+          sm:text-base
+          col-span-2 lg:col-span-3 "
+        >
+          Rewards (daily)
         </div>
         <div
-          className="flex items-center justify-start col-span-3 cursor-pointer"
+          className="
+          flex items-center justify-start 
+          text-xs
+          sm:text-base
+          col-span-2 cursor-pointer"
           onClick={() => requestSort('roiPerYear')}
         >
-          APR
+          APR{isViewportMediumDown && ' (yearly)'}
           {sortConfig &&
             sortConfig.key === 'roiPerYear' &&
             ((sortConfig.direction === 'ascending' && (
@@ -44,7 +62,10 @@ const FarmList = ({ farms, term }) => {
         <div
           className="
           flex items-center justify-start 
-          col-span-2 hidden md:flex
+          text-xs
+          sm:text-base
+          col-span-2
+          lg:col-span-3 
           cursor-pointer"
           onClick={() => requestSort('tvl')}
         >

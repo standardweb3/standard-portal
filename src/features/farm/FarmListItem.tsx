@@ -7,10 +7,20 @@ import { PairType } from './enum';
 import React from 'react';
 import { useCurrency } from '../../hooks/Tokens';
 import { DoubleCurrencyLogo } from '../../components-ui/CurrencyLogo/DoubleCurrencyLogo';
+import {
+  useSizeMdDown,
+  useSizeSmDown,
+  ViewportLargeUp,
+  ViewportMediumDown,
+  ViewportMediumUp,
+  ViewportSmallDown,
+} from '../../components-ui/Responsive';
 
 const FarmListItem = ({ farm, ...rest }) => {
   const token0 = useCurrency(farm.pair.token0.id);
   const token1 = useCurrency(farm.pair.token1.id);
+
+  const isViewportMediumDown = useSizeMdDown();
 
   return (
     <Disclosure {...rest}>
@@ -24,48 +34,62 @@ const FarmListItem = ({ farm, ...rest }) => {
               rounded-20
               cursor-pointer 
               select-none 
-              bg-opaque 
+              bg-opaque-5
               text-sm md:text-lg`,
             )}
           >
-            <div className="grid grid-cols-6 md:grid-cols-8 lg:grid-cols-11">
-              <div className="flex col-span-3 space-x-4 lg:col-span-3">
-                <DoubleCurrencyLogo
-                  currencyClassName="rounded-full"
-                  currency0={token0}
-                  currency1={token1}
-                  size={40}
-                />
-                <div className="flex flex-col justify-center text-sm">
-                  <div>
-                    <span className="font-bold">
-                      {farm?.pair?.token0?.symbol}
-                    </span>
-                    /
-                    <span className="font-bold">
-                      {farm?.pair?.token1?.symbol}
-                    </span>
+            <div className="grid grid-cols-8 lg:grid-cols-11">
+              <div className="col-span-2 lg:col-span-3 flex items-center">
+                <div className="inline-flex flex-col lg:flex-row items-center space-x-4">
+                  <DoubleCurrencyLogo
+                    currencyClassName="rounded-full"
+                    currency0={token0}
+                    currency1={token1}
+                    size={isViewportMediumDown ? 20 : 40}
+                  />
+                  <div
+                    className="
+                    flex flex-col justify-center 
+                    text-sm lg:text-base"
+                  >
+                    <div>
+                      <span className="font-bold">
+                        {farm?.pair?.token0?.symbol}
+                      </span>
+                      /
+                      <span className="font-bold">
+                        {farm?.pair?.token1?.symbol}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div className="flex-row items-center hidden space-x-2 lg:flex col-span-3">
-                <div className="flex items-center space-x-2">
+              <div
+                className="
+                flex items-center
+                space-y-2 
+                lg:space-y-0 lg:space-x-2 lg:flex 
+                col-span-2 lg:col-span-3"
+              >
+                <ViewportLargeUp>
+                  <div className="flex items-center space-x-2">
+                    {farm?.rewards?.map((reward, i) => (
+                      <div key={i} className="flex items-center">
+                        <Image
+                          src={reward.icon}
+                          width="30px"
+                          height="30px"
+                          className="rounded-full"
+                          layout="fixed"
+                          alt={reward.token}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </ViewportLargeUp>
+                <div className="space-y-2">
                   {farm?.rewards?.map((reward, i) => (
-                    <div key={i} className="flex items-center">
-                      <Image
-                        src={reward.icon}
-                        width="30px"
-                        height="30px"
-                        className="rounded-full"
-                        layout="fixed"
-                        alt={reward.token}
-                      />
-                    </div>
-                  ))}
-                </div>
-                <div className="flex items-center space-x-2">
-                  {farm?.rewards?.map((reward, i) => (
-                    <>
+                    <div className="flex flex-col lg:flex-row items-center space-y-2 lg:space-y-0 lg:space-x-2">
                       <div
                         key={i}
                         className="text-xs md:text-sm whitespace-nowrap
@@ -74,56 +98,66 @@ const FarmListItem = ({ farm, ...rest }) => {
                         {formatNumber(reward.rewardPerDay)}
                       </div>
                       <div className="text-xs md:text-sm text-grey">
-                        {reward.token} / DAY
+                        {reward.token}
                       </div>
-                    </>
+                    </div>
                   ))}
                 </div>
               </div>
-              <div className="flex items-center col-span-3">
+              <div className="flex items-center col-span-2">
                 <div className="flex items-end justify-center space-x-2">
-                  <div className="space-y-1">
-                    <div className="font-bold text-right text-base">
+                  <ViewportMediumDown>
+                    <div className="font-bold text-right text-sm lg:text-base">
                       {formatPercent(farm?.roiPerYear * 100)}
                     </div>
-                    <div className="text-xs">
-                      {formatPercent(farm?.roiPerMonth * 100)}
-                    </div>
-                    <div className="text-xs">
-                      {formatPercent(farm?.roiPerDay * 100)}
-                    </div>
+                  </ViewportMediumDown>
+                  <ViewportLargeUp>
+                    <div className="space-y-1">
+                      <div className="font-bold text-right text-base">
+                        {formatPercent(farm?.roiPerYear * 100)}
+                      </div>
+                      <div className="text-xs">
+                        {formatPercent(farm?.roiPerMonth * 100)}
+                      </div>
+                      <div className="text-xs">
+                        {formatPercent(farm?.roiPerDay * 100)}
+                      </div>
 
-                    {/* {farm?.roiPerYear > 100 ? '10000%+' : formatPercent(farm?.roiPerYear * 100)} */}
-                  </div>
-                  <div className="text-xs text-left space-y-1">
-                    <div className="ml-1 text-grey">/year</div>
-                    <div className="ml-1 text-grey">/month</div>
-                    <div className="ml-1 text-grey">/day</div>
-                    {/* {farm?.roiPerYear > 100 ? '10000%+' : formatPercent(farm?.roiPerYear * 100)} */}
-                  </div>
+                      {/* {farm?.roiPerYear > 100 ? '10000%+' : formatPercent(farm?.roiPerYear * 100)} */}
+                    </div>
+                    <div className="text-xs text-left space-y-1">
+                      <div className="ml-1 text-grey">/year</div>
+                      <div className="ml-1 text-grey">/month</div>
+                      <div className="ml-1 text-grey">/day</div>
+                      {/* {farm?.roiPerYear > 100 ? '10000%+' : formatPercent(farm?.roiPerYear * 100)} */}
+                    </div>
+                  </ViewportLargeUp>
                 </div>
               </div>
               <div
                 className="
-                hidden md:block
-                col-span-2
+                col-span-2 lg:col-span-3
                 space-y-1
-                justify-center 
+                flex lg:flex-col 
+                items-center
+                lg:items-start
                 "
               >
-                <div className="text-primary font-bold text-xl">
+                <div className="text-primary font-bold text-sm lg:text-xl">
                   {formatNumber(farm.tvl, true)}
                 </div>
-                <div className="flex items-center space-x-1 text-xs">
-                  <div>
-                    <div>{Number(farm.pair.reserve0).toFixed(4)}</div>
-                    <div> {Number(farm.pair.reserve1).toFixed(4)}</div>
+                <ViewportLargeUp>
+                  <div className="flex items-center space-x-1 text-xs">
+                    <div>
+                      <div>{Number(farm.pair.reserve0).toFixed(4)}</div>
+                      <div> {Number(farm.pair.reserve1).toFixed(4)}</div>
+                    </div>
+                    <div className="text-grey">
+                      <div>{farm.pair.token0.symbol}</div>
+                      <div> {farm.pair.token1.symbol}</div>
+                    </div>
                   </div>
-                  <div className="text-grey">
-                    <div>{farm.pair.token0.symbol}</div>
-                    <div> {farm.pair.token1.symbol}</div>
-                  </div>
-                </div>
+                </ViewportLargeUp>
               </div>
             </div>
           </Disclosure.Button>

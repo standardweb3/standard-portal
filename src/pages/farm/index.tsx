@@ -22,6 +22,11 @@ import { classNames } from '../../functions';
 import Menu from '../../features/farm/FarmMenu';
 import { Search } from '../../components-ui/Search';
 import FarmList from '../../features/farm/FarmList';
+import { Typographies } from '../../utils/Typography';
+import {
+  ViewportMediumUp,
+  ViewportSmallDown,
+} from '../../components-ui/Responsive';
 
 export default function Farm() {
   const { chainId } = useActiveWeb3React();
@@ -247,26 +252,38 @@ export default function Farm() {
           content="Farms of the Standard Protcol AMM to enable gas optimised and low slippage trades across countless networks"
         />
       </Head>
-      <Page id="farm-page">
-        <PageHeader title="Farm" />
+      <Page id="farm-page" className={Typographies.page}>
+        <ViewportMediumUp>
+          <PageHeader title="Farm" />
+        </ViewportMediumUp>
         <PageContent>
           <div
             className="
-          bg-opaque 
-          w-full
-          rounded-20 p-8
-          text-text
+            w-full py-4 lg:p-8
           "
           >
-            <div style={{ maxHeight: '40rem' }} className="mb-6">
-              <Menu positionsLength={positions.length} />
-            </div>
-            <div className={classNames('space-y-6 col-span-4 lg:col-span-3')}>
-              <Search
-                search={search}
-                term={term}
-                inputProps={{
-                  className: `
+            <ViewportSmallDown>
+              <div className="w-full mb-8">
+                <Menu positionsLength={positions.length} />
+              </div>
+            </ViewportSmallDown>
+            <div
+              className="
+              p-0 md:p-8 
+              rounded-20 
+              bg-transparent md:bg-opaque"
+            >
+              <ViewportMediumUp>
+                <div className="mb-6">
+                  <Menu positionsLength={positions.length} />
+                </div>
+              </ViewportMediumUp>
+              <div className={classNames('space-y-6 col-span-4 lg:col-span-3')}>
+                <Search
+                  search={search}
+                  term={term}
+                  inputProps={{
+                    className: `
                     relative w-full
                     bg-transparent
                     bg-opaque 
@@ -274,20 +291,21 @@ export default function Farm() {
                     border border-transparent
                     focus:border-primary
                     font-bold text-base px-6 py-3.5`,
-                }}
-              />
+                  }}
+                />
 
-              {/* <div className="flex items-center text-lg font-bold text-high-emphesis whitespace-nowrap">
+                {/* <div className="flex items-center text-lg font-bold text-high-emphesis whitespace-nowrap">
             Ready to Stake{' '}
             <div className="w-full h-0 ml-4 font-bold bg-transparent border border-b-0 border-transparent rounded text-high-emphesis md:border-gradient-r-blue-pink-dark-800 opacity-20"></div>
           </div>
           <FarmList farms={filtered} term={term} /> */}
 
-              <div className="flex items-center text-lg font-bold text-high-emphesis whitespace-nowrap">
-                <div className="w-full h-0 ml-4 font-bold bg-transparent border border-b-0 border-transparent rounded text-high-emphesis md:border-gradient-r-blue-pink-dark-800 opacity-20"></div>
-              </div>
+                <div className="flex items-center text-lg font-bold text-high-emphesis whitespace-nowrap">
+                  <div className="w-full h-0 ml-4 font-bold bg-transparent border border-b-0 border-transparent rounded text-high-emphesis md:border-gradient-r-blue-pink-dark-800 opacity-20"></div>
+                </div>
 
-              <FarmList farms={result} term={term} />
+                <FarmList farms={result} term={term} />
+              </div>
             </div>
           </div>
         </PageContent>

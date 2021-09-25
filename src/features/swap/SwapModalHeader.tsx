@@ -45,7 +45,14 @@ export default function SwapModalHeader({
 
   return (
     <div className="grid gap-4">
-      <div className="flex flex-col md:flex-row space-x-4">
+      <div
+        className="
+        flex flex-col 
+        items-start xl:items-center xl:flex-row 
+        space-y-4
+        xl:space-y-0
+        xl:space-x-4"
+      >
         <div className="flex flex-col items-start">
           <div className="flex w-full items-center justify-between">
             <div className="flex items-center space-x-3">
@@ -83,11 +90,12 @@ export default function SwapModalHeader({
         </div>
         <div
           className="
-          flex-1 
+          w-full
           flex items-center justify-end"
         >
           <div
             className="
+              w-full
               bg-opaque-inactive p-4
               rounded-20
             "

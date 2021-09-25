@@ -3,7 +3,7 @@ const Main = ({ children }) => (
     className={`
         flex flex-col justify-start 
         flex-grow 
-        w-full h-full
+        w-full
     `}
   >
     {children}

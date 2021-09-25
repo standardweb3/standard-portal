@@ -6,14 +6,9 @@ import Image from 'next/image';
 import { NETWORK_ICON, NETWORK_LABEL } from '../../constants/networks';
 // web3
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
-// modal
-import {
-  useModalOpen,
-  useNetworkModalToggle,
-} from '../../state/application/hooks';
-import { ApplicationModal } from '../../state/application/actions';
-import { Modal } from '../../components-ui/Modal';
-import { ModalHeader } from '../../components-ui/Modal/ModalHeader';
+import { Listbox, Transition } from '@headlessui/react';
+import { ChevronDownIcon } from '@heroicons/react/outline';
+import { Fragment, useMemo } from 'react';
 
 export const SUPPORTED_NETWORKS: {
   [chainId in ChainId]?: {
@@ -202,121 +197,101 @@ export const SUPPORTED_NETWORKS: {
   // },
 };
 
-export default function NetworkModal(): JSX.Element | null {
+export default function NetworkDropDown(): JSX.Element | null {
   const { chainId, library, account } = useActiveWeb3React();
-  const networkModalOpen = useModalOpen(ApplicationModal.NETWORK);
-  const toggleNetworkModal = useNetworkModalToggle();
+
+  const onSelectNetwork = (chainIdStr: string) => {
+    const chainId = Number(chainIdStr);
+    const params = SUPPORTED_NETWORKS[chainId];
+    cookie.set('chainId', chainId);
+    if ([ChainId.MAINNET, ChainId.RINKEBY].includes(chainId)) {
+      library?.send('wallet_switchEthereumChain', [
+        { chainId: params.chainId },
+        account,
+      ]);
+    } else {
+      library?.send('wallet_addEthereumChain', [params, account]);
+    }
+  };
 
   if (!chainId) return null;
 
-  return (
-    <Modal
-      isOpen={networkModalOpen}
-      onDismiss={toggleNetworkModal}
-      maxWidth="600px"
-      className="relative"
-    >
-      <ModalHeader onClose={toggleNetworkModal} title="Select a Network" />
+  const supportedChainIds = useMemo(
+    () =>
+      Object.keys(SUPPORTED_NETWORKS).filter((val) => Number(val) !== chainId),
+    [chainId],
+  );
 
-      <div
-        className={`
-        mt-6
-        grid grid-cols-1 grid-flow-row-dense gap-5 
-        md:grid-cols-2
-        overflow-y-auto`}
-      >
-        {[
-          ChainId.RINKEBY,
-          ChainId.SHIBUYA,
-          ChainId.SHIDEN,
-          // ChainId.MAINNET,
-          // ChainId.MATIC,
-          // ChainId.FANTOM,
-          // ChainId.ARBITRUM,
-          // ChainId.OKEX,
-          // ChainId.HECO,
-          // ChainId.BSC,
-          // ChainId.XDAI,
-          // ChainId.HARMONY,
-          // ChainId.AVALANCHE,
-          // ChainId.CELO,
-          // ChainId.PALM,
-        ].map((key: ChainId, i: number) => {
-          if (chainId === key) {
-            return (
-              <div
-                key={i}
-                className={`
-                col-span-1
-                flex items-center 
-                w-full p-3 space-x-3 rounded-xl
-                bg-background
-                border border-green
-                cursor-pointer
-                `}
-              >
-                <Image
-                  src={NETWORK_ICON[key]}
-                  alt={`Switch to ${NETWORK_LABEL[key]} Network`}
-                  className="rounded-xl bg-white"
-                  width="32px"
-                  height="32px"
-                />
-                <div className="font-bold text-text">{NETWORK_LABEL[key]}</div>
-              </div>
-            );
-          }
-          return (
-            <button
-              key={i}
-              onClick={() => {
-                toggleNetworkModal();
-                const params = SUPPORTED_NETWORKS[key];
-                cookie.set('chainId', key);
-                if ([ChainId.MAINNET, ChainId.RINKEBY].includes(key)) {
-                  library?.send('wallet_switchEthereumChain', [
-                    { chainId: params.chainId },
-                    account,
-                  ]);
-                } else {
-                  library?.send('wallet_addEthereumChain', [params, account]);
-                }
-              }}
-              className={`
-                flex items-center 
-                w-full col-span-1 p-3 space-x-3 rounded-xl
-                bg-modal-inner-background hover:bg-green
-                cursor-pointer
-                transition duration-500
-                `}
-            >
-              <Image
-                src={NETWORK_ICON[key]}
-                alt="Switch Network"
-                className="rounded-xl bg-white"
-                width="32px"
-                height="32px"
-              />
-              <div className="font-bold text-text">{NETWORK_LABEL[key]}</div>
-            </button>
-          );
-        })}
-        {/* {['Clover', 'Telos', 'Optimism'].map((network, i) => (
-          <button
-            key={i}
-            className="flex items-center w-full col-span-1 p-3 space-x-3 rounded cursor-pointer bg-dark-800 hover:bg-dark-700"
+  return (
+    <Listbox value={chainId.toString()} onChange={onSelectNetwork}>
+      <div className="mt-1 flex justify-center">
+        <Listbox.Button
+          className="
+            border
+            border-border-1
+            rounded-full
+            relative
+            flex items-center
+            bg-opaque-inactive
+            space-x-2
+            py-[0.325rem] px-2"
+        >
+          <Image
+            src={NETWORK_ICON[chainId]}
+            alt={`Switch to ${NETWORK_LABEL[chainId]} Network`}
+            className="rounded-full"
+            width="32px"
+            height="32px"
+          />
+          <span className="flex items-center pointer-events-none">
+            <ChevronDownIcon className="w-3 h-3" aria-hidden="true" />
+          </span>
+        </Listbox.Button>
+        <Transition
+          as={Fragment}
+          leave="transition ease-in duration-100"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <Listbox.Options
+            className="
+            py-2
+            translate-y-[62px]
+            absolute
+            z-40
+            overflow-auto 
+            text-base bg-opaque-secondary
+            rounded-20
+            focus:outline-none
+            "
           >
-            <Image
-              src="/images/tokens/unknown.png"
-              alt="Switch Network"
-              className="rounded-md"
-              width="32px"
-              height="32px"
-            />
-            <div className="font-bold text-primary">{network} (Coming Soon)</div>
-          </button>
-        ))} */}
+            {supportedChainIds.map((optionChainId, idx) => (
+              <Listbox.Option
+                key={idx}
+                className={({ active }) =>
+                  `select-none relative cursor-pointer py-1 px-2`
+                }
+                value={optionChainId}
+              >
+                {({ selected, active }) => (
+                  <div className="flex items-center space-x-3">
+                    <Image
+                      src={NETWORK_ICON[optionChainId]}
+                      alt={`Switch to ${NETWORK_LABEL[optionChainId]} Network`}
+                      className="rounded-full flex-grow"
+                      width="32px"
+                      height="32px"
+                    />
+                    <div className="inline-block">
+                      {NETWORK_LABEL[optionChainId]}
+                    </div>
+                  </div>
+                )}
+              </Listbox.Option>
+            ))}
+          </Listbox.Options>
+        </Transition>
       </div>
-    </Modal>
+    </Listbox>
   );
 }

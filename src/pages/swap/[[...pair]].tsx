@@ -66,6 +66,7 @@ import {
 } from '../../components-ui/Button';
 import { TradePrice } from '../../components-ui/TradePrice';
 import {
+  MinusCircleIcon,
   SwitchHorizontalIcon,
   SwitchVerticalIcon,
 } from '@heroicons/react/outline';
@@ -79,6 +80,13 @@ import { Typographies } from '../../utils/Typography';
 import switchIcon from '../../../public/icons/outlined/Switch.svg';
 import { PriceImpact } from '../../components-ui/PriceImpact';
 import { Question } from '../../components-ui/Question';
+import {
+  ViewportMediumUp,
+  ViewportSmallDown,
+} from '../../components-ui/Responsive';
+import { ExchangeNavigation } from '../../components-ui/Exchange/ExchangeNavigation';
+import { TransactionSettingsWithGas } from '../../components-ui/Exchange/TransactionSettingsWithGas';
+import { RecipientInputPanel } from '../../components-ui/AddressInputPanel/RecipientInputPanel';
 
 export default function Swap() {
   /** PARSE TOKENS FROM CONTRACT ADDRESSES PROVIDED IN URL */
@@ -492,6 +500,9 @@ export default function Swap() {
   //     router.push(`/swap/${Currency.getNativeCurrencySymbol(chainId)}`);
   //   }
   // }, [chainId, previousChainId, router]);
+  useEffect(() => {
+    if (!isExpertMode) onChangeRecipient(null);
+  }, [isExpertMode]);
 
   return (
     <>
@@ -503,28 +514,43 @@ export default function Swap() {
           content="Swap ERC 20 tokens on Standard Protocol"
         />
       </Head>
-      <Page id="swap-page">
-        <PageHeader title="swap" />
+      <Page id="swap-page" className={Typographies.page}>
+        <ViewportMediumUp>
+          <PageHeader title="swap" />
+        </ViewportMediumUp>
+
         <TokenWarningModal
           isOpen={importTokensNotInDefault.length > 0 && !dismissTokenWarning}
           tokens={importTokensNotInDefault}
           onConfirm={handleConfirmTokenWarning}
         />
+
         <PageContent>
-          <div
-            className={`
-            mt-[10%]
-            md:min-w-[600px]
-            max-w-[1000px] 
-            bg-opaque
-            rounded-20 py-4 px-8
-          `}
-          >
-            <ExchangeHeader
-              input={currencies[Field.INPUT]}
-              output={currencies[Field.OUTPUT]}
-              allowedSlippage={allowedSlippage}
-            />
+          <ViewportSmallDown>
+            <div className="w-full mb-8">
+              <ExchangeNavigation
+                input={currencies[Field.INPUT]}
+                output={currencies[Field.OUTPUT]}
+              />
+            </div>
+          </ViewportSmallDown>
+          <div className={Typographies.pageContent}>
+            <div className="mb-4">
+              <ViewportSmallDown>
+                <div className="flex justify-end">
+                  <TransactionSettingsWithGas
+                    allowedSlippage={allowedSlippage}
+                  />
+                </div>
+              </ViewportSmallDown>
+              <ViewportMediumUp>
+                <ExchangeHeader
+                  input={currencies[Field.INPUT]}
+                  output={currencies[Field.OUTPUT]}
+                  allowedSlippage={allowedSlippage}
+                />
+              </ViewportMediumUp>
+            </div>
 
             {/* {archer} */}
             <ConfirmSwapModal
@@ -582,29 +608,6 @@ export default function Swap() {
                           style={{ width: 32, height: 32 }}
                         /> */}
                   </button>
-                  {isExpertMode ? (
-                    recipient === null && !showWrap ? (
-                      <div
-                        // color="link"
-                        // type="bordered"
-                        id="add-recipient-button"
-                        className="text-link text-sm cursor-pointer"
-                        onClick={() => onChangeRecipient('')}
-                      >
-                        + Add recipient (optional)
-                      </div>
-                    ) : (
-                      <div
-                        // color="link"
-                        // type="bordered"
-                        id="remove-recipient-button"
-                        className="text-link text-sm cursor-pointer"
-                        onClick={() => onChangeRecipient(null)}
-                      >
-                        <>- {`Remove recipient`}</>
-                      </div>
-                    )
-                  ) : null}
                 </div>
                 <div>
                   <CurrencyInputPanel
@@ -624,45 +627,81 @@ export default function Swap() {
                     showCommonBases={true}
                     id="swap-currency-output"
                   />
-                  {Boolean(trade) && (
-                    <div className="p-1 mt-2 cursor-pointer flex flex-col items-end">
-                      {priceImpact && (
-                        <PriceImpact
-                          priceImpact={priceImpact}
-                          className="inline-block text-sm"
-                          showTip
-                        />
-                      )}
-                      <TradePrice
-                        price={trade?.executionPrice}
-                        showInverted={showInverted}
-                        setShowInverted={setShowInverted}
-                        className="w-full text-sm justify-end"
-                        icon={
-                          <SwitchHorizontalIcon
-                            className={`w-4 h-4 ${Typographies.tradePriceSwitcher}`}
+                  {(Boolean(trade) || isExpertMode) && (
+                    <div
+                      className={`flex mt-2 ${
+                        Boolean(trade) && isExpertMode
+                          ? 'justify-between'
+                          : 'justify-end'
+                      } items-center`}
+                    >
+                      {Boolean(trade) && (
+                        <div className="p-1 cursor-pointer flex flex-col items-end">
+                          {priceImpact && (
+                            <PriceImpact
+                              priceImpact={priceImpact}
+                              className="inline-block text-sm"
+                              showTip
+                            />
+                          )}
+                          <TradePrice
+                            price={trade?.executionPrice}
+                            showInverted={showInverted}
+                            setShowInverted={setShowInverted}
+                            className="w-full text-sm justify-end"
+                            icon={
+                              <SwitchHorizontalIcon
+                                className={`w-4 h-4 ${Typographies.tradePriceSwitcher}`}
+                              />
+                            }
                           />
-                        }
-                      />
+                        </div>
+                      )}
+                      {isExpertMode ? (
+                        recipient === null && !showWrap ? (
+                          <div
+                            // color="link"
+                            // type="bordered"
+                            id="add-recipient-button"
+                            className="text-primary text-sm cursor-pointer text-right"
+                            onClick={() => onChangeRecipient('')}
+                          >
+                            Add recipient (optional)
+                          </div>
+                        ) : (
+                          <div
+                            // color="link"
+                            // type="bordered"
+                            id="remove-recipient-button"
+                            className="
+                      text-primary text-sm 
+                      cursor-pointer
+                      flex space-x-2 justify-end
+                      "
+                            onClick={() => onChangeRecipient(null)}
+                          >
+                            <MinusCircleIcon className="w-4 h-4" />
+                            <div>Remove recipient</div>
+                          </div>
+                        )
+                      ) : null}
                     </div>
                   )}
                 </div>
               </div>
 
-              {recipient !== null && !showWrap && (
+              {isExpertMode && recipient !== null && !showWrap && (
                 <>
-                  <AddressInputPanel
+                  <RecipientInputPanel
                     id="recipient"
                     value={recipient}
                     onChange={onChangeRecipient}
                   />
                   {recipient !== account && (
-                    <Alert
-                      type="warning"
-                      dismissable={false}
-                      showIcon
-                      message={`Please note that the recipient address is different from the connected wallet address.`}
-                    />
+                    <div className="text-sm text-warn text-center">
+                      Please note that the recipient address is different from
+                      the connected wallet address
+                    </div>
                   )}
                 </>
               )}
@@ -791,10 +830,12 @@ export default function Swap() {
                     />
                   </div>
                 )} */}
-                {isExpertMode && swapErrorMessage
-                  ? 'err'
-                  : // <SwapCallbackError error={swapErrorMessage} />
-                    null}
+                {isExpertMode && swapErrorMessage ? (
+                  <div className="text-danger text-sm text-center mt-3">
+                    {swapErrorMessage}
+                  </div>
+                ) : // <SwapCallbackError error={swapErrorMessage} />
+                null}
               </div>
             </div>
           </div>

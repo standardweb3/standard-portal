@@ -4,6 +4,7 @@ module.exports = {
   darkMode: 'class', // or 'media' or 'class'
   theme: {
     screens: {
+      xs: '500px',
       sm: '640px',
       // => @media (min-width: 640px) { ... }
 
@@ -57,10 +58,15 @@ module.exports = {
         'background-4': '#474771',
         opaque: 'rgba(255,255,255,0.04)',
         'opaque-secondary': 'rgba(222, 199, 239, 0.13)',
+        'opaque-tertiary': 'rgba(24,1,1,0.35)',
+        'opaque-4': 'rgba(227, 200, 239, 0.03)',
+        'opaque-5': 'rgba(222, 199, 239, 0.05)',
         'opaque-inactive': 'rgba(227,200,239,0.02)',
         'opaque-border': 'rgba(138,127,169,0.3)',
         'opaque-border-secondary': 'rgba(255,255,255,0.1)',
         'border-light': '#DEC7EF',
+        'border-1': '#837AA0',
+        'border-2': '#605273',
         'opaque-xs': 'rgba(255,255,255,0.05)',
         'toggle-background': 'rgba(255,255,255,0.2)',
         'overlay-background': 'rgba(14, 5, 37, 0.7)',

@@ -6,17 +6,11 @@ import { useETHBalances } from '../../state/wallet/hooks';
 import { NetworkStatus } from '../NetworkStatus';
 import { SidebarNavigation } from './SidebarNavigation';
 import { sidebarRoutes } from '../../routes';
-import { useSwitchProtocol } from '../../state/protocol/hooks';
-import { Protocol } from '@digitalnative/standard-protocol-sdk';
+import { isMobile } from 'react-device-detect';
 
 export function Sidebar() {
   const theme = useTheme();
   const { account, chainId, library } = useActiveWeb3React();
-  const userEthBalance = useETHBalances(account ? [account] : [])?.[
-    account ?? ''
-  ];
-
-  const [protocol, switchProtocol] = useSwitchProtocol();
 
   return (
     <div

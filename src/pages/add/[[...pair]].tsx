@@ -69,6 +69,12 @@ import UnsupportedCurrencyFooter from '../../features/swap/UnsupportedCurrencyFo
 import { RippleSpinner } from '../../components-ui/Spinner/RippleSpinner';
 import { Typographies } from '../../utils/Typography';
 import { TradeAmountInfo } from '../../components-ui/TradeAmountInfo';
+import {
+  ViewportMediumUp,
+  ViewportSmallDown,
+} from '../../components-ui/Responsive';
+import { TransactionSettingsWithGas } from '../../components-ui/Exchange/TransactionSettingsWithGas';
+import { ExchangeNavigation } from '../../components-ui/Exchange/ExchangeNavigation';
 
 const DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE = new Percent(50, 10_000);
 
@@ -424,12 +430,14 @@ export default function Liquidity() {
           content="Add liquidity to the Standard Protcol AMM to enable gas optimised and low slippage trades across countless networks"
         />
       </Head>
-      <Page id="add-liquidity-page">
-        <PageHeader title="add liquidity" />
+      <Page id="add-liquidity-page" className={Typographies.page}>
+        <ViewportMediumUp>
+          <PageHeader title="add liquidity" />
+        </ViewportMediumUp>
 
         <PageContent>
           <Alert
-            className="mb-10  max-w-[600px]"
+            className={Typographies.pageAlert}
             message={
               noLiquidity ? (
                 `When creating a pair you are the first liquidity provider. The ratio of tokens you add will set the price of this pool. Once you are happy with the rate, click supply to review`
@@ -444,23 +452,33 @@ export default function Liquidity() {
             }
             type="information"
           />
+          <ViewportSmallDown>
+            <div className="w-full mb-8">
+              <ExchangeNavigation
+                input={currencies[Field.CURRENCY_A]}
+                output={currencies[Field.CURRENCY_B]}
+              />
+            </div>
+          </ViewportSmallDown>
 
-          <div
-            className="
-              md:min-w-[600px] 
-              max-w-[1000px]
-              bg-opaque
-              rounded-20 p-8
-              text-text"
-            style={{ zIndex: 1 }}
-          >
+          <div className={Typographies.pageContent}>
             {/* <AddRemoveTabs creating={isCreate} adding={true} defaultSlippage={DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE} /> */}
-
-            <ExchangeHeader
-              input={currencies[Field.CURRENCY_A]}
-              output={currencies[Field.CURRENCY_B]}
-              allowedSlippage={allowedSlippage}
-            />
+            <div className="mb-4">
+              <ViewportSmallDown>
+                <div className="flex justify-end">
+                  <TransactionSettingsWithGas
+                    allowedSlippage={allowedSlippage}
+                  />
+                </div>
+              </ViewportSmallDown>
+              <ViewportMediumUp>
+                <ExchangeHeader
+                  input={currencies[Field.CURRENCY_A]}
+                  output={currencies[Field.CURRENCY_B]}
+                  allowedSlippage={allowedSlippage}
+                />
+              </ViewportMediumUp>
+            </div>
 
             <TransactionConfirmationModal
               isOpen={showConfirm}

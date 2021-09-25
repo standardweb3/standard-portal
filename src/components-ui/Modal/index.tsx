@@ -66,7 +66,7 @@ const StyledDialogContent = styled(
     ${({ minWidth }) =>
       minWidth &&
       css`
-        max-width: ${minWidth};
+        min-width: ${minWidth};
       `}
 
     ${({ maxWidth }) =>
