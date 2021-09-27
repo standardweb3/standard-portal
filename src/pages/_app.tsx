@@ -142,7 +142,9 @@ function MyApp({
           content="Standard Protocol, building the next multichain finance standard"
         />
         {/* metamask image*/}
-        <link rel="shortcut icon" href="https://i.imgur.com/VrBP575.png" />
+        <link rel="shortcut icon" href="https://i.imgur.com/hIKSt2P.png" />
+        {/* Remove notch in iOS*/}
+        <meta name="apple-mobile-web-app-status-bar-style" content="default"></meta>
       </Head>
      {/* <I18nProvider i18n={i18n} forceRenderOnLocaleChange={false}> */}
       <ThemeProvider theme={darkTheme}>
