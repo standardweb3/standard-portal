@@ -40,7 +40,9 @@ export default function useAddTokenToMetaMask(
         .then((success) => {
           setSuccess(success);
         })
-        .catch(() => setSuccess(false));
+        .catch(() => {
+          setSuccess(false);
+        });
     } else {
       setSuccess(false);
     }

@@ -6,7 +6,7 @@ import { WavySpinner } from '../../components-ui/Spinner/WavySpinner';
 import Option from './Option';
 import { SUPPORTED_WALLETS } from '../../constants';
 import { darken } from 'polished';
-import { injected } from '../../connectors';
+import { CONNECTOR_PARAMS, injected } from '../../connectors';
 import styled from '@emotion/styled';
 
 const PendingSection = styled.div`
@@ -41,13 +41,18 @@ export default function PendingView({
   setPendingError,
   tryActivation,
 }: {
-  connector?: AbstractConnector;
+  connector?:
+    | AbstractConnector
+    | ((params?: CONNECTOR_PARAMS) => Promise<AbstractConnector>);
   error?: boolean;
   setPendingError: (error: boolean) => void;
-  tryActivation: (connector: AbstractConnector) => void;
+  tryActivation: (
+    connector:
+      | AbstractConnector
+      | ((params?: CONNECTOR_PARAMS) => Promise<AbstractConnector>),
+  ) => void;
 }) {
   const isMetamask = window?.ethereum?.isMetaMask;
-
   return (
     <PendingSection>
       <LoadingMessage error={error}>
@@ -60,6 +65,9 @@ export default function PendingView({
                   p-3 rounded-xl
                   transition
                   duration-500
+                  border
+                  border-primary
+                  text-primary
                 "
                 onClick={() => {
                   setPendingError(false);

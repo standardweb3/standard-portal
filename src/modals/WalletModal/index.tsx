@@ -12,7 +12,12 @@ import { isMobile } from 'react-device-detect';
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import { AbstractConnector } from '@web3-react/abstract-connector';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
-import { fortmatic, injected, portis } from '../../connectors';
+import {
+  CONNECTOR_PARAMS,
+  fortmatic,
+  injected,
+  portis,
+} from '../../connectors';
 // modal
 import { Modal } from '../../components-ui/Modal';
 import {
@@ -37,6 +42,8 @@ import {
   useSizeSmDown,
   useSizeXs,
 } from '../../components-ui/Responsive';
+import { type } from 'os';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
 const WALLET_VIEWS = {
   OPTIONS: 'options',
@@ -63,12 +70,15 @@ export default function WalletModal({
     activate,
     error,
     deactivate,
+    chainId,
   } = useWeb3React();
 
   const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT);
 
   const [pendingWallet, setPendingWallet] = useState<
-    AbstractConnector | undefined
+    | AbstractConnector
+    | ((params?: CONNECTOR_PARAMS) => Promise<AbstractConnector>)
+    | undefined
   >();
 
   const [pendingError, setPendingError] = useState<boolean>();
@@ -117,12 +127,17 @@ export default function WalletModal({
 
   const tryActivation = async (
     connector:
-      | (() => Promise<AbstractConnector>)
+      | ((params?: CONNECTOR_PARAMS) => Promise<AbstractConnector>)
       | AbstractConnector
       | undefined,
   ) => {
     let name = '';
-    let conn = typeof connector === 'function' ? await connector() : connector;
+    let conn =
+      typeof connector === 'function'
+        ? await connector({ chainId })
+        : connector instanceof Promise
+        ? await Promise.resolve(connector).then((res) => res({ chainId }))
+        : connector;
 
     Object.keys(SUPPORTED_WALLETS).map((key) => {
       if (connector === SUPPORTED_WALLETS[key].connector) {
@@ -136,7 +151,7 @@ export default function WalletModal({
       action: 'Change Wallet',
       label: name,
     });
-    setPendingWallet(conn); // set wallet for pending view
+    setPendingWallet(connector);
     setWalletView(WALLET_VIEWS.PENDING);
 
     // if the connector is walletconnect and the user has already tried to connect, manually reset the connector
@@ -228,7 +243,6 @@ export default function WalletModal({
           return null;
         }
       }
-
       // return rest of options
       return (
         !isMobile &&

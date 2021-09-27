@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
-import { fortmatic, injected, portis } from '../../connectors';
+import {
+  CONNECTOR_PARAMS,
+  fortmatic,
+  injected,
+  portis,
+} from '../../connectors';
 import {
   useModalOpen,
   useWalletModalToggle,
@@ -105,7 +110,14 @@ export default function WalletStandalone({
   ENSName?: string;
 }) {
   // important that these are destructed from the account-specific web3-react context
-  const { active, account, connector, activate, error } = useWeb3React();
+  const {
+    active,
+    account,
+    connector,
+    activate,
+    error,
+    chainId,
+  } = useWeb3React();
 
   const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT);
 
@@ -158,12 +170,15 @@ export default function WalletStandalone({
 
   const tryActivation = async (
     connector:
-      | (() => Promise<AbstractConnector>)
+      | ((params?: CONNECTOR_PARAMS) => Promise<AbstractConnector>)
       | AbstractConnector
       | undefined,
   ) => {
     let name = '';
-    let conn = typeof connector === 'function' ? await connector() : connector;
+    let conn =
+      typeof connector === 'function'
+        ? await connector({ chainId })
+        : connector;
 
     Object.keys(SUPPORTED_WALLETS).map((key) => {
       if (conn === SUPPORTED_WALLETS[key].connector) {

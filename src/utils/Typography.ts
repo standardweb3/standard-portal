@@ -12,7 +12,7 @@ export const Typographies = {
   'page-outer-content': `
   w-full md:max-w-[600px] p-8`,
   pageAlert: 'w-full md:max-w-[600px] mb-6',
-  page: 'pt-[10%] md:pt-0',
+  page: 'pt-[10%] pb-[60px] md:pt-0',
   pageContent: `
     w-full
     md:max-w-[600px]

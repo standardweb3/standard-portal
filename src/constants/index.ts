@@ -1,7 +1,9 @@
 import { ChainId, JSBI, Percent } from '@digitalnative/standard-protocol-sdk';
 import {
   binance,
+  CONNECTOR_PARAMS,
   fortmatic,
+  getWalletConnectConnector,
   injected,
   portis,
   torus,
@@ -97,7 +99,9 @@ export const MERKLE_ROOT =
 // }
 
 export interface WalletInfo {
-  connector?: (() => Promise<AbstractConnector>) | AbstractConnector;
+  connector?:
+    | ((params?: CONNECTOR_PARAMS) => Promise<AbstractConnector>)
+    | AbstractConnector;
   name: string;
   iconName: string;
   description: string;
@@ -126,15 +130,15 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     href: null,
     color: '#E8831D',
   },
-  // WALLET_CONNECT: {
-  //   connector: walletconnect,
-  //   name: 'WalletConnect',
-  //   iconName: 'wallet-connect.svg',
-  //   description: 'Connect to Trust Wallet, Rainbow Wallet and more...',
-  //   href: null,
-  //   color: '#4196FC',
-  //   mobile: true,
-  // },
+  WALLET_CONNECT: {
+    connector: walletconnect,
+    name: 'WalletConnect',
+    iconName: 'wallet-connect.svg',
+    description: 'Connect to Trust Wallet, Rainbow Wallet and more...',
+    href: null,
+    color: '#4196FC',
+    mobile: true,
+  },
   // KEYSTONE: {
   //   connector: async () => {
   //     const KeystoneConnector = (await import('@keystonehq/keystone-connector'))

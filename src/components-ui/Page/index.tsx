@@ -1,6 +1,8 @@
 import { ReactNode } from 'react';
 import styled from '@emotion/styled';
 import { classNames } from '../../functions';
+import { ViewportSmallDown } from '../Responsive';
+import { StndAdder } from '../TokenAdder/StndAdder';
 
 export type PageProps = {
   children: ReactNode;
@@ -24,6 +26,12 @@ export function Page({ children, id, className }: PageProps) {
       )}
     >
       {children}
+
+      <ViewportSmallDown>
+        <div className="fixed right-0 bottom-0 justify-center mb-6 px-8">
+          <StndAdder />
+        </div>
+      </ViewportSmallDown>
     </div>
   );
 }

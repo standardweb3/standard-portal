@@ -27,6 +27,8 @@ import { useIsUserAddedToken } from '../../hooks/Tokens';
 import { Question } from '../../components-ui/Question';
 import { RippleSpinner } from '../../components-ui/Spinner/RippleSpinner';
 import { Typographies } from '../../utils/Typography';
+import useAddTokenToMetaMask from '../../hooks/useAddTokenToMetaMask';
+import { PlusCircleIcon } from '@heroicons/react/outline';
 
 function currencyKey(currency: Currency): string {
   return currency.isToken ? currency.address : 'ETHER';
@@ -123,13 +125,13 @@ function CurrencyRow({
   );
   const customAdded = useIsUserAddedToken(currency);
   const balance = useCurrencyBalance(account ?? undefined, currency);
-
+  const { addToken, success } = useAddTokenToMetaMask(currency);
   // only show add or remove buttons if not on selected list
   return (
     <MenuItem
       id={`token-item-${key}`}
       style={style}
-      className={`hover:bg-dark-800 rounded`}
+      className={`rounded-20`}
       onClick={() => (isSelected ? null : onSelect())}
       disabled={isSelected}
       selected={otherSelected}
@@ -147,12 +149,17 @@ function CurrencyRow({
         </div>
       </div>
       <TokenTags currency={currency} />
-      <div className="flex items-center justify-end">
+      <div className="flex items-center justify-end space-x-2">
         {balance ? (
           <Balance balance={balance} />
         ) : account ? (
           <RippleSpinner size={16} />
         ) : null}
+        {!success && (
+          <div onClick={addToken}>
+            <PlusCircleIcon className="w-4 h-4 text-primary" />
+          </div>
+        )}
       </div>
     </MenuItem>
   );

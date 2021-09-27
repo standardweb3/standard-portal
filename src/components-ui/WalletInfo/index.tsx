@@ -9,6 +9,7 @@ import Image from 'next/image';
 import {
   binance,
   fortmatic,
+  getWalletConnectConnector,
   injected,
   portis,
   torus,

@@ -88,8 +88,25 @@ export const injected = new InjectedConnector({
   ],
 });
 
+export type CONNECTOR_PARAMS = {
+  chainId?: ChainId;
+};
+
+export const getWalletConnectConnector = async (params?: CONNECTOR_PARAMS) => {
+  return new WalletConnectConnector({
+    supportedChainIds: params?.chainId ? [params?.chainId] : [4, 81, 336],
+    chainId: params?.chainId ?? 4,
+    rpc: RPC,
+    bridge: 'https://bridge.walletconnect.org',
+    qrcode: true,
+    pollingInterval: 15000,
+  });
+};
+
 // mainnet only
 export const walletconnect = new WalletConnectConnector({
+  supportedChainIds: [4, 81, 336],
+  chainId: 4,
   rpc: RPC,
   bridge: 'https://bridge.walletconnect.org',
   qrcode: true,

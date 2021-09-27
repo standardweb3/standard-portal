@@ -75,6 +75,7 @@ import {
 } from '../../components-ui/Responsive';
 import { TransactionSettingsWithGas } from '../../components-ui/Exchange/TransactionSettingsWithGas';
 import { ExchangeNavigation } from '../../components-ui/Exchange/ExchangeNavigation';
+import { StndAdder } from '../../components-ui/TokenAdder/StndAdder';
 
 const DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE = new Percent(50, 10_000);
 
@@ -434,6 +435,11 @@ export default function Liquidity() {
         <ViewportMediumUp>
           <PageHeader title="add liquidity" />
         </ViewportMediumUp>
+        <ViewportSmallDown>
+          <div className="fixed right-0 bottom-0 justify-center mb-6 px-8">
+            <StndAdder />
+          </div>
+        </ViewportSmallDown>
 
         <PageContent>
           <Alert
