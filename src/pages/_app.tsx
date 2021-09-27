@@ -70,7 +70,7 @@ function MyApp({
   // }, [locale])
 
   useEffect(() => {
-    ReactGA.initialize(process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_PROD : process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_DEV, {testMode: process.env.NODE_ENV === 'development'})
+    ReactGA.initialize(process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_PROD : process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_DEV)
 
     const errorHandler = (error) => {
       ReactGA.exception({
@@ -114,7 +114,7 @@ function MyApp({
         <meta name="application-name" content="Standard Protocol App" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="Standard" />
+        <meta name="apple-mobile-web-app-title" content="SUSHI App" />
 
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
@@ -128,7 +128,7 @@ function MyApp({
         <meta
           key="twitter:description"
           name="twitter:description"
-          content="Standard Protocol, building the next multichain money"
+          content="Standard Protocol, building the next multichain finance standard"
         />
         {/* <meta key="twitter:image" name="twitter:image" content="https://app.sushi.com/icons/icon-192x192.png" /> */}
         <meta key="twitter:creator" name="twitter:creator" content="@standarddefi" />
@@ -139,8 +139,10 @@ function MyApp({
         <meta
           key="og:description"
           property="og:description"
-          content="Standard Protocol, building the next multichain money"
+          content="Standard Protocol, building the next multichain finance standard"
         />
+        {/* metamask image*/}
+        <link rel="shortcut icon" href="https://i.imgur.com/pmmOsHL.png" />
       </Head>
      {/* <I18nProvider i18n={i18n} forceRenderOnLocaleChange={false}> */}
       <ThemeProvider theme={darkTheme}>
