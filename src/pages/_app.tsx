@@ -144,7 +144,9 @@ function MyApp({
         {/* metamask image*/}
         <link rel="shortcut icon" href="https://i.imgur.com/hIKSt2P.png" />
         {/* Remove notch in iOS*/}
-        <meta name="apple-mobile-web-app-status-bar-style" content="default"></meta>
+        <meta name="viewport" content="initial-scale=1, viewport-fit=cover, width=device-width"></meta>
+        <meta name="apple-mobile-web-app-capable" content="yes"></meta>
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"></meta>
       </Head>
      {/* <I18nProvider i18n={i18n} forceRenderOnLocaleChange={false}> */}
       <ThemeProvider theme={darkTheme}>
