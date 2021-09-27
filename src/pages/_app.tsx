@@ -142,7 +142,7 @@ function MyApp({
           content="Standard Protocol, building the next multichain finance standard"
         />
         {/* metamask image*/}
-        <link rel="shortcut icon" href="https://i.imgur.com/pmmOsHL.png" />
+        <link rel="shortcut icon" href="https://i.imgur.com/VrBP575.png" />
       </Head>
      {/* <I18nProvider i18n={i18n} forceRenderOnLocaleChange={false}> */}
       <ThemeProvider theme={darkTheme}>
