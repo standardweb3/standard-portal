@@ -114,7 +114,7 @@ function MyApp({
         <meta name="application-name" content="Standard Protocol App" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="SUSHI App" />
+        <meta name="apple-mobile-web-app-title" content="Standard" />
 
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
@@ -142,7 +142,11 @@ function MyApp({
           content="Standard Protocol, building the next multichain finance standard"
         />
         {/* metamask image*/}
-        <link rel="shortcut icon" href="https://i.imgur.com/VrBP575.png" />
+        <link rel="shortcut icon" href="https://i.imgur.com/hIKSt2P.png" />
+        {/* Remove notch in iOS*/}
+        <meta name="viewport" content="initial-scale=1, viewport-fit=cover, width=device-width"></meta>
+        <meta name="apple-mobile-web-app-capable" content="yes"></meta>
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"></meta>
       </Head>
      {/* <I18nProvider i18n={i18n} forceRenderOnLocaleChange={false}> */}
       <ThemeProvider theme={darkTheme}>
