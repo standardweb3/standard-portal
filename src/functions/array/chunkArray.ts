@@ -1,5 +1,5 @@
 const CONSERVATIVE_BLOCK_GAS_LIMIT = 10_000_000 // conservative, hard-coded estimate of the current block gas limit
-export const DEFAULT_GAS_REQUIRED = 200_000 // the default value for calls that don't specify gasRequired
+export const DEFAULT_GAS_REQUIRED = 20_000 // the default value for calls that don't specify gasRequired
 
 // chunks array into chunks
 // evenly distributes items among the chunks
