@@ -7,7 +7,7 @@ import {
   Percent,
   Price,
   Token,
-} from '@digitalnative/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk-test';
 import { Field, typeInput } from './actions';
 import { PairState, useV2Pair } from '../../hooks/useV2Pairs';
 import { useCallback, useMemo } from 'react';

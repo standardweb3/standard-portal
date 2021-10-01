@@ -5,7 +5,7 @@ import {
   Pair,
   Percent,
   Token,
-} from '@digitalnative/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk-test';
 import { Field, typeInput } from './actions';
 import { useAppDispatch, useAppSelector } from '../hooks';
 

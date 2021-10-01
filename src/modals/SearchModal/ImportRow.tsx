@@ -3,7 +3,7 @@ import { useIsTokenActive, useIsUserAddedToken } from '../../hooks/Tokens';
 import { Button } from '../../components-ui/Button';
 import { CurrencyLogo } from '../../components-ui/CurrencyLogo';
 import { ListLogo } from '../../components-ui/Logo/ListLogo';
-import { Token } from '@digitalnative/standard-protocol-sdk';
+import { Token } from '@digitalnative/standard-protocol-sdk-test';
 import styled from '@emotion/styled';
 import { WrappedTokenInfo } from '../../state/lists/wrappedTokenInfo';
 import { CheckCircleIcon, TrashIcon } from '@heroicons/react/outline';

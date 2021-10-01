@@ -1,4 +1,4 @@
-import { JSBI, Percent } from '@digitalnative/standard-protocol-sdk';
+import { JSBI, Percent } from '@digitalnative/standard-protocol-sdk-test';
 
 import { basisPointsToPercent } from './basisPointsToPercent';
 

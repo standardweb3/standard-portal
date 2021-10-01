@@ -8,7 +8,7 @@ import {
   Token,
   TradeType,
   Trade as V2Trade,
-} from '@digitalnative/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk-test';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
@@ -485,11 +485,11 @@ export default function Swap() {
     currencies?.OUTPUT,
   );
 
-  const priceImpactTooHigh = priceImpactSeverity > 3 && !isExpertMode;
+  // const priceImpactTooHigh = priceImpactSeverity > 3 && !isExpertMode;
 
-  const [animateSwapArrows, setAnimateSwapArrows] = useState<boolean>(false);
+  // const [animateSwapArrows, setAnimateSwapArrows] = useState<boolean>(false);
 
-  const previousChainId = usePrevious<ChainId>(chainId);
+  // const previousChainId = usePrevious<ChainId>(chainId);
 
   // useEffect(() => {
   //   if (
@@ -820,16 +820,6 @@ export default function Swap() {
                     {priceImpactSeverity > 2 ? `Swap Anyway` : `Swap`}
                   </ButtonError>
                 )}
-                {/* {showApproveFlow && (
-                  <div
-                    className="flex flex-col justify-center"
-                    style={{ marginTop: '1rem' }}
-                  >
-                    <ProgressCircles
-                      steps={[approvalState === ApprovalState.APPROVED]}
-                    />
-                  </div>
-                )} */}
                 {isExpertMode && swapErrorMessage ? (
                   <div className="text-danger text-sm text-center mt-3">
                     {swapErrorMessage}

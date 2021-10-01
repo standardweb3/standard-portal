@@ -13,7 +13,7 @@ import {
   Percent,
   Trade,
   TradeType,
-} from '@digitalnative/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk-test';
 
 import { Field } from '../state/swap/actions';
 import { basisPointsToPercent } from './convert';

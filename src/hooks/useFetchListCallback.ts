@@ -1,5 +1,5 @@
 import { AppDispatch } from '../state';
-import { ChainId } from '@digitalnative/standard-protocol-sdk';
+import { ChainId } from '@digitalnative/standard-protocol-sdk-test';
 import { TokenList } from '@uniswap/token-lists';
 import { fetchTokenList } from '../state/lists/actions';
 import { getNetworkLibrary } from '../connectors';

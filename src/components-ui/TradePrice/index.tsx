@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 
-import { Currency, Price } from '@digitalnative/standard-protocol-sdk';
+import { Currency, Price } from '@digitalnative/standard-protocol-sdk-test';
 import { classNames } from '../../functions';
 // import { SwitchHorizontalIcon } from '@heroicons/react/outline';
 import { ReactNode } from 'react';

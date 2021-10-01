@@ -3,7 +3,7 @@ import {
   getRouterAddress,
   getInitCodeHash,
   ChainId,
-} from '@digitalnative/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk-test';
 import { useActiveWeb3React } from '.';
 import { ARCHER_ROUTER_ADDRESS } from '../constants';
 import { useProtocol } from '../state/protocol/hooks';

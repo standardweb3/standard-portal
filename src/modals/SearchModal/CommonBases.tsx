@@ -4,7 +4,7 @@ import {
   Currency,
   Token,
   currencyEquals,
-} from '@digitalnative/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk-test';
 
 import { Button } from '../../components-ui/Button';
 import { COMMON_BASES } from '../../constants/routing';

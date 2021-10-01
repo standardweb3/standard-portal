@@ -5,7 +5,7 @@ import {
   Pair,
   Percent,
   Token,
-} from '@digitalnative/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk-test';
 import React, { useState } from 'react';
 import { currencyId, unwrappedToken } from '../../functions/currency';
 

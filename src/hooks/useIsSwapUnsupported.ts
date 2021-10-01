@@ -1,4 +1,4 @@
-import { Currency, Token } from '@digitalnative/standard-protocol-sdk';
+import { Currency, Token } from '@digitalnative/standard-protocol-sdk-test';
 
 import { useMemo } from 'react';
 import { useUnsupportedTokens } from './Tokens';

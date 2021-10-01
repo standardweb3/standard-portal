@@ -1,6 +1,9 @@
 // NOTE: Try not to add anything to thie file, it's almost entirely refactored out.
 
-import { ChainId, ROUTER_ADDRESS } from '@digitalnative/standard-protocol-sdk';
+import {
+  ChainId,
+  ROUTER_ADDRESS,
+} from '@digitalnative/standard-protocol-sdk-test';
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
 
 import { ARCHER_ROUTER_ADDRESS } from '../constants';

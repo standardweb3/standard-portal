@@ -4,9 +4,11 @@ import { XIcon } from '@heroicons/react/solid';
 import { classNames } from '../../functions';
 import { ExclamationCircleIcon } from '@heroicons/react/outline';
 
+const infoClassName = 'bg-opaque-6 text-text text-opacity-50';
+
 const TYPE = {
   information: {
-    color: 'bg-info bg-opacity-25',
+    typeClassName: infoClassName,
     icon: (
       <svg
         width="33"
@@ -26,15 +28,16 @@ const TYPE = {
     ),
   },
   warning: {
-    color: 'bg-warn bg-opacity-25',
+    typeClassName: 'bg-warn bg-opacity-25',
     icon: <ExclamationCircleIcon className="text-warn w-4 h-4" />,
   },
   error: {
-    color: 'bg-danger bg-opacity-25 text-high-emphesis',
+    typeClassName: 'bg-danger bg-opacity-25',
     icon: <ExclamationCircleIcon className="text-danger w-4 h-4" />,
   },
   'bordered-primary': {
-    color: 'bg-transparent rounded-20 border border-primary text-primary',
+    typeClassName:
+      'bg-transparent rounded-20 border border-primary text-primary',
     icon: <ExclamationCircleIcon className="text-primary w-8 h-8" />,
   },
 };
@@ -57,17 +60,17 @@ export function Alert({
 }: AlertProps & React.HTMLAttributes<HTMLDivElement>): JSX.Element | null {
   // TODO: Persist this...
   const [show, setShow] = useState(true);
-  const { color, icon } = TYPE[type];
+  const { typeClassName, icon } = TYPE[type];
   return message && show ? (
     <div
       className={classNames(
-        'flex relative w-full rounded-xl text-sm p-4',
-        color,
+        'flex relative w-full rounded-20 text-sm p-5',
+        typeClassName,
         className,
       )}
     >
       <div className="flex flex-1 flex-col">
-        {title && <div className="mb-1 text-2xl font-medium">{title}</div>}
+        {title && <div className="mb-3 text-2xl font-bold">{title}</div>}
         <div className="flex items-center">
           {showIcon && <div className="flex-shrink-0">{icon}</div>}
           <div className={!showIcon ? 'w-full ml-0' : 'w-full ml-3'}>
@@ -90,12 +93,7 @@ export function Alert({
             hover:opacity-100 
             focused:opacity-100 
             rounded p-1.5 
-            text-primary 
-            focus:outline-none 
-            focus:ring 
-            focus:ring-offset 
-            focus:ring-offset-purple 
-            focus:ring-purple`}
+            text-primary`}
           >
             <span className="sr-only">Dismiss</span>
             <XIcon className="w-5 h-5" aria-hidden="true" />

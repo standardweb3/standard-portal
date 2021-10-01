@@ -1,5 +1,5 @@
 // import { AlertTriangle, ArrowUpCircle, CheckCircle } from 'react-feather';
-import { ChainId, Currency } from '@digitalnative/standard-protocol-sdk';
+import { ChainId, Currency } from '@digitalnative/standard-protocol-sdk-test';
 import React, { FC } from 'react';
 import LogoPrimary from '../../../public/img/logos/logo.primary.png';
 

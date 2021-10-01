@@ -3,7 +3,7 @@ import {
   Currency,
   STND_ADDRESS,
   WNATIVE,
-} from '@digitalnative/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk-test';
 import React, { FunctionComponent, useMemo } from 'react';
 
 import { WrappedTokenInfo } from '../../state/lists/wrappedTokenInfo';

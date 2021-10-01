@@ -3,7 +3,7 @@ import {
   Currency,
   CurrencyAmount,
   Percent,
-} from '@digitalnative/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk-test';
 
 import { warningSeverity } from '../../functions/prices';
 import { classNames } from '../../functions';

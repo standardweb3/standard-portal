@@ -2,7 +2,7 @@ import {
   ChainId,
   Currency,
   Percent,
-} from '@digitalnative/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk-test';
 import React, { FC, useState } from 'react';
 
 import { Gas } from '../Gas';

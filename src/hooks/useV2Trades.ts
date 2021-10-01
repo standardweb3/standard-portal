@@ -4,7 +4,7 @@ import {
   Pair,
   Trade,
   TradeType,
-} from '@digitalnative/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk-test';
 import { PairState, useV2Pairs } from './useV2Pairs';
 
 import { BETTER_TRADE_LESS_HOPS_THRESHOLD } from '../constants';

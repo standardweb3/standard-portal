@@ -1,6 +1,9 @@
 import { t } from '@lingui/macro';
 import { AXSUSHI, SUSHI } from '../../../constants';
-import { ChainId, SUSHI_ADDRESS } from '@digitalnative/standard-protocol-sdk';
+import {
+  ChainId,
+  SUSHI_ADDRESS,
+} from '@digitalnative/standard-protocol-sdk-test';
 import { useActiveWeb3React } from '../../../hooks';
 import { useTokenBalances } from '../../wallet/hooks';
 import {

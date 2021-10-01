@@ -11,7 +11,7 @@ import {
 import { useEffect, useMemo } from 'react';
 import useSWR, { SWRConfiguration } from 'swr';
 
-import { ChainId } from '@digitalnative/standard-protocol-sdk';
+import { ChainId } from '@digitalnative/standard-protocol-sdk-test';
 import { Chef } from '../../../features/farm/enum';
 import concat from 'lodash/concat';
 import useActiveWeb3React from '../../../hooks/useActiveWeb3React';

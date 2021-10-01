@@ -7,7 +7,7 @@ import {
   currencyEquals,
   Percent,
   WNATIVE,
-} from '@digitalnative/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk-test';
 import { BigNumber } from 'ethers';
 import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
@@ -27,7 +27,6 @@ import {
 } from '../../hooks';
 import { useCurrency } from '../../hooks/Tokens';
 import useTransactionDeadline from '../../hooks/useTransactionDeadline';
-import { useWalletModalToggle } from '../../state/application/hooks';
 import { Field } from '../../state/mint/actions';
 import {
   useDerivedMintInfo,
@@ -43,7 +42,6 @@ import { DoubleCurrencyLogo } from '../../components-ui/CurrencyLogo/DoubleCurre
 import ConfirmAddModalBottom from '../../features/liquidity/ConfirmAddModalBottom';
 import { useIsSwapUnsupported } from '../../hooks/useIsSwapUnsupported';
 import { PageContent } from '../../components-ui/PageContent';
-import { NavigationLink } from '../../components-ui/NavigationLink';
 import { Alert } from '../../components-ui/Alert';
 import TransactionConfirmationModal, {
   ConfirmationModalContent,
@@ -55,14 +53,7 @@ import { PairState } from '../../hooks/useV2Pairs';
 import { PageHeader } from '../../components-ui/PageHeader';
 import { Page } from '../../components-ui/Page';
 import { ExchangeHeader } from '../../components-ui/Exchange/ExchangeHeader';
-import { ChevronRightIcon } from '@heroicons/react/solid';
-import {
-  ArrowCircleRightIcon,
-  ArrowRightIcon,
-  MinusIcon,
-  PlusCircleIcon,
-  PlusIcon,
-} from '@heroicons/react/outline';
+import { ArrowRightIcon, PlusIcon } from '@heroicons/react/outline';
 import { LiquidityHeader, LiquidityPrice } from '../../features/liquidity';
 import { MinimalPositionCard } from '../../components-ui/PositionCard';
 import UnsupportedCurrencyFooter from '../../features/swap/UnsupportedCurrencyFooter';
@@ -165,7 +156,7 @@ export default function Liquidity() {
   }, {});
 
   const routerContract = useRouterContract();
-
+  console.log(routerContract.address);
   // check whether the user has approved the router on the tokens
   const [approvalA, approveACallback] = useApproveCallback(
     parsedAmounts[Field.CURRENCY_A],
@@ -185,14 +176,6 @@ export default function Liquidity() {
       [Field.CURRENCY_A]: parsedAmountA,
       [Field.CURRENCY_B]: parsedAmountB,
     } = parsedAmounts;
-
-    // console.log({
-    //   parsedAmountA,
-    //   parsedAmountB,
-    //   currencyA,
-    //   currencyB,
-    //   deadline,
-    // });
 
     if (
       !parsedAmountA ||
@@ -435,15 +418,10 @@ export default function Liquidity() {
         <ViewportMediumUp>
           <PageHeader title="add liquidity" />
         </ViewportMediumUp>
-        <ViewportSmallDown>
-          <div className="fixed right-0 bottom-0 justify-center mb-6 px-8">
-            <StndAdder />
-          </div>
-        </ViewportSmallDown>
 
         <PageContent>
           <Alert
-            className={Typographies.pageAlert}
+            className={Typographies.pageAlertMaxed}
             message={
               noLiquidity ? (
                 `When creating a pair you are the first liquidity provider. The ratio of tokens you add will set the price of this pool. Once you are happy with the rate, click supply to review`

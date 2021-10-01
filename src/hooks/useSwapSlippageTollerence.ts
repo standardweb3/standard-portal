@@ -3,7 +3,7 @@ import {
   Percent,
   Trade,
   TradeType,
-} from '@digitalnative/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk-test';
 
 import { useMemo } from 'react';
 import { useUserSlippageToleranceWithDefault } from '../state/user/hooks';

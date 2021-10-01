@@ -14,7 +14,7 @@ import { getTokenSubset } from './exchange';
 import {
   ChainId,
   MASTERCHEF_V2_ADDRESS,
-} from '@digitalnative/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk-test';
 import { GRAPH_HOST } from '../constants';
 import { request } from 'graphql-request';
 

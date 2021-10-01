@@ -4,7 +4,7 @@ import {
   JSBI,
   MASTERCHEF_ADDRESS,
   MASTERCHEF_V2_ADDRESS,
-} from '@digitalnative/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk-test';
 import { Chef, PairType } from './enum';
 import { MINICHEF_ADDRESS, SUSHI } from '../../constants';
 import {

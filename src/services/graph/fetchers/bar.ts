@@ -1,4 +1,4 @@
-import { ChainId } from '@digitalnative/standard-protocol-sdk';
+import { ChainId } from '@digitalnative/standard-protocol-sdk-test';
 import { GRAPH_HOST } from '../constants';
 import { request } from 'graphql-request';
 

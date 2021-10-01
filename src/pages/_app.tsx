@@ -41,7 +41,7 @@ import NetworkGuard from '../guards/Network';
 
 import '../styles/index.css'
 import '../styles/globals.css';
-import { ChainId } from '@digitalnative/standard-protocol-sdk';
+import { ChainId } from '@digitalnative/standard-protocol-sdk-test';
 
 const Web3ProviderNetwork = dynamic(() => import('../components-ui/Web3ProviderNetwork'), { ssr: false })
 

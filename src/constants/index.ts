@@ -1,4 +1,8 @@
-import { ChainId, JSBI, Percent } from '@digitalnative/standard-protocol-sdk';
+import {
+  ChainId,
+  JSBI,
+  Percent,
+} from '@digitalnative/standard-protocol-sdk-test';
 import {
   binance,
   CONNECTOR_PARAMS,
@@ -13,42 +17,6 @@ import {
 
 import { AbstractConnector } from '@web3-react/abstract-connector';
 import { BigNumber } from 'ethers';
-
-export const RPC = {
-  [ChainId.MAINNET]:
-    'https://eth-mainnet.alchemyapi.io/v2/EA7UDrnRTL_aXxyoPoasAMx9ey2vQzky',
-  [ChainId.ROPSTEN]:
-    'https://eth-ropsten.alchemyapi.io/v2/325Q127k2d4G_Ev077fwz-OzPz7fyIZ4',
-  [ChainId.RINKEBY]:
-    'https://eth-mainnet.alchemyapi.io/v2/-m6r5QkA0mAmuLJ71qRce4xOI7w8w73l',
-  [ChainId.GÖRLI]:
-    'https://eth-goerli.alchemyapi.io/v2/LMUMz1ESenYl3xQPw2jUcgNsS8aasIFH',
-  [ChainId.KOVAN]:
-    'https://eth-kovan.alchemyapi.io/v2/NU1Dxk4vYkOcMmndMTRAPIin-IyKKcYq',
-  [ChainId.SHIBUYA]: 'https://rpc.shibuya.astar.network:8545',
-  [ChainId.SHIDEN]: 'https://rpc.shiden.astar.network:8545',
-  [ChainId.FANTOM]: 'https://rpcapi.fantom.network',
-  [ChainId.FANTOM_TESTNET]: 'https://rpc.testnet.fantom.network',
-  [ChainId.MATIC]: 'https://rpc-mainnet.maticvigil.com',
-  // [ChainId.MATIC]:
-  //     'https://apis.ankr.com/e22bfa5f5a124b9aa1f911b742f6adfe/c06bb163c3c2a10a4028959f4d82836d/polygon/full/main',
-  [ChainId.MATIC_TESTNET]: 'https://rpc-mumbai.matic.today',
-  [ChainId.XDAI]: 'https://rpc.xdaichain.com',
-  [ChainId.BSC]: 'https://bsc-dataseed.binance.org/',
-  [ChainId.BSC_TESTNET]: 'https://data-seed-prebsc-2-s3.binance.org:8545',
-  [ChainId.MOONBEAM_TESTNET]: 'https://rpc.testnet.moonbeam.network',
-  [ChainId.AVALANCHE]: 'https://api.avax.network/ext/bc/C/rpc',
-  [ChainId.AVALANCHE_TESTNET]: 'https://api.avax-test.network/ext/bc/C/rpc',
-  [ChainId.HECO]: 'https://http-mainnet.hecochain.com',
-  [ChainId.HECO_TESTNET]: 'https://http-testnet.hecochain.com',
-  [ChainId.HARMONY]: 'https://api.harmony.one',
-  [ChainId.HARMONY_TESTNET]: 'https://api.s0.b.hmny.io',
-  [ChainId.OKEX]: 'https://exchainrpc.okex.org',
-  [ChainId.OKEX_TESTNET]: 'https://exchaintestrpc.okex.org',
-  [ChainId.ARBITRUM]: 'https://arb1.arbitrum.io/rpc',
-  [ChainId.PALM]:
-    'https://palm-mainnet.infura.io/v3/da5fbfafcca14b109e2665290681e267',
-};
 
 export const POOL_DENY = ['14', '29', '45', '30'];
 

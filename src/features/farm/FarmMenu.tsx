@@ -1,4 +1,4 @@
-import { ChainId } from '@digitalnative/standard-protocol-sdk';
+import { ChainId } from '@digitalnative/standard-protocol-sdk-test';
 import { NavigationLink } from '../../components-ui/NavigationLink';
 import React from 'react';
 import { useActiveWeb3React } from '../../hooks';

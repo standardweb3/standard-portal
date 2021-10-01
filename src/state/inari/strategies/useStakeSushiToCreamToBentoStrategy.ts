@@ -4,7 +4,7 @@ import {
   ChainId,
   SUSHI_ADDRESS,
   Token,
-} from '@digitalnative/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk-test';
 import { e10, tryParseAmount } from '../../../functions';
 import { useBentoBalance } from '../../bentobox/hooks';
 import { useActiveWeb3React, useZenkoContract } from '../../../hooks';

@@ -4,7 +4,7 @@ import {
   Pair,
   Percent,
   Token,
-} from '@digitalnative/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk-test';
 import React, { ReactNode, useCallback, useState } from 'react';
 import { classNames, formatCurrencyAmount } from '../../functions';
 

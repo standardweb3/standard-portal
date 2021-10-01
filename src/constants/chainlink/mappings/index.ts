@@ -1,5 +1,5 @@
 import BSC from './bsc';
-import { ChainId } from '@digitalnative/standard-protocol-sdk';
+import { ChainId } from '@digitalnative/standard-protocol-sdk-test';
 import HECO from './heco';
 import KOVAN from './kovan';
 import MAINNET from './mainnet';

@@ -24,10 +24,14 @@ module.exports = {
       borderRadius: {
         '20': '20px',
       },
+      backgroundImage: {
+        bond: 'linear-gradient(90deg, #8525EF 0%, #170C34 100%)',
+      },
       colors: {
         grey: '#BAB8C0',
         'grey-2': '#3A324B',
         primary: '#F365BD',
+        highlight: '#8DE7D8',
         secondary: '#170c34',
         link: '#31a6f4',
         blue: '#31a6f4',
@@ -61,6 +65,7 @@ module.exports = {
         'opaque-tertiary': 'rgba(24,1,1,0.35)',
         'opaque-4': 'rgba(227, 200, 239, 0.03)',
         'opaque-5': 'rgba(222, 199, 239, 0.05)',
+        'opaque-6': 'rgba(97, 67, 188, 0.07)',
         'opaque-inactive': 'rgba(227,200,239,0.02)',
         'opaque-border': 'rgba(138,127,169,0.3)',
         'opaque-border-secondary': 'rgba(255,255,255,0.1)',

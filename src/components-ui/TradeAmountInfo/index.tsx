@@ -1,4 +1,7 @@
-import { Currency, CurrencyAmount } from '@digitalnative/standard-protocol-sdk';
+import {
+  Currency,
+  CurrencyAmount,
+} from '@digitalnative/standard-protocol-sdk-test';
 import { CurrencyLogo } from '../CurrencyLogo';
 
 export function TradeAmountInfo({

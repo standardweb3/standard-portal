@@ -5,7 +5,7 @@ import {
   getTokens,
 } from './exchange';
 
-import { ChainId } from '@digitalnative/standard-protocol-sdk';
+import { ChainId } from '@digitalnative/standard-protocol-sdk-test';
 import { GRAPH_HOST } from '../constants';
 import { kashiPairsQuery } from '../queries/bentobox';
 import { request } from 'graphql-request';

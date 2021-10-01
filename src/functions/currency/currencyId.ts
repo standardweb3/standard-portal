@@ -1,4 +1,4 @@
-import { ChainId, Currency } from '@digitalnative/standard-protocol-sdk';
+import { ChainId, Currency } from '@digitalnative/standard-protocol-sdk-test';
 
 export function currencyId(currency: Currency): string {
   if ([ChainId.CELO].includes(currency.chainId)) {

@@ -1,9 +1,12 @@
 import React, { FC, Fragment } from 'react';
 import { useActiveWeb3React } from '../../hooks';
-import { ChainId } from '@digitalnative/standard-protocol-sdk';
+import { ChainId } from '@digitalnative/standard-protocol-sdk-test';
 import Image from 'next/image';
-import { NETWORK_ICON, NETWORK_LABEL } from '../../constants/networks';
-import { SUPPORTED_NETWORKS } from '../../modals/NetworkModal';
+import {
+  NETWORK_ICON,
+  NETWORK_LABEL,
+  SUPPORTED_NETWORKS,
+} from '../../constants/networks';
 import cookie from 'cookie-cutter';
 import HeadlessUIModal from '../../components-ui/Modal/HeadlessUIModal';
 import { NavigationLink } from '../../components-ui/NavigationLink';

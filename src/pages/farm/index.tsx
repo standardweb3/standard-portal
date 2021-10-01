@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 
-import { Chef, PairType } from '../../features/farm/enum';
+import { PairType } from '../../features/farm/enum';
 import { usePositions } from '../../features/farm/hooks';
 import { useActiveWeb3React, useFuse } from '../../hooks';
 

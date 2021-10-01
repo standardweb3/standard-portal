@@ -3,7 +3,7 @@ import {
   Currency,
   CurrencyAmount,
   JSBI,
-} from '@digitalnative/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk-test';
 
 import { Interface } from '@ethersproject/abi';
 

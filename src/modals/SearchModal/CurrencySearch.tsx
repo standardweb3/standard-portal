@@ -3,7 +3,7 @@ import {
   Currency,
   NATIVE,
   Token,
-} from '@digitalnative/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk-test';
 import React, {
   KeyboardEvent,
   RefObject,

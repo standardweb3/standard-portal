@@ -2,7 +2,7 @@ import {
   Currency,
   CurrencyAmount,
   Token,
-} from '@digitalnative/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk-test';
 
 import { ethers } from 'ethers';
 

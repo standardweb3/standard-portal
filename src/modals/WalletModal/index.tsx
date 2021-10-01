@@ -43,7 +43,7 @@ import {
   useSizeXs,
 } from '../../components-ui/Responsive';
 import { type } from 'os';
-import { ChainId } from '@digitalnative/standard-protocol-sdk';
+import { ChainId } from '@digitalnative/standard-protocol-sdk-test';
 
 const WALLET_VIEWS = {
   OPTIONS: 'options',

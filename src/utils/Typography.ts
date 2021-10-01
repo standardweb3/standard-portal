@@ -3,6 +3,7 @@ export const Typographies = {
   copierCopied: 'italic',
   swapError: 'text-danger font-semibold text-sm text-center',
   swapButton: 'font-bold !py-5 !px-4 !text-lg w-full',
+  button: 'font-bold !py-4 !px-4 !text-xl',
   liquidityButton: 'font-bold text-base !px-3 !py-3',
   divider: 'border-t border-divider mt-2 mb-2',
   'txSettings-text': 'text-white !text-opacity-50',
@@ -11,7 +12,8 @@ export const Typographies = {
   tradePriceSwitcher: 'text-white !text-opacity-50',
   'page-outer-content': `
   w-full md:max-w-[600px] p-8`,
-  pageAlert: 'w-full md:max-w-[600px] mb-6',
+  pageAlertFull: 'w-full mb-6',
+  pageAlertMaxed: 'w-full md:max-w-[600px] mb-6',
   page: 'pt-[10%] pb-[60px] md:pt-0',
   pageContent: `
     w-full

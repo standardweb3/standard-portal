@@ -1,4 +1,4 @@
-import { Percent } from '@digitalnative/standard-protocol-sdk';
+import { Percent } from '@digitalnative/standard-protocol-sdk-test';
 import React, { useMemo } from 'react';
 import { classNames } from '../../functions';
 import { warningSeverity } from '../../functions/prices';

@@ -2,7 +2,7 @@ import {
   ChainId,
   Currency,
   STND_ADDRESS,
-} from '@digitalnative/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk-test';
 import { TokenAdder } from '.';
 import { useActiveWeb3React } from '../../hooks';
 import { useCurrency, useToken } from '../../hooks/Tokens';

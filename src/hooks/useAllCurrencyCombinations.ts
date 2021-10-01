@@ -3,7 +3,7 @@ import {
   BASES_TO_CHECK_TRADES_AGAINST,
   CUSTOM_BASES,
 } from '../constants/routing';
-import { Currency, Token } from '@digitalnative/standard-protocol-sdk';
+import { Currency, Token } from '@digitalnative/standard-protocol-sdk-test';
 
 import flatMap from 'lodash/flatMap';
 import { useActiveWeb3React } from './useActiveWeb3React';

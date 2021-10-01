@@ -1,7 +1,7 @@
 import {
   Currency,
   Trade as V2Trade,
-} from '@digitalnative/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk-test';
 import {
   Field,
   replaceCreateState,

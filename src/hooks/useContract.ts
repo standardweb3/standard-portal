@@ -20,7 +20,7 @@ import {
   SUSHI_ADDRESS,
   TIMELOCK_ADDRESS,
   WNATIVE,
-} from '@digitalnative/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk-test';
 import {
   BENTOBOX_ADDRESS,
   BORING_HELPER_ADDRESS,
@@ -279,7 +279,11 @@ export function useRouterContract(
 
   const abi = useArcher ? ARCHER_ROUTER_ABI : ROUTER_ABI;
 
-  return useContract(address, abi, withSignerIfPossible);
+  return useContract(
+    '0xEFF3bB11968428281d516E937B664edAD16F3d3f',
+    abi,
+    withSignerIfPossible,
+  );
 }
 
 export function useSushiBarContract(

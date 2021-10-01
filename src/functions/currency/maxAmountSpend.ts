@@ -2,7 +2,7 @@ import {
   Currency,
   CurrencyAmount,
   JSBI,
-} from '@digitalnative/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk-test';
 
 const MIN_NATIVE_CURRENCY_FOR_GAS: JSBI = JSBI.exponentiate(
   JSBI.BigInt(10),

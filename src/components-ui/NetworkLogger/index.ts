@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import ReactGA from 'react-ga';
+import { SUPPORTED_NETWORKS } from '../../constants/networks';
 import { useActiveWeb3React } from '../../hooks';
 import usePrevious from '../../hooks/usePrevious';
-import { SUPPORTED_NETWORKS } from '../../modals/NetworkModal';
 
 export function NetworkLogger(): null {
   const { chainId } = useActiveWeb3React();

@@ -1,4 +1,4 @@
-import { Token, WNATIVE } from '@digitalnative/standard-protocol-sdk';
+import { Token, WNATIVE } from '@digitalnative/standard-protocol-sdk-test';
 import {
   useBentoBoxContract,
   useBoringHelperContract,

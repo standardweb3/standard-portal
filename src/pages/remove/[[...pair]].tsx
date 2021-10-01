@@ -7,7 +7,7 @@ import {
   NATIVE,
   Percent,
   WNATIVE,
-} from '@digitalnative/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk-test';
 import { BigNumber, Contract } from 'ethers';
 import { useRouter } from 'next/router';
 import { useState, useMemo, useCallback } from 'react';
@@ -45,7 +45,6 @@ import {
 } from '../../components-ui/Button';
 import useDebouncedChangeHandler from '../../hooks/useDebouncedChangeHandler';
 import { Page } from '../../components-ui/Page';
-import { NavigationLink } from '../../components-ui/NavigationLink';
 import { PageContent } from '../../components-ui/PageContent';
 import { ExchangeHeader } from '../../components-ui/Exchange/ExchangeHeader';
 import TransactionConfirmationModal, {
@@ -58,7 +57,6 @@ import PercentInputPanel from '../../components-ui/PercentInputPanel';
 import { PageHeader } from '../../components-ui/PageHeader';
 import { LiquidityHeader } from '../../features/liquidity';
 import { Typographies } from '../../utils/Typography';
-import { RemoveLiquidityPercentInput } from '../../components-ui/RemoveLiquidityPercentInput';
 import {
   ViewportMediumUp,
   ViewportSmallDown,
@@ -188,18 +186,18 @@ export default function Remove() {
     [_onUserInput],
   );
 
-  const onLiquidityInput = useCallback(
-    (typedValue: string): void => onUserInput(Field.LIQUIDITY, typedValue),
-    [onUserInput],
-  );
-  const onCurrencyAInput = useCallback(
-    (typedValue: string): void => onUserInput(Field.CURRENCY_A, typedValue),
-    [onUserInput],
-  );
-  const onCurrencyBInput = useCallback(
-    (typedValue: string): void => onUserInput(Field.CURRENCY_B, typedValue),
-    [onUserInput],
-  );
+  // const onLiquidityInput = useCallback(
+  //   (typedValue: string): void => onUserInput(Field.LIQUIDITY, typedValue),
+  //   [onUserInput],
+  // );
+  // const onCurrencyAInput = useCallback(
+  //   (typedValue: string): void => onUserInput(Field.CURRENCY_A, typedValue),
+  //   [onUserInput],
+  // );
+  // const onCurrencyBInput = useCallback(
+  //   (typedValue: string): void => onUserInput(Field.CURRENCY_B, typedValue),
+  //   [onUserInput],
+  // );
 
   // tx sending
   const addTransaction = useTransactionAdder();

@@ -1,4 +1,4 @@
-// import { CurrencyAmount, JSBI, Token } from '@digitalnative/standard-protocol-sdk'
+// import { CurrencyAmount, JSBI, Token } from '@digitalnative/standard-protocol-sdk-test'
 
 // import { t } from '@lingui/macro'
 // import { tryParseAmount } from '../../functions'

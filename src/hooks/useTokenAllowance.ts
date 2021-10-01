@@ -1,4 +1,7 @@
-import { CurrencyAmount, Token } from '@digitalnative/standard-protocol-sdk';
+import {
+  CurrencyAmount,
+  Token,
+} from '@digitalnative/standard-protocol-sdk-test';
 
 import { useMemo } from 'react';
 import { useSingleCallResult } from '../state/multicall/hooks';

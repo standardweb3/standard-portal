@@ -1,4 +1,4 @@
-import { Token } from '@digitalnative/standard-protocol-sdk';
+import { Token } from '@digitalnative/standard-protocol-sdk-test';
 import { TokenInfo } from '@uniswap/token-lists';
 import { isAddress } from './validate';
 import { useMemo } from 'react';

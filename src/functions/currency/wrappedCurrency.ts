@@ -2,7 +2,7 @@ import {
   Currency,
   NATIVE,
   WNATIVE,
-} from '@digitalnative/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk-test';
 import { ExtendedEther, WETH9_EXTENDED } from '../../constants/tokens';
 
 import { supportedChainId } from '../chain';

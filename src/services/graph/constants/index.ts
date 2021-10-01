@@ -1,4 +1,4 @@
-import { ChainId } from '@digitalnative/standard-protocol-sdk';
+import { ChainId } from '@digitalnative/standard-protocol-sdk-test';
 const THE_GRAPH = 'https://api.thegraph.com';
 
 export const GRAPH_HOST = {

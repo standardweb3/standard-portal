@@ -19,7 +19,7 @@ import {
   Percent,
   Price,
   WNATIVE,
-} from '@digitalnative/standard-protocol-sdk';
+} from '@digitalnative/standard-protocol-sdk-test';
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
 import { useCurrencyBalances } from '../wallet/hooks';
 import { isAddress, tryParseAmount } from '../../functions';

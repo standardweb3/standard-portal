@@ -1,4 +1,4 @@
-import { ChainId } from '@digitalnative/standard-protocol-sdk';
+import { ChainId } from '@digitalnative/standard-protocol-sdk-test';
 import { createAction } from '@reduxjs/toolkit';
 
 export interface SerializableTransactionReceipt {
