@@ -12,6 +12,7 @@ import {
 import { ONE_HUNDRED_PERCENT, ZERO_PERCENT } from '../constants';
 
 import { BigNumber } from 'ethers';
+import { a } from '@react-spring/web';
 
 // returns whether tradeB is better than tradeA by at least a threshold percentage amount
 export function isTradeBetter(
@@ -42,7 +43,12 @@ export function isTradeBetter(
 
 // add 20%
 export function calculateGasMargin(value: BigNumber): BigNumber {
-  return value.mul(BigNumber.from(10000 + 2000)).div(BigNumber.from(10000));
+  if (value !== undefined) {
+    console.log("estimated Gas Limit", value.toString())
+    const a = value.mul(BigNumber.from(10000 + 2000)).div(BigNumber.from(10000)); 
+    console.log("gas limit with margin", a.toString()) 
+    return a;
+  }
 }
 
 const ONE = new Fraction(1, 1);

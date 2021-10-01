@@ -257,10 +257,12 @@ export default function Liquidity() {
     setAttemptingTxn(true);
     await estimate(...args, value ? { value } : {})
       .then((estimatedGasLimit) =>
+        //console.log("estimate", estimatedGasLimit),
         method(...args, {
           ...(value ? { value } : {}),
           gasLimit: calculateGasMargin(estimatedGasLimit),
         }).then((response) => {
+          console.log(response)
           setAttemptingTxn(false);
 
           addTransaction(response, {
@@ -424,11 +426,11 @@ export default function Liquidity() {
   return (
     <>
       <Head>
-        <title>LIQUIDITY | Standard Protcol</title>
+        <title>LIQUIDITY | Standard Protocol</title>
         <meta
           key="description"
           name="description"
-          content="Add liquidity to the Standard Protcol AMM to enable gas optimised and low slippage trades across countless networks"
+          content="Add liquidity to the Standard Protocol AMM to enable gas optimised and low slippage trades across countless networks"
         />
       </Head>
       <Page id="add-liquidity-page" className={Typographies.page}>
