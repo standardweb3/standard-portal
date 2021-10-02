@@ -46,7 +46,7 @@ export function calculateGasMargin(value: BigNumber): BigNumber {
   if (value !== undefined) {
     console.log("estimated Gas Limit", value.toString())
     const a = value.mul(BigNumber.from(10000 + 2000)).div(BigNumber.from(10000)); 
-    console.log("gas limit with margin", a.toString()) 
+    console.log("gas limit with margin ", a.toString()) 
     return a;
   }
 }
