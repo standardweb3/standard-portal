@@ -233,12 +233,12 @@ export default function Liquidity() {
         deadline.toHexString(),
       ];
       value = null;
+      console.log(args)
     }
 
     setAttemptingTxn(true);
     await estimate(...args, value ? { value } : {})
       .then((estimatedGasLimit) =>
-        //console.log("estimate", estimatedGasLimit),
         method(...args, {
           ...(value ? { value } : {}),
           gasLimit: calculateGasMargin(estimatedGasLimit),
@@ -270,6 +270,7 @@ export default function Liquidity() {
         // we only care if the error is something _other_ than the user rejected the tx
         if (error?.code !== 4001) {
           console.error(error);
+          console.error(error.data);
         }
       });
   }
