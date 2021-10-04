@@ -7,12 +7,10 @@ import {
   Token,
   Trade,
   TradeType,
-  currencyEquals,
 } from '@digitalnative/standard-protocol-sdk';
 import { ONE_HUNDRED_PERCENT, ZERO_PERCENT } from '../constants';
 
 import { BigNumber } from 'ethers';
-import { a } from '@react-spring/web';
 
 // returns whether tradeB is better than tradeA by at least a threshold percentage amount
 export function isTradeBetter(

@@ -118,17 +118,17 @@ export const SUPPORTED_NETWORKS: {
     rpcUrls: ['https://rpc.shibuya.astar.network:8545'],
     blockExplorerUrls: ['https://shibuya.subscan.io'],
   },
-  [ChainId.SHIDEN]: {
-    chainId: '0x150',
-    chainName: 'Shiden',
-    nativeCurrency: {
-      name: 'Shiden',
-      symbol: 'SDN',
-      decimals: 18,
-    },
-    rpcUrls: ['https://rpc.shiden.astar.network:8545'],
-    blockExplorerUrls: ['https://shiden.subscan.io'],
-  },
+  // [ChainId.SHIDEN]: {
+  //   chainId: '0x150',
+  //   chainName: 'Shiden',
+  //   nativeCurrency: {
+  //     name: 'Shiden',
+  //     symbol: 'SDN',
+  //     decimals: 18,
+  //   },
+  //   rpcUrls: ['https://rpc.shiden.astar.network:8545'],
+  //   blockExplorerUrls: ['https://shiden.subscan.io'],
+  // },
   // [ChainId.MAINNET]: {
   //   chainId: '0x1',
   //   chainName: 'Ethereum',
