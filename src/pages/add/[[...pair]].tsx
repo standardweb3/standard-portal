@@ -238,7 +238,6 @@ export default function Liquidity() {
     setAttemptingTxn(true);
     await estimate(...args, value ? { value } : {})
       .then((estimatedGasLimit) =>
-        //console.log("estimate", estimatedGasLimit),
         method(...args, {
           ...(value ? { value } : {}),
           gasLimit: calculateGasMargin(estimatedGasLimit),
