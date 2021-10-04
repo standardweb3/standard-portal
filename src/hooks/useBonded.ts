@@ -58,6 +58,32 @@ export function useLastBonded() {
   return lastBonded;
 }
 
+export function useLastClaimed(token: string) {
+  const { account } = useActiveWeb3React();
+  const dividendPoolContract = useDividendPoolContract();
+  const [lastClaimed, setLastClaimed] = useState(null);
+
+  useEffect(() => {
+    if (dividendPoolContract !== null) {
+      dividendPoolContract.last(account, token).then((res) => {
+        setLastClaimed(res);
+      });
+    }
+  }, [dividendPoolContract, account]);
+
+  return lastClaimed;
+}
+
+export function useRemainingClaimTime(token: string): number | null {
+  const lastClaimed = useLastClaimed(token);
+  const currentBlockTimestamp = useCurrentBlockTimestamp();
+  const diff =
+    lastClaimed !== null && currentBlockTimestamp !== undefined
+      ? lastClaimed.toNumber() + 2592000 - currentBlockTimestamp.toNumber()
+      : null;
+  return diff;
+}
+
 export function useRemainingBondingTime(): number | null {
   const lastBonded = useLastBonded();
   const currentBlockTimestamp = useCurrentBlockTimestamp();

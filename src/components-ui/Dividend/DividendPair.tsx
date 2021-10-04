@@ -1,10 +1,12 @@
 import { useCallback } from 'react';
-import { formatCurrencyAmount, formatNumber } from '../../functions';
+import { formatNumber } from '../../functions';
 import { useToken } from '../../hooks/Tokens';
+import { useRemainingClaimTime } from '../../hooks/useBonded';
 import { DividendPoolWhitelistPairBalance } from '../../state/user/hooks';
 import { Button } from '../Button';
 import { DoubleCurrencyLogo } from '../CurrencyLogo/DoubleCurrencyLogo';
 import { useSizeXs } from '../Responsive';
+import { CountdownTimer } from '../Timer/CountdownTimer';
 
 export type DividendPairProps = {
   pairWithDividend: DividendPoolWhitelistPairBalance;
@@ -18,6 +20,9 @@ export function DividendPair({
   claim,
 }: DividendPairProps) {
   const { token0, token1, amount, address } = pairWithDividend;
+
+  const remainingSeconds = useRemainingClaimTime(address);
+  const remaining = remainingSeconds !== null && remainingSeconds > 0;
 
   const _token0 = useToken(token0);
   const _token1 = useToken(token1);
@@ -67,9 +72,13 @@ export function DividendPair({
       <div className="col-span-2 text-sm sm:text-base">
         {formatNumber(reward, false, true, 0.00001)} LTR
       </div>
-      <div className="flex mt-4 lg:mt-0 lg:justify-end col-span-6 justify-center lg:col-span-1">
-        <Button onClick={handleClaim} className="!font-bold px-8 text-lg">
-          Claim
+      <div className="flex flex-col mt-4 lg:mt-0 lg:items-end col-span-6 items-center lg:col-span-1 space-y-2">
+        <Button
+          onClick={handleClaim}
+          disabled={share === 0 || remaining}
+          className="!font-bold px-8 text-lg"
+        >
+          {remaining ? <CountdownTimer time={remainingSeconds} /> : 'Claim'}
         </Button>
       </div>
     </div>
