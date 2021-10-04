@@ -18,8 +18,21 @@ const Layout = ({ children }) => {
       overflow-hidden
       w-full h-full
       z-0
+      mobile-pad
       `}
     >
+      {isMobile && (
+        <style jsx>
+          {`
+            .mobile-pad {
+              padding: env(safe-area-inset-top, 20px)
+                env(safe-area-inset-right, 20px)
+                env(safe-area-inset-bottom, 20px)
+                env(safe-area-inset-left, 20px);
+            }
+          `}
+        </style>
+      )}
       <div
         className="z-[1] w-full h-full 
         overflow-auto
