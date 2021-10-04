@@ -31,5 +31,18 @@ export default function useDividendPool() {
     [contract],
   );
 
-  return { bond, unbond };
+  const claim = useCallback(
+    async (token: string) => {
+      try {
+        let tx = await contract?.claim(token);
+        return tx;
+      } catch (e) {
+        console.error(e);
+        return e;
+      }
+    },
+    [contract],
+  );
+
+  return { bond, unbond, claim };
 }

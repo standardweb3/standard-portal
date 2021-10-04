@@ -18,10 +18,11 @@ export default function NetworkDropDown(): JSX.Element | null {
   const { chainId, library, account } = useActiveWeb3React();
 
   const onSelectNetwork = (chainIdStr: string) => {
-    const chainId = Number(chainIdStr);
-    const params = SUPPORTED_NETWORKS[chainId];
-    cookie.set('chainId', chainId);
-    if ([ChainId.MAINNET, ChainId.RINKEBY].includes(chainId)) {
+    const _chainId = Number(chainIdStr);
+    const params = SUPPORTED_NETWORKS[_chainId];
+
+    cookie.set('chainId', _chainId);
+    if ([ChainId.MAINNET, ChainId.RINKEBY].includes(_chainId)) {
       library?.send('wallet_switchEthereumChain', [
         { chainId: params.chainId },
         account,

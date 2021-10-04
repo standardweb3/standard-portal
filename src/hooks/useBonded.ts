@@ -1,5 +1,5 @@
 import { BigNumber } from 'ethers';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   useActiveWeb3React,
   useDividendPoolAddress,
@@ -7,6 +7,7 @@ import {
   useSTNDContract,
 } from '.';
 import { useBlockNumber } from '../state/application/hooks';
+import useCurrentBlockTimestamp from './useCurrentBlockTimestamp';
 
 export function useBonded(): BigNumber | null {
   const { account } = useActiveWeb3React();
@@ -30,7 +31,6 @@ export function useBondSupply(): BigNumber | null {
   const dividendPoolAddress = useDividendPoolAddress();
   const lastBlockNumber = useBlockNumber();
   const [totalSupply, setTotalSupply] = useState(null);
-
   useEffect(() => {
     if (stndContract !== null) {
       stndContract.balanceOf(dividendPoolAddress).then((res) => {
@@ -40,4 +40,30 @@ export function useBondSupply(): BigNumber | null {
   }, [dividendPoolAddress, stndContract, lastBlockNumber]);
 
   return totalSupply;
+}
+
+export function useLastBonded() {
+  const { account } = useActiveWeb3React();
+  const dividendPoolContract = useDividendPoolContract();
+  const [lastBonded, setLastBonded] = useState(null);
+
+  useEffect(() => {
+    if (dividendPoolContract !== null) {
+      dividendPoolContract.lastBonded(account).then((res) => {
+        setLastBonded(res);
+      });
+    }
+  }, [dividendPoolContract, account]);
+
+  return lastBonded;
+}
+
+export function useRemainingBondingTime(): number | null {
+  const lastBonded = useLastBonded();
+  const currentBlockTimestamp = useCurrentBlockTimestamp();
+  const diff =
+    lastBonded !== null && currentBlockTimestamp !== undefined
+      ? lastBonded.toNumber() + 2592000 - currentBlockTimestamp.toNumber()
+      : null;
+  return diff;
 }

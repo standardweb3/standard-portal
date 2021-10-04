@@ -3,15 +3,13 @@ import Head from 'next/head';
 
 import { PairType } from '../../features/farm/enum';
 import { usePositions } from '../../features/farm/hooks';
-import { useActiveWeb3React, useFuse } from '../../hooks';
+import { useFuse } from '../../hooks';
 
 import {
   useAverageBlockTime,
-  useEthPrice,
   useFarmPairAddresses,
   useFarms,
   useMasterChefV2SushiPerBlock,
-  useMasterChefV2TotalAllocPoint,
   useStandardPrice,
   useSushiPairs,
 } from '../../services/graph';
@@ -29,8 +27,6 @@ import {
 } from '../../components-ui/Responsive';
 
 export default function Farm() {
-  const { chainId } = useActiveWeb3React();
-
   const router = useRouter();
 
   const type =
@@ -47,10 +43,10 @@ export default function Farm() {
 
   const positions = usePositions();
 
-  const [ethPrice, stndPrice] = [useEthPrice(), useStandardPrice()];
+  const [stndPrice] = [useStandardPrice()];
   const averageBlockTime = useAverageBlockTime();
 
-  const masterChefV2TotalAllocPoint = useMasterChefV2TotalAllocPoint();
+  // const masterChefV2TotalAllocPoint = useMasterChefV2TotalAllocPoint();
   const masterChefV2SushiPerBlock = useMasterChefV2SushiPerBlock();
 
   const blocksPerDay = 86400 / Number(averageBlockTime);
@@ -234,8 +230,6 @@ export default function Farm() {
     keys: ['pair.id', 'pair.token0.symbol', 'pair.token1.symbol'],
     threshold: 0.4,
   };
-
-  // console.log({ data })
 
   const { result, term, search } = useFuse({
     data,

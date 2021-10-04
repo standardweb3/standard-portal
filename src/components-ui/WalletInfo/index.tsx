@@ -9,7 +9,7 @@ import Image from 'next/image';
 import {
   binance,
   fortmatic,
-  getWalletConnectConnector,
+  // getWalletConnectConnector,
   injected,
   // portis,
   // torus,
@@ -118,7 +118,7 @@ export const WalletInfo: FC<WalletInfoProps> = ({
       return (
         <WalletIcon src="/img/wallets/formatic.png" alt="Fortmatic" size={16} />
       );
-    } 
+    }
     // else if (connector === portis) {
     //   return (
     //     <WalletIcon src="/img/wallets/portnis.png" alt="Portis" size={16}>

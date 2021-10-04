@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { isMobile } from 'react-device-detect';
+import { classNames } from '../../functions';
 
 export function TopBarNavigation({ routes, chainId, onRouteClick }) {
   const router = useRouter();
@@ -50,7 +51,10 @@ export function TopBarNavigation({ routes, chainId, onRouteClick }) {
                   hover:text-text py-3 px-3"
                 >
                   {React.createElement(route.icon, {
-                    className: 'stroke-current stroke-2',
+                    className: classNames(
+                      'stroke-current',
+                      route.name !== 'Dividend' && 'stroke-2',
+                    ),
                   })}
                   <div className="ml-2 flex items-center">{route.name}</div>
                 </div>

@@ -100,7 +100,7 @@ export const getEthPrice = async (
 
 export const getStandardPrice = async (chainId = ChainId.MAINNET) => {
   return getTokenPrice(chainId, tokenPriceQuery, {
-    id: STND_ADDRESS[chainId],
+    id: STND_ADDRESS[chainId].toLowerCase(),
   });
 };
 

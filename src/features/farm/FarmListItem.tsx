@@ -8,17 +8,12 @@ import {
 import { Disclosure } from '@headlessui/react';
 import FarmListItemDetails from './FarmListItemDetails';
 import { Image } from '../../components-ui/Image';
-import { PairType } from './enum';
 import React from 'react';
 import { useCurrency } from '../../hooks/Tokens';
 import { DoubleCurrencyLogo } from '../../components-ui/CurrencyLogo/DoubleCurrencyLogo';
 import {
   useSizeMdDown,
-  useSizeSmDown,
   ViewportLargeUp,
-  ViewportMediumDown,
-  ViewportMediumUp,
-  ViewportSmallDown,
   ViewportSmallUp,
   ViewportXSmall,
 } from '../../components-ui/Responsive';

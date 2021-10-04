@@ -12,6 +12,7 @@ import {
   PROTOCOLS,
   CurrencyAmount,
   Currency,
+  getDividendPoolWhitelist,
 } from '@digitalnative/standard-protocol-sdk';
 import {
   SerializedPair,
@@ -41,10 +42,11 @@ import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
 import { useAllTokens } from '../../hooks/Tokens';
 import { useDividendPoolAddress, useFactoryContract } from '../../hooks';
 import { usePagination } from '../../hooks/usePagination';
-import { isAddress } from '../../functions';
 import { useMultipleContractSingleData } from '../multicall/hooks';
 import { Interface } from '@ethersproject/abi';
 import ERC20_ABI from '../../constants/abis/erc20.json';
+import { useProtocol } from '../protocol/hooks';
+import { useBlockNumber } from '../application/hooks';
 
 function serializeToken(token: Token): SerializedToken {
   return {
@@ -304,8 +306,16 @@ export function usePairsDividendBalances(pairs) {
   return { balances, anyLoading };
 }
 
-export function usePairDividendBalances(pageSize: number) {
-  const pairs = useAllPairs();
+export type DividendPoolWhitelistPairBalance = {
+  address: string;
+  token0: string;
+  token1: string;
+  amount: CurrencyAmount<Currency> | null;
+};
+
+export function useDividendPoolWhitelistPairBalances(pageSize: number) {
+  const pairs = useDivdendPoolWhitelistPairs();
+  const lastBlockNumber = useBlockNumber();
 
   const lastPage = Math.floor(pairs.length / pageSize);
   const { current, next, last } = usePagination(0, pageSize, lastPage);
@@ -313,28 +323,37 @@ export function usePairDividendBalances(pageSize: number) {
   const currentPairs = useMemo(() => {
     return pairs
       .slice(current * pageSize, (current + 1) * pageSize)
-      .map((token) => token.address);
+      .map((pair) => pair.lpToken.address);
   }, [pairs, current]);
 
   const { balances, anyLoading } = usePairsDividendBalances(currentPairs);
 
-  const pairsWithDividends = useMemo(() => {
+  const pairsWithDividends: DividendPoolWhitelistPairBalance[] = useMemo(() => {
     if (!anyLoading) {
       let balancesPosition = 0;
-      return pairs.reduce((res, pair, i) => {
+      return pairs.map((pair, i) => {
         if (i >= current * pageSize && i < current * pageSize + pageSize) {
           const value = balances?.[balancesPosition++]?.result?.[0];
           const amount = value ? JSBI.BigInt(value.toString()) : undefined;
           if (amount) {
-            res[pair.address] = CurrencyAmount.fromRawAmount(pair, amount);
+            return {
+              address: pair.lpToken.address,
+              amount: CurrencyAmount.fromRawAmount(pair.lpToken, amount),
+              token0: pair.token0,
+              token1: pair.token1,
+            };
           }
-          return res;
         }
-        return res;
-      }, {});
+        return {
+          address: pair.lpToken.address,
+          amount: null,
+          token0: pair.token0,
+          token1: pair.token1,
+        };
+      });
     }
-    return null;
-  }, [balances, anyLoading, current]);
+    return [];
+  }, [balances, anyLoading, current, lastBlockNumber]);
 
   return { pairsWithDividends, next, current, loading: anyLoading, last };
   // useEffect(() => {
@@ -363,6 +382,24 @@ export function usePairDividendBalances(pageSize: number) {
   //     _pairWithDividends[i] =
   //   }
   // }, [current])
+}
+
+export function useDivdendPoolWhitelistPairs() {
+  const { chainId } = useActiveWeb3React();
+  const protocol = useProtocol();
+  const whitelist = getDividendPoolWhitelist(protocol, chainId);
+
+  const whitelistLpTokens = useMemo(() => {
+    return whitelist.map((pair) => {
+      return {
+        lpToken: new Token(chainId, pair.address, 18, 'UNI-V2', 'Uniswap V2'),
+        token0: pair.token0,
+        token1: pair.token1,
+      };
+    });
+  }, [whitelist]);
+
+  return whitelistLpTokens;
 }
 
 export function useAllPairs() {

@@ -4,6 +4,7 @@ import {
 } from '../../components-ui/Responsive';
 import { Sidebar } from '../../components-ui/Sidebar';
 import { TopBar } from '../../components-ui/TopBar';
+import { isMobile } from 'react-device-detect';
 import Main from './Main';
 
 import styled from '@emotion/styled';
@@ -33,8 +34,8 @@ const Layout = ({ children }) => {
         <Main>{children}</Main>
       </div>
 
-      <Cone1 />
-      <Cone3 />
+      {!isMobile && <Cone1 />}
+      {!isMobile && <Cone3 />}
     </div>
   );
 };

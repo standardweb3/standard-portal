@@ -51,7 +51,7 @@ const FarmListItem = ({ farm }) => {
 
   const pendingSushi = usePendingSushi(farm);
 
-  const reward = usePendingReward(farm);
+  // const reward = usePendingReward(farm);
 
   const APPROVAL_ADDRESSES = {
     [Chef.MASTERCHEF_V2]: {

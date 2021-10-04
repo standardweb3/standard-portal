@@ -1,14 +1,14 @@
 import { ChainId, JSBI, Percent } from '@digitalnative/standard-protocol-sdk';
 import {
-  binance,
+  // binance,
   CONNECTOR_PARAMS,
-  fortmatic,
-  getWalletConnectConnector,
+  // fortmatic,
+  // getWalletConnectConnector,
   injected,
   // portis,
   // torus,
   walletconnect,
-  walletlink,
+  // walletlink,
 } from '../connectors';
 
 import { AbstractConnector } from '@web3-react/abstract-connector';

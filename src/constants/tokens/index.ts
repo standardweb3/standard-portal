@@ -20,7 +20,7 @@ export const RINKEBY: { [key: string]: Token } = {
   ),
   STND: new Token(
     ChainId.RINKEBY,
-    '0xccf56fb87850fe6cff0cd16f491933c138b7eadd',
+    STND_ADDRESS[ChainId.RINKEBY],
     18,
     'STND',
     'Standard',

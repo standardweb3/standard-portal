@@ -27,6 +27,21 @@ export default function NetworkModal(): JSX.Element | null {
 
   if (!chainId) return null;
 
+  const onSelectNetwork = (chainIdStr: string) => {
+    const _chainId = Number(chainIdStr);
+    const params = SUPPORTED_NETWORKS[_chainId];
+
+    cookie.set('chainId', _chainId);
+    if ([ChainId.MAINNET, ChainId.RINKEBY].includes(_chainId)) {
+      library?.send('wallet_switchEthereumChain', [
+        { chainId: params.chainId },
+        account,
+      ]);
+    } else {
+      library?.send('wallet_addEthereumChain', [params, account]);
+    }
+  };
+
   const supportedChainIds = useMemo(
     () =>
       Object.keys(SUPPORTED_NETWORKS).filter((val) => Number(val) !== chainId),
@@ -79,16 +94,7 @@ export default function NetworkModal(): JSX.Element | null {
               key={i}
               onClick={() => {
                 toggleNetworkModal();
-                const params = SUPPORTED_NETWORKS[key];
-                cookie.set('chainId', key);
-                if ([ChainId.MAINNET, ChainId.RINKEBY].includes(key)) {
-                  library?.send('wallet_switchEthereumChain', [
-                    { chainId: params.chainId },
-                    account,
-                  ]);
-                } else {
-                  library?.send('wallet_addEthereumChain', [params, account]);
-                }
+                onSelectNetwork(key);
               }}
               className={`
                 flex items-center 

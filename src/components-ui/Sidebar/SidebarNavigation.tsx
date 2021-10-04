@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { isMobile } from 'react-device-detect';
+import { classNames } from '../../functions';
 
 export function SidebarNavigation({ routes, chainId }) {
   const router = useRouter();
@@ -41,7 +42,10 @@ export function SidebarNavigation({ routes, chainId }) {
               <Link href={route.urls[0]}>
                 <div className="flex items-center text-grey hover:text-text py-3 px-3">
                   {React.createElement(route.icon, {
-                    className: 'stroke-current',
+                    className: classNames(
+                      'stroke-current',
+                      route.name !== 'Dividend' && 'stroke-2',
+                    ),
                   })}
                   <div className="ml-2 flex items-center">{route.name}</div>
                 </div>

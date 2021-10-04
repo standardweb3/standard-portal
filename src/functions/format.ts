@@ -78,7 +78,12 @@ export function formatPercent(percentString: any) {
   }
 }
 
-export const formatNumber = (number: any, usd = false, scale = true) => {
+export const formatNumber = (
+  number: any,
+  usd = false,
+  scale = true,
+  min = 0.0001,
+) => {
   if (isNaN(number) || number === '' || number === undefined) {
     return usd ? '$0.00' : '0';
   }
@@ -95,8 +100,8 @@ export const formatNumber = (number: any, usd = false, scale = true) => {
     return '0';
   }
 
-  if (num < 0.0001 && num > 0) {
-    return usd ? '< $0.0001' : '< 0.0001';
+  if (num < min && num > 0) {
+    return usd ? `< $${min}` : `< ${min}`;
   }
 
   if (num > 1000) {

@@ -1,18 +1,11 @@
-import {
-  Pair,
-  STND_ADDRESS,
-  Token,
-} from '@digitalnative/standard-protocol-sdk';
+import { STND_ADDRESS, Token } from '@digitalnative/standard-protocol-sdk';
 import React, { useMemo, useState } from 'react';
-import { formatNumber, maxAmountSpend, tryParseAmount } from '../../functions';
-
-import { Image } from '../../components-ui/Image';
+import { formatNumber, tryParseAmount } from '../../functions';
 
 import { Alert } from '../../components-ui/Alert';
 import Head from 'next/head';
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
 import { useTokenBalance } from '../../state/wallet/hooks';
-import { useRouter } from 'next/router';
 import { Page } from '../../components-ui/Page';
 import { PageHeader } from '../../components-ui/PageHeader';
 import { PageContent } from '../../components-ui/PageContent';
@@ -22,7 +15,6 @@ import {
   ViewportSmallUp,
   ViewportXSmall,
 } from '../../components-ui/Responsive';
-import { Button } from '../../components-ui/Button';
 import { DividendPercentage } from '../../components-ui/Dividend/DividendPercentage';
 import { useTransactionAdder } from '../../state/transactions/hooks';
 import { useApproveCallback, useDividendPoolAddress } from '../../hooks';
@@ -30,16 +22,26 @@ import useDividendPool from '../../features/dividend/useDividendPool';
 import { BondedInfo } from '../../components-ui/Dividend/BondedInfo';
 import { Unbond } from '../../components-ui/Dividend/Unbond';
 import { BondInput } from '../../components-ui/Dividend/BondInput';
-import { useBonded, useBondSupply } from '../../hooks/useBonded';
+import {
+  useBonded,
+  useBondSupply,
+  useRemainingBondingTime,
+} from '../../hooks/useBonded';
 import { BigNumber } from 'ethers';
+import { useDividendPoolWhitelistPairBalances } from '../../state/user/hooks';
+import { DividendPairs } from '../../components-ui/Dividend/DividendPairs';
 
 export default function Dividend() {
-  const router = useRouter();
   const { account, chainId } = useActiveWeb3React();
 
   const [pendingTx, setPendingTx] = useState(false);
   const [depositValue, setDepositValue] = useState('');
   const [withdrawValue, setWithdrawValue] = useState('');
+  const { pairsWithDividends } = useDividendPoolWhitelistPairBalances(10);
+
+  const fetchedWhitelistPairs = useMemo(() => {
+    return pairsWithDividends.filter((pair) => pair.amount !== null);
+  }, [pairsWithDividends]);
 
   const addTransaction = useTransactionAdder();
 
@@ -55,6 +57,8 @@ export default function Dividend() {
 
   const bonded = useBonded();
   const bondedTotal = useBondSupply();
+  const remainingSeconds = useRemainingBondingTime();
+
   const share = useMemo(() => {
     if (bonded !== null && bondedTotal !== null) {
       if (bondedTotal.eq(BigNumber.from(0))) return 0;
@@ -80,7 +84,7 @@ export default function Dividend() {
     dividendPoolAddress,
   );
 
-  const { bond, unbond } = useDividendPool();
+  const { bond, unbond, claim } = useDividendPool();
 
   const handleBond = async () => {
     setPendingTx(true);
@@ -125,29 +129,7 @@ export default function Dividend() {
         <ViewportMediumUp>
           <PageHeader title="Dividend Pool" />
         </ViewportMediumUp>
-        {/* {(approvalState === ApprovalState.NOT_APPROVED ||
-          approvalState === ApprovalState.PENDING) && (
-          <Button
-            color="primary"
-            disabled={approvalState === ApprovalState.PENDING}
-            onClick={approve}
-          >
-            {approvalState === ApprovalState.PENDING ? 'Approving' : 'Approve'}
-          </Button>
-        )}
-        <button onClick={() => bond(depositValue.toBigNumber(stnd?.decimals))}>
-          NEXT
-        </button>
-        <button
-          onClick={() => unbond(depositValue.toBigNumber(stnd?.decimals))}
-        >
-          JOHN
-        </button> */}
         <PageContent>
-          {/* <div className="p-4 mb-3 space-y-3">
-              <Back />
-            </div> */}
-
           <Alert
             className={Typographies.pageAlertFull}
             title={`Dividends`}
@@ -241,39 +223,27 @@ export default function Dividend() {
               </div>
               <div className="col-span-3 lg:col-span-1">
                 <Unbond
+                  remainingSeconds={remainingSeconds}
                   atMax={atUnbondMax}
-                  disabled={atUnbondMax}
                   onMax={onUnbondMax}
                   setUnbondAmount={setWithdrawValue}
                   unbond={handleUnbond}
-                  bondedAmount={depositValue}
+                  bondedAmount={bonded}
                   unbondAmount={withdrawValue}
+                  disabled={
+                    bonded?.eq(BigNumber.from(0)) ||
+                    remainingSeconds === null ||
+                    remainingSeconds > 0
+                  }
                 />
               </div>
             </div>
-            <div className="grid grid-cols-8 p-4 rounded-20 bg-opaque mt-6">
-              <div className="col-span-8 lg:col-span-6 grid grid-cols-3 items-center">
-                <div className="font-bold text-lg">Total Dividends</div>
-                <div>
-                  <div>Your Share</div>
-                  <div className="text-highlight text-sm">
-                    <span className="font-bold text-lg">234,294</span> STND
-                  </div>
-                </div>
-                <div>
-                  <div>APR</div>
-                  <div className="text-highlight font-bold">23%</div>
-                </div>
-              </div>
-              <Button
-                className="
-                px-4 py-2 
-                font-bold text-base
-                "
-              >
-                Claim All
-              </Button>
-            </div>
+            <DividendPairs
+              claim={claim}
+              className="mt-12"
+              share={share}
+              pairsWithDividends={fetchedWhitelistPairs}
+            />
           </div>
         </PageContent>
       </Page>

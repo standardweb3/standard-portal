@@ -4,6 +4,7 @@ import { Button } from '../Button';
 import { Input as NumericalInput } from '../NumericalInput';
 import Image from '../Image';
 import { CurrencyAmount, Token } from '@digitalnative/standard-protocol-sdk';
+import { RippleSpinner } from '../Spinner/RippleSpinner';
 
 export type BondInputTypes = {
   bondAmount: string;
@@ -63,11 +64,18 @@ export function BondInput({
         {approvalState === ApprovalState.NOT_APPROVED ||
         approvalState === ApprovalState.PENDING ? (
           <Button
-            className={Typographies.button}
+            className={Typographies.fullButton}
             disabled={approvalState === ApprovalState.PENDING}
             onClick={approve}
           >
-            {approvalState === ApprovalState.PENDING ? 'Approving' : 'Approve'}
+            <div className="flex items-center justify-center space-x-3">
+              <div>
+                {approvalState === ApprovalState.PENDING
+                  ? 'Approving'
+                  : 'Approve'}
+              </div>
+              <RippleSpinner size={16} />
+            </div>
           </Button>
         ) : (
           <Button

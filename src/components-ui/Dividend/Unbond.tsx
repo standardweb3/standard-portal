@@ -3,15 +3,22 @@ import { Button } from '../Button';
 import { Input as NumericalInput } from '../NumericalInput';
 import Image from '../Image';
 import { Typographies } from '../../utils/Typography';
+import { formatTime } from '../../functions/time';
+import { classNames } from '../../functions';
+import { BigNumber } from 'ethers';
+import { useEffect, useState } from 'react';
+import { Timer } from '../Timer';
+import { CountdownTimer } from '../Timer/CountdownTimer';
 
 export type UnbondProps = {
   unbond: () => void;
-  bondedAmount: string;
+  bondedAmount: BigNumber;
   unbondAmount: string;
   onMax: () => void;
   setUnbondAmount: () => void;
   disabled?: boolean;
   atMax: boolean;
+  remainingSeconds: number | null;
 };
 
 export function Unbond({
@@ -21,32 +28,51 @@ export function Unbond({
   unbondAmount,
   onMax,
   setUnbondAmount,
-  disabled = false,
+  disabled = true,
+  remainingSeconds,
 }) {
   const { account } = useActiveWeb3React();
+
+  const time = remainingSeconds !== null && formatTime(remainingSeconds);
+  // remainingSeconds === null => never bonded
+  const remaining = remainingSeconds !== null && remainingSeconds > 0;
+  const noneBonded =
+    bondedAmount !== null && bondedAmount.eq(BigNumber.from(0));
+
   return (
     <div
-      className="
-  w-full h-full 
-  space-y-3 
-  bg-background-5 
-  rounded-20
-  py-8
-  px-12
-  flex flex-col justify-center items-center"
+      className={classNames(
+        `
+        w-full h-full 
+        space-y-4 
+        bg-background-5 
+        rounded-20
+        py-8
+        px-12
+        flex flex-col justify-center items-center`,
+        disabled && 'opacity-50',
+      )}
     >
-      <div className="text-center space-y-2 w-full">
-        <div className="font-bold text-2xl">Unbonding Period</div>
-        <div className="flex justify-center items-center space-x-2">
-          {disabled ? (
+      <div className="text-center space-y-4 w-full">
+        <div className="font-bold text-2xl">Unbond</div>
+        <div className="flex flex-col justify-center items-center space-y-2">
+          {remaining ? (
             <>
-              <Button color="danger" className="!font-black" type="bordered">
+              <CountdownTimer time={remainingSeconds} />
+              <Button
+                color="danger"
+                className="!font-black !cursor-default"
+                type="bordered"
+              >
                 Closed
               </Button>
-              <span className="font-bold">30</span> days left
             </>
           ) : (
-            <Button color="success" className="!font-black" type="bordered">
+            <Button
+              color="success"
+              className="!font-black !cursor-default"
+              type="bordered"
+            >
               Open
             </Button>
           )}
@@ -67,23 +93,33 @@ export function Unbond({
           outline-none 
           text-right
           !bg-transparent"
+            disabled={disabled}
             value={unbondAmount}
             onUserInput={setUnbondAmount}
           />
 
           {account && (
-            <Button type="bordered" onClick={onMax}>
+            <Button disabled={disabled} type="bordered" onClick={onMax}>
               max
             </Button>
           )}
         </div>
-        <Button className={Typographies.fullButton} onClick={unbond}>
+        <Button
+          disabled={disabled}
+          className={Typographies.fullButton}
+          onClick={unbond}
+        >
           Unbond
         </Button>
       </div>
-      {atMax && (
+      {!noneBonded && atMax && (
         <div className="col-span-2 text-danger text-center text-sm mt-4">
           Unbond amount exceeds Bonded STND amount
+        </div>
+      )}
+      {noneBonded && (
+        <div className="col-span-2 text-danger text-center text-sm mt-4">
+          There are no bonded STNDs
         </div>
       )}
     </div>
