@@ -19,12 +19,6 @@ const Layout = ({ children }) => {
       w-full h-full
       z-0
       `}
-      style={
-        isMobile && {
-          padding:
-            'env(safe-area-inset-top, 20px) env(safe-area-inset-right, 20px) env(safe-area-inset-bottom, 20px) env(safe-area-inset-left, 20px)',
-        }
-      }
     >
       <div
         className="z-[1] w-full h-full 
