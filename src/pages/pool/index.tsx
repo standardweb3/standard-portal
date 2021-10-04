@@ -1,19 +1,11 @@
-import {
-  ChainId,
-  CurrencyAmount,
-  JSBI,
-  NATIVE,
-  Pair,
-} from '@digitalnative/standard-protocol-sdk-test';
+import { CurrencyAmount, Pair } from '@digitalnative/standard-protocol-sdk';
 import React, { useMemo } from 'react';
-import { classNames, currencyId } from '../../functions';
 import {
   toV2LiquidityToken,
   useTrackedTokenPairs,
 } from '../../state/user/hooks';
 
 import { Alert } from '../../components-ui/Alert';
-import { Back } from '../../components-ui/Back';
 import { Button } from '../../components-ui/Button';
 import { FullPositionCard } from '../../components-ui/PositionCard';
 import Head from 'next/head';
@@ -63,7 +55,6 @@ export default function Pool() {
     account ?? undefined,
     liquidityTokens,
   );
-
   // fetch the reserves for all V2 pools in which the user has a balance
   const liquidityTokensWithBalances = useMemo(
     () =>

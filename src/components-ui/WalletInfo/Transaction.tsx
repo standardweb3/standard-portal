@@ -3,7 +3,7 @@ import {
   ChainId,
   CurrencyAmount,
   Ether,
-} from '@digitalnative/standard-protocol-sdk-test';
+} from '@digitalnative/standard-protocol-sdk';
 import {
   XCircleIcon,
   MinusCircleIcon,

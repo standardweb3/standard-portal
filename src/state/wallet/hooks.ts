@@ -4,7 +4,7 @@ import {
   Ether,
   JSBI,
   Token,
-} from '@digitalnative/standard-protocol-sdk-test';
+} from '@digitalnative/standard-protocol-sdk';
 import {
   useMultipleContractSingleData,
   useSingleContractMultipleData,

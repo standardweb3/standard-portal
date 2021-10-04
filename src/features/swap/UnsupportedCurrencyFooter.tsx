@@ -1,4 +1,4 @@
-import { Currency, Token } from '@digitalnative/standard-protocol-sdk-test';
+import { Currency, Token } from '@digitalnative/standard-protocol-sdk';
 import React, { useState } from 'react';
 
 import { Button } from '../../components-ui/Button';

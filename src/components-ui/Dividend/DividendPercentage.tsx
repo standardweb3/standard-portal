@@ -9,7 +9,7 @@ export function DividendPercentage({ value }: DividendPercentageProps) {
   return (
     <div
       className="
-    flex-1 max-w-[150px] 
+    w-full
     flex-col justify-center 
     space-y-2"
     >
@@ -30,14 +30,6 @@ absolute z-0 top-0 left-0 w-full h-full"
             />
           </div>
         </div>
-      </div>
-      <div
-        className="
-    text-center
-    text-grey
-  "
-      >
-        <span className="font-bold">Your Share:</span> 3.25%
       </div>
     </div>
   );

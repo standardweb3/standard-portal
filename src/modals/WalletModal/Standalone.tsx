@@ -5,7 +5,7 @@ import {
   CONNECTOR_PARAMS,
   fortmatic,
   injected,
-  portis,
+  // portis,
 } from '../../connectors';
 import {
   useModalOpen,
@@ -229,9 +229,9 @@ export default function WalletStandalone({
       // check for mobile options
       if (isMobile) {
         // disable portis on mobile for now
-        if (option.connector === portis) {
-          return null;
-        }
+        // if (option.connector === portis) {
+        //   return null;
+        // }
 
         if (!window.web3 && !window.ethereum && option.mobile) {
           return (

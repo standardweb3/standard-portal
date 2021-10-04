@@ -1,4 +1,4 @@
-import { ChainId } from '@digitalnative/standard-protocol-sdk-test';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
 // Multichain Explorer
 const builders = {

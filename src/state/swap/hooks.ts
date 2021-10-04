@@ -8,7 +8,7 @@ import {
   TradeType,
   Trade as V2Trade,
   WNATIVE,
-} from '@digitalnative/standard-protocol-sdk-test';
+} from '@digitalnative/standard-protocol-sdk';
 import {
   DEFAULT_ARCHER_ETH_TIP,
   DEFAULT_ARCHER_GAS_ESTIMATE,

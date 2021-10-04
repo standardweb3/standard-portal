@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { isMobile } from 'react-device-detect';
 
 export function SidebarNavigation({ routes, chainId }) {
   const router = useRouter();
@@ -21,7 +22,7 @@ export function SidebarNavigation({ routes, chainId }) {
                 key={route.name}
                 className="cursor-pointer bg-primary rounded-xl font-semibold my-2"
               >
-                <Link href={route.urls[0]}>
+                <Link href={route.urls[0]} prefetch={!isMobile}>
                   <div className="flex items-center font-base py-3 px-3">
                     {React.createElement(route.iconActive, {
                       className: 'stroke-current text-primary',

@@ -17,8 +17,8 @@
   },
   "dependencies": {
     "@binance-chain/bsc-connector": "^1.0.0",
-    "@digitalnative/default-token-list-test": "0.0.1",
-    "@digitalnative/standard-protocol-sdk-test": "^0.0.1",
+    "@digitalnative/default-token-list": "0.0.11",
+    "@digitalnative/standard-protocol-sdk": "^0.0.69",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
     "@ethereumjs/common": "^2.3.0",

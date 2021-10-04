@@ -20,7 +20,7 @@ import {
   SUSHI_ADDRESS,
   TIMELOCK_ADDRESS,
   WNATIVE,
-} from '@digitalnative/standard-protocol-sdk-test';
+} from '@digitalnative/standard-protocol-sdk';
 import {
   BENTOBOX_ADDRESS,
   BORING_HELPER_ADDRESS,
@@ -43,6 +43,7 @@ import CLONE_REWARDER_ABI from '../constants/abis/clone-rewarder.json';
 import COMPLEX_REWARDER_ABI from '../constants/abis/complex-rewarder.json';
 import { Contract } from '@ethersproject/contracts';
 import DASHBOARD_ABI from '../constants/abis/dashboard.json';
+import DIVIDEND_POOL_ABI from '../constants/abis/dividend-pool.json';
 import EIP_2612_ABI from '../constants/abis/eip-2612.json';
 import ENS_ABI from '../constants/abis/ens-registrar.json';
 import ENS_PUBLIC_RESOLVER_ABI from '../constants/abis/ens-public-resolver.json';
@@ -79,7 +80,11 @@ import { getVerifyingContract } from 'limitorderv2-sdk';
 import { useActiveWeb3React } from './useActiveWeb3React';
 import { useMemo } from 'react';
 import { Console } from 'console';
-import { useFactoryAddress, useRouterAddressWithChainId } from '.';
+import {
+  useDividendPoolAddress,
+  useFactoryAddress,
+  useRouterAddressWithChainId,
+} from '.';
 
 const UNI_FACTORY_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f';
 
@@ -270,6 +275,17 @@ export function useFactoryContract(): Contract | null {
   return useContract(factoryAddress, FACTORY_ABI, false);
 }
 
+export function useDividendPoolContract(
+  withSignerIfPossible?: boolean,
+): Contract | null {
+  const dividendPoolAddress = useDividendPoolAddress();
+  return useContract(
+    dividendPoolAddress,
+    DIVIDEND_POOL_ABI,
+    withSignerIfPossible,
+  );
+}
+
 export function useRouterContract(
   useArcher = false,
   withSignerIfPossible?: boolean,
@@ -279,11 +295,7 @@ export function useRouterContract(
 
   const abi = useArcher ? ARCHER_ROUTER_ABI : ROUTER_ABI;
 
-  return useContract(
-    '0xEFF3bB11968428281d516E937B664edAD16F3d3f',
-    abi,
-    withSignerIfPossible,
-  );
+  return useContract(address, abi, withSignerIfPossible);
 }
 
 export function useSushiBarContract(

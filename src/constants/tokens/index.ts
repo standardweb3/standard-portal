@@ -6,7 +6,7 @@ import {
   Token,
   WETH9,
   WNATIVE,
-} from '@digitalnative/standard-protocol-sdk-test';
+} from '@digitalnative/standard-protocol-sdk';
 
 import { SupportedChainId } from '../chains';
 

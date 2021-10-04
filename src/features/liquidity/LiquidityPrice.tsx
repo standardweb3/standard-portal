@@ -1,8 +1,4 @@
-import {
-  Currency,
-  Percent,
-  Price,
-} from '@digitalnative/standard-protocol-sdk-test';
+import { Currency, Percent, Price } from '@digitalnative/standard-protocol-sdk';
 
 import { Field } from '../../state/mint/actions';
 import { ONE_BIPS } from '../../constants';

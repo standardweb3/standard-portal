@@ -1,174 +1,116 @@
-import { Pair } from '@digitalnative/standard-protocol-sdk-test';
-import React, { useCallback, useMemo } from 'react';
-import { classNames } from '../../functions';
 import {
-  toV2LiquidityToken,
-  useTrackedTokenPairs,
-} from '../../state/user/hooks';
+  Pair,
+  STND_ADDRESS,
+  Token,
+} from '@digitalnative/standard-protocol-sdk';
+import React, { useMemo, useState } from 'react';
+import { formatNumber, maxAmountSpend, tryParseAmount } from '../../functions';
+
 import { Image } from '../../components-ui/Image';
 
 import { Alert } from '../../components-ui/Alert';
 import Head from 'next/head';
-import { MigrationSupported } from '../../features/migration';
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
-import { useETHBalances } from '../../state/wallet/hooks';
+import { useTokenBalance } from '../../state/wallet/hooks';
 import { useRouter } from 'next/router';
-import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks';
-import { useV2Pairs } from '../../hooks/useV2Pairs';
 import { Page } from '../../components-ui/Page';
 import { PageHeader } from '../../components-ui/PageHeader';
 import { PageContent } from '../../components-ui/PageContent';
-import { useProtocol } from '../../state/protocol/hooks';
 import { Typographies } from '../../utils/Typography';
 import {
-  ViewportLargeUp,
-  ViewportMedium,
   ViewportMediumUp,
-  ViewportSmall,
+  ViewportSmallUp,
   ViewportXSmall,
 } from '../../components-ui/Responsive';
-import { DividendProgressBar } from '../../components-ui/CircularProgressBar/DividendProgressBar';
 import { Button } from '../../components-ui/Button';
 import { DividendPercentage } from '../../components-ui/Dividend/DividendPercentage';
+import { useTransactionAdder } from '../../state/transactions/hooks';
+import { useApproveCallback, useDividendPoolAddress } from '../../hooks';
+import useDividendPool from '../../features/dividend/useDividendPool';
+import { BondedInfo } from '../../components-ui/Dividend/BondedInfo';
+import { Unbond } from '../../components-ui/Dividend/Unbond';
+import { BondInput } from '../../components-ui/Dividend/BondInput';
+import { useBonded, useBondSupply } from '../../hooks/useBonded';
+import { BigNumber } from 'ethers';
 
 export default function Dividend() {
   const router = useRouter();
   const { account, chainId } = useActiveWeb3React();
-  const protocol = useProtocol();
 
-  const userEthBalance = useETHBalances(account ? [account] : [])?.[
-    account ?? ''
-  ];
+  const [pendingTx, setPendingTx] = useState(false);
+  const [depositValue, setDepositValue] = useState('');
+  const [withdrawValue, setWithdrawValue] = useState('');
 
-  // fetch the user's balances of all tracked V2 LP tokens
-  const trackedTokenPairs = useTrackedTokenPairs();
-  const tokenPairsWithLiquidityTokens = useMemo(
-    () =>
-      trackedTokenPairs.map((tokens) => ({
-        liquidityToken: toV2LiquidityToken({ tokens, protocol }),
-        tokens,
-      })),
-    [trackedTokenPairs],
-  );
-  const liquidityTokens = useMemo(
-    () => tokenPairsWithLiquidityTokens.map((tpwlt) => tpwlt.liquidityToken),
-    [tokenPairsWithLiquidityTokens],
-  );
-  const [
-    v2PairsBalances,
-    fetchingV2PairBalances,
-  ] = useTokenBalancesWithLoadingIndicator(
-    account ?? undefined,
-    liquidityTokens,
+  const addTransaction = useTransactionAdder();
+
+  const dividendPoolAddress = useDividendPoolAddress();
+
+  const stnd = new Token(
+    chainId,
+    STND_ADDRESS[chainId],
+    18,
+    'STND',
+    'Standard',
   );
 
-  // fetch the reserves for all V2 pools in which the user has a balance
-  const liquidityTokensWithBalances = useMemo(
-    () =>
-      tokenPairsWithLiquidityTokens.filter(({ liquidityToken }) =>
-        v2PairsBalances[liquidityToken.address]?.greaterThan('0'),
-      ),
-    [tokenPairsWithLiquidityTokens, v2PairsBalances],
+  const bonded = useBonded();
+  const bondedTotal = useBondSupply();
+  const share = useMemo(() => {
+    if (bonded !== null && bondedTotal !== null) {
+      if (bondedTotal.eq(BigNumber.from(0))) return 0;
+      return (
+        Number(bonded.toFixed(stnd.decimals)) /
+        Number(bondedTotal.toFixed(stnd.decimals))
+      );
+    }
+    return null;
+  }, [bonded, bondedTotal]);
+
+  const stndBalance = useTokenBalance(account, stnd);
+  const onBondMax = () => setDepositValue(stndBalance?.toExact());
+  const onUnbondMax = () => setWithdrawValue(bonded.toFixed(stnd.decimals));
+
+  const typedDepositValue = tryParseAmount(depositValue, stnd);
+
+  const atBondMax = stndBalance?.lessThan(typedDepositValue ?? 0);
+  const atUnbondMax = bonded?.lt(withdrawValue.toBigNumber(stnd.decimals));
+
+  const [approvalState, approve] = useApproveCallback(
+    typedDepositValue,
+    dividendPoolAddress,
   );
 
-  const v2Pairs = useV2Pairs(
-    liquidityTokensWithBalances.map(({ tokens }) => tokens),
-  );
-  const v2IsLoading =
-    fetchingV2PairBalances ||
-    v2Pairs?.length < liquidityTokensWithBalances.length ||
-    v2Pairs?.some((V2Pair) => !V2Pair);
+  const { bond, unbond } = useDividendPool();
 
-  const allV2PairsWithLiquidity = v2Pairs
-    .map(([, pair]) => pair)
-    .filter((v2Pair): v2Pair is Pair => Boolean(v2Pair));
+  const handleBond = async () => {
+    setPendingTx(true);
+    try {
+      // KMP decimals depend on asset, SLP is always 18
+      const tx = await bond(depositValue.toBigNumber(stnd?.decimals));
 
-  // TODO: Replicate this!
-  // show liquidity even if its deposited in rewards contract
-  // const stakingInfo = useStakingInfo()
-  // const stakingInfosWithBalance = stakingInfo?.filter((pool) =>
-  //   JSBI.greaterThan(pool.stakedAmount.quotient, BIG_INT_ZERO)
-  // )
-  // const stakingPairs = useV2Pairs(stakingInfosWithBalance?.map((stakingInfo) => stakingInfo.tokens))
+      addTransaction(tx, {
+        summary: `Bond ${depositValue} STND`,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+    setPendingTx(false);
+  };
 
-  // // remove any pairs that also are included in pairs with stake in mining pool
-  // const v2PairsWithoutStakedAmount = allV2PairsWithLiquidity.filter((v2Pair) => {
-  //   return (
-  //     stakingPairs
-  //       ?.map((stakingPair) => stakingPair[1])
-  //       .filter((stakingPair) => stakingPair?.liquidityToken.address === v2Pair.liquidityToken.address).length === 0
-  //   )
-  // })
-  const migrationSupported = chainId in MigrationSupported;
+  const handleUnbond = async () => {
+    setPendingTx(true);
+    try {
+      // KMP decimals depend on asset, SLP is always 18
+      const tx = await unbond(withdrawValue.toBigNumber(stnd?.decimals));
 
-  const DividendProgressBarChild = () => (
-    <div className="flex flex-col w-full h-full justify-center items-center">
-      <Image
-        src="https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x9040e237C3bF18347bb00957Dc22167D0f2b999d/logo.png"
-        layout="fill"
-        className="opacity-30"
-        alt="STND logo"
-      />
-      {/* <div className="font-bold">Your Share</div>
-      <div
-        className="
-      flex items-center space-x-1
-      text-highlight
-      "
-      >
-        <div className="text-lg font-bold">239,294</div>
-        <div>STND</div>
-      </div>
-      <div className="text-highlight">3.25%</div> */}
-    </div>
-  );
-
-  const Unbonding = useCallback(
-    () => (
-      <div className="space-y-3">
-        <div className="text-center">
-          <div className="font-bold opacity-50">Unbonding Period</div>
-          <div className="text-grey">
-            <span className="font-bold">30</span> days left
-          </div>
-        </div>
-        <div className="text-center space-y-2">
-          <Button className="px-8 py-2 border-4" disabled type="bordered">
-            Unbond
-          </Button>
-          <div className="text-xs opacity-50">
-            You'll be able to unbond in 30 days
-          </div>
-        </div>
-      </div>
-    ),
-    [],
-  );
-
-  const Bonding = useCallback(
-    () => (
-      <div className="flex flex-col justify-center space-y-4">
-        <div>
-          <div className="text-4xl text-center">
-            Your Bonded <span className="font-bold">STND</span>
-          </div>
-          <div className="text-highlight text-center">
-            <span className="font-bold text-2xl">239,934</span> STND
-          </div>
-        </div>
-        <Button
-          className={classNames(
-            Typographies.button,
-            'min-w-[200px] self-center',
-          )}
-        >
-          Bond
-        </Button>
-      </div>
-    ),
-    [],
-  );
-
+      addTransaction(tx, {
+        summary: `Unbond ${depositValue} STND`,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+    setPendingTx(false);
+  };
   return (
     <>
       <Head>
@@ -183,6 +125,24 @@ export default function Dividend() {
         <ViewportMediumUp>
           <PageHeader title="Dividend Pool" />
         </ViewportMediumUp>
+        {/* {(approvalState === ApprovalState.NOT_APPROVED ||
+          approvalState === ApprovalState.PENDING) && (
+          <Button
+            color="primary"
+            disabled={approvalState === ApprovalState.PENDING}
+            onClick={approve}
+          >
+            {approvalState === ApprovalState.PENDING ? 'Approving' : 'Approve'}
+          </Button>
+        )}
+        <button onClick={() => bond(depositValue.toBigNumber(stnd?.decimals))}>
+          NEXT
+        </button>
+        <button
+          onClick={() => unbond(depositValue.toBigNumber(stnd?.decimals))}
+        >
+          JOHN
+        </button> */}
         <PageContent>
           {/* <div className="p-4 mb-3 space-y-3">
               <Back />
@@ -211,38 +171,85 @@ export default function Dividend() {
           >
             <div
               className="
-                w-full flex flex-col items-center 
-                sm:flex-row 
-                sm:justify-center
-                lg:space-x-20
-                space-y-12
-                lg:space-y-0
+              grid grid-cols-3
+              space-x-0
+              lg:space-x-2
+              space-y-4
+              lg:space-y-0"
+            >
+              <div
+                className="
+                col-span-3
+                lg:col-span-2
                 bg-bond p-8 rounded-20
                 "
-            >
-              <div className="flex-grow-[1] lg:flex-grow-0  flex justify-center items-center">
-                <DividendPercentage value={10} />
+              >
+                <div className="space-y-8 flex flex-col items-center">
+                  <div
+                    className="
+                    w-full flex flex-col items-center 
+                    sm:flex-row 
+                    sm:justify-center
+                    sm:space-x-6
+                    space-y-12
+                    sm:space-y-0"
+                  >
+                    <ViewportXSmall>
+                      <BondedInfo
+                        className="text-center"
+                        amount={formatNumber(
+                          bonded?.toFixed(stnd.decimals) ?? 0,
+                        )}
+                        share={share ?? 0}
+                      />
+
+                      <div className="w-[110px]">
+                        <DividendPercentage value={share ? share * 100 : 0} />
+                      </div>
+                    </ViewportXSmall>
+                    <ViewportSmallUp>
+                      <div className="w-[110px]">
+                        <DividendPercentage value={share ? share * 100 : 0} />
+                      </div>
+                      <BondedInfo
+                        amount={formatNumber(
+                          bonded?.toFixed(stnd.decimals) ?? 0,
+                        )}
+                        share={share ?? 0}
+                      />
+                    </ViewportSmallUp>
+                  </div>
+                  <div className="md:max-w-[75%]">
+                    <BondInput
+                      disabled={
+                        pendingTx ||
+                        !depositValue ||
+                        depositValue === '0' ||
+                        atBondMax
+                      }
+                      atMax={atBondMax}
+                      onMax={onBondMax}
+                      setBondAmout={setDepositValue}
+                      bondAmount={depositValue}
+                      onBond={handleBond}
+                      approvalState={approvalState}
+                      approve={approve}
+                      balance={stndBalance?.toExact()}
+                    />
+                  </div>
+                </div>
               </div>
-              <ViewportXSmall>
-                <Bonding />
-                <Unbonding />
-              </ViewportXSmall>
-              <ViewportSmall>
-                <div className="space-y-4 flex-grow-[2] flex flex-col justify-center items-center">
-                  <Bonding />
-                  <Unbonding />
-                </div>
-              </ViewportSmall>
-              <ViewportMedium>
-                <div className="space-y-4 flex-grow-[2] flex flex-col justify-center items-center">
-                  <Bonding />
-                  <Unbonding />
-                </div>
-              </ViewportMedium>
-              <ViewportLargeUp>
-                <Bonding />
-                <Unbonding />
-              </ViewportLargeUp>
+              <div className="col-span-3 lg:col-span-1">
+                <Unbond
+                  atMax={atUnbondMax}
+                  disabled={atUnbondMax}
+                  onMax={onUnbondMax}
+                  setUnbondAmount={setWithdrawValue}
+                  unbond={handleUnbond}
+                  bondedAmount={depositValue}
+                  unbondAmount={withdrawValue}
+                />
+              </div>
             </div>
             <div className="grid grid-cols-8 p-4 rounded-20 bg-opaque mt-6">
               <div className="col-span-8 lg:col-span-6 grid grid-cols-3 items-center">

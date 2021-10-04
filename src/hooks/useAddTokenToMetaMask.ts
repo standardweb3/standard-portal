@@ -1,4 +1,4 @@
-import { Currency, Token } from '@digitalnative/standard-protocol-sdk-test';
+import { Currency, Token } from '@digitalnative/standard-protocol-sdk';
 import { useCallback, useState } from 'react';
 
 import { getTokenLogoURL } from './../components-ui/CurrencyLogo';

@@ -1,4 +1,4 @@
-import { Token, WNATIVE } from '@digitalnative/standard-protocol-sdk-test';
+import { Token, WNATIVE } from '@digitalnative/standard-protocol-sdk';
 import {
   useBentoBoxContract,
   useBoringHelperContract,
@@ -10,8 +10,8 @@ import { BigNumber } from '@ethersproject/bignumber';
 import ERC20_ABI from '../../constants/abis/erc20.json';
 import { KASHI_ADDRESS } from '../../constants/kashi';
 import { USDC } from '../../hooks';
-import { WrappedTokenInfo } from '../lists/wrappedTokenInfo';
-import { Zero } from '@ethersproject/constants';
+// import { WrappedTokenInfo } from '../lists/wrappedTokenInfo';
+// import { Zero } from '@ethersproject/constants';
 import { e10 } from '../../functions/math';
 import { easyAmount } from '../../functions/kashi';
 import { getAddress } from '@ethersproject/address';

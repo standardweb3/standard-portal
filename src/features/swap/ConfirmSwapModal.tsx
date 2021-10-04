@@ -6,7 +6,7 @@ import {
   Percent,
   TradeType,
   Trade as V2Trade,
-} from '@digitalnative/standard-protocol-sdk-test';
+} from '@digitalnative/standard-protocol-sdk';
 import { ArrowRightIcon } from '@heroicons/react/outline';
 import React, { useCallback, useMemo } from 'react';
 import { CurrencyLogo } from '../../components-ui/CurrencyLogo';

@@ -23,10 +23,10 @@ const DividendProgressBarStyles = {
   },
   path: {
     transition: 'stroke-dashoffset 0.5s ease 0s',
-    stroke: '#8865dd',
+    stroke: '#8de7d8',
   },
   trail: {
-    stroke: '#8de7d8',
+    stroke: '#8865dd',
   },
   text: {},
   background: {

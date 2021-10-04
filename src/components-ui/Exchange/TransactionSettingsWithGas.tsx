@@ -1,4 +1,4 @@
-import { ChainId, Percent } from '@digitalnative/standard-protocol-sdk-test';
+import { ChainId, Percent } from '@digitalnative/standard-protocol-sdk';
 import { useActiveWeb3React } from '../../hooks';
 import { default as GasIcon } from '../../../public/icons/outlined/Gas.svg';
 import { Gas } from '../Gas';

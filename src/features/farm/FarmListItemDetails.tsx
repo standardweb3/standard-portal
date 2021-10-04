@@ -8,7 +8,7 @@ import {
   MASTERCHEF_V2_ADDRESS,
   Token,
   ZERO,
-} from '@digitalnative/standard-protocol-sdk-test';
+} from '@digitalnative/standard-protocol-sdk';
 import { Chef, PairType } from './enum';
 import { Disclosure, Transition } from '@headlessui/react';
 import React, { useState } from 'react';

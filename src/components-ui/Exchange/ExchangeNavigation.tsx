@@ -1,4 +1,4 @@
-import { Currency } from '@digitalnative/standard-protocol-sdk-test';
+import { Currency } from '@digitalnative/standard-protocol-sdk';
 import { useRouter } from 'next/router';
 import { currencyId } from '../../functions';
 import { NavigationLink } from '../NavigationLink';

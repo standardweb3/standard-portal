@@ -7,7 +7,7 @@ import {
   subHours,
 } from 'date-fns';
 
-import { ChainId } from '@digitalnative/standard-protocol-sdk-test';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import { GRAPH_HOST } from '../constants';
 import { blocksQuery } from '../queries';
 import { request } from 'graphql-request';

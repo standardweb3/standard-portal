@@ -4,7 +4,7 @@ import farmIconActive from '../public/icons/filled/Farm.svg';
 import farmIcon from '../public/icons/outlined/Farm.svg';
 import poolIconActive from '../public/icons/filled/Vault.svg';
 import poolIcon from '../public/icons/outlined/Vault.svg';
-import { ChainId } from '@digitalnative/standard-protocol-sdk-test';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
 export const sidebarRoutes = [
   {

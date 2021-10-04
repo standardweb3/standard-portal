@@ -60,6 +60,7 @@ module.exports = {
         'background-2': '#4E3E5C',
         'background-3': '#373448',
         'background-4': '#474771',
+        'background-5': '#3C2953',
         opaque: 'rgba(255,255,255,0.04)',
         'opaque-secondary': 'rgba(222, 199, 239, 0.13)',
         'opaque-tertiary': 'rgba(24,1,1,0.35)',

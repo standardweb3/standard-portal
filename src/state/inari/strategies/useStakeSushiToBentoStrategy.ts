@@ -1,9 +1,6 @@
 import { t } from '@lingui/macro';
 import { SUSHI, XSUSHI } from '../../../constants';
-import {
-  ChainId,
-  SUSHI_ADDRESS,
-} from '@digitalnative/standard-protocol-sdk-test';
+import { ChainId, SUSHI_ADDRESS } from '@digitalnative/standard-protocol-sdk';
 import { tryParseAmount } from '../../../functions';
 import { useBentoBalance } from '../../bentobox/hooks';
 import { useActiveWeb3React } from '../../../hooks';

@@ -34,7 +34,6 @@ export const SequentialLogo: FC<SequentialLogoProps> = ({
           src ||
           'https://raw.githubusercontent.com/sushiswap/icons/master/token/unknown.png'
         }
-        unoptimized
         loader={cloudinaryLoader}
         onError={() => {
           if (src) BAD_SRCS[src] = true;

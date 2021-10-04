@@ -12,10 +12,7 @@ import {
   transactionsQuery,
 } from '../queries';
 
-import {
-  ChainId,
-  STND_ADDRESS,
-} from '@digitalnative/standard-protocol-sdk-test';
+import { ChainId, STND_ADDRESS } from '@digitalnative/standard-protocol-sdk';
 import { GRAPH_HOST } from '../constants';
 import { request } from 'graphql-request';
 

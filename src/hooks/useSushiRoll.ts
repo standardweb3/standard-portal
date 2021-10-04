@@ -1,4 +1,4 @@
-import { ChainId } from '@digitalnative/standard-protocol-sdk-test';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import LPToken from '../types/LPToken';
 import ReactGA from 'react-ga';
 import { ethers } from 'ethers';

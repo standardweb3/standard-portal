@@ -5,7 +5,7 @@ import Image from 'next/image';
 import {
   fortmatic,
   injected,
-  portis,
+  // portis,
   walletconnect,
   walletlink,
 } from '../../connectors';
@@ -77,18 +77,20 @@ export function StatusIcon({ connector }: { connector: AbstractConnector }) {
         />
       </IconWrapper>
     );
-  } else if (connector === portis) {
-    return (
-      <IconWrapper size={16}>
-        <Image
-          src="/img/wallets/portis.png"
-          alt={'Portis'}
-          width="16px"
-          height="16px"
-        />
-      </IconWrapper>
-    );
-  } else if (connector.constructor.name === 'KeystoneConnector') {
+  } 
+  // else if (connector === portis) {
+  //   return (
+  //     <IconWrapper size={16}>
+  //       <Image
+  //         src="/img/wallets/portis.png"
+  //         alt={'Portis'}
+  //         width="16px"
+  //         height="16px"
+  //       />
+  //     </IconWrapper>
+  //   );
+  // }
+  else if (connector.constructor.name === 'KeystoneConnector') {
     return (
       <IconWrapper size={16}>
         <Image

@@ -6,9 +6,8 @@ import {
   Fraction,
   JSBI,
   Price,
-} from '@digitalnative/standard-protocol-sdk-test';
+} from '@digitalnative/standard-protocol-sdk';
 
-import { BigNumber } from '@ethersproject/bignumber';
 import Numeral from 'numeral';
 import { ethers } from 'ethers';
 import { getAddress } from '@ethersproject/address';

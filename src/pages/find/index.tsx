@@ -1,23 +1,18 @@
 import {
   Currency,
   CurrencyAmount,
-  Ether,
   JSBI,
   NATIVE,
   Token,
-} from '@digitalnative/standard-protocol-sdk-test';
+} from '@digitalnative/standard-protocol-sdk';
 import { PairState, useV2Pair } from '../../hooks/useV2Pairs';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { Alert } from '../../components-ui/Alert';
-import { Back } from '../../components-ui/Back';
 import { CurrencySelectPanel } from '../../components-ui/CurrencySelectPanel';
 import Head from 'next/head';
 import Link from 'next/link';
-import {
-  FullPositionCard,
-  MinimalPositionCard,
-} from '../../components-ui/PositionCard';
+import { FullPositionCard } from '../../components-ui/PositionCard';
 import { currencyId } from '../../functions/currency';
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
 import { usePairAdder } from '../../state/user/hooks';
@@ -27,7 +22,6 @@ import { PageContent } from '../../components-ui/PageContent';
 import { Page } from '../../components-ui/Page';
 import { PlusIcon } from '@heroicons/react/outline';
 import { PageHeader } from '../../components-ui/PageHeader';
-import { Button } from '../../components-ui/Button';
 
 enum Fields {
   TOKEN0 = 0,

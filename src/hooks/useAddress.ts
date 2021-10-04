@@ -3,7 +3,8 @@ import {
   getRouterAddress,
   getInitCodeHash,
   ChainId,
-} from '@digitalnative/standard-protocol-sdk-test';
+  getDividendPoolAddress,
+} from '@digitalnative/standard-protocol-sdk';
 import { useActiveWeb3React } from '.';
 import { ARCHER_ROUTER_ADDRESS } from '../constants';
 import { useProtocol } from '../state/protocol/hooks';
@@ -12,6 +13,12 @@ export function useFactoryAddress(): string {
   const { chainId } = useActiveWeb3React();
   const protocol = useProtocol();
   return getFactoryAddress(protocol, chainId);
+}
+
+export function useDividendPoolAddress(): string {
+  const { chainId } = useActiveWeb3React();
+  const protocol = useProtocol();
+  return getDividendPoolAddress(protocol, chainId);
 }
 export function useFactoryAddressWithChainId(chainId: ChainId): string {
   const protocol = useProtocol();

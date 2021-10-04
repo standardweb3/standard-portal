@@ -10,7 +10,9 @@ import {
   computePairAddress,
   Protocol,
   PROTOCOLS,
-} from '@digitalnative/standard-protocol-sdk-test';
+  CurrencyAmount,
+  Currency,
+} from '@digitalnative/standard-protocol-sdk';
 import {
   SerializedPair,
   SerializedToken,
@@ -31,12 +33,18 @@ import {
 } from './actions';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import ReactGA from 'react-ga';
 import flatMap from 'lodash/flatMap';
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
 import { useAllTokens } from '../../hooks/Tokens';
+import { useDividendPoolAddress, useFactoryContract } from '../../hooks';
+import { usePagination } from '../../hooks/usePagination';
+import { isAddress } from '../../functions';
+import { useMultipleContractSingleData } from '../multicall/hooks';
+import { Interface } from '@ethersproject/abi';
+import ERC20_ABI from '../../constants/abis/erc20.json';
 
 function serializeToken(token: Token): SerializedToken {
   return {
@@ -273,6 +281,129 @@ export function toV2LiquidityToken({
     'UNI-V2',
     'Uniswap V2',
   );
+}
+
+export function usePairsDividendBalances(pairs) {
+  const dividendPoolAddress = useDividendPoolAddress();
+  const ERC20Interface = new Interface(ERC20_ABI);
+
+  const balances = useMultipleContractSingleData(
+    pairs,
+    ERC20Interface,
+    'balanceOf',
+    [dividendPoolAddress],
+    undefined,
+    100_000,
+  );
+
+  const anyLoading: boolean = useMemo(
+    () => balances.some((callState) => callState.loading),
+    [balances],
+  );
+
+  return { balances, anyLoading };
+}
+
+export function usePairDividendBalances(pageSize: number) {
+  const pairs = useAllPairs();
+
+  const lastPage = Math.floor(pairs.length / pageSize);
+  const { current, next, last } = usePagination(0, pageSize, lastPage);
+
+  const currentPairs = useMemo(() => {
+    return pairs
+      .slice(current * pageSize, (current + 1) * pageSize)
+      .map((token) => token.address);
+  }, [pairs, current]);
+
+  const { balances, anyLoading } = usePairsDividendBalances(currentPairs);
+
+  const pairsWithDividends = useMemo(() => {
+    if (!anyLoading) {
+      let balancesPosition = 0;
+      return pairs.reduce((res, pair, i) => {
+        if (i >= current * pageSize && i < current * pageSize + pageSize) {
+          const value = balances?.[balancesPosition++]?.result?.[0];
+          const amount = value ? JSBI.BigInt(value.toString()) : undefined;
+          if (amount) {
+            res[pair.address] = CurrencyAmount.fromRawAmount(pair, amount);
+          }
+          return res;
+        }
+        return res;
+      }, {});
+    }
+    return null;
+  }, [balances, anyLoading, current]);
+
+  return { pairsWithDividends, next, current, loading: anyLoading, last };
+  // useEffect(() => {
+  //   console.log(pairDividends);
+  // }, [pairDividends]);
+  // const pairsWithDividends = useMemo(
+  //   () =>
+  //   pairs.reduce<{ [address: string]: CurrencyAmount<Currency> }>(
+  //       (memo, address, i) => {
+  //         const value = results?.[i]?.result?.[0];
+  //         if (value && chainId)
+  //           memo[address] = CurrencyAmount.fromRawAmount(
+  //             Ether.onChain(chainId),
+  //             JSBI.BigInt(value.toString()),
+  //           );
+  //         return memo;
+  //       },
+  //       {},
+  //     ),
+  //   [pairs, chainId, results],
+  // );
+
+  // useEffect(() => {
+  //   const _pairWithDividends = [...pairWithDividends]
+  //   for (let i = current * pageSize; i < (current + 1) * pageSize && i < total; i++) {
+  //     _pairWithDividends[i] =
+  //   }
+  // }, [current])
+}
+
+export function useAllPairs() {
+  const { chainId } = useActiveWeb3React();
+  const factoryContract = useFactoryContract();
+  const [pairAddressesLength, setPairAddressesLength] = useState(null);
+  const [pairAddressesPromises, setPairAddressePromises] = useState(null);
+  const [pairs, setPairs] = useState([]);
+
+  useEffect(() => {
+    if (factoryContract !== null && pairAddressesLength === null) {
+      factoryContract.allPairsLength().then((res) => {
+        setPairAddressesLength(res.toNumber());
+      });
+    }
+  }, [factoryContract, pairAddressesLength]);
+
+  useEffect(() => {
+    if (pairAddressesLength !== null && pairAddressesPromises == null) {
+      const _pairAddressesPromises = [];
+      for (let i = 0; i < pairAddressesLength; i++) {
+        _pairAddressesPromises.push(factoryContract.allPairs(i));
+      }
+      setPairAddressePromises(_pairAddressesPromises);
+    }
+  }, [pairAddressesLength, pairAddressesPromises]);
+
+  useEffect(() => {
+    if (pairAddressesPromises !== null) {
+      Promise.all(pairAddressesPromises).then((values) => {
+        setPairs(
+          values.map(
+            (value) =>
+              new Token(chainId, value as string, 18, 'UNI-V2', 'Uniswap V2'),
+          ),
+        );
+      });
+    }
+  }, [pairAddressesPromises]);
+
+  return pairs;
 }
 
 /**

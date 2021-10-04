@@ -13,7 +13,7 @@ import {
   Router,
   TradeType,
   Trade as V2Trade,
-} from '@digitalnative/standard-protocol-sdk-test';
+} from '@digitalnative/standard-protocol-sdk';
 import { isAddress, isZero } from '../functions/validate';
 import { useFactoryContract, useRouterContract } from './useContract';
 

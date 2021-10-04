@@ -1,10 +1,10 @@
 import { BscConnector } from '@binance-chain/bsc-connector';
-import { ChainId } from '@digitalnative/standard-protocol-sdk-test';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import { FortmaticConnector } from './Fortmatic';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { NetworkConnector } from './NetworkConnector';
-import { PortisConnector } from '@web3-react/portis-connector';
-import { TorusConnector } from '@web3-react/torus-connector';
+// import { PortisConnector } from '@web3-react/portis-connector';
+// import { TorusConnector } from '@web3-react/torus-connector';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { Web3Provider } from '@ethersproject/providers';
@@ -120,10 +120,10 @@ export const fortmatic = new FortmaticConnector({
 });
 
 // mainnet only
-export const portis = new PortisConnector({
-  dAppId: process.env.NEXT_PUBLIC_PORTIS_ID ?? '',
-  networks: [1],
-});
+// export const portis = new PortisConnector({
+//   dAppId: process.env.NEXT_PUBLIC_PORTIS_ID ?? '',
+//   networks: [1],
+// });
 
 // mainnet only
 export const walletlink = new WalletLinkConnector({
@@ -134,9 +134,9 @@ export const walletlink = new WalletLinkConnector({
 });
 
 // mainnet only
-export const torus = new TorusConnector({
-  chainId: 1,
-});
+// export const torus = new TorusConnector({
+//   chainId: 1,
+// });
 
 // binance only
 export const binance = new BscConnector({ supportedChainIds: [56] });

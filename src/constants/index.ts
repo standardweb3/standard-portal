@@ -1,16 +1,12 @@
-import {
-  ChainId,
-  JSBI,
-  Percent,
-} from '@digitalnative/standard-protocol-sdk-test';
+import { ChainId, JSBI, Percent } from '@digitalnative/standard-protocol-sdk';
 import {
   binance,
   CONNECTOR_PARAMS,
   fortmatic,
   getWalletConnectConnector,
   injected,
-  portis,
-  torus,
+  // portis,
+  // torus,
   walletconnect,
   walletlink,
 } from '../connectors';

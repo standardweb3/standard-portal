@@ -7,7 +7,7 @@ import {
   NATIVE,
   Percent,
   WNATIVE,
-} from '@digitalnative/standard-protocol-sdk-test';
+} from '@digitalnative/standard-protocol-sdk';
 import { BigNumber, Contract } from 'ethers';
 import { useRouter } from 'next/router';
 import { useState, useMemo, useCallback } from 'react';
@@ -65,8 +65,6 @@ import { ExchangeNavigation } from '../../components-ui/Exchange/ExchangeNavigat
 import { TransactionSettingsWithGas } from '../../components-ui/Exchange/TransactionSettingsWithGas';
 
 const DEFAULT_REMOVE_LIQUIDITY_SLIPPAGE_TOLERANCE = new Percent(5, 100);
-
-const REMOVE_TIPS = {};
 
 export default function Remove() {
   const router = useRouter();

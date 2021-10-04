@@ -5,13 +5,15 @@ import {
   Pair,
   computePairAddress,
   PROTOCOLS,
-} from '@digitalnative/standard-protocol-sdk-test';
+  ChainId,
+} from '@digitalnative/standard-protocol-sdk';
 
 import IUniswapV2PairABI from '@sushiswap/core/abi/IUniswapV2Pair.json';
 import { Interface } from '@ethersproject/abi';
 import { useMemo } from 'react';
 import { useMultipleContractSingleData } from '../state/multicall/hooks';
 import { useProtocol } from '../state/protocol/hooks';
+import { TokenAdder } from '../components-ui/TokenAdder';
 
 const PAIR_INTERFACE = new Interface(IUniswapV2PairABI);
 

@@ -1,4 +1,4 @@
-import { ChainId, Token } from '@digitalnative/standard-protocol-sdk-test';
+import { ChainId, Token } from '@digitalnative/standard-protocol-sdk';
 import { useLayoutEffect, useState } from 'react';
 
 import Vibrant from 'node-vibrant';

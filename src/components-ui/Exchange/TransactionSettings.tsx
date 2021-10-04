@@ -6,7 +6,7 @@ import {
 } from '../../state/user/hooks';
 
 import { DEFAULT_DEADLINE_FROM_NOW } from '../../constants';
-import { Percent } from '@digitalnative/standard-protocol-sdk-test';
+import { Percent } from '@digitalnative/standard-protocol-sdk';
 import { classNames } from '../../functions';
 import { Button } from '../Button';
 import { Question } from '../Question';

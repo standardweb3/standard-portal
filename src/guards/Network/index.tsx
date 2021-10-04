@@ -1,6 +1,6 @@
 import React, { FC, Fragment } from 'react';
 import { useActiveWeb3React } from '../../hooks';
-import { ChainId } from '@digitalnative/standard-protocol-sdk-test';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import Image from 'next/image';
 import {
   NETWORK_ICON,

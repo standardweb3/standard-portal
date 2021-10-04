@@ -1,4 +1,4 @@
-import { Currency } from '@digitalnative/standard-protocol-sdk-test';
+import { Currency } from '@digitalnative/standard-protocol-sdk';
 import { useCallback } from 'react';
 import { classNames } from '../../functions';
 import { useActiveWeb3React } from '../../hooks';

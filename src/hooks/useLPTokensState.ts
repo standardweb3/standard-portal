@@ -2,7 +2,7 @@ import {
   ChainId,
   CurrencyAmount,
   Token,
-} from '@digitalnative/standard-protocol-sdk-test';
+} from '@digitalnative/standard-protocol-sdk';
 import {
   useBoringHelperContract,
   useDashboardContract,

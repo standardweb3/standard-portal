@@ -8,10 +8,7 @@ import {
   useInariContract,
 } from '../../../hooks';
 import { useCallback } from 'react';
-import {
-  CurrencyAmount,
-  Token,
-} from '@digitalnative/standard-protocol-sdk-test';
+import { CurrencyAmount, Token } from '@digitalnative/standard-protocol-sdk';
 import { useTransactionAdder } from '../../transactions/hooks';
 import useTrait, { BaseTrait } from './useTrait';
 import { BaseStrategyHook } from '../strategies/useBaseStrategy';

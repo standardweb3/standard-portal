@@ -2,15 +2,12 @@ import { css, useTheme } from '@emotion/react';
 import { Logo } from '../Logo';
 import { ConnectionStatus } from '../ConnectionStatus';
 import { useActiveWeb3React } from '../../hooks';
-import { useETHBalances } from '../../state/wallet/hooks';
 import { NetworkStatus } from '../NetworkStatus';
 import { SidebarNavigation } from './SidebarNavigation';
 import { sidebarRoutes } from '../../routes';
-import { isMobile } from 'react-device-detect';
 
 export function Sidebar() {
-  const theme = useTheme();
-  const { account, chainId, library } = useActiveWeb3React();
+  const { chainId, library } = useActiveWeb3React();
 
   return (
     <div

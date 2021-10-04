@@ -11,8 +11,8 @@ import {
   fortmatic,
   getWalletConnectConnector,
   injected,
-  portis,
-  torus,
+  // portis,
+  // torus,
   walletconnect,
   walletlink,
 } from '../../connectors';
@@ -118,21 +118,22 @@ export const WalletInfo: FC<WalletInfoProps> = ({
       return (
         <WalletIcon src="/img/wallets/formatic.png" alt="Fortmatic" size={16} />
       );
-    } else if (connector === portis) {
-      return (
-        <WalletIcon src="/img/wallets/portnis.png" alt="Portis" size={16}>
-          <button
-            onClick={() => {
-              portis.portis.showPortis();
-            }}
-          >
-            Show Portis
-          </button>
-        </WalletIcon>
-      );
-    } else if (connector === torus) {
-      return <WalletIcon src="/img/wallets/torus.png" alt="Torus" size={16} />;
-    }
+    } 
+    // else if (connector === portis) {
+    //   return (
+    //     <WalletIcon src="/img/wallets/portnis.png" alt="Portis" size={16}>
+    //       <button
+    //         onClick={() => {
+    //           portis.portis.showPortis();
+    //         }}
+    //       >
+    //         Show Portis
+    //       </button>
+    //     </WalletIcon>
+    //   );
+    // } else if (connector === torus) {
+    //   return <WalletIcon src="/img/wallets/torus.png" alt="Torus" size={16} />;
+    // }
     return null;
   }
 

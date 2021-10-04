@@ -16,7 +16,7 @@ import CurrencyModalView from './CurrencyModalView';
 import { ExternalLink } from '../../components-ui/ExternalLink';
 import { ExternalLinkIcon } from '../../components-ui/ExternalLinkIcon';
 import ImportRow from './ImportRow';
-import { Token } from '@digitalnative/standard-protocol-sdk-test';
+import { Token } from '@digitalnative/standard-protocol-sdk';
 import { getExplorerLink } from '../../functions/explorer';
 import { isAddress } from '../../functions/validate';
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';

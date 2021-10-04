@@ -1562,15 +1562,15 @@
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha512-5a6wqoJV/xEdbRNKVo6I4hO3VjyDq//8q2f9I6PBAvMesJHFauXDorcNCsr9RzvsZnaWi5NYCcfyqP1QeFHFbw==
 
-"@digitalnative/default-token-list-test@0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@digitalnative/default-token-list-test/-/default-token-list-test-0.0.1.tgz#3253343eda1e6f11aff1e30f3ef6dea534d7f211"
-  integrity sha512-TaI86Zcw/poCHwEQeJ345ksWcWiAk4pZ7Qq/tL6eZTeNty5+pUfOMN19jdn/iydNmuF2uUVLbrNw8Pzks0b09A==
+"@digitalnative/default-token-list-test@0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@digitalnative/default-token-list-test/-/default-token-list-test-0.0.2.tgz#7e16d694ec50a874a52577626bdfc33f05e3b3f4"
+  integrity sha512-NBipckpUBxVHDZkcMkMCrwAWYZz2rx5qNE82MCpVrs4elRLeyeSmhoS1p2OPb/6RDGGP98bFwEjAroujtnWKqA==
 
-"@digitalnative/standard-protocol-sdk-test@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@digitalnative/standard-protocol-sdk-test/-/standard-protocol-sdk-test-0.0.1.tgz#e73fd76766eb72af3121dcd9268624b3a648dc2b"
-  integrity sha512-iZ5Mn8+3sOFZypvdeCOhiZqCAuWruzoXYCkngF1gKIWZRJgV6zVccl3n6LFedHTAeEPUYb2kfKxz0ID2ifHEMw==
+"@digitalnative/standard-protocol-sdk-test@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@digitalnative/standard-protocol-sdk-test/-/standard-protocol-sdk-test-0.0.4.tgz#a2cd70648997f97089b3c6b56dfc01061a02b33f"
+  integrity sha512-yOVF2e4Rp+ypdji6r7CqQVfxIuLZLMSrtjhtYqxDRQB4d7PmvnabehhcvcEO1nDwbubVsFktdP57Kb05lzxlmA==
   dependencies:
     big.js "^6.1.0"
     decimal.js-light "^2.5.0"

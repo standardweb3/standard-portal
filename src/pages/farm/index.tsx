@@ -245,11 +245,11 @@ export default function Farm() {
   return (
     <>
       <Head>
-        <title>FARM | Standard Protcol</title>
+        <title>FARM | Standard Protocol</title>
         <meta
           key="description"
           name="description"
-          content="Farms of the Standard Protcol AMM to enable gas optimised and low slippage trades across countless networks"
+          content="Farms of the Standard Protocol AMM to enable gas optimised and low slippage trades across countless networks"
         />
       </Head>
       <Page id="farm-page" className={Typographies.page}>

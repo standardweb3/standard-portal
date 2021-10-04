@@ -7,7 +7,7 @@ import {
   currencyEquals,
   Percent,
   WNATIVE,
-} from '@digitalnative/standard-protocol-sdk-test';
+} from '@digitalnative/standard-protocol-sdk';
 import { BigNumber } from 'ethers';
 import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
@@ -66,7 +66,6 @@ import {
 } from '../../components-ui/Responsive';
 import { TransactionSettingsWithGas } from '../../components-ui/Exchange/TransactionSettingsWithGas';
 import { ExchangeNavigation } from '../../components-ui/Exchange/ExchangeNavigation';
-import { StndAdder } from '../../components-ui/TokenAdder/StndAdder';
 
 const DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE = new Percent(50, 10_000);
 
@@ -156,7 +155,6 @@ export default function Liquidity() {
   }, {});
 
   const routerContract = useRouterContract();
-  console.log(routerContract.address);
   // check whether the user has approved the router on the tokens
   const [approvalA, approveACallback] = useApproveCallback(
     parsedAmounts[Field.CURRENCY_A],
@@ -240,6 +238,7 @@ export default function Liquidity() {
     setAttemptingTxn(true);
     await estimate(...args, value ? { value } : {})
       .then((estimatedGasLimit) =>
+        //console.log("estimate", estimatedGasLimit),
         method(...args, {
           ...(value ? { value } : {}),
           gasLimit: calculateGasMargin(estimatedGasLimit),
@@ -407,11 +406,11 @@ export default function Liquidity() {
   return (
     <>
       <Head>
-        <title>LIQUIDITY | Standard Protcol</title>
+        <title>LIQUIDITY | Standard Protocol</title>
         <meta
           key="description"
           name="description"
-          content="Add liquidity to the Standard Protcol AMM to enable gas optimised and low slippage trades across countless networks"
+          content="Add liquidity to the Standard Protocol AMM to enable gas optimised and low slippage trades across countless networks"
         />
       </Head>
       <Page id="add-liquidity-page" className={Typographies.page}>

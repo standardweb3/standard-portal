@@ -1,6 +1,6 @@
 import React, { ReactNode, useCallback } from 'react';
 
-import { Currency, Price } from '@digitalnative/standard-protocol-sdk-test';
+import { Currency, Price } from '@digitalnative/standard-protocol-sdk';
 import { classNames } from '../../functions';
 interface TradePriceProps {
   price: Price<Currency, Currency>;

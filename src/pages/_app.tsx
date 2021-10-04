@@ -16,7 +16,6 @@ import { ThemeProvider } from '@emotion/react';
 // redux
 import { Provider as ReduxProvider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
-import { persistStore } from 'redux-persist'
 // web3
 import { Web3ReactProvider } from '@web3-react/core'
 
@@ -41,7 +40,7 @@ import NetworkGuard from '../guards/Network';
 
 import '../styles/index.css'
 import '../styles/globals.css';
-import { ChainId } from '@digitalnative/standard-protocol-sdk-test';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
 const Web3ProviderNetwork = dynamic(() => import('../components-ui/Web3ProviderNetwork'), { ssr: false })
 

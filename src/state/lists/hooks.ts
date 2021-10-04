@@ -1,5 +1,5 @@
 import { AppState } from '..';
-import DEFAULT_TOKEN_LIST from '@digitalnative/default-token-list-test';
+import DEFAULT_TOKEN_LIST from '@digitalnative/default-token-list';
 import { TokenList } from '@uniswap/token-lists';
 import { UNSUPPORTED_LIST_URLS } from '../../constants/token-lists';
 import UNSUPPORTED_TOKEN_LIST from '../../constants/token-lists/sushiswap-v2-unsupported.tokenlist.json';

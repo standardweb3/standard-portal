@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Token } from '@digitalnative/standard-protocol-sdk-test';
+import { Token } from '@digitalnative/standard-protocol-sdk';
 
 import { ImportToken } from '../SearchModal/ImportToken';
 import { Modal } from '../../components-ui/Modal';

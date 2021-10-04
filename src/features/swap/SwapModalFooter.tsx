@@ -2,7 +2,7 @@ import {
   Currency,
   TradeType,
   Trade as V2Trade,
-} from '@digitalnative/standard-protocol-sdk-test';
+} from '@digitalnative/standard-protocol-sdk';
 import React, { ReactNode } from 'react';
 
 import { ButtonError } from '../../components-ui/Button';

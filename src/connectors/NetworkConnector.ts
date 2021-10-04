@@ -1,4 +1,4 @@
-import { Protocol, PROTOCOLS } from '@digitalnative/standard-protocol-sdk-test';
+import { Protocol, PROTOCOLS } from '@digitalnative/standard-protocol-sdk';
 import { AbstractConnector } from '@web3-react/abstract-connector';
 import { ConnectorUpdate } from '@web3-react/types';
 import invariant from 'tiny-invariant';

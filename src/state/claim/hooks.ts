@@ -4,7 +4,7 @@ import {
   CurrencyAmount,
   JSBI,
   Token,
-} from '@digitalnative/standard-protocol-sdk-test';
+} from '@digitalnative/standard-protocol-sdk';
 import { MERKLE_ROOT, SUSHI } from './../../constants/index';
 import { getAddress, isAddress } from '@ethersproject/address';
 import { useEffect, useState } from 'react';

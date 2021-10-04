@@ -3,7 +3,7 @@ import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/outline';
 import FarmListItem from './FarmListItem';
 import React from 'react';
 import useSortableData from '../../hooks/useSortableData';
-import { useSizeMdDown, useSizeXs } from '../../components-ui/Responsive';
+import { useSizeXs } from '../../components-ui/Responsive';
 
 const FarmList = ({ farms, term }) => {
   const { items, requestSort, sortConfig } = useSortableData(farms);

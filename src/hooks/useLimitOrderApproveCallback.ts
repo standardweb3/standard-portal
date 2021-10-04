@@ -17,7 +17,7 @@ import {
   setLimitOrderApprovalPending,
 } from '../state/limit-order/actions';
 import { useTransactionAdder } from '../state/transactions/hooks';
-import { Token } from '@digitalnative/standard-protocol-sdk-test';
+import { Token } from '@digitalnative/standard-protocol-sdk';
 import {
   getSignatureWithProviderBentobox,
   getVerifyingContract,

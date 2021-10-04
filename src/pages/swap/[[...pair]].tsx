@@ -1,14 +1,13 @@
 import Head from 'next/head';
 import ReactGA from 'react-ga';
 import {
-  ChainId,
   Currency,
   CurrencyAmount,
   JSBI,
   Token,
   TradeType,
   Trade as V2Trade,
-} from '@digitalnative/standard-protocol-sdk-test';
+} from '@digitalnative/standard-protocol-sdk';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
@@ -31,18 +30,13 @@ import {
 } from '../../state/swap/hooks';
 import {
   useExpertModeManager,
-  useUserArcherETHTip,
-  useUserArcherGasPrice,
-  useUserArcherUseRelay,
   useUserSingleHopOnly,
-  useUserTransactionTTL,
 } from '../../state/user/hooks';
 
 import { Field } from '../../state/swap/actions';
 import useENSAddress from '../../hooks/useENSAddress';
 import { useUSDCValue } from '../../hooks/useUSDCPrice';
 import {
-  classNames,
   computeFiatValuePriceImpact,
   maxAmountSpend,
   warningSeverity,
@@ -50,7 +44,6 @@ import {
 import { useSwapCallback } from '../../hooks/useSwapCallback';
 import confirmPriceImpactWithoutFee from '../../features/swap/confirmPriceImpactWithoutFee';
 import { useIsSwapUnsupported } from '../../hooks/useIsSwapUnsupported';
-import usePrevious from '../../hooks/usePrevious';
 import useIsArgentWallet from '../../hooks/useIsArgentWallet';
 import { PageHeader } from '../../components-ui/PageHeader';
 import { Page } from '../../components-ui/Page';
@@ -68,18 +61,13 @@ import { TradePrice } from '../../components-ui/TradePrice';
 import {
   MinusCircleIcon,
   SwitchHorizontalIcon,
-  SwitchVerticalIcon,
 } from '@heroicons/react/outline';
-import { AddressInputPanel } from '../../components-ui/AddressInputPanel';
-import { Alert } from '../../components-ui/Alert';
 import { WalletConnector } from '../../components-ui/WalletConnector';
 import { RippleSpinner } from '../../components-ui/Spinner/RippleSpinner';
-import { ProgressCircles } from '../../components-ui/ProgressSteps';
 import { Typographies } from '../../utils/Typography';
 
 import switchIcon from '../../../public/icons/outlined/Switch.svg';
 import { PriceImpact } from '../../components-ui/PriceImpact';
-import { Question } from '../../components-ui/Question';
 import {
   ViewportMediumUp,
   ViewportSmallDown,

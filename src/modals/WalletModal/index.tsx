@@ -16,7 +16,7 @@ import {
   CONNECTOR_PARAMS,
   fortmatic,
   injected,
-  portis,
+  // portis,
 } from '../../connectors';
 // modal
 import { Modal } from '../../components-ui/Modal';
@@ -43,7 +43,7 @@ import {
   useSizeXs,
 } from '../../components-ui/Responsive';
 import { type } from 'os';
-import { ChainId } from '@digitalnative/standard-protocol-sdk-test';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
 const WALLET_VIEWS = {
   OPTIONS: 'options',
@@ -188,9 +188,9 @@ export default function WalletModal({
       // check for mobile options
       if (isMobile) {
         // disable portis on mobile for now
-        if (option.connector === portis) {
-          return null;
-        }
+        // if (option.connector === portis) {
+        //   return null;
+        // }
 
         if (!window.web3 && !window.ethereum && option.mobile) {
           return (

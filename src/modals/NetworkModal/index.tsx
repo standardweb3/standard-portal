@@ -1,4 +1,4 @@
-import { ChainId } from '@digitalnative/standard-protocol-sdk-test';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import cookie from 'cookie-cutter';
 // next
 import Image from 'next/image';
@@ -49,7 +49,7 @@ export default function NetworkModal(): JSX.Element | null {
         md:grid-cols-2
         overflow-y-auto`}
       >
-        {supportedChainIds.map((key: ChainId, i: number) => {
+        {supportedChainIds.map((key: any, i: number) => {
           if (chainId === key) {
             return (
               <div

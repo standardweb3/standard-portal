@@ -1,5 +1,5 @@
 import { useAppSelector } from '../hooks';
-import { Token } from '@digitalnative/standard-protocol-sdk-test';
+import { Token } from '@digitalnative/standard-protocol-sdk';
 import { tryParseAmount } from '../../functions';
 import useStakeSushiToBentoStrategy from './strategies/useStakeSushiToBentoStrategy';
 import { DerivedInariState, InariState } from './types';
