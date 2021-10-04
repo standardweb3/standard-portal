@@ -41,6 +41,7 @@ import NetworkGuard from '../guards/Network';
 import '../styles/index.css'
 import '../styles/globals.css';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
+import { isMobile } from 'react-device-detect';
 
 const Web3ProviderNetwork = dynamic(() => import('../components-ui/Web3ProviderNetwork'), { ssr: false })
 
