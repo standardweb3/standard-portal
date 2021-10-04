@@ -24,7 +24,12 @@ export function DividendPairs({
       </div>
       {pairsWithDividends.map((pair) => {
         return (
-          <DividendPair claim={claim} pairWithDividend={pair} share={share} />
+          <DividendPair
+            key={pair.address}
+            claim={claim}
+            pairWithDividend={pair}
+            share={share}
+          />
         );
       })}
     </div>
