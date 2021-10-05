@@ -48,7 +48,6 @@ export default function Farm() {
 
   // const masterChefV2TotalAllocPoint = useMasterChefV2TotalAllocPoint();
   const masterChefV2SushiPerBlock = useMasterChefV2SushiPerBlock();
-
   const blocksPerDay = 86400 / Number(averageBlockTime);
 
   const map = (pool) => {
@@ -168,7 +167,6 @@ export default function Farm() {
 
     const tvl = Number(swapPair.reserveUSD);
     //   (balance / Number(swapPair.totalSupply)) * Number(swapPair.reserveUSD);
-
     const roiPerBlock =
       rewards.reduce((previousValue, currentValue) => {
         return (

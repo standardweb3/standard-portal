@@ -6,8 +6,6 @@ import { Typographies } from '../../utils/Typography';
 import { formatTime } from '../../functions/time';
 import { classNames } from '../../functions';
 import { BigNumber } from 'ethers';
-import { useEffect, useState } from 'react';
-import { Timer } from '../Timer';
 import { CountdownTimer } from '../Timer/CountdownTimer';
 
 export type UnbondProps = {
@@ -50,23 +48,20 @@ export function Unbond({
         py-8
         px-12
         flex flex-col justify-center items-center`,
-        disabled && 'opacity-50',
+        disabled && 'opacity-80',
       )}
     >
       <div className="text-center space-y-4 w-full">
         <div className="font-bold text-2xl">Unbond</div>
         <div className="flex flex-col justify-center items-center space-y-2">
           {remaining ? (
-            <>
-              <CountdownTimer time={remainingSeconds} />
-              <Button
-                color="danger"
-                className="!font-black !cursor-default"
-                type="bordered"
-              >
-                Closed
-              </Button>
-            </>
+            <Button
+              color="danger"
+              className="!font-black !cursor-default"
+              type="bordered"
+            >
+              Closed
+            </Button>
           ) : (
             <Button
               color="success"
@@ -109,7 +104,7 @@ export function Unbond({
           className={Typographies.fullButton}
           onClick={unbond}
         >
-          Unbond
+          {remaining ? <CountdownTimer time={remainingSeconds} /> : 'Unbond'}
         </Button>
       </div>
       {!noneBonded && atMax && (
