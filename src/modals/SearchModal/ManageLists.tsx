@@ -234,7 +234,7 @@ const ListRow = memo(({ listUrl }: { listUrl: string }) => {
       {open && (
         <PopoverContainer
           show={true}
-          className="bg-background-3 rounded-20 shadow-dark"
+          className="bg-background-2 rounded-20 shadow-dark"
           ref={setPopperElement as any}
           style={styles.popper}
           {...attributes.popper}

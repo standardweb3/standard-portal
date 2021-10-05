@@ -1,4 +1,3 @@
-import { css, useTheme } from '@emotion/react';
 import { Logo } from '../Logo';
 import { ConnectionStatus } from '../ConnectionStatus';
 import { useActiveWeb3React } from '../../hooks';

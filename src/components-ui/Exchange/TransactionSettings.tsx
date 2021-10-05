@@ -136,7 +136,7 @@ export function TransactionSettings({
                     : tooLow || tooHigh
                     ? 'text-warn'
                     : 'text-green',
-                  `bg-background-3
+                  `bg-background-2
                    px-2 py-1 
                    rounded-xl 
                    outline-none min-w-[62px] max-w-[72px]`,
@@ -206,7 +206,7 @@ export function TransactionSettings({
           <input
             className={classNames(
               deadlineError ? 'text-danger' : 'text-green',
-              'px-2 py-1 rounded-xl bg-background-3 min-w-[62px] max-w-[72px]',
+              'px-2 py-1 rounded-xl bg-background-2 min-w-[62px] max-w-[72px]',
             )}
             placeholder={(DEFAULT_DEADLINE_FROM_NOW / 60).toString()}
             value={

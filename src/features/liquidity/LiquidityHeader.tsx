@@ -31,7 +31,7 @@ export default function LiquidityHeader({
           px-2
           text-base font-medium text-center
           border-b-4
-          ${isAddActive ? 'border-primary' : 'border-opaque-border-secondary'}
+          ${isAddActive ? 'border-primary' : 'border-opaque-border-2'}
           `}
         >
           Add
@@ -51,7 +51,7 @@ export default function LiquidityHeader({
           px-2
           text-base font-medium text-center 
           border-b-4
-          ${!isAddActive ? 'border-primary' : 'border-opaque-border-secondary'}
+          ${!isAddActive ? 'border-primary' : 'border-opaque-border-2'}
           `}
           >
             Remove
@@ -71,7 +71,7 @@ export default function LiquidityHeader({
           px-2
           text-base font-medium text-center 
           border-b-4
-          ${isPoolActive ? 'border-primary' : 'border-opaque-border-secondary'}
+          ${isPoolActive ? 'border-primary' : 'border-opaque-border-2'}
           `}
         >
           Positions

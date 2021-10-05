@@ -15,7 +15,7 @@ export default function Toggle({ id, isActive, toggle }: ToggleProps) {
       checked={isActive}
       onChange={toggle}
       className={classNames(
-        'bg-background-3',
+        'bg-background-2',
         `relative inline-flex flex-shrink-0 
          h-6 w-11
         border-2 border-transparent 

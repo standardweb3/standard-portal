@@ -1,24 +1,17 @@
-import { ChainId, Percent } from '@digitalnative/standard-protocol-sdk';
+import { Percent } from '@digitalnative/standard-protocol-sdk';
 import React, { useRef, useState } from 'react';
 import {
   useExpertModeManager,
-  useUserArcherUseRelay,
   useUserSingleHopOnly,
-  useUserTransactionTTL,
 } from '../../state/user/hooks';
 import {
   useModalOpen,
   useToggleSettingsMenu,
 } from '../../state/application/hooks';
 
-import {
-  CogIcon,
-  DotsHorizontalIcon,
-  MenuAlt3Icon,
-} from '@heroicons/react/outline';
+import { CogIcon } from '@heroicons/react/outline';
 import { ApplicationModal } from '../../state/application/actions';
 import Toggle from '../Toggle';
-import { useActiveWeb3React } from '../../hooks';
 import { useOnClickOutside } from '../../hooks/useOnClickOutside';
 import { Modal } from '../Modal';
 import { ModalHeader } from '../Modal/ModalHeader';
@@ -33,8 +26,6 @@ export default function Settings({
 }: {
   placeholderSlippage?: Percent;
 }) {
-  const { chainId } = useActiveWeb3React();
-
   const node = useRef<HTMLDivElement>(null);
   const open = useModalOpen(ApplicationModal.SETTINGS);
   const toggle = useToggleSettingsMenu();
@@ -47,10 +38,6 @@ export default function Settings({
   const [showConfirmation, setShowConfirmation] = useState(false);
 
   useOnClickOutside(node, open ? toggle : undefined);
-
-  const [ttl, setTtl] = useUserTransactionTTL();
-
-  const [userUseArcher, setUserUseArcher] = useUserArcherUseRelay();
 
   const isViewportXSmall = useSizeXs();
   const isViewportSmallDown = useSizeSmDown();
@@ -70,7 +57,7 @@ export default function Settings({
             absolute 
             top-14 right-0 z-50 
             -mr-2.5 min-w-20 md:m-w-22 md:-mr-5 
-            bg-background-2
+            bg-background-settings
             rounded-xl w-80 
             shadow-dark
         `}

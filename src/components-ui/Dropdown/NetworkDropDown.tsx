@@ -46,7 +46,7 @@ export default function NetworkDropDown(): JSX.Element | null {
         <Listbox.Button
           className="
             border
-            border-border-1
+            border-border
             rounded-full
             relative
             flex items-center

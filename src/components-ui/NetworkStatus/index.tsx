@@ -20,7 +20,7 @@ export function NetworkStatus() {
     <div
       className={`
         flex items-center rounded-xl 
-        bg-modal-inner-background
+        bg-background-modal-inner
         px-3 py-2
         text-sm
         cursor-pointer

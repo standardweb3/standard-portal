@@ -42,7 +42,7 @@ export default function Option({
         backdrop-blur-sm
         ${
           !active
-            ? 'bg-modal-inner-background '
+            ? 'bg-background-modal-inner '
             : 'bg-background border border-green'
         }
         ${!active ? 'hover:bg-green' : ''}

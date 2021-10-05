@@ -131,7 +131,7 @@ export function Modal({
                 `text-text
                  h-full
                  rounded-xl p-8
-                 bg-modal-background`,
+                 bg-background-modal`,
                 className ?? '',
               )}
             >

@@ -10,7 +10,7 @@ export function Slider({ children, isOpen }) {
         backdrop-blur-2xl
         z-50
         absolute w-full h-full 
-        bg-opaque-tertiary
+        bg-opaque-slider
         transition-all
         !duration-200
         right-full

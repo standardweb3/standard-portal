@@ -35,6 +35,6 @@ export const sidebarRoutes = [
     urls: ['/dividend'],
     icon: dividendIcon,
     iconActive: dividendIconActive,
-    hidden: [ChainId.SHIBUYA, ChainId.SHIDEN],
+    hidden: [ChainId.SHIDEN],
   },
 ];

@@ -36,7 +36,7 @@ const FarmListItem = ({ farm, ...rest }) => {
               rounded-20
               cursor-pointer 
               select-none 
-              bg-opaque-5
+              bg-opaque-farm-list
               text-sm md:text-lg`,
             )}
           >
@@ -99,7 +99,7 @@ const FarmListItem = ({ farm, ...rest }) => {
                       <div
                         key={i}
                         className="text-xs md:text-sm whitespace-nowrap
-                        rounded-20 bg-background-4 px-3 py-2 font-bold"
+                        rounded-20 bg-background-farm-list px-3 py-2 font-bold"
                       >
                         {formatNumber(reward.rewardPerDay)}
                       </div>
