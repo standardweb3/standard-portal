@@ -25,7 +25,9 @@ module.exports = {
         '20': '20px',
       },
       backgroundImage: {
-        bond: 'linear-gradient(90deg, #8525EF 0%, #170C34 100%)',
+        bond: 'rgba(119, 36, 210, 1)',
+        unbond:
+          'linear-gradient(297.07deg, #8525EF 4.24%, #8525EF 4.25%, #41157C 35.24%, #170C34 85.03%)',
       },
       colors: {
         grey: '#BAB8C0',
@@ -61,6 +63,7 @@ module.exports = {
         'background-3': '#373448',
         'background-4': '#474771',
         'background-5': '#3C2953',
+        'background-bond': 'rgba(119, 36, 210, 1)',
         opaque: 'rgba(255,255,255,0.04)',
         'opaque-secondary': 'rgba(222, 199, 239, 0.13)',
         'opaque-tertiary': 'rgba(24,1,1,0.35)',

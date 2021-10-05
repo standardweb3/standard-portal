@@ -43,7 +43,7 @@ export function Unbond({
         `
         w-full h-full 
         space-y-4 
-        bg-background-5 
+        bg-unbond 
         rounded-20
         py-8
         px-12

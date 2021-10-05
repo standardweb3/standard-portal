@@ -11,6 +11,8 @@ import { PageHeader } from '../../components-ui/PageHeader';
 import { PageContent } from '../../components-ui/PageContent';
 import { Typographies } from '../../utils/Typography';
 import {
+  useSizeSmDown,
+  useSizeXs,
   ViewportMediumUp,
   ViewportSmallUp,
   ViewportXSmall,
@@ -30,10 +32,19 @@ import {
 import { BigNumber } from 'ethers';
 import { useDividendPoolWhitelistPairBalances } from '../../state/user/hooks';
 import { DividendPairs } from '../../components-ui/Dividend/DividendPairs';
+import styled from '@emotion/styled';
+
+export const BondWrapper = styled.div`
+  @media only screen and (min-width: 640px) {
+    background-repeat: no-repeat;
+    background-image: url('/img/bg-bond.png');
+    background-position: top 20px right 20px;
+  }
+`;
 
 export default function Dividend() {
   const { account, chainId } = useActiveWeb3React();
-
+  const isSmall = useSizeSmDown();
   const [pendingTx, setPendingTx] = useState(false);
   const [depositValue, setDepositValue] = useState('');
   const [withdrawValue, setWithdrawValue] = useState('');
@@ -159,11 +170,13 @@ export default function Dividend() {
               space-y-4
               lg:space-y-0"
             >
-              <div
+              <BondWrapper
                 className="
                 col-span-3
                 lg:col-span-2
-                bg-bond p-8 rounded-20
+                relative
+                rounded-20 p-8
+                bg-background-bond
                 "
               >
                 <div className="space-y-8 flex flex-col items-center">
@@ -220,7 +233,7 @@ export default function Dividend() {
                     />
                   </div>
                 </div>
-              </div>
+              </BondWrapper>
               <div className="col-span-3 lg:col-span-1">
                 <Unbond
                   remainingSeconds={remainingSeconds}
