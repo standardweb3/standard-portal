@@ -99,7 +99,7 @@ export default function NetworkModal(): JSX.Element | null {
               className={`
                 flex items-center 
                 w-full col-span-1 p-3 space-x-3 rounded-xl
-                bg-background-modal-innermodal-inner-background hover:bg-green
+                bg-background-modal-inner hover:bg-green
                 cursor-pointer
                 transition duration-500
                 `}

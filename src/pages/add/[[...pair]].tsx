@@ -154,6 +154,16 @@ export default function Liquidity() {
     };
   }, {});
 
+  const overMaxAmounts: { [field in Field]?: CurrencyAmount<Currency> } = [
+    Field.CURRENCY_A,
+    Field.CURRENCY_B,
+  ].reduce((accumulator, field) => {
+    return {
+      ...accumulator,
+      [field]: maxAmounts[field]?.lessThan(parsedAmounts[field] ?? '0'),
+    };
+  }, {});
+
   const routerContract = useRouterContract();
   // check whether the user has approved the router on the tokens
   const [approvalA, approveACallback] = useApproveCallback(
@@ -546,7 +556,14 @@ export default function Liquidity() {
                 )}
 
               <div className={Typographies.divider} />
-
+              {(overMaxAmounts[Field.CURRENCY_A] ||
+                overMaxAmounts[Field.CURRENCY_B]) && (
+                <div className="text-danger text-center">
+                  {overMaxAmounts[Field.CURRENCY_A]
+                    ? `Insufficient ${currencyA.symbol} balance`
+                    : `Insufficient ${currencyB.symbol} balance`}
+                </div>
+              )}
               {addIsUnsupported ? (
                 <Button color="primary" disabled>
                   {`Unsupported Asset`}

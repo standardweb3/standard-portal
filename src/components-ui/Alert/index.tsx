@@ -4,7 +4,7 @@ import { XIcon } from '@heroicons/react/solid';
 import { classNames } from '../../functions';
 import { ExclamationCircleIcon } from '@heroicons/react/outline';
 
-const infoClassName = 'bg-opaque-6 text-text text-opacity-50';
+const infoClassName = 'bg-opaque-alert text-text text-opacity-50';
 
 const TYPE = {
   information: {
