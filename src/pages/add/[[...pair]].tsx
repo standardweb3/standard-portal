@@ -558,7 +558,7 @@ export default function Liquidity() {
               <div className={Typographies.divider} />
               {(overMaxAmounts[Field.CURRENCY_A] ||
                 overMaxAmounts[Field.CURRENCY_B]) && (
-                <div className="text-danger text-center">
+                <div className="text-danger text-sm text-center">
                   {overMaxAmounts[Field.CURRENCY_A]
                     ? `Insufficient ${currencyA.symbol} balance`
                     : `Insufficient ${currencyB.symbol} balance`}

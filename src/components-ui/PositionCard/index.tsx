@@ -8,8 +8,6 @@ import {
 } from '@digitalnative/standard-protocol-sdk';
 import React, { useState } from 'react';
 import { currencyId, unwrappedToken } from '../../functions/currency';
-
-import { Alert } from '../Alert';
 import { BIG_INT_ZERO } from '../../constants';
 import { Button } from '../Button';
 import { CurrencyLogo } from '../CurrencyLogo';
@@ -19,7 +17,6 @@ import { useColor } from '../../hooks';
 import { useRouter } from 'next/router';
 import { useTokenBalance } from '../../state/wallet/hooks';
 import { useTotalSupply } from '../../hooks/useTotalSupply';
-import { classNames } from '../../functions';
 import { Transition } from '@headlessui/react';
 import { Typographies } from '../../utils/Typography';
 
@@ -33,14 +30,11 @@ interface PositionCardProps {
 export function MinimalPositionCard({
   pair,
   showUnwrapped = false,
-  border,
 }: PositionCardProps) {
   const { account } = useActiveWeb3React();
 
   const currency0 = showUnwrapped ? pair.token0 : unwrappedToken(pair.token0);
   const currency1 = showUnwrapped ? pair.token1 : unwrappedToken(pair.token1);
-
-  const [showMore, setShowMore] = useState(false);
 
   const userPoolBalance = useTokenBalance(
     account ?? undefined,

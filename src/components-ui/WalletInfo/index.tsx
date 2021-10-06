@@ -233,7 +233,7 @@ export const WalletInfo: FC<WalletInfoProps> = ({
           </div>
         </div>
         {!!pendingTransactions.length || !!confirmedTransactions.length ? (
-          <div className="bg-opaque rounded-xl py-2 px-3">
+          <div className="bg-opaque rounded-xl py-2 px-3 max-h-[50vh] overflow-y-auto">
             {renderTransactions(pendingTransactions)}
             {renderTransactions(confirmedTransactions)}
           </div>
