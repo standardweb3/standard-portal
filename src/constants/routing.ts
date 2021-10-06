@@ -134,6 +134,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
     NFTX,
     STETH,
   ],
+  [ChainId.RINKEBY]: [...WRAPPED_NATIVE_ONLY[ChainId.RINKEBY], RINKEBY.DAI],
   [ChainId.MATIC]: [
     ...WRAPPED_NATIVE_ONLY[ChainId.MATIC],
     MATIC.USDC,

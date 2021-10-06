@@ -54,7 +54,6 @@ export function useV2Pairs(
       }),
     [tokens],
   );
-
   const results = useMultipleContractSingleData(
     pairAddresses,
     PAIR_INTERFACE,

@@ -67,7 +67,6 @@ export default function Farm() {
     const pair = swapPair;
 
     const blocksPerHour = 3600 / averageBlockTime;
-
     function getRewards() {
       // TODO: Some subgraphs give sushiPerBlock & sushiPerSecond, and mcv2 gives nothing
       const sushiPerBlock =

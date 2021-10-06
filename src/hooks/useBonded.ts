@@ -1,5 +1,5 @@
 import { BigNumber } from 'ethers';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   useActiveWeb3React,
   useDividendPoolAddress,
@@ -17,9 +17,12 @@ export function useBonded(): BigNumber | null {
 
   useEffect(() => {
     if (account !== null && dividendPoolContract !== null) {
-      dividendPoolContract.bonded(account).then((res) => {
-        setBonded(res);
-      });
+      dividendPoolContract
+        .bonded(account)
+        .then((res) => {
+          setBonded(res);
+        })
+        .catch((err) => console.error('fetch bonded error', err));
     }
   }, [account, dividendPoolContract, lastBlockNumber]);
 
@@ -33,9 +36,12 @@ export function useBondSupply(): BigNumber | null {
   const [totalSupply, setTotalSupply] = useState(null);
   useEffect(() => {
     if (stndContract !== null) {
-      stndContract.balanceOf(dividendPoolAddress).then((res) => {
-        setTotalSupply(res);
-      });
+      stndContract
+        .balanceOf(dividendPoolAddress)
+        .then((res) => {
+          setTotalSupply(res);
+        })
+        .catch((err) => console.log('fetch bond supply error', err));
     }
   }, [dividendPoolAddress, stndContract, lastBlockNumber]);
 
@@ -45,15 +51,19 @@ export function useBondSupply(): BigNumber | null {
 export function useLastBonded() {
   const { account } = useActiveWeb3React();
   const dividendPoolContract = useDividendPoolContract();
+  const lastBlockNumber = useBlockNumber();
   const [lastBonded, setLastBonded] = useState(null);
 
   useEffect(() => {
     if (dividendPoolContract !== null) {
-      dividendPoolContract.lastBonded(account).then((res) => {
-        setLastBonded(res);
-      });
+      dividendPoolContract
+        .lastBonded(account)
+        .then((res) => {
+          setLastBonded(res);
+        })
+        .catch((err) => console.log('fetch last bonded error', err));
     }
-  }, [dividendPoolContract, account]);
+  }, [dividendPoolContract, account, lastBlockNumber]);
 
   return lastBonded;
 }
@@ -65,9 +75,12 @@ export function useLastClaimed(token: string) {
 
   useEffect(() => {
     if (dividendPoolContract !== null) {
-      dividendPoolContract.last(account, token).then((res) => {
-        setLastClaimed(res);
-      });
+      dividendPoolContract
+        .getLastClaimed(token)
+        .then((res) => {
+          setLastClaimed(res);
+        })
+        .catch((err) => console.log('fetch last claimed error', err));
     }
   }, [dividendPoolContract, account]);
 

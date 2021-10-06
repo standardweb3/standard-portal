@@ -49,7 +49,6 @@ export const Image = ({
       {useBlur ? (
         <NextImage
           loader={loader}
-          unoptimized
           src={src}
           width={width}
           height={height}
@@ -62,7 +61,6 @@ export const Image = ({
         />
       ) : (
         <NextImage
-          unoptimized
           loader={loader}
           src={src}
           width={width}

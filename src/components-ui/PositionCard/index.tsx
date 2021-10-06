@@ -166,7 +166,7 @@ export function FullPositionCard({
   stakedBalance,
 }: PositionCardProps) {
   const router = useRouter();
-  const { account, chainId } = useActiveWeb3React();
+  const { account } = useActiveWeb3React();
 
   const currency0 = unwrappedToken(pair.token0);
   const currency1 = unwrappedToken(pair.token1);

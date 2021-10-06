@@ -4,7 +4,6 @@ import {
 } from '../../hooks/useApproveCallback';
 import {
   ChainId,
-  MASTERCHEF_ADDRESS,
   MASTERCHEF_V2_ADDRESS,
   Token,
   ZERO,
@@ -15,7 +14,6 @@ import React, { useState } from 'react';
 import { usePendingSushi, useUserInfo } from './hooks';
 
 import { Button } from '../../components-ui/Button';
-import { MINICHEF_ADDRESS } from '../../constants/addresses';
 import { Input as NumericalInput } from '../../components-ui/NumericalInput';
 import { formatNumber } from '../../functions';
 import { getAddress } from '@ethersproject/address';
@@ -50,7 +48,6 @@ const FarmListItem = ({ farm }) => {
   const amount = useUserInfo(farm, liquidityToken);
 
   const pendingSushi = usePendingSushi(farm);
-
   // const reward = usePendingReward(farm);
 
   const APPROVAL_ADDRESSES = {

@@ -102,7 +102,6 @@ export default function Remove() {
 
   // modal and loading
   const [showConfirm, setShowConfirm] = useState<boolean>(false);
-  const [showDetailed, setShowDetailed] = useState<boolean>(false);
   const [attemptingTxn, setAttemptingTxn] = useState(false); // clicked confirm
 
   // txn values

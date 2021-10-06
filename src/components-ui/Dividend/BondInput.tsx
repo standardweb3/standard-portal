@@ -70,11 +70,15 @@ export function BondInput({
           >
             <div className="flex items-center justify-center space-x-3">
               <div>
-                {approvalState === ApprovalState.PENDING
-                  ? 'Approving'
-                  : 'Approve'}
+                {approvalState === ApprovalState.PENDING ? (
+                  <div className="flex items-center space-x-2">
+                    <div>Approving </div>
+                    <RippleSpinner size={16} />
+                  </div>
+                ) : (
+                  'Approve'
+                )}
               </div>
-              <RippleSpinner size={16} />
             </div>
           </Button>
         ) : (

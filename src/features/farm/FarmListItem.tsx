@@ -95,9 +95,11 @@ const FarmListItem = ({ farm, ...rest }) => {
                 </ViewportLargeUp>
                 <div className="space-y-2">
                   {farm?.rewards?.map((reward, i) => (
-                    <div className="flex flex-col lg:flex-row items-center space-y-2 lg:space-y-0 lg:space-x-2">
+                    <div
+                      key={i}
+                      className="flex flex-col lg:flex-row items-center space-y-2 lg:space-y-0 lg:space-x-2"
+                    >
                       <div
-                        key={i}
                         className="text-xs md:text-sm whitespace-nowrap
                         rounded-20 bg-background-farm-list px-3 py-2 font-bold"
                       >

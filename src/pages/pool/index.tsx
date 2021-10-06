@@ -30,10 +30,6 @@ export default function Pool() {
   const { account, chainId } = useActiveWeb3React();
   const protocol = useProtocol();
 
-  const userEthBalance = useETHBalances(account ? [account] : [])?.[
-    account ?? ''
-  ];
-
   // fetch the user's balances of all tracked V2 LP tokens
   const trackedTokenPairs = useTrackedTokenPairs();
   const tokenPairsWithLiquidityTokens = useMemo(

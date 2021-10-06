@@ -44,7 +44,6 @@ export const BondWrapper = styled.div`
 
 export default function Dividend() {
   const { account, chainId } = useActiveWeb3React();
-  const isSmall = useSizeSmDown();
   const [pendingTx, setPendingTx] = useState(false);
   const [depositValue, setDepositValue] = useState('');
   const [withdrawValue, setWithdrawValue] = useState('');

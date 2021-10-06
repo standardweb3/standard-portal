@@ -1562,17 +1562,17 @@
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha512-5a6wqoJV/xEdbRNKVo6I4hO3VjyDq//8q2f9I6PBAvMesJHFauXDorcNCsr9RzvsZnaWi5NYCcfyqP1QeFHFbw==
 
-"@digitalnative/default-token-list@0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@digitalnative/default-token-list/-/default-token-list-0.0.12.tgz#845bb9365697e5fbb3b2ce22a3332d0d4472a460"
-  integrity sha512-T6UCmYkT9puNXn/S2tEHVQwehNG5UKZFcL1Xn2vZuKjQ7lS7rK6n8kVtjd+dOW5c2+cKA1l4uHsA0lqcdSllSQ==
+"@digitalnative/default-token-list@0.0.13":
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/@digitalnative/default-token-list/-/default-token-list-0.0.13.tgz#6c6a024bed5a0242d18835b54ad7526f294ffafb"
+  integrity sha512-pFtZjP8jlHLKFYmtzIY1/PHhcaX+OinMGj1z2awXr6tCR/bNURK2d5LtaMU/Er2HvtUqCemLZhu6DG7a3GT6Tw==
   dependencies:
     "@tenderly/hardhat-tenderly" "^1.0.12"
 
-"@digitalnative/standard-protocol-sdk@^0.0.91":
-  version "0.0.91"
-  resolved "https://registry.yarnpkg.com/@digitalnative/standard-protocol-sdk/-/standard-protocol-sdk-0.0.91.tgz#fd4a03139a5acb34d1b9c10089bde2e07cae44c3"
-  integrity sha512-iz9X/irpDs8liQJB6z94AQ4mwC/vwSpNvqWW31QJ8Nm9gj6dx45lQLKtKBnkJ3RnJPWf0Ljdb0mnPh3AdqDOug==
+"@digitalnative/standard-protocol-sdk@^0.0.96":
+  version "0.0.96"
+  resolved "https://registry.yarnpkg.com/@digitalnative/standard-protocol-sdk/-/standard-protocol-sdk-0.0.96.tgz#861d43a061eb82659d56d25c332d44da8d026e13"
+  integrity sha512-TG0EqZmFZFEtOh9AQo2yT53THGlSUJDQ/Z8g+2vy/6UfWQjEBnx25TAFkRewTqN5QvzB7Y6KXhBtvoT5IlVm0g==
   dependencies:
     big.js "^6.1.0"
     decimal.js-light "^2.5.0"
