@@ -15,7 +15,7 @@ const RPC = {
   [ChainId.ROPSTEN]:
     'https://eth-ropsten.alchemyapi.io/v2/325Q127k2d4G_Ev077fwz-OzPz7fyIZ4',
   [ChainId.RINKEBY]:
-    'https://eth-mainnet.alchemyapi.io/v2/-m6r5QkA0mAmuLJ71qRce4xOI7w8w73l',
+    'https://eth-rinkeby.alchemyapi.io/v2/-m6r5QkA0mAmuLJ71qRce4xOI7w8w73l',
   [ChainId.GÖRLI]:
     'https://eth-goerli.alchemyapi.io/v2/LMUMz1ESenYl3xQPw2jUcgNsS8aasIFH',
   [ChainId.KOVAN]:
