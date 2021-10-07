@@ -21,7 +21,6 @@ const NameOverflow = styled.div`
 
 export default function ImportRow({
   token,
-  style,
   transparent,
   showImportView,
   setImportToken,

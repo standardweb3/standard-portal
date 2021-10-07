@@ -86,6 +86,9 @@ export default function Liquidity() {
         (currencyB && currencyEquals(currencyB, WNATIVE[chainId]))),
   );
 
+  const currencyAIsETH = currencyIdA === 'ETH';
+  const currencyBIsETH = currencyIdB === 'ETH';
+
   // const toggleWalletModal = useWalletModalToggle(); // toggle wallet when disconnected
   const [isExpertMode] = useExpertModeManager();
 
@@ -169,6 +172,7 @@ export default function Liquidity() {
     parsedAmounts[Field.CURRENCY_A],
     routerContract?.address,
   );
+
   const [approvalB, approveBCallback] = useApproveCallback(
     parsedAmounts[Field.CURRENCY_B],
     routerContract?.address,
@@ -578,53 +582,67 @@ export default function Liquidity() {
                   <div className="grid gap-4">
                     {
                       <div className="w-full flex justify-between space-x-3">
-                        {approvalA !== ApprovalState.APPROVED && (
-                          <Button
-                            className={Typographies.swapButton}
-                            onClick={approveACallback}
-                            disabled={approvalA === ApprovalState.PENDING}
-                            style={{
-                              width:
-                                approvalB !== ApprovalState.APPROVED
-                                  ? '48%'
-                                  : '100%',
-                            }}
-                          >
-                            {approvalA === ApprovalState.PENDING ? (
-                              <div className="flex items-center justify-center space-x-3">
-                                <div>{`Approving ${
-                                  currencies[Field.CURRENCY_A]?.symbol
-                                }`}</div>
-                                <RippleSpinner size={16} />
-                              </div>
-                            ) : (
-                              `Approve ${currencies[Field.CURRENCY_A]?.symbol}`
+                        {!currencyAIsETH && (
+                          <>
+                            {approvalA !== ApprovalState.APPROVED && (
+                              <Button
+                                className={Typographies.swapButton}
+                                onClick={approveACallback}
+                                disabled={approvalA === ApprovalState.PENDING}
+                                style={{
+                                  width:
+                                    approvalB !== ApprovalState.APPROVED &&
+                                    !currencyBIsETH
+                                      ? '48%'
+                                      : '100%',
+                                }}
+                              >
+                                {approvalA === ApprovalState.PENDING ? (
+                                  <div className="flex items-center justify-center space-x-3">
+                                    <div>{`Approving ${
+                                      currencies[Field.CURRENCY_A]?.symbol
+                                    }`}</div>
+                                    <RippleSpinner size={16} />
+                                  </div>
+                                ) : (
+                                  `Approve ${
+                                    currencies[Field.CURRENCY_A]?.symbol
+                                  }`
+                                )}
+                              </Button>
                             )}
-                          </Button>
+                          </>
                         )}
-                        {approvalB !== ApprovalState.APPROVED && (
-                          <Button
-                            className={Typographies.swapButton}
-                            onClick={approveBCallback}
-                            disabled={approvalB === ApprovalState.PENDING}
-                            style={{
-                              width:
-                                approvalA !== ApprovalState.APPROVED
-                                  ? '48%'
-                                  : '100%',
-                            }}
-                          >
-                            {approvalB === ApprovalState.PENDING ? (
-                              <div className="flex items-center justify-center space-x-3">
-                                <div>{`Approving ${
-                                  currencies[Field.CURRENCY_B]?.symbol
-                                }`}</div>
-                                <RippleSpinner size={16} />
-                              </div>
-                            ) : (
-                              `Approve ${currencies[Field.CURRENCY_B]?.symbol}`
+                        {!currencyBIsETH && (
+                          <>
+                            {approvalB !== ApprovalState.APPROVED && (
+                              <Button
+                                className={Typographies.swapButton}
+                                onClick={approveBCallback}
+                                disabled={approvalB === ApprovalState.PENDING}
+                                style={{
+                                  width:
+                                    approvalA !== ApprovalState.APPROVED &&
+                                    !currencyAIsETH
+                                      ? '48%'
+                                      : '100%',
+                                }}
+                              >
+                                {approvalB === ApprovalState.PENDING ? (
+                                  <div className="flex items-center justify-center space-x-3">
+                                    <div>{`Approving ${
+                                      currencies[Field.CURRENCY_B]?.symbol
+                                    }`}</div>
+                                    <RippleSpinner size={16} />
+                                  </div>
+                                ) : (
+                                  `Approve ${
+                                    currencies[Field.CURRENCY_B]?.symbol
+                                  }`
+                                )}
+                              </Button>
                             )}
-                          </Button>
+                          </>
                         )}
                       </div>
                     }

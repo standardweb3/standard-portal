@@ -57,7 +57,7 @@ export function AdvancedSwapDetails({
           />
         </div>
         <div>
-          <div className="text-sm font-bold">
+          <div className="text-sm font-bold text-right">
             {trade.tradeType === TradeType.EXACT_INPUT
               ? `${trade.minimumAmountOut(allowedSlippage).toSignificant(6)} ${
                   trade.outputAmount.currency.symbol

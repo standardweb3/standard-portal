@@ -46,14 +46,6 @@ const Tag = styled.div`
   margin-right: 4px;
 `;
 
-const FixedContentRow = styled.div`
-  padding: 4px 20px;
-  height: 56px;
-  display: grid;
-  grid-gap: 16px;
-  align-items: center;
-`;
-
 function Balance({ balance }: { balance: CurrencyAmount<Currency> }) {
   return (
     <div
@@ -116,7 +108,7 @@ function CurrencyRow({
   otherSelected: boolean;
   style: CSSProperties;
 }) {
-  const { account, chainId } = useActiveWeb3React();
+  const { account } = useActiveWeb3React();
   const key = currencyKey(currency);
   const selectedTokenList = useCombinedActiveList();
   const isOnSelectedList = isTokenOnList(
@@ -130,7 +122,7 @@ function CurrencyRow({
   return (
     <MenuItem
       id={`token-item-${key}`}
-      style={style}
+      // style={style}
       className={`rounded-20`}
       onClick={() => (isSelected ? null : onSelect())}
       disabled={isSelected}
@@ -175,7 +167,8 @@ function BreakLineComponent({ style }: { style?: CSSProperties }) {
   return (
     <div
       className="
-      flex justify-center items-center 
+      w-full
+      flex items-center 
       space-x-3 
       p-3 text-sm"
     >

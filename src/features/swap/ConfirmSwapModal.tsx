@@ -9,7 +9,6 @@ import {
 } from '@digitalnative/standard-protocol-sdk';
 import { ArrowRightIcon } from '@heroicons/react/outline';
 import React, { useCallback, useMemo } from 'react';
-import { CurrencyLogo } from '../../components-ui/CurrencyLogo';
 import { TradeAmountInfo } from '../../components-ui/TradeAmountInfo';
 import TransactionConfirmationModal, {
   ConfirmationModalContent,

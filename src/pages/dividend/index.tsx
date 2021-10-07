@@ -111,7 +111,7 @@ export default function Dividend() {
     setPendingTx(false);
   };
 
-  const handleUnbond = async () => {
+  const handleUnbond = async (token) => {
     setPendingTx(true);
     try {
       // KMP decimals depend on asset, SLP is always 18
@@ -125,6 +125,22 @@ export default function Dividend() {
     }
     setPendingTx(false);
   };
+
+  const handleClaim = async (address: string) => {
+    setPendingTx(true);
+    try {
+      // KMP decimals depend on asset, SLP is always 18
+      const tx = await claim(address);
+
+      addTransaction(tx, {
+        summary: `Claim dividend`,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+    setPendingTx(false);
+  };
+
   return (
     <>
       <Head>
@@ -251,7 +267,7 @@ export default function Dividend() {
               </div>
             </div>
             <DividendPairs
-              claim={claim}
+              claim={handleClaim}
               className="mt-12"
               share={share}
               pairsWithDividends={fetchedWhitelistPairs}

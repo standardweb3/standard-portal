@@ -232,6 +232,7 @@ export function CurrencyInputPanel({
                     text-xs border 
                     rounded-full 
                     hover:bg-primary 
+                    hover:text-text
                     transition duration-200
                     whitespace-nowrap`}
                 >
