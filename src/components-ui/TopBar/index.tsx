@@ -1,14 +1,9 @@
-import { css, useTheme } from '@emotion/react';
 import { Logo } from '../Logo';
-import { ConnectionStatus } from '../ConnectionStatus';
 import { useActiveWeb3React } from '../../hooks';
 import { useETHBalances } from '../../state/wallet/hooks';
-import { NetworkStatus } from '../NetworkStatus';
 import { sidebarRoutes } from '../../routes';
-import { useSwitchProtocol } from '../../state/protocol/hooks';
 import { TopBarNavigation } from '../TopBarNavigation/TopBarNavigation';
 import { useCallback, useState } from 'react';
-import { Modal } from '../Modal';
 import { MenuIcon } from '@heroicons/react/outline';
 import { Slider } from '../Slider';
 import { ModalHeader } from '../Modal/ModalHeader';
@@ -42,11 +37,8 @@ export function TopBar() {
           <Logo short />
         </div>
         {library && library.provider.isMetaMask && <NetworkDropDown />}
-        <div className="flex space-x-3 items-center">
-          <ConnectionStatus className="!rounded-20" />
-          <div onClick={handleMenuOpen} className="cursor-pointer">
-            <MenuIcon className="w-6 h-6" />
-          </div>
+        <div onClick={handleMenuOpen} className="cursor-pointer">
+          <MenuIcon className="w-6 h-6" />
         </div>
       </div>
       <Slider isOpen={menuOpen}>

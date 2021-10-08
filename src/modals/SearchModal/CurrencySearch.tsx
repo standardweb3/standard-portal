@@ -41,7 +41,8 @@ import { useOnClickOutside } from '../../hooks/useOnClickOutside';
 import { useRouter } from 'next/router';
 import useToggle from '../../hooks/useToggle';
 import { useTokenComparator } from './sorting';
-import { Divider } from '../../components-ui/Divider';
+import { isMobile } from 'react-device-detect';
+
 interface CurrencySearchProps {
   isOpen: boolean;
   onDismiss: () => void;
@@ -226,7 +227,7 @@ export function CurrencySearch({
             placeholder={`Search name or token address`}
             autoComplete="off"
             value={searchQuery}
-            ref={inputRef as RefObject<HTMLInputElement>}
+            ref={isMobile ? null : (inputRef as RefObject<HTMLInputElement>)}
             onChange={handleInput}
             onKeyDown={handleEnter}
             className={`
