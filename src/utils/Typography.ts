@@ -20,7 +20,7 @@ export const Typographies = {
     w-full
     md:max-w-[600px]
     bg-opaque
-    rounded-20 p-8
+    rounded-20 p-4 sm:p-8
     text-text
   `,
   manageTab: ` 
@@ -53,8 +53,9 @@ export const Typographies = {
   space-x-3
   bg-opaque-secondary 
   rounded-20
-  p-3`,
+  pl-1 pr-3 sm:pl-4 sm:pr-4 py-3`,
   importRowTransparent: `
   flex items-center space-x-3
-  bg-transparent p-3`,
+  bg-transparent 
+  pl-1 pr-3 sm:pl-3 sm:pr-3 py-3`,
 };

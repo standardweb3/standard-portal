@@ -130,7 +130,9 @@ export function Modal({
               className={classNames(
                 `text-text
                  h-full
-                 rounded-xl p-8
+                 rounded-xl
+                 px-4 py-6
+                 sm:px-8 sm:py-8
                  bg-background-modal`,
                 className ?? '',
               )}

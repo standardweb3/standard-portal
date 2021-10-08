@@ -56,7 +56,6 @@ export const PaddedColumn = styled.div`
 export const MenuItem = styled.div<{ disabled: boolean; selected: boolean }>`
   display: flex;
   align-items: center;
-  padding: 4px 20px;
   height: 56px;
   display: grid;
   grid-template-columns: auto minmax(auto, 1fr) auto minmax(0, 72px);

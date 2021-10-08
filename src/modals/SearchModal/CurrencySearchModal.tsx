@@ -72,7 +72,7 @@ function CurrencySearchModal({
     modalView === CurrencyModalView.importToken ||
     modalView === CurrencyModalView.importList
       ? undefined
-      : '80vh';
+      : '88vh';
 
   const isViewportSmallDown = useSizeSmDown();
 

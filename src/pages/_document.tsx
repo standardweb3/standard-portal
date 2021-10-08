@@ -2,7 +2,7 @@ import Document, { Head, Html, Main, NextScript } from 'next/document';
 
 export default class MyDocument extends Document {
   render() {
-    return process.env.NODE_ENV === 'production' ? (
+    return (
       <Html lang="en" dir="ltr">
         <Head>
           <link
@@ -182,13 +182,6 @@ export default class MyDocument extends Document {
 
           <link rel="manifest" href="/manifest.json" />
         </Head>
-        <body>
-          <Main />
-          <NextScript />
-        </body>
-      </Html>
-    ) : (
-      <Html>
         <body>
           <Main />
           <NextScript />

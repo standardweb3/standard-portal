@@ -28,7 +28,7 @@ export function Page({ children, id, className }: PageProps) {
       {children}
 
       <ViewportSmallDown>
-        <div className="fixed right-0 bottom-0 justify-center mb-6 px-8">
+        <div className="fixed right-0 bottom-0 justify-center mb-6 px-4 sm:px-8">
           <StndAdder />
         </div>
       </ViewportSmallDown>
