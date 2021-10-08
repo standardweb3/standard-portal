@@ -71,6 +71,7 @@ export function useLastBonded() {
 export function useLastClaimed(token: string) {
   const { account } = useActiveWeb3React();
   const dividendPoolContract = useDividendPoolContract();
+  const lastBlockNumber = useBlockNumber();
   const [lastClaimed, setLastClaimed] = useState(null);
 
   useEffect(() => {
@@ -82,7 +83,7 @@ export function useLastClaimed(token: string) {
         })
         .catch((err) => console.log('fetch last claimed error', err));
     }
-  }, [dividendPoolContract, account]);
+  }, [dividendPoolContract, account, lastBlockNumber]);
 
   return lastClaimed;
 }
