@@ -578,9 +578,9 @@ export default function Swap() {
                   showCommonBases={true}
                   id="swap-currency-input"
                 />
-                <div className="flex justify-center items-center">
+                <div className="flex justify-center items-center my-3">
                   <button
-                    className="z-10 rounded-xl px-3 py-6 -mt-10 -mb-10 text-text"
+                    className="z-10 sm:-mt-10 sm:-mb-10 text-text"
                     onClick={() => {
                       setApprovalSubmitted(false); // reset 2 step UI for approvals
                       onSwitchTokens();

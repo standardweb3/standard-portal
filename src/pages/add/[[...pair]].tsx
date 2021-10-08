@@ -499,8 +499,9 @@ export default function Liquidity() {
                 isPairValid={isPairValid}
               />
 
-              <div>
+              <div className="mt-5 sm:mt-0">
                 <CurrencyInputPanel
+                  label={'Token 1:'}
                   value={formattedAmounts[Field.CURRENCY_A]}
                   onUserInput={onFieldAInput}
                   onMax={() => {
@@ -515,10 +516,10 @@ export default function Liquidity() {
                   showCommonBases
                 />
 
-                <div className="flex justify-center items-center">
+                <div className="flex justify-center items-center my-3">
                   <button
                     className="
-                      z-10 rounded-20 px-3 py-6 -mt-10 -mb-10 text-text
+                      z-10 sm:-mt-10 sm:-mb-10 text-text
                       cursor-default
                     "
                   >
@@ -529,6 +530,7 @@ export default function Liquidity() {
                 </div>
 
                 <CurrencyInputPanel
+                  label={'Token 2:'}
                   value={formattedAmounts[Field.CURRENCY_B]}
                   onUserInput={onFieldBInput}
                   onCurrencySelect={handleCurrencyBSelect}

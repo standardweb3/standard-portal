@@ -20,6 +20,7 @@ import { Input as NumericalInput } from '../NumericalInput';
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
 import { useCurrencyBalance } from '../../state/wallet/hooks';
 import { BoxSpinner } from '../Spinner/BoxSpinner';
+import { ViewportXSmall } from '../Responsive';
 
 interface CurrencyInputPanelProps {
   value?: string;
@@ -61,9 +62,9 @@ export function CurrencyInputPanel({
   hideBalance = false,
   pair = null, // used for double token logo
   hideInput = false,
-  locked = false,
-  customBalanceText,
-}: CurrencyInputPanelProps) {
+}: // locked = false,
+// customBalanceText,
+CurrencyInputPanelProps) {
   const [modalOpen, setModalOpen] = useState(false);
   const { account } = useActiveWeb3React();
   const selectedCurrencyBalance = useCurrencyBalance(
@@ -106,10 +107,27 @@ export function CurrencyInputPanel({
     <div>
       <div
         id={id}
-        className={classNames('px-4 py-1', 'rounded-20 bg-opaque-secondary')}
+        className={classNames(
+          'px-4 py-2 sm:py-1',
+          'rounded-20 bg-background-currency-input-xs sm:bg-opaque-secondary',
+        )}
       >
-        <div className="flex items-center justify-between">
-          <div>
+        <div
+          className="
+          flex 
+          space-y-2 sm:space-y-0
+          flex-col sm:flex-row 
+          items-end sm:items-center
+          justify-cneter sm:justify-between"
+        >
+          <div className="flex w-full justify-between sm:justify-start">
+            <ViewportXSmall>
+              {label && (
+                <div className="flex items-center text-grey text-xl">
+                  {label}
+                </div>
+              )}
+            </ViewportXSmall>
             <button
               type="button"
               className={classNames(
@@ -130,7 +148,7 @@ export function CurrencyInputPanel({
                 className={`
             flex 
             rounded-20
-            bg-opaque-inactive
+            bg-opaque-secondary sm:bg-opaque-inactive
             items-center
             px-3 py-3
             `}
@@ -201,6 +219,8 @@ export function CurrencyInputPanel({
                 `flex items-center 
                w-full space-x-3 
                rounded-20
+               p-4 sm:p-0
+               bg-opaque-secondary sm:bg-transparent
             `,
                 // showMaxButton && selectedCurrencyBalance && 'px-3'
               )}
@@ -208,6 +228,7 @@ export function CurrencyInputPanel({
               <div className="w-full">
                 <NumericalInput
                   className={`
+                  rounded-20 sm:rounded-none
                   w-full
                   text-right
                   text-xl

@@ -56,6 +56,7 @@ module.exports = {
         'background-settings': '#4E3E5C',
         'background-farm-list': '#474771',
         'background-bond': 'rgba(119, 36, 210, 1)',
+        'background-currency-input-xs': 'rgba(77, 36, 96, 0.2)',
         opaque: 'rgba(255,255,255,0.04)',
         'opaque-secondary': 'rgba(222, 199, 239, 0.13)',
         'opaque-slider': 'rgba(24,1,1,0.35)',
