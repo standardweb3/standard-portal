@@ -113,7 +113,7 @@ export default function Pool() {
           <Alert
             className={Typographies.pageAlertMaxed}
             title={`Liquidity Provider Rewards`}
-            message={`Liquidity providers earn a 0.3% fee on all trades proportional to their share of
+            message={`Liquidity providers earn a 0.25% fee on all trades proportional to their share of
                         the pool. Fees are added to the pool, accrue in real time and can be claimed by
                         withdrawing your liquidity`}
             type="information"
