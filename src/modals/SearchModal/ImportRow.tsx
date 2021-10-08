@@ -6,7 +6,7 @@ import { ListLogo } from '../../components-ui/Logo/ListLogo';
 import { Token } from '@digitalnative/standard-protocol-sdk';
 import styled from '@emotion/styled';
 import { WrappedTokenInfo } from '../../state/lists/wrappedTokenInfo';
-import { CheckCircleIcon, TrashIcon } from '@heroicons/react/outline';
+import { TrashIcon } from '@heroicons/react/outline';
 import { Typographies } from '../../utils/Typography';
 import { Question } from '../../components-ui/Question';
 

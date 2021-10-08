@@ -102,7 +102,7 @@ export function Modal({
   maxWidth,
 }: ModalProps) {
   const modalTranstion = useTransition(isOpen, {
-    config: { duration: 0 },
+    config: { duration: 200 },
     from: { opacity: 0 },
     enter: { opacity: 1 },
     leave: { opacity: 0 },

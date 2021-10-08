@@ -1,6 +1,8 @@
 {
   "name": "Standard Protocol",
   "short_name": "Standard Protocol",
+  "lang": "en",
+  "description": "Standard Protocol, building the next multichain money",
   "icons": [
     {
       "src": "/android-chrome-192x192.webp",
@@ -13,7 +15,9 @@
       "type": "image/webp"
     }
   ],
-  "theme_color": "#ffffff",
+  "start_url": "/",
+  "theme_color": "#C6137F",
   "background_color": "#ffffff",
-  "display": "standalone"
+  "display": "standalone",
+  "orientation": "portrait"
 }

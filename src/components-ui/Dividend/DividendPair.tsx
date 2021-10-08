@@ -141,7 +141,7 @@ export function DividendPair({
       <div className="flex flex-col mt-4 lg:mt-0 lg:items-end col-span-6 items-center lg:col-span-1 space-y-2">
         <Button
           onClick={handleClaim}
-          disabled={share === 0 || remaining}
+          disabled={share === null || share === 0 || remaining}
           className="!font-bold px-8 text-lg"
         >
           {remaining ? <CountdownTimer time={remainingSeconds} /> : 'Claim'}

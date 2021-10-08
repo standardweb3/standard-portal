@@ -11,8 +11,6 @@ import { PageHeader } from '../../components-ui/PageHeader';
 import { PageContent } from '../../components-ui/PageContent';
 import { Typographies } from '../../utils/Typography';
 import {
-  useSizeSmDown,
-  useSizeXs,
   ViewportMediumUp,
   ViewportSmallUp,
   ViewportXSmall,
@@ -165,7 +163,7 @@ export default function Dividend() {
                 fee and do not give back.
                 <br /> At <strong>Standard’s Portal</strong>, portions of the
                 swap fees are distributed as proportional to your share of the
-                pool letting both the plataform and the community maintain
+                pool letting both the platform and the community maintain
                 sustainability and grow together as one
               </div>
             }
