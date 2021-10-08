@@ -25,6 +25,7 @@ export default function ImportRow({
   showImportView,
   setImportToken,
   handleRemove,
+  style,
 }: {
   token: Token;
   style?: CSSProperties;
@@ -44,6 +45,7 @@ export default function ImportRow({
       className={
         transparent ? Typographies.importRowTransparent : Typographies.importRow
       }
+      style={style}
     >
       <CurrencyLogo currency={token} size={'36px'} className="rounded-full" />
       <div className="flex justify-center items-center">

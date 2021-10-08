@@ -62,10 +62,6 @@ const TagContainer = styled.div`
   justify-content: flex-end;
 `;
 
-const TokenListLogoWrapper = styled.img`
-  height: 20px;
-`;
-
 function TokenTags({ currency }: { currency: Currency }) {
   if (!(currency instanceof WrappedTokenInfo)) {
     return <span />;
@@ -101,7 +97,8 @@ function CurrencyRow({
   isSelected,
   otherSelected,
   style,
-}: {
+}: // style,
+{
   currency: Currency;
   onSelect: () => void;
   isSelected: boolean;
@@ -123,7 +120,7 @@ function CurrencyRow({
     <MenuItem
       className="pl-1 pr-3 sm:pl-4 sm:pr-4 py-1 rounded-20"
       id={`token-item-${key}`}
-      // style={style}
+      style={style}
       onClick={() => (isSelected ? null : onSelect())}
       disabled={isSelected}
       selected={otherSelected}
@@ -171,6 +168,7 @@ function BreakLineComponent({ style }: { style?: CSSProperties }) {
       flex items-center 
       space-x-3 
       p-3 text-sm"
+      style={style}
     >
       <div>{`Expanded results from inactive Token Lists`}</div>
       <Question
@@ -214,7 +212,7 @@ export default function CurrencyList({
       const row: Currency | BreakLine = data[index];
 
       if (isBreakLine(row)) {
-        return <BreakLineComponent />;
+        return <BreakLineComponent style={style} />;
       }
 
       const currency = row;
