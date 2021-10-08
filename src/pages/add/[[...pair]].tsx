@@ -2,6 +2,7 @@ import { TransactionResponse } from '@ethersproject/providers';
 import Head from 'next/head';
 import ReactGA from 'react-ga';
 import {
+  ChainId,
   Currency,
   CurrencyAmount,
   currencyEquals,
@@ -431,12 +432,14 @@ export default function Liquidity() {
         </ViewportMediumUp>
 
         <PageContent>
-          <Alert
-            className={Typographies.pageAlertMaxed}
-            title={`Please Read!`}
-            message={`Adding liquidity for SBY-ERC20 does not work due to the Shibuya EVM error. Please wrap your SBY to WSBY and add WSBY-ERC20 liquidity instead`}
-            type="warning"
-          />
+          {chainId === ChainId.SHIBUYA && (
+            <Alert
+              className={Typographies.pageAlertMaxed}
+              title={`Please Read!`}
+              message={`Adding liquidity for SBY-ERC20 does not work due to the Shibuya EVM error. Please wrap your SBY to WSBY and add WSBY-ERC20 liquidity instead`}
+              type="warning"
+            />
+          )}
           <Alert
             className={Typographies.pageAlertMaxed}
             message={
