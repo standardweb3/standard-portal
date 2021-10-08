@@ -45,10 +45,8 @@ const Layout = ({ children }) => {
         </ViewportMediumUp>
         <Main>{children}</Main>
       </div>
-      <Cone1 />
-      <Cone3 />
-      {/* {!isMobile && <Cone1 />}
-      {!isMobile && <Cone3 />} */}
+      {!isMobile && <Cone1 />}
+      {!isMobile && <Cone3 />}
     </div>
   );
 };
