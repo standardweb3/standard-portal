@@ -161,7 +161,7 @@ export function CurrencySearch({
   }, [isOpen]);
 
   // manage focus on modal show
-  const inputRef = useRef<HTMLInputElement>();
+  // const inputRef = useRef<HTMLInputElement>();
   const handleInput = useCallback((event) => {
     const input = event.target.value;
     const checksummedInput = isAddress(input);
@@ -222,12 +222,13 @@ export function CurrencySearch({
           `}
         >
           <input
+            tabIndex={-1}
             type="text"
             id="token-search-input"
             placeholder={`Search name or token address`}
             autoComplete="off"
             value={searchQuery}
-            ref={isMobile ? null : (inputRef as RefObject<HTMLInputElement>)}
+            // ref={inputRef as RefObject<HTMLInputElement>}
             onChange={handleInput}
             onKeyDown={handleEnter}
             className={`
