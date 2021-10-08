@@ -28,7 +28,7 @@ export function Page({ children, id, className }: PageProps) {
       {children}
 
       <ViewportSmallDown>
-        <div className="fixed flex w-full justify-between right-0 bottom-0 items-center mb-6 px-4 sm:px-8">
+        <div className="fixed flex w-full justify-between right-0 bottom-0 items-center mb-6 px-4 sm:px-8 space-x-4">
           <ConnectionStatus className="!rounded-20" />
           <StndAdder />
         </div>
