@@ -1,9 +1,4 @@
-import {
-  CurrencyAmount,
-  Pair,
-  Protocol,
-  PROTOCOLS,
-} from '@digitalnative/standard-protocol-sdk';
+import { CurrencyAmount, Pair } from '@digitalnative/standard-protocol-sdk';
 import React, { useMemo } from 'react';
 import {
   toV2LiquidityToken,

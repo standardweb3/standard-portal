@@ -28,7 +28,7 @@ const TYPE = {
     ),
   },
   warning: {
-    typeClassName: 'bg-warn bg-opacity-25',
+    typeClassName: 'bg-highlight bg-opacity-25',
     icon: <ExclamationCircleIcon className="text-warn w-4 h-4" />,
   },
   error: {

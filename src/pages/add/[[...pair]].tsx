@@ -433,6 +433,12 @@ export default function Liquidity() {
         <PageContent>
           <Alert
             className={Typographies.pageAlertMaxed}
+            title={`Please Read!`}
+            message={`Adding liquidity for SBY-ERC20 does not work due to the Shibuya EVM error. Please wrap your SBY to WSBY and add WSBY-ERC20 liquidity instead`}
+            type="warning"
+          />
+          <Alert
+            className={Typographies.pageAlertMaxed}
             message={
               noLiquidity ? (
                 `When creating a pair you are the first liquidity provider. The ratio of tokens you add will set the price of this pool. Once you are happy with the rate, click supply to review`
