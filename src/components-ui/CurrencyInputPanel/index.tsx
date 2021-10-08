@@ -115,12 +115,12 @@ CurrencyInputPanelProps) {
         <div
           className="
           flex 
-          space-y-2 sm:space-y-0
+          space-y-3 sm:space-y-0
           flex-col sm:flex-row 
           items-end sm:items-center
           justify-cneter sm:justify-between"
         >
-          <div className="flex w-full justify-between sm:justify-start">
+          <div className="flex space-x-4 w-full justify-between sm:justify-start">
             <ViewportXSmall>
               {label && (
                 <div className="flex items-center text-grey text-xl">

@@ -45,9 +45,10 @@ const Layout = ({ children }) => {
         </ViewportMediumUp>
         <Main>{children}</Main>
       </div>
-
-      {!isMobile && <Cone1 />}
-      {!isMobile && <Cone3 />}
+      <Cone1 />
+      <Cone3 />
+      {/* {!isMobile && <Cone1 />}
+      {!isMobile && <Cone3 />} */}
     </div>
   );
 };
@@ -59,6 +60,11 @@ const Cone1 = styled.div`
   right: 0px;
   top: 0%;
   z-index: -1;
+  @media only screen and (max-width: 640px) {
+    width: 208.46px;
+    height: 226.36px;
+    right: -100px;
+  }
 
   background: conic-gradient(
     from 161.21deg at 34.58% 54.69%,
@@ -71,19 +77,19 @@ const Cone1 = styled.div`
   transform: rotate(-29.96deg);
 `;
 
-const Cone2 = styled.div`
-  position: absolute;
-  width: 428.56px;
-  height: 909.75px;
-  right: 25%;
-  top: 25%;
-  z-index: -1;
+// const Cone2 = styled.div`
+//   position: absolute;
+//   width: 428.56px;
+//   height: 909.75px;
+//   right: 25%;
+//   top: 25%;
+//   z-index: -1;
 
-  background: linear-gradient(347.31deg, #ff009c -22.31%, #439fbc 92.99%);
-  // opacity: 0.3;
-  filter: blur(240px);
-  transform: rotate(-75deg);
-`;
+//   background: linear-gradient(347.31deg, #ff009c -22.31%, #439fbc 92.99%);
+//   // opacity: 0.3;
+//   filter: blur(240px);
+//   transform: rotate(-75deg);
+// `;
 
 const Cone3 = styled.div`
   position: absolute;
@@ -92,6 +98,10 @@ const Cone3 = styled.div`
   right: -0%;
   bottom: -20%;
   z-index: -1;
+
+  @media only screen and (max-width: 640px) {
+    bottom: -40%;
+  }
 
   background: conic-gradient(
     from 161.21deg at 34.58% 54.69%,
