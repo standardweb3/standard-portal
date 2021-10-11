@@ -1,8 +1,8 @@
 import { AppDispatch, AppState } from '..';
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from '../../constants';
 import {
-  ChainId,
-  FACTORY_ADDRESS,
+  // ChainId,
+  // FACTORY_ADDRESS,
   JSBI,
   Pair,
   Percent,
@@ -40,7 +40,11 @@ import ReactGA from 'react-ga';
 import flatMap from 'lodash/flatMap';
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
 import { useAllTokens } from '../../hooks/Tokens';
-import { useDividendPoolAddress, useFactoryContract } from '../../hooks';
+import {
+  useDividendPoolAddress,
+  useFactoryContract,
+  useMasterChefV2Contract,
+} from '../../hooks';
 import { usePagination } from '../../hooks/usePagination';
 import { useMultipleContractSingleData } from '../multicall/hooks';
 import { Interface } from '@ethersproject/abi';
@@ -48,6 +52,7 @@ import ERC20_ABI from '../../constants/abis/erc20.json';
 import { useProtocol } from '../protocol/hooks';
 import { useBlockNumber } from '../application/hooks';
 import IUniswapV2PairABI from '@sushiswap/core/abi/IUniswapV2Pair.json';
+import { BigNumber, BigNumberish } from 'ethers';
 
 function serializeToken(token: Token): SerializedToken {
   return {
@@ -317,6 +322,15 @@ export function usePairsDividendBalances(pairs) {
   return { balances, reserves, anyLoading };
 }
 
+export type FarmingPoolWithReserve = {
+  address: string;
+  reserve0: BigNumber | null;
+  reserve1: BigNumber | null;
+  accSushiPerShare: BigNumber;
+  allocPoint: BigNumber;
+  lastRewardBlock: BigNumber;
+};
+
 export type DividendPoolWhitelistPairBalance = {
   address: string;
   reserve0: any | null;
@@ -351,16 +365,16 @@ export function useDividendPoolWhitelistPairBalances(pageSize: number) {
           const value = balances?.[position]?.result?.[0];
           const reserve = reserves?.[position].result;
           const amount = value ? JSBI.BigInt(value.toString()) : undefined;
-          if (amount) {
-            return {
-              address: pair.lpToken.address,
-              amount: CurrencyAmount.fromRawAmount(pair.lpToken, amount),
-              reserve0: reserve?.reserve0,
-              reserve1: reserve?.reserve1,
-              token0: pair.token0,
-              token1: pair.token1,
-            };
-          }
+          return {
+            address: pair.lpToken.address,
+            amount: amount
+              ? CurrencyAmount.fromRawAmount(pair.lpToken, amount)
+              : null,
+            reserve0: reserve ? reserve.reserve0 : null,
+            reserve1: reserve ? reserve.reserve1 : null,
+            token0: pair.token0,
+            token1: pair.token1,
+          };
         }
         return {
           address: pair.lpToken.address,
@@ -404,6 +418,111 @@ export function useDividendPoolWhitelistPairBalances(pageSize: number) {
   // }, [current])
 }
 
+export function useMasterPoolPairsWithReserves(pageSize: number) {
+  const pairs = useMasterPoolPairs();
+  const lastBlockNumber = useBlockNumber();
+
+  const lastPage = Math.floor(pairs.length / pageSize);
+  const { current, next, last } = usePagination(0, pageSize, lastPage);
+
+  const currentPairs = useMemo(() => {
+    return pairs
+      .slice(current * pageSize, (current + 1) * pageSize)
+      .map((pair) => pair.address);
+  }, [pairs, current]);
+
+  const { reserves, anyLoading } = useMasterPoolPairsReserves(currentPairs);
+
+  const poolsWithReserves: FarmingPoolWithReserve[] = useMemo(() => {
+    if (!anyLoading) {
+      let position = 0;
+      return pairs.map((pair, i) => {
+        if (i >= current * pageSize && i < current * pageSize + pageSize) {
+          const reserve = reserves?.[position].result;
+          return {
+            ...pair,
+            reserve0: reserve ? reserve.reserve0 : null,
+            reserve1: reserve ? reserve.reserve1 : null,
+          };
+        }
+        return {
+          ...pair,
+          reserve0: null,
+          reserve1: null,
+        };
+      });
+    }
+    return [];
+  }, [reserves, anyLoading, current, lastBlockNumber]);
+
+  return { poolsWithReserves, next, current, loading: anyLoading, last };
+}
+
+export function useMasterPoolPairsReserves(pairs) {
+  const PAIR_INTERFACE = new Interface(IUniswapV2PairABI);
+
+  const reserves = useMultipleContractSingleData(
+    pairs,
+    PAIR_INTERFACE,
+    'getReserves',
+  );
+
+  const anyLoading: boolean = useMemo(
+    () => reserves.some((callState) => callState.loading),
+    [reserves],
+  );
+
+  return { reserves, anyLoading };
+}
+
+export function useMasterPoolPairs() {
+  const farmingContract = useMasterChefV2Contract();
+  const [poolsLength, setPoolsLength] = useState(null);
+  const [poolsPromise, setPoolsPromise] = useState(null);
+  const [poolsData, setPoolsData] = useState([]);
+
+  useEffect(() => {
+    if (farmingContract !== null && poolsLength === null) {
+      farmingContract.poolLength().then((res) => {
+        setPoolsLength(res.toNumber());
+      });
+    }
+  }, [farmingContract, poolsLength]);
+
+  useEffect(() => {
+    if (poolsLength !== null && poolsPromise === null) {
+      const _poolsPromise = [];
+      for (let i = 0; i < poolsLength; i++) {
+        _poolsPromise.push(farmingContract.poolInfo(i));
+        _poolsPromise.push(farmingContract.lpToken(i));
+      }
+      setPoolsPromise(_poolsPromise);
+    }
+  }, [poolsLength, poolsPromise]);
+
+  useEffect(() => {
+    if (poolsPromise !== null) {
+      Promise.all(poolsPromise).then((values) => {
+        const _poolsData = [];
+        for (let i = 0; i < values.length; i += 2) {
+          const { accSushiPerShare, allocPoint, lastRewardBlock } = values[
+            i
+          ] as any;
+          _poolsData.push({
+            accSushiPerShare,
+            allocPoint,
+            lastRewardBlock,
+            address: values[i + 1],
+          });
+        }
+        setPoolsData(_poolsData);
+      });
+    }
+  }, [poolsPromise]);
+
+  return poolsData;
+}
+
 export function useDivdendPoolWhitelistPairs() {
   const { chainId } = useActiveWeb3React();
   const protocol = useProtocol();
@@ -437,7 +556,7 @@ export function useAllPairs() {
   }, [factoryContract, pairAddressesLength]);
 
   useEffect(() => {
-    if (pairAddressesLength !== null && pairAddressesPromises == null) {
+    if (pairAddressesLength !== null && pairAddressesPromises === null) {
       const _pairAddressesPromises = [];
       for (let i = 0; i < pairAddressesLength; i++) {
         _pairAddressesPromises.push(factoryContract.allPairs(i));

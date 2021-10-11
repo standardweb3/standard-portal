@@ -144,7 +144,7 @@ function CurrencyRow({
         ) : account ? (
           <RippleSpinner size={16} />
         ) : null}
-        {!success && (
+        {!success && !currency.isNative && (
           <div onClick={addToken}>
             <PlusCircleIcon className="w-4 h-4 text-primary" />
           </div>

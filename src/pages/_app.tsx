@@ -43,6 +43,7 @@ import '../styles/globals.css';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
 const Web3ProviderNetwork = dynamic(() => import('../components-ui/Web3ProviderNetwork'), { ssr: false })
+// const Web3ProviderNetworkBridge = dynamic(() => import('../components-ui/Web3ProviderBridge'), { ssr: false })
 
 function MyApp({
   Component,
@@ -151,6 +152,7 @@ function MyApp({
       <ThemeProvider theme={darkTheme}>
         <Web3ReactProvider getLibrary={getLibrary}>
           <Web3ProviderNetwork getLibrary={getLibrary}>
+
             <Web3ReactManager>
               <ReduxProvider store={store}>
               <PersistGate loading='loading' persistor={persistor}>

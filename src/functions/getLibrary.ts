@@ -1,9 +1,4 @@
-import {
-  ExternalProvider,
-  JsonRpcFetchFunc,
-  Web3Provider,
-} from '@ethersproject/providers';
-
+import { Web3Provider } from '@ethersproject/providers';
 import { SupportedChainId } from '../constants/chains';
 
 const NETWORK_POLLING_INTERVALS: { [chainId: number]: number } = {

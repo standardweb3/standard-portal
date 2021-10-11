@@ -1,7 +1,7 @@
 import {
   useActiveWeb3React,
   useSTNDContract,
-  useSushiContract,
+  // useSushiContract,
 } from '../../hooks';
 
 import { BigNumber } from '@ethersproject/bignumber';
