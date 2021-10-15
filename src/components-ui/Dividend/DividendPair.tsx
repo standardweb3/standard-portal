@@ -32,7 +32,7 @@ export function DividendPair({
 
   const remainingSeconds = useRemainingClaimTime(address);
   const remaining = remainingSeconds !== null && remainingSeconds > 0;
-  const totalPoolTokens = useTotalSupply(amount.currency);
+  const totalPoolTokens = useTotalSupply(amount?.currency);
 
   const _token0 = useCurrency(token0);
   const _token1 = useCurrency(token1);

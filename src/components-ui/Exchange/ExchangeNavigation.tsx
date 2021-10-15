@@ -8,8 +8,13 @@ const getQuery = (input, output) => {
 
   if (input && !output) {
     return { inputCurrency: input.address || 'ETH' };
+  } else if (!input && output) {
+    return { outputCurrencty: output.address || 'ETH' };
   } else if (input && output) {
-    return { inputCurrency: input.address, outputCurrency: output.address };
+    return {
+      inputCurrency: input.address || 'ETH',
+      outputCurrency: output.address || 'ETH',
+    };
   }
 };
 

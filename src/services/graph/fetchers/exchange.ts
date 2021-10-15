@@ -20,6 +20,7 @@ export const EXCHANGE = {
   [ChainId.MAINNET]: 'sushiswap/exchange',
   [ChainId.KOVAN]: 'digitalnative/standardprotocol',
   [ChainId.RINKEBY]: 'billjhlee/rinkeby-exchange',
+  [ChainId.SHIBUYA]: 'digitalnativeinc/shibuya-exchange',
   [ChainId.XDAI]: 'sushiswap/xdai-exchange',
   [ChainId.MATIC]: 'sushiswap/matic-exchange',
   [ChainId.FANTOM]: 'sushiswap/fantom-exchange',

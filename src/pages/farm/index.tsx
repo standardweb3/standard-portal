@@ -164,8 +164,8 @@ export default function Farm() {
 
     const balance = Number(pool.balance / 1e18);
 
-    const tvl = Number(swapPair.reserveUSD);
-    //   (balance / Number(swapPair.totalSupply)) * Number(swapPair.reserveUSD);
+    const tvl =
+      (balance / Number(swapPair.totalSupply)) * Number(swapPair.reserveUSD);
     const roiPerBlock =
       rewards.reduce((previousValue, currentValue) => {
         return (

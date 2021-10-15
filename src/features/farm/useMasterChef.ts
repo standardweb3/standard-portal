@@ -1,14 +1,17 @@
 import {
   useActiveWeb3React,
+  // useMasterChefContract,
+  useMasterChefV2Contract,
   useSTNDContract,
   // useSushiContract,
 } from '../../hooks';
 
 import { BigNumber } from '@ethersproject/bignumber';
 import { Chef } from './enum';
-import { Zero } from '@ethersproject/constants';
+// import { Zero } from '@ethersproject/constants';
 import { useCallback } from 'react';
 import { useChefContract } from './hooks';
+import { useSingleCallResult } from '../../state/multicall/hooks';
 
 export default function useMasterChef(chef: Chef) {
   const { account } = useActiveWeb3React();
@@ -91,4 +94,18 @@ export default function useMasterChef(chef: Chef) {
   );
 
   return { deposit, withdraw, harvest };
+}
+
+export function useMasterChefInfo(): {
+  totalAllocPoint: BigNumber | null;
+  sushiPerBlock: BigNumber | null;
+} {
+  const contract = useMasterChefV2Contract();
+
+  const totalAllocPoint = useSingleCallResult(contract, 'totalAllocPoint')
+    .result?.[0];
+  const sushiPerBlock = useSingleCallResult(contract, 'sushiPerBlock')
+    .result?.[0];
+
+  return { totalAllocPoint, sushiPerBlock };
 }

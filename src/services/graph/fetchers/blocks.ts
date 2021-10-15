@@ -15,6 +15,7 @@ import { request } from 'graphql-request';
 export const BLOCKS = {
   [ChainId.MAINNET]: 'blocklytics/ethereum-blocks',
   [ChainId.RINKEBY]: 'billjhlee/rinkeby-blocks',
+  [ChainId.SHIBUYA]: 'digitalnativeinc/shibuya-blocks',
   [ChainId.XDAI]: 'matthewlilley/xdai-blocks',
   [ChainId.MATIC]: 'matthewlilley/polygon-blocks',
   [ChainId.FANTOM]: 'matthewlilley/fantom-blocks',
@@ -63,7 +64,7 @@ export const getCustomDayBlock = async (
   const start = Math.floor(Number(date) / 1000);
   const end = Math.floor(Number(date) / 1000) + 600;
   const { blocks } = await request(
-    `https://api.thegraph.com/subgraphs/name/${BLOCKS[chainId]}`,
+    `${GRAPH_HOST[chainId]}/subgraphs/name/${BLOCKS[chainId]}`,
     blocksQuery,
     {
       start,
@@ -76,7 +77,6 @@ export const getCustomDayBlock = async (
 // Grabs the last 1000 (a sample statistical) blocks and averages
 // the time difference between them
 export const getAverageBlockTime = async (chainId = ChainId.MAINNET) => {
-  // console.log('getAverageBlockTime')
   const now = startOfHour(Date.now());
   const start = getUnixTime(subHours(now, 6));
   const end = getUnixTime(now);

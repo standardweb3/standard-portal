@@ -7,8 +7,6 @@ import {
   Token,
   TradeType,
   Trade as V2Trade,
-  PROTOCOLS,
-  Protocol,
 } from '@digitalnative/standard-protocol-sdk';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -19,12 +17,7 @@ import {
 } from '../../hooks';
 import { useAllTokens, useCurrency } from '../../hooks/Tokens';
 import useWrapCallback, { WrapType } from '../../hooks/useWrapCallback';
-import {
-  useNetworkModalToggle,
-  useToggleSettingsMenu,
-  useWalletModalToggle,
-} from '../../state/application/hooks';
-import { useDefaultsFromURLSearch } from '../../state/limit-order/hooks';
+import { useDefaultsFromURLSearch } from '../../state/swap/hooks';
 import {
   useDerivedSwapInfo,
   useSwapActionHandlers,
@@ -115,16 +108,16 @@ export default function Swap() {
 
   const { account, chainId } = useActiveWeb3React();
 
-  const toggleNetworkModal = useNetworkModalToggle();
+  // const toggleNetworkModal = useNetworkModalToggle();
 
   const router = useRouter();
 
   // toggle wallet when disconnected
-  const toggleWalletModal = useWalletModalToggle();
+  // const toggleWalletModal = useWalletModalToggle();
 
   // for expert mode
   const [isExpertMode] = useExpertModeManager();
-  const toggleSettings = useToggleSettingsMenu();
+  // const toggleSettings = useToggleSettingsMenu();
 
   // // get custom setting values for user -- archer
   // const [ttl] = useUserTransactionTTL()

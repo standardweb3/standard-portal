@@ -65,7 +65,7 @@ export function useChefContracts(chefs: Chef[]) {
 export function useUserInfo(farm, token) {
   const { account } = useActiveWeb3React();
 
-  const contract = useChefContract(farm.chef);
+  const contract = useChefContract(farm.chef ?? Chef.MASTERCHEF_V2);
 
   const args = useMemo(() => {
     if (!account) {
@@ -87,7 +87,7 @@ export function useUserInfo(farm, token) {
 export function usePendingSushi(farm) {
   const { account, chainId } = useActiveWeb3React();
 
-  const contract = useChefContract(farm.chef);
+  const contract = useChefContract(farm.chef ?? Chef.MASTERCHEF_V2);
 
   const args = useMemo(() => {
     if (!account) {

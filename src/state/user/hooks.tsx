@@ -44,6 +44,7 @@ import {
   useDividendPoolAddress,
   useFactoryContract,
   useMasterChefV2Contract,
+  useMasterPoolAddress,
 } from '../../hooks';
 import { usePagination } from '../../hooks/usePagination';
 import { useMultipleContractSingleData } from '../multicall/hooks';
@@ -52,7 +53,7 @@ import ERC20_ABI from '../../constants/abis/erc20.json';
 import { useProtocol } from '../protocol/hooks';
 import { useBlockNumber } from '../application/hooks';
 import IUniswapV2PairABI from '@sushiswap/core/abi/IUniswapV2Pair.json';
-import { BigNumber, BigNumberish } from 'ethers';
+import { BigNumber } from 'ethers';
 
 function serializeToken(token: Token): SerializedToken {
   return {
@@ -323,9 +324,11 @@ export function usePairsDividendBalances(pairs) {
 }
 
 export type FarmingPoolWithReserve = {
+  id: string;
   address: string;
   reserve0: BigNumber | null;
   reserve1: BigNumber | null;
+  amount: CurrencyAmount<Currency> | null;
   accSushiPerShare: BigNumber;
   allocPoint: BigNumber;
   lastRewardBlock: BigNumber;
@@ -363,7 +366,7 @@ export function useDividendPoolWhitelistPairBalances(pageSize: number) {
       return pairs.map((pair, i) => {
         if (i >= current * pageSize && i < current * pageSize + pageSize) {
           const value = balances?.[position]?.result?.[0];
-          const reserve = reserves?.[position].result;
+          const reserve = reserves?.[position++].result;
           const amount = value ? JSBI.BigInt(value.toString()) : undefined;
           return {
             address: pair.lpToken.address,
@@ -428,27 +431,53 @@ export function useMasterPoolPairsWithReserves(pageSize: number) {
   const currentPairs = useMemo(() => {
     return pairs
       .slice(current * pageSize, (current + 1) * pageSize)
-      .map((pair) => pair.address);
+      .map((pair) => pair.lpToken.address);
   }, [pairs, current]);
 
-  const { reserves, anyLoading } = useMasterPoolPairsReserves(currentPairs);
+  const {
+    balances,
+    reserves,
+    token0s,
+    token1s,
+    anyLoading,
+  } = useMasterPoolPairsReserves(currentPairs);
 
   const poolsWithReserves: FarmingPoolWithReserve[] = useMemo(() => {
     if (!anyLoading) {
       let position = 0;
       return pairs.map((pair, i) => {
         if (i >= current * pageSize && i < current * pageSize + pageSize) {
+          const value = balances?.[position]?.result?.[0];
+          const amount = value ? JSBI.BigInt(value.toString()) : undefined;
           const reserve = reserves?.[position].result;
+          const token0 = token0s?.[position].result?.[0];
+          const token1 = token1s?.[position++].result?.[0];
           return {
-            ...pair,
+            id: pair.id,
+            accSushiPerShare: pair.accSushiPerShare,
+            allocPoint: pair.allocPoint,
+            lastRewardBlock: pair.lastRewardBlock,
+            address: pair.lpToken.address,
+            amount: amount
+              ? CurrencyAmount.fromRawAmount(pair.lpToken, amount)
+              : null,
             reserve0: reserve ? reserve.reserve0 : null,
             reserve1: reserve ? reserve.reserve1 : null,
+            token0: token0 ? token0 : null,
+            token1: token1 ? token1 : null,
           };
         }
         return {
-          ...pair,
+          id: pair.id,
+          accSushiPerShare: pair.accSushiPerShare,
+          allocPoint: pair.allocPoint,
+          lastRewardBlock: pair.lastRewardBlock,
+          address: pair.lpToken.address,
+          amount: null,
           reserve0: null,
           reserve1: null,
+          token0: null,
+          token1: null,
         };
       });
     }
@@ -460,6 +489,18 @@ export function useMasterPoolPairsWithReserves(pageSize: number) {
 
 export function useMasterPoolPairsReserves(pairs) {
   const PAIR_INTERFACE = new Interface(IUniswapV2PairABI);
+  const ERC20Interface = new Interface(ERC20_ABI);
+
+  const masterPoolAddress = useMasterPoolAddress();
+
+  const balances = useMultipleContractSingleData(
+    pairs,
+    ERC20Interface,
+    'balanceOf',
+    [masterPoolAddress],
+    undefined,
+    100_000,
+  );
 
   const reserves = useMultipleContractSingleData(
     pairs,
@@ -467,30 +508,47 @@ export function useMasterPoolPairsReserves(pairs) {
     'getReserves',
   );
 
-  const anyLoading: boolean = useMemo(
-    () => reserves.some((callState) => callState.loading),
-    [reserves],
+  const token0s = useMultipleContractSingleData(
+    pairs,
+    PAIR_INTERFACE,
+    'token0',
   );
 
-  return { reserves, anyLoading };
+  const token1s = useMultipleContractSingleData(
+    pairs,
+    PAIR_INTERFACE,
+    'token1',
+  );
+
+  const anyLoading: boolean = useMemo(
+    () =>
+      balances.some((callState) => callState.loading) ||
+      reserves.some((callState) => callState.loading) ||
+      token0s.some((callState) => callState.loading) ||
+      token1s.some((callState) => callState.loading),
+    [reserves, token0s, token1s],
+  );
+
+  return { balances, reserves, token0s, token1s, anyLoading };
 }
 
 export function useMasterPoolPairs() {
+  const { chainId } = useActiveWeb3React();
   const farmingContract = useMasterChefV2Contract();
   const [poolsLength, setPoolsLength] = useState(null);
   const [poolsPromise, setPoolsPromise] = useState(null);
   const [poolsData, setPoolsData] = useState([]);
 
   useEffect(() => {
-    if (farmingContract !== null && poolsLength === null) {
+    if (farmingContract !== null) {
       farmingContract.poolLength().then((res) => {
         setPoolsLength(res.toNumber());
       });
     }
-  }, [farmingContract, poolsLength]);
+  }, [farmingContract]);
 
   useEffect(() => {
-    if (poolsLength !== null && poolsPromise === null) {
+    if (poolsLength !== null) {
       const _poolsPromise = [];
       for (let i = 0; i < poolsLength; i++) {
         _poolsPromise.push(farmingContract.poolInfo(i));
@@ -498,7 +556,7 @@ export function useMasterPoolPairs() {
       }
       setPoolsPromise(_poolsPromise);
     }
-  }, [poolsLength, poolsPromise]);
+  }, [poolsLength]);
 
   useEffect(() => {
     if (poolsPromise !== null) {
@@ -509,10 +567,17 @@ export function useMasterPoolPairs() {
             i
           ] as any;
           _poolsData.push({
+            id: i / 2,
             accSushiPerShare,
             allocPoint,
             lastRewardBlock,
-            address: values[i + 1],
+            lpToken: new Token(
+              chainId,
+              values[i + 1] as string,
+              18,
+              'UNI-V2',
+              'Uniswap V2',
+            ),
           });
         }
         setPoolsData(_poolsData);
@@ -548,22 +613,22 @@ export function useAllPairs() {
   const [pairs, setPairs] = useState([]);
 
   useEffect(() => {
-    if (factoryContract !== null && pairAddressesLength === null) {
+    if (factoryContract !== null) {
       factoryContract.allPairsLength().then((res) => {
         setPairAddressesLength(res.toNumber());
       });
     }
-  }, [factoryContract, pairAddressesLength]);
+  }, [factoryContract]);
 
   useEffect(() => {
-    if (pairAddressesLength !== null && pairAddressesPromises === null) {
+    if (pairAddressesLength !== null) {
       const _pairAddressesPromises = [];
       for (let i = 0; i < pairAddressesLength; i++) {
         _pairAddressesPromises.push(factoryContract.allPairs(i));
       }
       setPairAddressePromises(_pairAddressesPromises);
     }
-  }, [pairAddressesLength, pairAddressesPromises]);
+  }, [pairAddressesLength]);
 
   useEffect(() => {
     if (pairAddressesPromises !== null) {

@@ -1,13 +1,18 @@
 import {
   getFactoryAddress,
   getRouterAddress,
-  getInitCodeHash,
   ChainId,
   getDividendPoolAddress,
+  MASTERCHEF_V2_ADDRESS,
 } from '@digitalnative/standard-protocol-sdk';
 import { useActiveWeb3React } from '.';
 import { ARCHER_ROUTER_ADDRESS } from '../constants';
 import { useProtocol } from '../state/protocol/hooks';
+
+export function useMasterPoolAddress(): string {
+  const { chainId } = useActiveWeb3React();
+  return MASTERCHEF_V2_ADDRESS[chainId];
+}
 
 export function useFactoryAddress(): string {
   const { chainId } = useActiveWeb3React();

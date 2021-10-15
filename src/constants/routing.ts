@@ -46,6 +46,7 @@ import {
   XSUSHI,
   SHIBUYA,
   RINKEBY,
+  SHIDEN,
 } from './tokens';
 // a list of tokens by chain
 import {
@@ -134,7 +135,21 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
     NFTX,
     STETH,
   ],
-  [ChainId.RINKEBY]: [...WRAPPED_NATIVE_ONLY[ChainId.RINKEBY], RINKEBY.DAI],
+  [ChainId.RINKEBY]: [
+    ...WRAPPED_NATIVE_ONLY[ChainId.RINKEBY],
+    RINKEBY.DAI,
+    RINKEBY.USDC,
+  ],
+  [ChainId.SHIBUYA]: [...WRAPPED_NATIVE_ONLY[ChainId.SHIBUYA], SHIBUYA.USDC],
+  [ChainId.SHIDEN]: [
+    ...WRAPPED_NATIVE_ONLY[ChainId.SHIDEN],
+    SHIDEN.DAI,
+    SHIDEN.USDC,
+    SHIDEN.USDT,
+    SHIDEN.ETH,
+    SHIDEN.BUSD,
+    SHIDEN.WBTC,
+  ],
   [ChainId.MATIC]: [
     ...WRAPPED_NATIVE_ONLY[ChainId.MATIC],
     MATIC.USDC,
@@ -293,7 +308,11 @@ export const COMMON_BASES: ChainTokenList = {
     USDT,
     WBTC,
   ],
-  [ChainId.RINKEBY]: [...WRAPPED_NATIVE_ONLY[ChainId.RINKEBY], RINKEBY.DAI],
+  [ChainId.RINKEBY]: [
+    ...WRAPPED_NATIVE_ONLY[ChainId.RINKEBY],
+    RINKEBY.DAI,
+    RINKEBY.USDC,
+  ],
   [ChainId.SHIBUYA]: [...WRAPPED_NATIVE_ONLY[ChainId.SHIBUYA], SHIBUYA.USDC],
   [ChainId.SHIDEN]: [...WRAPPED_NATIVE_ONLY[ChainId.SHIDEN]],
   [ChainId.MATIC]: [
@@ -381,10 +400,19 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [ChainId.RINKEBY]: [
     ...WRAPPED_NATIVE_ONLY[ChainId.RINKEBY],
     RINKEBY.DAI,
+    RINKEBY.USDC,
     RINKEBY.STND,
   ],
   [ChainId.SHIBUYA]: [...WRAPPED_NATIVE_ONLY[ChainId.SHIBUYA], SHIBUYA.USDC],
-  [ChainId.SHIDEN]: [...WRAPPED_NATIVE_ONLY[ChainId.SHIDEN]],
+  [ChainId.SHIDEN]: [
+    ...WRAPPED_NATIVE_ONLY[ChainId.SHIDEN],
+    SHIDEN.USDC,
+    SHIDEN.USDT,
+    SHIDEN.DAI,
+    SHIDEN.WBTC,
+    SHIDEN.BUSD,
+    SHIDEN.ETH,
+  ],
   [ChainId.MATIC]: [
     ...WRAPPED_NATIVE_ONLY[ChainId.MATIC],
     MATIC.USDC,

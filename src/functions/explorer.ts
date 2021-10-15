@@ -303,11 +303,11 @@ const chains: ChainObject = {
     builder: builders.etherscan,
   },
   [ChainId.SHIBUYA]: {
-    chainName: '',
+    chainName: 'shibuya',
     builder: builders.shibuya,
   },
   [ChainId.SHIDEN]: {
-    chainName: '',
+    chainName: 'shiden',
     builder: builders.shiden,
   },
   [ChainId.MATIC]: {

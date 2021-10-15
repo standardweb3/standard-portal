@@ -22,7 +22,6 @@ const listCache: WeakMap<TokenList, TokenAddressMap> | null =
 export function listToTokenMap(list: TokenList): TokenAddressMap {
   const result = listCache?.get(list);
   if (result) return result;
-
   const map = list.tokens.reduce<TokenAddressMap>((tokenMap, tokenInfo) => {
     const token = new WrappedTokenInfo(tokenInfo, list);
     if (tokenMap[token.chainId]?.[token.address] !== undefined) {
@@ -77,8 +76,8 @@ function combineMaps(
     4: { ...map1[4], ...map2[4] }, // rinkeby
     5: { ...map1[5], ...map2[5] }, // goerli
     42: { ...map1[42], ...map2[42] }, // kovan
-    81: { ...map1[81], ...map2[81] },
-    336: {},
+    81: { ...map1[81], ...map2[81] }, // shibuya
+    336: { ...map1[336], ...map2[336] }, // shiden
     250: { ...map1[250], ...map2[250] }, // fantom
     4002: { ...map1[4002], ...map2[4002] }, // fantom testnet
     137: { ...map1[137], ...map2[137] }, // matic

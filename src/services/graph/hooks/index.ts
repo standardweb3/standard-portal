@@ -23,7 +23,8 @@ export * from './exchange';
 export function useMasterChefV2TotalAllocPoint(swrConfig = undefined) {
   const { chainId } = useActiveWeb3React();
   const shouldFetch =
-    chainId && [ChainId.MAINNET, ChainId.RINKEBY].includes(chainId);
+    chainId &&
+    [ChainId.MAINNET, ChainId.RINKEBY, ChainId.SHIBUYA].includes(chainId);
   const { data } = useSWR(
     shouldFetch ? 'masterChefV2TotalAllocPoint' : null,
     () => getMasterChefV2TotalAllocPoint(chainId),
@@ -35,7 +36,8 @@ export function useMasterChefV2TotalAllocPoint(swrConfig = undefined) {
 export function useMasterChefV2SushiPerBlock(swrConfig = undefined) {
   const { chainId } = useActiveWeb3React();
   const shouldFetch =
-    chainId && [ChainId.MAINNET, ChainId.RINKEBY].includes(chainId);
+    chainId &&
+    [ChainId.MAINNET, ChainId.RINKEBY, ChainId.SHIBUYA].includes(chainId);
   const { data } = useSWR(
     shouldFetch ? 'masterChefV2SushiPerBlock' : null,
     () => getMasterChefV2SushiPerBlock(chainId),
@@ -117,7 +119,8 @@ export function useMasterChefV1PairAddresses() {
 export function useMasterChefV2PairAddresses() {
   const { chainId } = useActiveWeb3React();
   const shouldFetch =
-    chainId && [ChainId.MAINNET, ChainId.RINKEBY].includes(chainId);
+    chainId &&
+    [ChainId.MAINNET, ChainId.RINKEBY, ChainId.SHIBUYA].includes(chainId);
   const { data } = useSWR(
     shouldFetch ? ['masterChefV2PairAddresses', chainId] : null,
     (_) => getMasterChefV2PairAddreses(chainId),

@@ -53,11 +53,13 @@ import FACTORY_ABI from '../constants/abis/factory.json';
 import INARI_ABI from '../constants/abis/inari.json';
 import IUniswapV2PairABI from '../constants/abis/uniswap-v2-pair.json';
 import KASHIPAIR_ABI from '../constants/abis/kashipair.json';
-import LIMIT_ORDER_ABI from '../constants/abis/limit-order.json';
+// import LIMIT_ORDER_ABI from '../constants/abis/limit-order.json';
 import LIMIT_ORDER_HELPER_ABI from '../constants/abis/limit-order-helper.json';
 import MAKER_ABI from '../constants/abis/maker.json';
 import MASTERCHEF_ABI from '../constants/abis/masterchef.json';
 import MASTERCHEF_V2_ABI from '../constants/abis/masterpool.json';
+import ANYSWAP_ERC20_ABI from '../constants/abis/anyswap_erc20.json';
+
 // import MASTERPOOL_ABI from '../constants/abis/masterpool.json';
 import MEOWSHI_ABI from '../constants/abis/meowshi.json';
 import MERKLE_DISTRIBUTOR_ABI from '../constants/abis/merkle-distributor.json';
@@ -296,6 +298,13 @@ export function useRouterContract(
   const abi = useArcher ? ARCHER_ROUTER_ABI : ROUTER_ABI;
 
   return useContract(address, abi, withSignerIfPossible);
+}
+
+export function useAnyswapTokenContract(
+  tokenAddress?: string,
+  withSignerIfPossible?: boolean,
+): Contract | null {
+  return useContract(tokenAddress, ANYSWAP_ERC20_ABI, withSignerIfPossible);
 }
 
 export function useSushiBarContract(

@@ -4,6 +4,7 @@ const THE_GRAPH = 'https://api.thegraph.com';
 export const GRAPH_HOST = {
   [ChainId.MAINNET]: THE_GRAPH,
   [ChainId.KOVAN]: 'http://127.0.0.1:8000',
+  [ChainId.SHIBUYA]: 'https://graph.shibuya.standardtech.xyz',
   [ChainId.RINKEBY]: THE_GRAPH,
   [ChainId.XDAI]: THE_GRAPH,
   [ChainId.MATIC]: THE_GRAPH,

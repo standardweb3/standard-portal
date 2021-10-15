@@ -28,13 +28,13 @@ export const sidebarRoutes = [
     urls: ['/farm'],
     icon: farmIcon,
     iconActive: farmIconActive,
-    hidden: [ChainId.SHIBUYA, ChainId.SHIDEN],
+    hidden: [ChainId.SHIDEN, ChainId.SHIBUYA],
   },
   {
     name: 'Dividend',
     urls: ['/dividend'],
     icon: dividendIcon,
     iconActive: dividendIconActive,
-    hidden: [ChainId.SHIDEN],
+    // hidden: [ChainId.SHIDEN],
   },
 ];

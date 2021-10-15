@@ -30,6 +30,7 @@ export const miniChef = async (query, chainId = ChainId.MAINNET) =>
 export const MASTERCHEF_V2 = {
   [ChainId.MAINNET]: 'sushiswap/master-chefv2',
   [ChainId.RINKEBY]: 'billjhlee/rinkeby-master-pool',
+  [ChainId.SHIBUYA]: 'digitalnativeinc/shibuya-master-pool',
 };
 
 export const masterChefV2 = async (query, chainId = ChainId.MAINNET) =>
