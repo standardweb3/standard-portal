@@ -28,7 +28,7 @@ export const sidebarRoutes = [
     urls: ['/farm'],
     icon: farmIcon,
     iconActive: farmIconActive,
-    hidden: [ChainId.SHIDEN, ChainId.SHIBUYA],
+    hidden: [ChainId.SHIBUYA],
   },
   {
     name: 'Dividend',

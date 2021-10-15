@@ -166,7 +166,7 @@ function MyApp({
                   </>
                   <Provider>
                     <Layout>
-                      <NetworkGuard networks={[ChainId.RINKEBY, ChainId.SHIBUYA]}>
+                      <NetworkGuard networks={[ChainId.RINKEBY, ChainId.SHIBUYA, ChainId.SHIDEN]}>
                         <Component {...pageProps} />
                       </NetworkGuard>
                     </Layout>
