@@ -50,6 +50,7 @@ export const NETWORK_ICON = {
   [ChainId.OKEX]: OKEx,
   [ChainId.OKEX_TESTNET]: OKEx,
   [ChainId.CELO]: Celo,
+  [ChainId.SUBSTRATE]: Mainnet
   // [ChainId.PALM]: Palm,
 };
 
@@ -80,6 +81,7 @@ export const NETWORK_LABEL: { [chainId in ChainId]?: string } = {
   [ChainId.OKEX]: 'OKEx',
   [ChainId.OKEX_TESTNET]: 'OKEx',
   [ChainId.CELO]: 'Celo',
+  [ChainId.SUBSTRATE]: 'Substrate Local'
   // [ChainId.PALM]: 'Palm',
 };
 
@@ -117,6 +119,17 @@ export const SUPPORTED_NETWORKS: {
     },
     rpcUrls: ['https://rpc.shibuya.astar.network:8545'],
     blockExplorerUrls: ['https://shibuya.subscan.io'],
+  },
+  [ChainId.SUBSTRATE]: {
+    chainId: '0x1111',
+    chainName: 'Substrate',
+    nativeCurrency: {
+      name: 'Astar Local',
+      symbol: 'ASTL',
+      decimals: 18,
+    },
+    rpcUrls: ['http://localhost:8545'],
+    blockExplorerUrls: ['https://naver.com'],
   },
   // [ChainId.SHIDEN]: {
   //   chainId: '0x150',
