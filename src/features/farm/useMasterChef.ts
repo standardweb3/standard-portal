@@ -12,6 +12,7 @@ import { Chef } from './enum';
 import { useCallback } from 'react';
 import { useChefContract } from './hooks';
 import { useSingleCallResult } from '../../state/multicall/hooks';
+import { calculateGasMargin } from '../../functions';
 
 export default function useMasterChef(chef: Chef) {
   const { account } = useActiveWeb3React();
@@ -29,7 +30,22 @@ export default function useMasterChef(chef: Chef) {
         // if (chef === Chef.MASTERCHEF) {
         //   tx = await contract?.deposit(pid, amount);
         // } else {
-        tx = await contract?.deposit(pid, amount, account);
+        const estimatedGas = await contract?.estimateGas.deposit(
+          pid,
+          amount,
+          account,
+        );
+
+        console.log(estimatedGas);
+
+        tx = await contract?.deposit(
+          pid,
+          amount,
+          account,
+          estimatedGas && {
+            gasLimit: calculateGasMargin(estimatedGas),
+          },
+        );
         // }
         // remove later
         console.log(tx);

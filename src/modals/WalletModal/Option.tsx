@@ -32,7 +32,7 @@ export default function Option({
   active?: boolean;
   col?: boolean;
   id: string;
-  disabled: boolean;
+  disabled?: boolean;
 }) {
   const content = (
     <div
