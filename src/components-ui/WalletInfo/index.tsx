@@ -37,6 +37,7 @@ import { Button } from '../Button';
 import { ExternalLink } from '../ExternalLink';
 import Copier from '../Copier';
 import Transaction from './Transaction';
+import { useUserAgreement } from '../../state/user/hooks';
 
 const WalletIcon: FC<{ size?: number; src: string; alt: string }> = ({
   size,
@@ -77,7 +78,8 @@ export const WalletInfo: FC<WalletInfoProps> = ({
   ENSName,
   openOptions,
 }) => {
-  const { chainId, account, connector } = useActiveWeb3React();
+  const { chainId, account, connector, deactivate } = useActiveWeb3React();
+  const { disagree } = useUserAgreement();
   const dispatch = useDispatch<AppDispatch>();
 
   function formatConnectorName() {
@@ -149,16 +151,18 @@ export const WalletInfo: FC<WalletInfoProps> = ({
           <div className="flex items-center justify-between">
             {formatConnectorName()}
             <div className="flex space-x-3">
-              {connector !== injected &&
-                connector !== walletlink &&
+              {connector !== walletlink &&
                 connector !== binance &&
                 connector.constructor.name !== 'KeystoneConnector' && (
                   <Button
                     type="bordered"
-                    color="info"
+                    color="white"
                     className="text-sm"
                     onClick={() => {
-                      (connector as any).close();
+                      if (connector === injected) {
+                        deactivate();
+                        disagree();
+                      } else (connector as any).close();
                     }}
                   >
                     Disconnect

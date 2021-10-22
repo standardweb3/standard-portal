@@ -58,4 +58,6 @@ export const Typographies = {
   flex items-center space-x-3
   bg-transparent 
   pl-1 pr-3 sm:pl-3 sm:pr-3 py-3`,
+  step:
+    'rounded-full bg-opaque-secondary w-8 h-8 flex items-center justify-center',
 };

@@ -7,8 +7,6 @@ import poolIcon from '../public/icons/outlined/Vault.svg';
 import dividendIconActive from '../public/icons/filled/Dividend.svg';
 import dividendIcon from '../public/icons/outlined/Dividend.svg';
 
-import { ChainId } from '@digitalnative/standard-protocol-sdk';
-
 export const sidebarRoutes = [
   {
     name: 'Swap',
@@ -28,7 +26,7 @@ export const sidebarRoutes = [
     urls: ['/farm'],
     icon: farmIcon,
     iconActive: farmIconActive,
-    hidden: [ChainId.SHIBUYA],
+    // hidden: [ChainId.SHIBUYA],
   },
   {
     name: 'Dividend',

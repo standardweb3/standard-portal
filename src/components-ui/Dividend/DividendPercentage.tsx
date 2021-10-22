@@ -23,7 +23,7 @@ absolute z-0 top-0 left-0 w-full h-full"
         >
           <div className="flex flex-col w-full h-full justify-center items-center">
             <Image
-              src="https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x9040e237C3bF18347bb00957Dc22167D0f2b999d/logo.png"
+              src="https://raw.githubusercontent.com/digitalnativeinc/assets/master/blockchains/ethereum/assets/0x9040e237C3bF18347bb00957Dc22167D0f2b999d/logo.png"
               layout="fill"
               className="opacity-30"
               alt="STND logo"

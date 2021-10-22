@@ -44,6 +44,11 @@ import {
 } from '../../components-ui/Responsive';
 import { type } from 'os';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
+import Agreement from './Agreement';
+import { Typographies } from '../../utils/Typography';
+import { ExternalLink } from '../../components-ui/ExternalLink';
+import { useUserAgreement } from '../../state/user/hooks';
+import { classNames } from '../../functions';
 
 const WALLET_VIEWS = {
   OPTIONS: 'options',
@@ -74,6 +79,7 @@ export default function WalletModal({
   } = useWeb3React();
 
   const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT);
+  const { userAgreement, agree, disagree } = useUserAgreement();
 
   const [pendingWallet, setPendingWallet] = useState<
     | AbstractConnector
@@ -195,6 +201,8 @@ export default function WalletModal({
         if (!window.web3 && !window.ethereum && option.mobile) {
           return (
             <Option
+              disabled={!userAgreement}
+              col
               onClick={() => {
                 option.connector !== connector &&
                   !option.href &&
@@ -221,6 +229,8 @@ export default function WalletModal({
           if (option.name === 'MetaMask') {
             return (
               <Option
+                disabled={!userAgreement}
+                col
                 id={`connect-${key}`}
                 key={key}
                 color={'#E8831D'}
@@ -248,6 +258,8 @@ export default function WalletModal({
         !isMobile &&
         !option.mobileOnly && (
           <Option
+            disabled={!userAgreement}
+            col
             id={`connect-${key}`}
             onClick={() => {
               option.connector === connector
@@ -307,7 +319,7 @@ export default function WalletModal({
     }
     return (
       <div className="flex flex-col space-y-4">
-        <ModalHeader title="Select A Wallet" onClose={toggleWalletModal} />
+        <ModalHeader title="Connect Wallet" onClose={toggleWalletModal} />
         <div className="flex flex-col space-y-6">
           {walletView === WALLET_VIEWS.PENDING ? (
             <PendingView
@@ -317,8 +329,50 @@ export default function WalletModal({
               tryActivation={tryActivation}
             />
           ) : (
-            <div className="flex flex-col space-y-5 overflow-y-auto">
-              {getOptions()}
+            <div className="space-y-4">
+              {!userAgreement ? (
+                <div className="flex space-x-4">
+                  <div className={Typographies.step}>1</div>
+                  <div className="space-y-4">
+                    <div>
+                      Accept the{' '}
+                      <ExternalLink href="assets/terms-of-service.pdf">
+                        {' '}
+                        Terms of Service
+                      </ExternalLink>
+                    </div>
+                    <Agreement
+                      agreed={userAgreement}
+                      agree={agree}
+                      disagree={disagree}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  You agreed to the
+                  <ExternalLink href="assets/terms-of-service.pdf">
+                    {' '}
+                    Terms of Service
+                  </ExternalLink>{' '}
+                </div>
+              )}
+              <div
+                className={classNames(
+                  'space-y-4',
+                  !userAgreement && 'opacity-50',
+                )}
+              >
+                {!userAgreement && (
+                  <div className="flex items-center space-x-4">
+                    <div className={Typographies.step}>2</div>
+                    <div>Choose Wallet</div>
+                  </div>
+                )}
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                  {getOptions()}
+                </div>
+              </div>
             </div>
           )}
           {walletView !== WALLET_VIEWS.PENDING && (

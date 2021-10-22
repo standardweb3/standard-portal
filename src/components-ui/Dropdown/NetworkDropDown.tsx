@@ -7,6 +7,7 @@ import {
   NETWORK_ICON,
   NETWORK_LABEL,
   SUPPORTED_NETWORKS,
+  SUPPORTED_NETWORK_IDS,
 } from '../../constants/networks';
 // web3
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
@@ -35,8 +36,7 @@ export default function NetworkDropDown(): JSX.Element | null {
   if (!chainId) return null;
 
   const supportedChainIds = useMemo(
-    () =>
-      Object.keys(SUPPORTED_NETWORKS).filter((val) => Number(val) !== chainId),
+    () => SUPPORTED_NETWORK_IDS.filter((val) => Number(val) !== chainId),
     [chainId],
   );
 

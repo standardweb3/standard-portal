@@ -8,13 +8,14 @@ import {
   getMiniChefFarms,
   getMiniChefPairAddreses,
 } from '../fetchers';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import useSWR, { SWRConfiguration } from 'swr';
 
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import { Chef } from '../../../features/farm/enum';
 import concat from 'lodash/concat';
 import useActiveWeb3React from '../../../hooks/useActiveWeb3React';
+import { SUPPORTED_NETWORK_IDS } from '../../../constants/networks';
 
 export * from './bentobox';
 export * from './blocks';
@@ -22,9 +23,7 @@ export * from './exchange';
 
 export function useMasterChefV2TotalAllocPoint(swrConfig = undefined) {
   const { chainId } = useActiveWeb3React();
-  const shouldFetch =
-    chainId &&
-    [ChainId.MAINNET, ChainId.RINKEBY, ChainId.SHIBUYA].includes(chainId);
+  const shouldFetch = chainId && SUPPORTED_NETWORK_IDS.includes(chainId);
   const { data } = useSWR(
     shouldFetch ? 'masterChefV2TotalAllocPoint' : null,
     () => getMasterChefV2TotalAllocPoint(chainId),
@@ -35,9 +34,7 @@ export function useMasterChefV2TotalAllocPoint(swrConfig = undefined) {
 
 export function useMasterChefV2SushiPerBlock(swrConfig = undefined) {
   const { chainId } = useActiveWeb3React();
-  const shouldFetch =
-    chainId &&
-    [ChainId.MAINNET, ChainId.RINKEBY, ChainId.SHIBUYA].includes(chainId);
+  const shouldFetch = chainId && SUPPORTED_NETWORK_IDS.includes(chainId);
   const { data } = useSWR(
     shouldFetch ? 'masterChefV2SushiPerBlock' : null,
     () => getMasterChefV2SushiPerBlock(chainId),
@@ -118,9 +115,7 @@ export function useMasterChefV1PairAddresses() {
 
 export function useMasterChefV2PairAddresses() {
   const { chainId } = useActiveWeb3React();
-  const shouldFetch =
-    chainId &&
-    [ChainId.MAINNET, ChainId.RINKEBY, ChainId.SHIBUYA].includes(chainId);
+  const shouldFetch = chainId && SUPPORTED_NETWORK_IDS.includes(chainId);
   const { data } = useSWR(
     shouldFetch ? ['masterChefV2PairAddresses', chainId] : null,
     (_) => getMasterChefV2PairAddreses(chainId),

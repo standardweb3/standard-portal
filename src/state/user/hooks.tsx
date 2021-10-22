@@ -31,6 +31,7 @@ import {
   updateUserExpertMode,
   updateUserSingleHopOnly,
   updateUserSlippageTolerance,
+  updateUserAgreement,
 } from './actions';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useAppDispatch, useAppSelector } from '../hooks';
@@ -851,4 +852,19 @@ export function useUserSlippageToleranceWithDefault(
       allowedSlippage === 'auto' ? defaultSlippageTolerance : allowedSlippage,
     [allowedSlippage, defaultSlippageTolerance],
   );
+}
+
+export function useUserAgreement() {
+  const dispatch = useAppDispatch();
+  const userAgreement = useAppSelector((state) => state.user.agreement);
+
+  const agree = useCallback(() => {
+    dispatch(updateUserAgreement({ agreement: true }));
+  }, []);
+
+  const disagree = useCallback(() => {
+    dispatch(updateUserAgreement({ agreement: false }));
+  }, []);
+
+  return { userAgreement, agree, disagree };
 }

@@ -269,3 +269,7 @@ export const SUPPORTED_NETWORKS: {
   //   blockExplorerUrls: ['https://explorer.palm.io'],
   // },
 };
+
+export const SUPPORTED_NETWORK_IDS = Object.keys(
+  SUPPORTED_NETWORKS,
+).map((key) => parseInt(key));

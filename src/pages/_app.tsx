@@ -41,6 +41,7 @@ import NetworkGuard from '../guards/Network';
 import '../styles/index.css'
 import '../styles/globals.css';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
+import { useActiveWeb3React } from '../hooks';
 
 const Web3ProviderNetwork = dynamic(() => import('../components-ui/Web3ProviderNetwork'), { ssr: false })
 // const Web3ProviderNetworkBridge = dynamic(() => import('../components-ui/Web3ProviderBridge'), { ssr: false })
@@ -153,9 +154,10 @@ function MyApp({
         <Web3ReactProvider getLibrary={getLibrary}>
           <Web3ProviderNetwork getLibrary={getLibrary}>
 
-            <Web3ReactManager>
               <ReduxProvider store={store}>
               <PersistGate loading='loading' persistor={persistor}>
+              <Web3ReactManager>
+
                   <>
                     <NetworkLogger/>
                     <ListsUpdater />
@@ -163,7 +165,6 @@ function MyApp({
                     <ApplicationUpdater />
                     <TransactionUpdater />
                     <MulticallUpdater />
-                  </>
                   <Provider>
                     <Layout>
                       <NetworkGuard networks={[ChainId.RINKEBY, ChainId.SHIBUYA, ChainId.SHIDEN]}>
@@ -171,9 +172,12 @@ function MyApp({
                       </NetworkGuard>
                     </Layout>
                   </Provider>
+                  </>
+
+                  </Web3ReactManager>
+
                 </PersistGate>
               </ReduxProvider>
-            </Web3ReactManager>
           </Web3ProviderNetwork>
         </Web3ReactProvider>
       </ThemeProvider>

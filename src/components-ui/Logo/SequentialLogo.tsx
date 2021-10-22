@@ -32,7 +32,7 @@ export const SequentialLogo: FC<SequentialLogoProps> = ({
       <Image
         src={
           src ||
-          'https://raw.githubusercontent.com/sushiswap/icons/master/token/unknown.png'
+          'https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/unknown.png'
         }
         loader={cloudinaryLoader}
         unoptimized

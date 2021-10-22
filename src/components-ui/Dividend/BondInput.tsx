@@ -41,7 +41,7 @@ export function BondInput({
             layout="fixed"
             width="36px"
             height="36px"
-            src="https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x9040e237C3bF18347bb00957Dc22167D0f2b999d/logo.png"
+            src="https://raw.githubusercontent.com/digitalnativeinc/assets/master/blockchains/ethereum/assets/0x9040e237C3bF18347bb00957Dc22167D0f2b999d/logo.png"
             alt="STND logo"
           />
           <NumericalInput

@@ -20,9 +20,17 @@ const GnosisManagerNoSSR = dynamic(() => import('./GnosisManager'), {
   ssr: false,
 });
 
-export default function Web3ReactManager({ children }: { children: JSX.Element }) {
+export default function Web3ReactManager({
+  children,
+}: {
+  children: JSX.Element;
+}) {
   const { active } = useWeb3React();
-  const { active: networkActive, error: networkError, activate: activateNetwork } = useWeb3React(NetworkContextName);
+  const {
+    active: networkActive,
+    error: networkError,
+    activate: activateNetwork,
+  } = useWeb3React(NetworkContextName);
 
   // try to eagerly connect to an injected provider, if it exists and has granted access already
   const triedEager = useEagerConnect();

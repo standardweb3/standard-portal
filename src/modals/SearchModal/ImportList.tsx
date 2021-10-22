@@ -1,4 +1,4 @@
-import { Checkbox, PaddedColumn, TextDot } from './styleds';
+import { Checkbox, TextDot } from './styleds';
 import React, { useCallback, useState } from 'react';
 import { enableList, removeList } from '../../state/lists/actions';
 

@@ -84,5 +84,9 @@ module.exports = {
     extend: {},
     scrollbar: ['rounded'],
   },
-  plugins: [require('tailwindcss-textshadow'), require('tailwind-scrollbar')],
+  plugins: [
+    require('tailwindcss-textshadow'),
+    require('tailwind-scrollbar'),
+    require('daisyui'),
+  ],
 };

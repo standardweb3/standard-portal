@@ -17,7 +17,9 @@ export default function Option({
   subheader = null,
   icon,
   active = false,
+  col,
   id,
+  disabled = false,
 }: {
   link?: string | null;
   clickable?: boolean;
@@ -28,13 +30,16 @@ export default function Option({
   subheader: React.ReactNode | null;
   icon: string;
   active?: boolean;
+  col?: boolean;
   id: string;
+  disabled: boolean;
 }) {
   const content = (
     <div
-      onClick={onClick}
+      onClick={() => !disabled && onClick()}
       className={`
-        flex items-center justify-between 
+        flex ${col ? 'flex-col space-y-2' : 'flex-row space-x-4'}
+        items-center
         w-full 
         p-3 rounded-xl 
         cursor-pointer 
@@ -49,8 +54,10 @@ export default function Option({
         transition duration-500
         `}
     >
+      <Image src={icon} alt={'wallet icon'} width="32px" height="32px" />
+
       <div>
-        <div className="flex items-center">
+        <div className="flex items-center text-sm">
           {active && (
             <div
               className="w-4 h-4 mr-4 rounded-full"
@@ -61,7 +68,6 @@ export default function Option({
         </div>
         {subheader && <SubHeader>{subheader}</SubHeader>}
       </div>
-      <Image src={icon} alt={'wallet icon'} width="32px" height="32px" />
     </div>
   );
   if (link) {

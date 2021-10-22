@@ -18,7 +18,7 @@
   "dependencies": {
     "@binance-chain/bsc-connector": "^1.0.0",
     "@digitalnative/default-token-list": "0.0.20",
-    "@digitalnative/standard-protocol-sdk": "^0.0.104",
+    "@digitalnative/standard-protocol-sdk": "^0.0.106",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
     "@ethereumjs/common": "^2.3.0",
@@ -57,6 +57,7 @@
     "D": "^1.0.0",
     "cookie-cutter": "^0.2.0",
     "copy-to-clipboard": "^3.3.1",
+    "daisyui": "^1.14.6",
     "eth-permit": "^0.1.10",
     "ethers": "^5.4.1",
     "fathom-client": "^3.0.0",

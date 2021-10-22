@@ -2,6 +2,7 @@ import {
   ChainId,
   Currency,
   STND_ADDRESS,
+  Token,
   WNATIVE,
 } from '@digitalnative/standard-protocol-sdk';
 import React, { FunctionComponent, useMemo } from 'react';
@@ -12,15 +13,19 @@ import useHttpLocations from '../../hooks/useHttpLocations';
 import { SequentialLogo } from '../Logo/SequentialLogo';
 import { getAddress } from '@ethersproject/address';
 
-export const getTokenLogoURL = (address: string, chainId: ChainId) => {
+export const getTokenLogoURL = (token: Token, chainId: ChainId) => {
   let imageURL;
   if (chainId === ChainId.MAINNET) {
-    imageURL = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`;
+    imageURL = `https://raw.githubusercontent.com/digitalnativeinc/assets/master/blockchains/ethereum/assets/${token.address}/logo.png`;
   } else if (chainId === ChainId.BSC) {
-    imageURL = `https://v1exchange.pancakeswap.finance/images/coins/${address}.png`;
+    imageURL = `https://v1exchange.pancakeswap.finance/images/coins/${token.address}.png`;
   } else if (chainId === ChainId.MATIC) {
-    imageURL = getMaticTokenLogoURL(address);
+    imageURL = getMaticTokenLogoURL(token.address);
   }
+  imageURL = `https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/${getCurrencySymbol(
+    token,
+  )}.jpg`;
+
   return imageURL;
 };
 
@@ -49,7 +54,7 @@ function getCurrencyLogoUrls(currency) {
   const urls = [];
 
   urls.push(
-    `https://raw.githubusercontent.com/sushiswap/icons/master/token/${getCurrencySymbol(
+    `https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/${getCurrencySymbol(
       currency,
     )}.jpg`,
   );
@@ -57,16 +62,16 @@ function getCurrencyLogoUrls(currency) {
     getAddress(STND_ADDRESS[currency.chainId]) === getAddress(currency.address)
   )
     urls.push(
-      'https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x9040e237C3bF18347bb00957Dc22167D0f2b999d/logo.png',
+      'https://raw.githubusercontent.com/digitalnativeinc/assets/master/blockchains/ethereum/assets/0x9040e237C3bF18347bb00957Dc22167D0f2b999d/logo.png',
     );
   if (currency.chainId in BLOCKCHAIN) {
     urls.push(
-      `https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/${
+      `https://raw.githubusercontent.com/digitalnativeinc/assets/master/blockchains/${
         BLOCKCHAIN[currency.chainId]
       }/assets/${currency.address}/logo.png`,
     );
     urls.push(
-      `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${
+      `https://raw.githubusercontent.com/digitalnativeinc/assets/master/blockchains/${
         BLOCKCHAIN[currency.chainId]
       }/assets/${currency.address}/logo.png`,
     );
@@ -76,29 +81,29 @@ function getCurrencyLogoUrls(currency) {
 }
 
 const AvalancheLogo =
-  'https://raw.githubusercontent.com/sushiswap/icons/master/token/avax.jpg';
+  'https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/avax.jpg';
 const BinanceCoinLogo =
-  'https://raw.githubusercontent.com/sushiswap/icons/master/token/bnb.jpg';
+  'https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/bnb.jpg';
 const EthereumLogo =
-  'https://raw.githubusercontent.com/sushiswap/icons/master/token/eth.jpg';
+  'https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/eth.jpg';
 const FantomLogo =
-  'https://raw.githubusercontent.com/sushiswap/icons/master/token/ftm.jpg';
+  'https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/ftm.jpg';
 const HarmonyLogo =
-  'https://raw.githubusercontent.com/sushiswap/icons/master/token/one.jpg';
+  'https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/one.jpg';
 const HecoLogo =
-  'https://raw.githubusercontent.com/sushiswap/icons/master/token/heco.jpg';
+  'https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/heco.jpg';
 const MaticLogo =
-  'https://raw.githubusercontent.com/sushiswap/icons/master/token/polygon.jpg';
+  'https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/polygon.jpg';
 const MoonbeamLogo =
-  'https://raw.githubusercontent.com/sushiswap/icons/master/token/eth.jpg';
+  'https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/eth.jpg';
 const OKExLogo =
-  'https://raw.githubusercontent.com/sushiswap/icons/master/token/okt.jpg';
+  'https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/okt.jpg';
 const xDaiLogo =
-  'https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/xdai/assets/0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d/logo.png';
+  'https://raw.githubusercontent.com/digitalnativeinc/assets/master/blockchains/xdai/assets/0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d/logo.png';
 const CeloLogo =
-  'https://raw.githubusercontent.com/sushiswap/icons/master/token/celo.jpg';
+  'https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/celo.jpg';
 const PalmLogo =
-  'https://raw.githubusercontent.com/sushiswap/icons/master/token/palm.jpg';
+  'https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/palm.jpg';
 const ShibuyaLogo = 'https://i.imgur.com/offavOc.png';
 const ShidenLogo = 'https://i.imgur.com/9Q7jzvX.jpg';
 
@@ -138,7 +143,7 @@ interface CurrencyLogoProps {
 }
 
 const unknown =
-  'https://raw.githubusercontent.com/sushiswap/icons/master/token/unknown.png';
+  'https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/unknown.png';
 
 export const CurrencyLogo: FunctionComponent<CurrencyLogoProps> = ({
   currency,

@@ -33,7 +33,7 @@ export default function useAddTokenToMetaMask(
               address: token.address,
               symbol: token.symbol,
               decimals: token.decimals,
-              image: getTokenLogoURL(token.address, chainId),
+              image: getTokenLogoURL(token, chainId),
             },
           },
         })
