@@ -31,7 +31,8 @@ export default function useMasterChef(chef: Chef) {
         // } else {
         tx = await contract?.deposit(pid, amount, account);
         // }
-
+        // remove later
+        console.log(tx);
         return tx;
       } catch (e) {
         console.error(e);
