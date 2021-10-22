@@ -19,6 +19,7 @@ export default function useMasterChef(chef: Chef) {
   const sushi = useSTNDContract();
 
   const contract = useChefContract(chef);
+
   // Deposit
   const deposit = useCallback(
     async (pid: number, amount: BigNumber) => {
