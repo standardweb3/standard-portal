@@ -31,6 +31,7 @@ import { BigNumber } from 'ethers';
 import { useDividendPoolWhitelistPairBalances } from '../../state/user/hooks';
 import { DividendPairs } from '../../components-ui/Dividend/DividendPairs';
 import styled from '@emotion/styled';
+import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
 
 export const BondWrapper = styled.div`
   @media only screen and (min-width: 640px) {
@@ -200,8 +201,15 @@ export default function Dividend() {
                     sm:justify-center
                     sm:space-x-6
                     space-y-12
-                    sm:space-y-0"
+                    sm:space-y-0
+                    relative"
                   >
+                    <div className="absolute top-0 right-0">
+                      <AnalyticsLink
+                        iconClassName="!text-primary"
+                        path="dividend"
+                      />
+                    </div>
                     <ViewportXSmall>
                       <BondedInfo
                         className="text-center"

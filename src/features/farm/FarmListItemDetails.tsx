@@ -24,6 +24,8 @@ import usePendingReward from './usePendingReward';
 import { useTokenBalance } from '../../state/wallet/hooks';
 import { useTransactionAdder } from '../../state/transactions/hooks';
 import { Typographies } from '../../utils/Typography';
+import { ExternalLink } from '../../components-ui/ExternalLink';
+import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
 
 const FarmListItem = ({ farm }) => {
   const { account, chainId } = useActiveWeb3React();
@@ -54,6 +56,7 @@ const FarmListItem = ({ farm }) => {
     [Chef.MASTERCHEF_V2]: {
       [ChainId.MAINNET]: MASTERCHEF_V2_ADDRESS[ChainId.MAINNET],
       [ChainId.RINKEBY]: MASTERCHEF_V2_ADDRESS[ChainId.RINKEBY],
+      [ChainId.SHIBUYA]: MASTERCHEF_V2_ADDRESS[ChainId.SHIBUYA],
     },
   };
 
@@ -247,6 +250,13 @@ const FarmListItem = ({ farm }) => {
               </Button>
             </div>
           )}
+          <div className="col-span-2 text-center">
+            <AnalyticsLink
+              text
+              path={`pools/${farm.id}`}
+              className="!text-sm"
+            />
+          </div>
         </div>
       </Disclosure.Panel>
     </Transition>

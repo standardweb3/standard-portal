@@ -30,25 +30,9 @@ export default function useMasterChef(chef: Chef) {
         // if (chef === Chef.MASTERCHEF) {
         //   tx = await contract?.deposit(pid, amount);
         // } else {
-        const estimatedGas = await contract?.estimateGas.deposit(
-          pid,
-          amount,
-          account,
-        );
 
-        console.log(estimatedGas);
-
-        tx = await contract?.deposit(
-          pid,
-          amount,
-          account,
-          estimatedGas && {
-            gasLimit: calculateGasMargin(estimatedGas),
-          },
-        );
+        tx = await contract?.deposit(pid, amount, account);
         // }
-        // remove later
-        console.log(tx);
         return tx;
       } catch (e) {
         console.error(e);
@@ -64,11 +48,11 @@ export default function useMasterChef(chef: Chef) {
       try {
         let tx;
 
-        if (chef === Chef.MASTERCHEF) {
-          tx = await contract?.withdraw(pid, amount);
-        } else {
-          tx = await contract?.withdraw(pid, amount, account);
-        }
+        // if (chef === Chef.MASTERCHEF) {
+        //   tx = await contract?.withdraw(pid, amount);
+        // } else {
+        tx = await contract?.withdraw(pid, amount, account);
+        // }
 
         return tx;
       } catch (e) {

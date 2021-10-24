@@ -70,6 +70,7 @@ import {
 import { ExchangeNavigation } from '../../components-ui/Exchange/ExchangeNavigation';
 import { TransactionSettingsWithGas } from '../../components-ui/Exchange/TransactionSettingsWithGas';
 import { RecipientInputPanel } from '../../components-ui/AddressInputPanel/RecipientInputPanel';
+import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
 
 export default function Swap() {
   /** PARSE TOKENS FROM CONTRACT ADDRESSES PROVIDED IN URL */
@@ -520,10 +521,11 @@ export default function Swap() {
           <div className={Typographies.pageContent}>
             <div className="mb-4">
               <ViewportSmallDown>
-                <div className="flex justify-end">
+                <div className="flex justify-end items-center space-x-2">
                   <TransactionSettingsWithGas
                     allowedSlippage={allowedSlippage}
                   />
+                  <AnalyticsLink path={'tokens'} />
                 </div>
               </ViewportSmallDown>
               <ViewportMediumUp>

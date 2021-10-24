@@ -19,6 +19,7 @@ import { useTokenBalance } from '../../state/wallet/hooks';
 import { useTotalSupply } from '../../hooks/useTotalSupply';
 import { Transition } from '@headlessui/react';
 import { Typographies } from '../../utils/Typography';
+import { AnalyticsLink } from '../AnalyticsLink';
 
 interface PositionCardProps {
   pair: Pair;
@@ -352,6 +353,9 @@ export function FullPositionCard({
                 </Button>
               </div>
             )}
+          <div className="flex justify-center">
+            <AnalyticsLink text path={`pairs/${pair.liquidityToken.address}`} />
+          </div>
         </div>
       </Transition>
     </div>

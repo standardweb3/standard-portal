@@ -24,6 +24,10 @@ import { LiquidityHeader } from '../../features/liquidity';
 import { LogoSpinner } from '../../components-ui/Spinner/LogoSpinner';
 import { Typographies } from '../../utils/Typography';
 import { ViewportMediumUp } from '../../components-ui/Responsive';
+import { ExternalLink } from '../../components-ui/ExternalLink';
+import { ANALYTICS_URL } from '../../constants';
+import { ChartBarIcon } from '@heroicons/react/outline';
+import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
 
 export default function Pool() {
   const router = useRouter();
@@ -121,7 +125,10 @@ export default function Pool() {
 
           <div className={Typographies.pageContent}>
             <div className="grid grid-flow-row gap-4">
-              <div className="font-bold">My Liquidity Positions</div>
+              <div className="flex justify-between">
+                <div className="font-bold">My Liquidity Positions</div>
+                <AnalyticsLink path="pairs" />
+              </div>
               <LiquidityHeader />
               {!account ? (
                 <WalletConnector />

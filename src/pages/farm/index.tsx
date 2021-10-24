@@ -25,6 +25,7 @@ import {
   ViewportMediumUp,
   ViewportSmallDown,
 } from '../../components-ui/Responsive';
+import { ExternalLink } from '../../components-ui/ExternalLink';
 
 export default function Farm() {
   const router = useRouter();

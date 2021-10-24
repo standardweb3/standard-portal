@@ -66,6 +66,7 @@ import {
 } from '../../components-ui/Responsive';
 import { TransactionSettingsWithGas } from '../../components-ui/Exchange/TransactionSettingsWithGas';
 import { ExchangeNavigation } from '../../components-ui/Exchange/ExchangeNavigation';
+import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
 
 const DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE = new Percent(50, 10_000);
 
@@ -416,6 +417,9 @@ export default function Liquidity() {
   );
 
   const isPairValid = pair && pairState !== PairState.INVALID;
+  const pairAddressForAnalytics =
+    pair && pairState == PairState.EXISTS && pair?.liquidityToken?.address;
+
   return (
     <>
       <Head>
@@ -469,10 +473,11 @@ export default function Liquidity() {
             {/* <AddRemoveTabs creating={isCreate} adding={true} defaultSlippage={DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE} /> */}
             <div className="mb-4">
               <ViewportSmallDown>
-                <div className="flex justify-end">
+                <div className="flex justify-end items-center space-x-2">
                   <TransactionSettingsWithGas
                     allowedSlippage={allowedSlippage}
                   />
+                  <AnalyticsLink path={pair ? `pairs/${pair}` : 'pairs'} />
                 </div>
               </ViewportSmallDown>
               <ViewportMediumUp>
@@ -480,6 +485,7 @@ export default function Liquidity() {
                   input={currencies[Field.CURRENCY_A]}
                   output={currencies[Field.CURRENCY_B]}
                   allowedSlippage={allowedSlippage}
+                  pair={pairAddressForAnalytics}
                 />
               </ViewportMediumUp>
             </div>

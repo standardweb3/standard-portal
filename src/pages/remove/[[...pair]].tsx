@@ -63,6 +63,7 @@ import {
 } from '../../components-ui/Responsive';
 import { ExchangeNavigation } from '../../components-ui/Exchange/ExchangeNavigation';
 import { TransactionSettingsWithGas } from '../../components-ui/Exchange/TransactionSettingsWithGas';
+import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
 
 const DEFAULT_REMOVE_LIQUIDITY_SLIPPAGE_TOLERANCE = new Percent(5, 100);
 
@@ -798,6 +799,8 @@ export default function Remove() {
     liquidityPercentChangeCallback,
   );
 
+  const pairAddressForAnalytics = pair?.liquidityToken?.address;
+
   return (
     <>
       <Head>
@@ -823,10 +826,11 @@ export default function Remove() {
           <div className={Typographies.pageContent}>
             <div className="mb-4">
               <ViewportSmallDown>
-                <div className="flex justify-end">
+                <div className="flex justify-end items-center space-x-2">
                   <TransactionSettingsWithGas
                     allowedSlippage={allowedSlippage}
                   />
+                  <AnalyticsLink path={`pairs/${pair}`} />
                 </div>
               </ViewportSmallDown>
               <ViewportMediumUp>
@@ -834,6 +838,7 @@ export default function Remove() {
                   input={currencyA}
                   output={currencyB}
                   allowedSlippage={allowedSlippage}
+                  pair={pairAddressForAnalytics}
                 />
               </ViewportMediumUp>
             </div>
