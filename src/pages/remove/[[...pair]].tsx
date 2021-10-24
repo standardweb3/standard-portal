@@ -56,7 +56,7 @@ import { MinimalPositionCard } from '../../components-ui/PositionCard';
 import PercentInputPanel from '../../components-ui/PercentInputPanel';
 import { PageHeader } from '../../components-ui/PageHeader';
 import { LiquidityHeader } from '../../features/liquidity';
-import { DefinedStyles } from '../../utils/Typography';
+import { DefinedStyles } from '../../utils/DefinedStyles';
 import {
   ViewportMediumUp,
   ViewportSmallDown,
