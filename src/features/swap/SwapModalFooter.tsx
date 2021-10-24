@@ -6,11 +6,10 @@ import {
 import React, { ReactNode } from 'react';
 
 import { ButtonError } from '../../components-ui/Button';
-import { Typographies } from '../../utils/Typography';
+import { DefinedStyles } from '../../utils/DefinedStyles';
 import { SwapCallbackError } from './styleds';
 
 export default function SwapModalFooter({
-  trade,
   onConfirm,
   swapErrorMessage,
   disabledConfirm,
@@ -97,7 +96,7 @@ export default function SwapModalFooter({
         onClick={onConfirm}
         disabled={disabledConfirm}
         id="confirm-swap-or-send"
-        className={Typographies.swapButton}
+        className={DefinedStyles.swapButton}
       >
         {`Confirm Swap`}
       </ButtonError>

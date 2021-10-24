@@ -9,8 +9,7 @@ import { Token } from '@digitalnative/standard-protocol-sdk';
 import { TokenList } from '@uniswap/token-lists';
 import styled from '@emotion/styled';
 import 'react-tabs/style/react-tabs.css';
-import { Typographies } from '../../utils/Typography';
-import { classNames } from '../../functions';
+import { DefinedStyles } from '../../utils/DefinedStyles';
 
 const ContentWrapper = styled.div`
   height: 100%;
@@ -59,14 +58,14 @@ function Manage({
         bg-opaque-inactive"
         >
           <Tab
-            className={Typographies.manageTab}
-            selectedClassName={Typographies.manageTabActive}
+            className={DefinedStyles.manageTab}
+            selectedClassName={DefinedStyles.manageTabActive}
           >
             Lists
           </Tab>
           <Tab
-            className={Typographies.manageTab}
-            selectedClassName={Typographies.manageTabActive}
+            className={DefinedStyles.manageTab}
+            selectedClassName={DefinedStyles.manageTabActive}
           >
             Tokens
           </Tab>

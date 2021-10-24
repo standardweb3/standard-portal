@@ -37,15 +37,9 @@ import PendingView from './PendingView';
 import { WalletInfo } from '../../components-ui/WalletInfo';
 import { ModalHeader } from '../../components-ui/Modal/ModalHeader';
 import { Button } from '../../components-ui/Button';
-import {
-  useSizeSm,
-  useSizeSmDown,
-  useSizeXs,
-} from '../../components-ui/Responsive';
-import { type } from 'os';
-import { ChainId } from '@digitalnative/standard-protocol-sdk';
+import { useSizeSmDown, useSizeXs } from '../../components-ui/Responsive';
 import Agreement from './Agreement';
-import { Typographies } from '../../utils/Typography';
+import { DefinedStyles } from '../../utils/DefinedStyles';
 import { ExternalLink } from '../../components-ui/ExternalLink';
 import { useUserAgreement } from '../../state/user/hooks';
 import { classNames } from '../../functions';
@@ -332,7 +326,7 @@ export default function WalletModal({
             <div className="space-y-4">
               {!userAgreement ? (
                 <div className="flex space-x-4">
-                  <div className={Typographies.step}>1</div>
+                  <div className={DefinedStyles.step}>1</div>
                   <div className="space-y-4">
                     <div>
                       Accept the{' '}
@@ -354,7 +348,7 @@ export default function WalletModal({
                   <ExternalLink href="assets/terms-of-service.pdf">
                     {' '}
                     Terms of Service
-                  </ExternalLink>{' '}
+                  </ExternalLink>
                 </div>
               )}
               <div
@@ -365,7 +359,7 @@ export default function WalletModal({
               >
                 {!userAgreement && (
                   <div className="flex items-center space-x-4">
-                    <div className={Typographies.step}>2</div>
+                    <div className={DefinedStyles.step}>2</div>
                     <div>Choose Wallet</div>
                   </div>
                 )}

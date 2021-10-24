@@ -23,7 +23,7 @@ import useMasterChef from './useMasterChef';
 // import usePendingReward from './usePendingReward';
 import { useTokenBalance } from '../../state/wallet/hooks';
 import { useTransactionAdder } from '../../state/transactions/hooks';
-import { Typographies } from '../../utils/Typography';
+import { DefinedStyles } from '../../utils/DefinedStyles';
 
 const FarmListItemDetailsV2 = ({ farm, token0, token1 }) => {
   const { account, chainId } = useActiveWeb3React();
@@ -54,7 +54,7 @@ const FarmListItemDetailsV2 = ({ farm, token0, token1 }) => {
     [Chef.MASTERCHEF_V2]: {
       [ChainId.MAINNET]: MASTERCHEF_V2_ADDRESS[ChainId.MAINNET],
       [ChainId.RINKEBY]: MASTERCHEF_V2_ADDRESS[ChainId.RINKEBY],
-      [ChainId.SHIBUYA]: MASTERCHEF_V2_ADDRESS[ChainId.SHIBUYA]
+      [ChainId.SHIBUYA]: MASTERCHEF_V2_ADDRESS[ChainId.SHIBUYA],
     },
   };
 
@@ -115,7 +115,7 @@ const FarmListItemDetailsV2 = ({ farm, token0, token1 }) => {
             {approvalState === ApprovalState.NOT_APPROVED ||
             approvalState === ApprovalState.PENDING ? (
               <Button
-                className={Typographies.swapButton}
+                className={DefinedStyles.swapButton}
                 disabled={approvalState === ApprovalState.PENDING}
                 onClick={approve}
               >
@@ -125,7 +125,7 @@ const FarmListItemDetailsV2 = ({ farm, token0, token1 }) => {
               </Button>
             ) : (
               <Button
-                className={Typographies.swapButton}
+                className={DefinedStyles.swapButton}
                 disabled={
                   pendingTx ||
                   !typedDepositValue ||
@@ -186,7 +186,7 @@ const FarmListItemDetailsV2 = ({ farm, token0, token1 }) => {
             </div>
             <div className="flex space-x-2">
               <Button
-                className={Typographies.swapButton}
+                className={DefinedStyles.swapButton}
                 disabled={
                   pendingTx ||
                   !typedWithdrawValue ||

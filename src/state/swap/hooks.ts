@@ -8,6 +8,7 @@ import {
   TradeType,
   Trade as V2Trade,
   WNATIVE,
+  STND_ADDRESS,
 } from '@digitalnative/standard-protocol-sdk';
 import {
   DEFAULT_ARCHER_ETH_TIP,
@@ -430,6 +431,7 @@ export function queryParametersToSwapState(
     } else {
       // default to ETH input
       inputCurrency = 'ETH';
+      outputCurrency = STND_ADDRESS[chainId];
     }
   } else if (inputCurrency === outputCurrency) {
     // clear output if identical

@@ -1,9 +1,8 @@
 import { ApprovalState, useActiveWeb3React } from '../../hooks';
-import { Typographies } from '../../utils/Typography';
+import { DefinedStyles } from '../../utils/DefinedStyles';
 import { Button } from '../Button';
 import { Input as NumericalInput } from '../NumericalInput';
 import Image from '../Image';
-import { CurrencyAmount, Token } from '@digitalnative/standard-protocol-sdk';
 import { RippleSpinner } from '../Spinner/RippleSpinner';
 
 export type BondInputTypes = {
@@ -64,7 +63,7 @@ export function BondInput({
         {approvalState === ApprovalState.NOT_APPROVED ||
         approvalState === ApprovalState.PENDING ? (
           <Button
-            className={Typographies.fullButton}
+            className={DefinedStyles.fullButton}
             disabled={approvalState === ApprovalState.PENDING}
             onClick={approve}
           >
@@ -84,7 +83,7 @@ export function BondInput({
         ) : (
           <Button
             disabled={disabled}
-            className={Typographies.fullButton}
+            className={DefinedStyles.fullButton}
             onClick={onBond}
           >
             Bond

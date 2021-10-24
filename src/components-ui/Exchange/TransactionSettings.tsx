@@ -10,7 +10,7 @@ import { Percent } from '@digitalnative/standard-protocol-sdk';
 import { classNames } from '../../functions';
 import { Button } from '../Button';
 import { Question } from '../Question';
-import { Typographies } from '../../utils/Typography';
+import { DefinedStyles } from '../../utils/DefinedStyles';
 
 enum SlippageError {
   InvalidInput = 'InvalidInput',
@@ -103,7 +103,7 @@ export function TransactionSettings({
           <div className="text-sm font-semibold">Slippage tolerance</div>
 
           <Question
-            className={Typographies['txSettings-question']}
+            className={DefinedStyles['txSettings-question']}
             text={`Your transaction will revert if the price changes unfavorably by more than this percentage.`}
           />
         </div>
@@ -156,7 +156,7 @@ export function TransactionSettings({
                 }}
                 color={slippageError ? 'red' : ''}
               />
-              <span className={Typographies['txSettings-text']}>%</span>
+              <span className={DefinedStyles['txSettings-text']}>%</span>
             </div>
           </div>
           <Button
@@ -165,7 +165,7 @@ export function TransactionSettings({
             onClick={() => {
               parseSlippageInput('');
             }}
-            className={Typographies['txSettings-auto']}
+            className={DefinedStyles['txSettings-auto']}
           >
             Auto
           </Button>
@@ -195,7 +195,7 @@ export function TransactionSettings({
           <div className="text-text text-sm font-semibold">{`Transaction deadline`}</div>
 
           <Question
-            className={Typographies['txSettings-question']}
+            className={DefinedStyles['txSettings-question']}
             text={`Your transaction will revert if it is pending for more than this long.`}
           />
         </div>
@@ -223,7 +223,7 @@ export function TransactionSettings({
             }}
           />
           <div
-            className={`flex-1 text-right ${Typographies['txSettings-text']}`}
+            className={`flex-1 text-right ${DefinedStyles['txSettings-text']}`}
           >{`minutes`}</div>
         </div>
       </div>

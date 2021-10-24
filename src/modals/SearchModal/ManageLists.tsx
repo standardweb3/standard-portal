@@ -41,7 +41,7 @@ import { usePopper } from 'react-popper';
 import useToggle from '../../hooks/useToggle';
 import { CheckCircleIcon, CogIcon } from '@heroicons/react/outline';
 import { classNames } from '../../functions';
-import { Typographies } from '../../utils/Typography';
+import { DefinedStyles } from '../../utils/DefinedStyles';
 
 const Wrapper = styled.div`
   display: flex;
@@ -192,7 +192,7 @@ const ListRow = memo(({ listUrl }: { listUrl: string }) => {
         key={listUrl}
         onClick={toggleList}
         className={classNames(
-          Typographies.importList,
+          DefinedStyles.importList,
           isActive
             ? 'text-text border-success'
             : 'text-text border-info opacity-50',
@@ -441,7 +441,10 @@ function ManageLists({
       )}
       <ListContainer className="flex-1 rounded-20 h-full bg-opaque-secondary py-6 px-3 mt-2">
         <div
-          className={classNames('h-full py-0 px-4', Typographies.scrollPrimary)}
+          className={classNames(
+            'h-full py-0 px-4',
+            DefinedStyles.scrollPrimary,
+          )}
         >
           <AutoSizer disableWidth>
             {({ height }) => (

@@ -7,7 +7,7 @@ import { Token } from '@digitalnative/standard-protocol-sdk';
 import styled from '@emotion/styled';
 import { WrappedTokenInfo } from '../../state/lists/wrappedTokenInfo';
 import { TrashIcon } from '@heroicons/react/outline';
-import { Typographies } from '../../utils/Typography';
+import { DefinedStyles } from '../../utils/DefinedStyles';
 import { Question } from '../../components-ui/Question';
 
 const NameOverflow = styled.div`
@@ -43,7 +43,9 @@ export default function ImportRow({
   return (
     <div
       className={
-        transparent ? Typographies.importRowTransparent : Typographies.importRow
+        transparent
+          ? DefinedStyles.importRowTransparent
+          : DefinedStyles.importRow
       }
       style={style}
     >

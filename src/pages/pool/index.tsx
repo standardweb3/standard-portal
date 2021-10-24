@@ -11,7 +11,6 @@ import { FullPositionCard } from '../../components-ui/PositionCard';
 import Head from 'next/head';
 import { MigrationSupported } from '../../features/migration';
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
-import { useETHBalances } from '../../state/wallet/hooks';
 import { useRouter } from 'next/router';
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks';
 import { useV2Pairs } from '../../hooks/useV2Pairs';
@@ -22,11 +21,8 @@ import { PageContent } from '../../components-ui/PageContent';
 import { useProtocol } from '../../state/protocol/hooks';
 import { LiquidityHeader } from '../../features/liquidity';
 import { LogoSpinner } from '../../components-ui/Spinner/LogoSpinner';
-import { Typographies } from '../../utils/Typography';
+import { DefinedStyles } from '../../utils/DefinedStyles';
 import { ViewportMediumUp } from '../../components-ui/Responsive';
-import { ExternalLink } from '../../components-ui/ExternalLink';
-import { ANALYTICS_URL } from '../../constants';
-import { ChartBarIcon } from '@heroicons/react/outline';
 import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
 
 export default function Pool() {
@@ -105,7 +101,7 @@ export default function Pool() {
           content="Standard Protocol liquidity pools are markets for trades between the two tokens, you can provide these tokens and become a liquidity provider to earn 0.3% of fees from trades."
         />
       </Head>
-      <Page id="pool-page" className={Typographies.page}>
+      <Page id="pool-page" className={DefinedStyles.page}>
         <ViewportMediumUp>
           <PageHeader title="Liquidity Positions" />
         </ViewportMediumUp>
@@ -115,7 +111,7 @@ export default function Pool() {
           </div> */}
 
           <Alert
-            className={Typographies.pageAlertMaxed}
+            className={DefinedStyles.pageAlertMaxed}
             title={`Liquidity Provider Rewards`}
             message={`Liquidity providers earn a 0.25% fee on all trades proportional to their share of
                         the pool. Fees are added to the pool, accrue in real time and can be claimed by
@@ -123,7 +119,7 @@ export default function Pool() {
             type="information"
           />
 
-          <div className={Typographies.pageContent}>
+          <div className={DefinedStyles.pageContent}>
             <div className="grid grid-flow-row gap-4">
               <div className="flex justify-between">
                 <div className="font-bold">My Liquidity Positions</div>

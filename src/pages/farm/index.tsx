@@ -20,12 +20,11 @@ import { classNames } from '../../functions';
 import Menu from '../../features/farm/FarmMenu';
 import { Search } from '../../components-ui/Search';
 import FarmList from '../../features/farm/FarmList';
-import { Typographies } from '../../utils/Typography';
+import { DefinedStyles } from '../../utils/DefinedStyles';
 import {
   ViewportMediumUp,
   ViewportSmallDown,
 } from '../../components-ui/Responsive';
-import { ExternalLink } from '../../components-ui/ExternalLink';
 
 export default function Farm() {
   const router = useRouter();
@@ -244,7 +243,7 @@ export default function Farm() {
           content="Farms of the Standard Protocol AMM to enable gas optimised and low slippage trades across countless networks"
         />
       </Head>
-      <Page id="farm-page" className={Typographies.page}>
+      <Page id="farm-page" className={DefinedStyles.page}>
         <ViewportMediumUp>
           <PageHeader title="Farm" />
         </ViewportMediumUp>

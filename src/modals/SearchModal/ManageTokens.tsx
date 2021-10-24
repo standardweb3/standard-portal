@@ -23,7 +23,7 @@ import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
 import { useToken } from '../../hooks/Tokens';
 import { TrashIcon } from '@heroicons/react/outline';
 import { classNames } from '../../functions';
-import { Typographies } from '../../utils/Typography';
+import { DefinedStyles } from '../../utils/DefinedStyles';
 
 function ManageTokens({
   setModalView,
@@ -162,7 +162,7 @@ function ManageTokens({
         <div
           className={classNames(
             'h-full py-0 px-4 overflow-y-scroll',
-            Typographies.scrollPrimary,
+            DefinedStyles.scrollPrimary,
           )}
         >
           <AutoSizer disableWidth>

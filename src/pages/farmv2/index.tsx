@@ -6,7 +6,7 @@ import {
   ViewportMediumUp,
   ViewportSmallDown,
 } from '../../components-ui/Responsive';
-import { Typographies } from '../../utils/Typography';
+import { DefinedStyles } from '../../utils/DefinedStyles';
 import { PageHeader } from '../../components-ui/PageHeader';
 import { PageContent } from '../../components-ui/PageContent';
 import Menu from '../../features/farm/FarmMenu';
@@ -64,7 +64,7 @@ export default function Farmbare() {
           content="Farms of the Standard Protocol AMM to enable gas optimised and low slippage trades across countless networks"
         />
       </Head>
-      <Page id="farm-page" className={Typographies.page}>
+      <Page id="farm-page" className={DefinedStyles.page}>
         <ViewportMediumUp>
           <PageHeader title="Farm" />
         </ViewportMediumUp>

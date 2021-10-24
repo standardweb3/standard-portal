@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import useCopyClipboard from '../../hooks/useCopyClipboard';
 import { PencilIcon, CheckIcon } from '@heroicons/react/outline';
 import { classNames } from '../../functions';
-import { Typographies } from '../../utils/Typography';
+import { DefinedStyles } from '../../utils/DefinedStyles';
 
 interface CopierProps {
   className?: string;
@@ -29,7 +29,7 @@ export function Copier({ className, toCopy, children }: CopierProps) {
       {isCopied && (
         <>
           <CheckIcon className="w-4 h-4" />
-          <div className={Typographies.copierCopied}>Copied</div>
+          <div className={DefinedStyles.copierCopied}>Copied</div>
         </>
       )}
 

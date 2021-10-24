@@ -2,7 +2,7 @@ import { useActiveWeb3React } from '../../hooks';
 import { Button } from '../Button';
 import { Input as NumericalInput } from '../NumericalInput';
 import Image from '../Image';
-import { Typographies } from '../../utils/Typography';
+import { DefinedStyles } from '../../utils/DefinedStyles';
 import { formatTime } from '../../functions/time';
 import { classNames } from '../../functions';
 import { BigNumber } from 'ethers';
@@ -101,7 +101,7 @@ export function Unbond({
         </div>
         <Button
           disabled={disabled}
-          className={Typographies.fullButton}
+          className={DefinedStyles.fullButton}
           onClick={unbond}
         >
           {remaining ? <CountdownTimer time={remainingSeconds} /> : 'Unbond'}

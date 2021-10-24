@@ -9,7 +9,7 @@ import { useTokenBalance } from '../../state/wallet/hooks';
 import { Page } from '../../components-ui/Page';
 import { PageHeader } from '../../components-ui/PageHeader';
 import { PageContent } from '../../components-ui/PageContent';
-import { Typographies } from '../../utils/Typography';
+import { DefinedStyles } from '../../utils/DefinedStyles';
 import {
   ViewportMediumUp,
   ViewportSmallUp,
@@ -150,13 +150,13 @@ export default function Dividend() {
           content="Standard Protocol dividend pool creates passive income for STND holders through fees collected on portal usage"
         />
       </Head>
-      <Page id="dividend-page" className={Typographies.page}>
+      <Page id="dividend-page" className={DefinedStyles.page}>
         <ViewportMediumUp>
           <PageHeader title="Dividend Pool" />
         </ViewportMediumUp>
         <PageContent>
           <Alert
-            className={Typographies.pageAlertFull}
+            className={DefinedStyles.pageAlertFull}
             title={`Dividends`}
             message={
               <div className="leading-relaxed">

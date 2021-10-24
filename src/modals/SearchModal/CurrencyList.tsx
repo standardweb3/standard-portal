@@ -26,7 +26,7 @@ import { useCurrencyBalance } from '../../state/wallet/hooks';
 import { useIsUserAddedToken } from '../../hooks/Tokens';
 import { Question } from '../../components-ui/Question';
 import { RippleSpinner } from '../../components-ui/Spinner/RippleSpinner';
-import { Typographies } from '../../utils/Typography';
+import { DefinedStyles } from '../../utils/DefinedStyles';
 import useAddTokenToMetaMask from '../../hooks/useAddTokenToMetaMask';
 import { PlusCircleIcon } from '@heroicons/react/outline';
 
@@ -271,7 +271,7 @@ export default function CurrencyList({
 
   return (
     <FixedSizeList
-      className={Typographies.scrollPrimary}
+      className={DefinedStyles.scrollPrimary}
       height={height}
       ref={fixedListRef as any}
       width="100%"

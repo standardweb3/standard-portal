@@ -1,6 +1,6 @@
 import { ArrowLeftIcon, XIcon } from '@heroicons/react/outline';
 import { classNames } from '../../functions';
-import { Typographies } from '../../utils/Typography';
+import { DefinedStyles } from '../../utils/DefinedStyles';
 
 export type ModalHeaderProps = {
   title?: React.ReactNode;
@@ -30,7 +30,7 @@ export function ModalHeader({
         </div>
       )}
       {title && (
-        <div className={`${Typographies.modalHeader} text-sm`}>{title}</div>
+        <div className={`${DefinedStyles.modalHeader} text-sm`}>{title}</div>
       )}
       {onClose && (
         <div onClick={onClose} className="justify-self-end">

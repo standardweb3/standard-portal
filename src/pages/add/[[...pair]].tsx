@@ -58,7 +58,7 @@ import { LiquidityHeader, LiquidityPrice } from '../../features/liquidity';
 import { MinimalPositionCard } from '../../components-ui/PositionCard';
 import UnsupportedCurrencyFooter from '../../features/swap/UnsupportedCurrencyFooter';
 import { RippleSpinner } from '../../components-ui/Spinner/RippleSpinner';
-import { Typographies } from '../../utils/Typography';
+import { DefinedStyles } from '../../utils/DefinedStyles';
 import { TradeAmountInfo } from '../../components-ui/TradeAmountInfo';
 import {
   ViewportMediumUp,
@@ -430,7 +430,7 @@ export default function Liquidity() {
           content="Add liquidity to the Standard Protocol AMM to enable gas optimised and low slippage trades across countless networks"
         />
       </Head>
-      <Page id="add-liquidity-page" className={Typographies.page}>
+      <Page id="add-liquidity-page" className={DefinedStyles.page}>
         <ViewportMediumUp>
           <PageHeader title="add liquidity" />
         </ViewportMediumUp>
@@ -438,14 +438,14 @@ export default function Liquidity() {
         <PageContent>
           {chainId === ChainId.SHIBUYA && (
             <Alert
-              className={Typographies.pageAlertMaxed}
+              className={DefinedStyles.pageAlertMaxed}
               title={`Please Read!`}
               message={`Adding liquidity for SBY-ERC20 does not work due to the Shibuya EVM error. Please wrap your SBY to WSBY and add WSBY-ERC20 liquidity instead`}
               type="warning"
             />
           )}
           <Alert
-            className={Typographies.pageAlertMaxed}
+            className={DefinedStyles.pageAlertMaxed}
             message={
               noLiquidity ? (
                 `When creating a pair you are the first liquidity provider. The ratio of tokens you add will set the price of this pool. Once you are happy with the rate, click supply to review`
@@ -469,7 +469,7 @@ export default function Liquidity() {
             </div>
           </ViewportSmallDown>
 
-          <div className={Typographies.pageContent}>
+          <div className={DefinedStyles.pageContent}>
             {/* <AddRemoveTabs creating={isCreate} adding={true} defaultSlippage={DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE} /> */}
             <div className="mb-4">
               <ViewportSmallDown>
@@ -575,7 +575,7 @@ export default function Liquidity() {
                   </div>
                 )}
 
-              <div className={Typographies.divider} />
+              <div className={DefinedStyles.divider} />
               {(overMaxAmounts[Field.CURRENCY_A] ||
                 overMaxAmounts[Field.CURRENCY_B]) && (
                 <div className="text-danger text-sm text-center">
@@ -603,7 +603,7 @@ export default function Liquidity() {
                           <>
                             {approvalA !== ApprovalState.APPROVED && (
                               <Button
-                                className={Typographies.swapButton}
+                                className={DefinedStyles.swapButton}
                                 onClick={approveACallback}
                                 disabled={approvalA === ApprovalState.PENDING}
                                 style={{
@@ -634,7 +634,7 @@ export default function Liquidity() {
                           <>
                             {approvalB !== ApprovalState.APPROVED && (
                               <Button
-                                className={Typographies.swapButton}
+                                className={DefinedStyles.swapButton}
                                 onClick={approveBCallback}
                                 disabled={approvalB === ApprovalState.PENDING}
                                 style={{
@@ -667,7 +667,7 @@ export default function Liquidity() {
                     {approvalA === ApprovalState.APPROVED &&
                       approvalB === ApprovalState.APPROVED && (
                         <ButtonError
-                          className={Typographies.swapButton}
+                          className={DefinedStyles.swapButton}
                           onClick={() => {
                             isExpertMode ? onAdd() : setShowConfirm(true);
                           }}

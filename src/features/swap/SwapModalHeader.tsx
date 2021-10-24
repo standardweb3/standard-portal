@@ -10,16 +10,12 @@ import { isAddress, shortenAddress } from '../../functions';
 import { AdvancedSwapDetails } from './AdvancedSwapDetails';
 import { CurrencyLogo } from '../../components-ui/CurrencyLogo';
 import { TradePrice } from './TradePrice';
-import { useUSDCValue } from '../../hooks/useUSDCPrice';
 import { warningSeverity } from '../../functions';
 import {
   ArrowDownIcon,
-  ChevronDoubleDownIcon,
   ExclamationCircleIcon,
   SwitchHorizontalIcon,
 } from '@heroicons/react/outline';
-import { Alert } from '../../components-ui/Alert';
-import { Typographies } from '../../utils/Typography';
 
 export default function SwapModalHeader({
   trade,

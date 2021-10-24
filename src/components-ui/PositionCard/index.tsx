@@ -18,7 +18,7 @@ import { useRouter } from 'next/router';
 import { useTokenBalance } from '../../state/wallet/hooks';
 import { useTotalSupply } from '../../hooks/useTotalSupply';
 import { Transition } from '@headlessui/react';
-import { Typographies } from '../../utils/Typography';
+import { DefinedStyles } from '../../utils/DefinedStyles';
 import { AnalyticsLink } from '../AnalyticsLink';
 
 interface PositionCardProps {
@@ -330,7 +330,7 @@ export function FullPositionCard({
             JSBI.greaterThan(userDefaultPoolBalance.quotient, BIG_INT_ZERO) && (
               <div className="grid grid-cols-2 gap-4">
                 <Button
-                  className={Typographies.liquidityButton}
+                  className={DefinedStyles.liquidityButton}
                   onClick={() => {
                     router.push(
                       `/add/${pair.token0.address}/${pair.token1.address}`,
@@ -340,7 +340,7 @@ export function FullPositionCard({
                   {`Add`}
                 </Button>
                 <Button
-                  className={Typographies.liquidityButton}
+                  className={DefinedStyles.liquidityButton}
                   onClick={() => {
                     router.push(
                       `/remove/${currencyId(currency0)}/${currencyId(

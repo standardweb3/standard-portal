@@ -20,11 +20,9 @@ import { getAddress } from '@ethersproject/address';
 import { tryParseAmount } from '../../functions/parse';
 import useActiveWeb3React from '../../hooks/useActiveWeb3React';
 import useMasterChef from './useMasterChef';
-import usePendingReward from './usePendingReward';
 import { useTokenBalance } from '../../state/wallet/hooks';
 import { useTransactionAdder } from '../../state/transactions/hooks';
-import { Typographies } from '../../utils/Typography';
-import { ExternalLink } from '../../components-ui/ExternalLink';
+import { DefinedStyles } from '../../utils/DefinedStyles';
 import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
 
 const FarmListItem = ({ farm }) => {
@@ -118,7 +116,7 @@ const FarmListItem = ({ farm }) => {
             {approvalState === ApprovalState.NOT_APPROVED ||
             approvalState === ApprovalState.PENDING ? (
               <Button
-                className={Typographies.swapButton}
+                className={DefinedStyles.swapButton}
                 disabled={approvalState === ApprovalState.PENDING}
                 onClick={approve}
               >
@@ -128,7 +126,7 @@ const FarmListItem = ({ farm }) => {
               </Button>
             ) : (
               <Button
-                className={Typographies.swapButton}
+                className={DefinedStyles.swapButton}
                 disabled={
                   pendingTx ||
                   !typedDepositValue ||
@@ -190,7 +188,7 @@ const FarmListItem = ({ farm }) => {
             </div>
             <div className="flex space-x-2">
               <Button
-                className={Typographies.swapButton}
+                className={DefinedStyles.swapButton}
                 disabled={
                   pendingTx ||
                   !typedWithdrawValue ||

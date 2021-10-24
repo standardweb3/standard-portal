@@ -18,7 +18,7 @@ import { ModalHeader } from '../Modal/ModalHeader';
 import { Button } from '../Button';
 import { Question } from '../Question';
 import { TransactionSettings } from '../Exchange/TransactionSettings';
-import { Typographies } from '../../utils/Typography';
+import { DefinedStyles } from '../../utils/DefinedStyles';
 import { useSizeSmDown, useSizeXs } from '../Responsive';
 
 export default function Settings({
@@ -69,7 +69,7 @@ export default function Settings({
               <div className="flex items-center space-x-2">
                 <div className="text-text text-sm font-semibold">{`Toggle Expert Mode`}</div>
                 <Question
-                  className={Typographies['txSettings-question']}
+                  className={DefinedStyles['txSettings-question']}
                   text={`Bypasses confirmation modals and allows high slippage trades. Use at your own risk.`}
                 />
               </div>
@@ -93,7 +93,7 @@ export default function Settings({
               <div className="flex items-center space-x-2">
                 <div className="text-text text-sm font-semibold">{`Disable Multihops`}</div>
                 <Question
-                  className={Typographies['txSettings-question']}
+                  className={DefinedStyles['txSettings-question']}
                   text={`Restricts swaps to direct pairs only.`}
                 />
               </div>

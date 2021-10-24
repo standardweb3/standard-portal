@@ -56,7 +56,7 @@ import { MinimalPositionCard } from '../../components-ui/PositionCard';
 import PercentInputPanel from '../../components-ui/PercentInputPanel';
 import { PageHeader } from '../../components-ui/PageHeader';
 import { LiquidityHeader } from '../../features/liquidity';
-import { Typographies } from '../../utils/Typography';
+import { DefinedStyles } from '../../utils/Typography';
 import {
   ViewportMediumUp,
   ViewportSmallDown,
@@ -811,7 +811,7 @@ export default function Remove() {
           content="Remove liquidity from the SushiSwap AMM"
         />
       </Head>
-      <Page id="remove-liquidity-page" className={Typographies.page}>
+      <Page id="remove-liquidity-page" className={DefinedStyles.page}>
         <ViewportMediumUp>
           <PageHeader title="remove liquidity" />
         </ViewportMediumUp>
@@ -823,7 +823,7 @@ export default function Remove() {
             </div>
           </ViewportSmallDown>
 
-          <div className={Typographies.pageContent}>
+          <div className={DefinedStyles.pageContent}>
             <div className="mb-4">
               <ViewportSmallDown>
                 <div className="flex justify-end items-center space-x-2">
@@ -975,7 +975,7 @@ export default function Remove() {
                   <div className="grid grid-cols-2 gap-4">
                     <ButtonConfirmed
                       color="primary"
-                      className={Typographies.swapButton}
+                      className={DefinedStyles.swapButton}
                       onClick={onAttemptToApprove}
                       confirmed={
                         approval === ApprovalState.APPROVED ||
@@ -995,7 +995,7 @@ export default function Remove() {
                     </ButtonConfirmed>
                     <ButtonError
                       color="primary"
-                      className={Typographies.swapButton}
+                      className={DefinedStyles.swapButton}
                       onClick={() => {
                         setShowConfirm(true);
                       }}
