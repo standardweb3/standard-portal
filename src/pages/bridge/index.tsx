@@ -4,7 +4,9 @@ import {
   WNATIVE,
 } from '@digitalnative/standard-protocol-sdk';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { getCurChainInfo } from '../../bridge/functions/bridge';
+import { useFetchRouterTokenList } from '../../bridge/hooks/fetchLists';
 import {
   NETWORK_ICON,
   NETWORK_LABEL,
@@ -32,23 +34,91 @@ export default function Bridge() {
     name: NETWORK_LABEL[chainId],
   };
 
-  const [chainTo, setChainTo] = useState<ChainId | null>(null);
+  const [inputBridgeValue, setInputBridgeValue] = useState('');
+  const [selectCurrency, setSelectCurrency] = useState<any>();
+  const [selectChain, setSelectChain] = useState<any>();
+  const [selectChainList, setSelectChainList] = useState<Array<any>>([]);
+  const [recipient, setRecipient] = useState<any>(account ?? '');
+  const [swapType, setSwapType] = useState('swap');
 
-  const [tokenList, setTokenList] = useState<Currency[] | null>([]);
-  const [currency0, setCurrency0] = useState<Currency | null>(null);
-  const [currencyAmount, setCurrencyAmount] = useState<string | null>('');
-  const [
-    tokenToBridge,
-    setTokenToBridge,
-  ] = useState<AvailableChainsInfo | null>(null);
-  const currencyContract = useTokenContract(
-    currency0?.isToken && currency0?.address,
-    true,
-  );
+  const [intervalCount, setIntervalCount] = useState<number>(0);
+  const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false);
 
-  const currencyBalance = useCurrencyBalance(account, currency0);
+  const [delayAction, setDelayAction] = useState<boolean>(false);
 
-  const { anyswapInfo, anyswapError } = useAnyswapInfo();
+  const [curChain, setCurChain] = useState<any>({
+    chain: chainId,
+    ts: '',
+    bl: '',
+  });
+  const [destChain, setDestChain] = useState<any>({
+    chain: '',
+    ts: '',
+    bl: '',
+  });
+
+  const destConfig = useMemo(() => {
+    // console.log(selectCurrency)
+    if (
+      selectCurrency &&
+      selectCurrency?.destChains &&
+      selectCurrency?.destChains[selectChain]
+    ) {
+      return selectCurrency?.destChains[selectChain];
+    }
+    return false;
+  }, [selectCurrency, selectChain]);
+
+  const isRouter = useMemo(() => {
+    // console.log(destConfig)
+    if (['swapin', 'swapout'].includes(destConfig?.type)) {
+      return false;
+    }
+    return true;
+  }, [destConfig]);
+
+  const useDestAddress = useMemo(() => {
+    if (isRouter) {
+      return destConfig?.routerToken;
+    }
+    return destConfig?.DepositAddress;
+  }, [destConfig, isRouter]);
+
+  const isNativeToken = useMemo(() => {
+    if (
+      selectCurrency &&
+      selectCurrency.address &&
+      chainId &&
+      getCurChainInfo(chainId) &&
+      getCurChainInfo(chainId).nativeToken &&
+      getCurChainInfo(chainId).nativeToken.toLowerCase() ===
+        selectCurrency.address.toLowerCase()
+    ) {
+      return true;
+    }
+    return false;
+  }, [selectCurrency, chainId]);
+
+  const isUnderlying = useMemo(() => {
+    if (selectCurrency && selectCurrency?.underlying) {
+      return true;
+    }
+    return false;
+  }, [selectCurrency, selectChain]);
+
+  const isDestUnderlying = useMemo(() => {
+    if (
+      selectCurrency &&
+      selectCurrency?.destChains &&
+      selectCurrency?.destChains[selectChain] &&
+      selectCurrency?.destChains[selectChain]?.underlying
+    ) {
+      return true;
+    }
+    return false;
+  }, [selectCurrency, selectChain]);
+
+  const tokens = useFetchRouterTokenList();
   return <div>bridge</div>;
 
   // useEffect(() => {

@@ -15,6 +15,7 @@ export class WrappedTokenInfo implements Token {
   public readonly isNative: false = false;
   public readonly isToken: true = true;
   public readonly list: TokenList;
+  public readonly isAnyswap: false = false;
 
   public readonly tokenInfo: TokenInfo;
 

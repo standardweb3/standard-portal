@@ -64,6 +64,7 @@ import { RippleSpinner } from '../../components-ui/Spinner/RippleSpinner';
 import { DefinedStyles } from '../../utils/DefinedStyles';
 
 import switchIcon from '../../../public/icons/outlined/Switch.svg';
+
 import { PriceImpact } from '../../components-ui/PriceImpact';
 import {
   ViewportMediumUp,
