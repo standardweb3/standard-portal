@@ -55,6 +55,7 @@ const FarmListItemDetailsV2 = ({ farm, token0, token1 }) => {
       [ChainId.MAINNET]: MASTERCHEF_V2_ADDRESS[ChainId.MAINNET],
       [ChainId.RINKEBY]: MASTERCHEF_V2_ADDRESS[ChainId.RINKEBY],
       [ChainId.SHIBUYA]: MASTERCHEF_V2_ADDRESS[ChainId.SHIBUYA],
+      [ChainId.SHIDEN]: MASTERCHEF_V2_ADDRESS[ChainId.SHIDEN],
     },
   };
 

@@ -21,7 +21,7 @@ const useDexCandles = (
   let resultArray: RawCandlestickDatum[] = [];
 
   const [candleData, setCandleData] = useState<NumericalCandlestickDatum[]>([]);
-
+  
   const fetchDexCandles = useCallback(async () => {
     if (pairAddress == '') {
       return;
@@ -33,6 +33,7 @@ const useDexCandles = (
         query: dexCandlesQuery,
         variables: { pair: pairAddress, period, skip },
       });
+      console.log('results', results)
 
       while (results.data.candles.length === 1000) {
         skip += 1000;

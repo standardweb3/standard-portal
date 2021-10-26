@@ -16,6 +16,7 @@ export const BLOCKS = {
   [ChainId.MAINNET]: 'blocklytics/ethereum-blocks',
   [ChainId.RINKEBY]: 'billjhlee/rinkeby-blocks',
   [ChainId.SHIBUYA]: 'digitalnativeinc/shibuya-blocks',
+  [ChainId.SHIDEN]: 'digitalnativeinc/shiden-blocks',
   [ChainId.XDAI]: 'matthewlilley/xdai-blocks',
   [ChainId.MATIC]: 'matthewlilley/polygon-blocks',
   [ChainId.FANTOM]: 'matthewlilley/fantom-blocks',

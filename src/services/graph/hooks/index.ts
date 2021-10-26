@@ -60,7 +60,7 @@ export function useMasterChefV1Farms(swrConfig = undefined) {
 export function useMasterChefV2Farms(swrConfig: SWRConfiguration = undefined) {
   const { chainId } = useActiveWeb3React();
   const shouldFetch =
-    chainId && [ChainId.MAINNET, ChainId.RINKEBY].includes(ChainId.MAINNET);
+    chainId
   const { data } = useSWR(
     shouldFetch ? 'masterChefV2Farms' : null,
     () => getMasterChefV2Farms(chainId),

@@ -107,17 +107,17 @@ export const SUPPORTED_NETWORKS: {
     rpcUrls: ['https://rinkeby.infura.io/v3'],
     blockExplorerUrls: ['https://rinkeby.etherscan.io'],
   },
-  [ChainId.SHIBUYA]: {
-    chainId: '0x51',
-    chainName: 'Shibuya',
-    nativeCurrency: {
-      name: 'Shibuya',
-      symbol: 'SBY',
-      decimals: 18,
-    },
-    rpcUrls: ['https://rpc.shibuya.astar.network:8545'],
-    blockExplorerUrls: ['https://shibuya.subscan.io'],
-  },
+  // [ChainId.SHIBUYA]: {
+  //   chainId: '0x51',
+  //   chainName: 'Shibuya',
+  //   nativeCurrency: {
+  //     name: 'Shibuya',
+  //     symbol: 'SBY',
+  //     decimals: 18,
+  //   },
+  //   rpcUrls: ['https://rpc.shibuya.astar.network:8545'],
+  //   blockExplorerUrls: ['https://shibuya.subscan.io'],
+  // },
   [ChainId.SHIDEN]: {
     chainId: '0x150',
     chainName: 'Shiden',

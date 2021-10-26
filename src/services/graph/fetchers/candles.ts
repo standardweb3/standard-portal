@@ -7,6 +7,7 @@ export const CANDLES = {
   //   [ChainId.KOVAN]: 'digitalnative/standardprotocol',
   [ChainId.RINKEBY]: 'billjhlee/rinkeby-exchange-candles',
   [ChainId.SHIBUYA]: 'digitalnativeinc/shibuya-exchange',
+  [ChainId.SHIDEN]: 'digitalnativeinc/shiden-candles',
   //   [ChainId.XDAI]: 'sushiswap/xdai-exchange',
   //   [ChainId.MATIC]: 'sushiswap/matic-exchange',
   //   [ChainId.FANTOM]: 'sushiswap/fantom-exchange',
@@ -17,10 +18,6 @@ export const CANDLES = {
   //   [ChainId.CELO]: 'sushiswap/celo-exchange',
 };
 
-export const candles = async (chainId = ChainId.MAINNET, query, variables) => {
-  request(
-    `${GRAPH_HOST[chainId]}/subgraphs/name/${CANDLES[chainId]}`,
-    query,
-    variables,
-  );
-};
+export const candles = (chainId: ChainId) => {
+  return `${GRAPH_HOST[chainId]}/subgraphs/name/${CANDLES[chainId]}`
+}

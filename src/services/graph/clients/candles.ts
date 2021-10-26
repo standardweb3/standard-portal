@@ -1,8 +1,8 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
-import { GRAPH_HOST } from '../constants';
+import { candles } from '../fetchers/candles';
 
 export const dexCandlesGraphClient = (chainId) => {
-  const uri = `${GRAPH_HOST[chainId]}/subgraphs/name/billjhlee/rinkeby-exchange-candles`;
+  const uri = candles(chainId)
   return new ApolloClient({
     link: createHttpLink({
       uri: uri,

@@ -143,10 +143,10 @@ export default function Chart({ inputCurrency, outputCurrency }: ChartProps) {
     ? outputCurrency.address
     : inputCurrency?.wrapped?.address ?? '';
 
-  const weth = WNATIVE[ChainId.MOONRIVER];
+  const weth = WNATIVE[chainId];
   const isWrapped =
-    (inputCurrency?.isNative && weth.equals(outputCurrency)) ||
-    (outputCurrency?.isNative && weth.equals(inputCurrency));
+    (inputCurrency?.isNative && outputCurrency && weth?.equals(outputCurrency)) ||
+    (outputCurrency?.isNative && inputCurrency && weth?.equals(inputCurrency));
 
   const pairAddress =
     inputCurrency && outputCurrency && !isWrapped
