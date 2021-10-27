@@ -199,7 +199,7 @@ export default function Farm() {
             ? Number(pair.asset.tokenInfo.decimals)
             : 18,
         type,
-        symbol: 'LTR',
+        symbol: `${pair.token0.symbol}/${pair.token1.symbol}`,
         name: 'Standard LTR Token',
       },
       balance,
