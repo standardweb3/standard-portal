@@ -15,12 +15,14 @@ export class WrappedTokenInfo implements Token {
   public readonly isNative: false = false;
   public readonly isToken: true = true;
   public readonly list: TokenList;
+  public readonly isAnyswap: boolean;
 
   public readonly tokenInfo: TokenInfo;
 
-  constructor(tokenInfo: TokenInfo, list: TokenList) {
+  constructor(tokenInfo: TokenInfo, list: TokenList, isAnyswap?: boolean) {
     this.tokenInfo = tokenInfo;
     this.list = list;
+    this.isAnyswap = !!isAnyswap
   }
 
   private _checksummedAddress: string | null = null;
