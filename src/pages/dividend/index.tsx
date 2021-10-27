@@ -66,6 +66,7 @@ export default function Dividend() {
 
   const bonded = useBonded();
   const bondedTotal = useBondSupply();
+  console.log(bondedTotal.toString());
   const remainingSeconds = useRemainingBondingTime();
 
   const share = useMemo(() => {

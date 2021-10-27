@@ -25,7 +25,10 @@ export function Listings() {
       <div className="w-full flex space-x-4 items-center">
         {LISTINGS.map((social) => {
           return (
-            <div className="col-span-1 text-grey flex items-center justify-center">
+            <div
+              key={social.alt}
+              className="col-span-1 text-grey flex items-center justify-center"
+            >
               <ExternalLink href={social.url} className="!text-grey">
                 {React.createElement(social.src, {
                   className: classNames(
