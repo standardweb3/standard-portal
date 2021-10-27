@@ -123,7 +123,7 @@ export default function Pool() {
             <div className="grid grid-flow-row gap-4">
               <div className="flex justify-between">
                 <div className="font-bold">My Liquidity Positions</div>
-                {/* <AnalyticsLink path="pairs" /> */}
+                <AnalyticsLink path="pairs" />
               </div>
               <LiquidityHeader />
               {!account ? (

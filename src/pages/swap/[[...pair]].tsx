@@ -524,11 +524,6 @@ export default function Swap() {
             </div>
           </ViewportSmallDown>
 
-          <Alert
-            className={DefinedStyles.pageAlertFull}
-            message={`Price chart will be functioning once the Shiden RPC stabilizes`}
-            type="information"
-          />
           <div
             className="
               w-full
@@ -559,7 +554,7 @@ export default function Swap() {
                     <TransactionSettingsWithGas
                       allowedSlippage={allowedSlippage}
                     />
-                    {/* <AnalyticsLink path={'tokens'} /> */}
+                    <AnalyticsLink path={'tokens'} />
                   </div>
                 </ViewportSmallDown>
                 <ViewportMediumUp>

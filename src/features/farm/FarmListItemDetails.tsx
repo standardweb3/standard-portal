@@ -249,13 +249,13 @@ const FarmListItem = ({ farm }) => {
               </Button>
             </div>
           )}
-          {/* <div className="col-span-2 text-center">
+          <div className="col-span-2 text-center">
             <AnalyticsLink
               text
               path={`pools/${farm.id}`}
               className="!text-sm"
             />
-          </div> */}
+          </div>
         </div>
       </Disclosure.Panel>
     </Transition>

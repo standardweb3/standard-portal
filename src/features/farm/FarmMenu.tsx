@@ -93,7 +93,7 @@ const Menu = ({ positionsLength }) => {
         </NavigationLink>
       )} */}
       </div>
-      {/* <AnalyticsLink path="pools" /> */}
+      <AnalyticsLink path="pools" />
     </div>
   );
 };

@@ -215,6 +215,10 @@ export default function Dividend() {
                 <span className="font-bold">
                   * There is a locking period of 30 days
                 </span>
+                <br />
+                <span className="font-bold">
+                  * Reward from each pool has a claiming period of 30 days
+                </span>
               </div>
             }
             type="information"
@@ -253,12 +257,12 @@ export default function Dividend() {
                     sm:space-y-0
                     relative"
                   >
-                    {/* <div className="absolute top-0 right-0">
+                    <div className="absolute top-0 right-0">
                       <AnalyticsLink
                         iconClassName="!text-primary"
                         path="dividend"
                       />
-                    </div> */}
+                    </div>
                     <ViewportXSmall>
                       <BondedInfo
                         className="text-center"
@@ -323,9 +327,13 @@ export default function Dividend() {
                 />
               </div>
             </div>
+
+            <div className="mt-6 text-grey text-xs">
+              * Reward from each pool has a claiming period of 30 days
+            </div>
             <DividendPairs
               claim={handleClaim}
-              className="mt-12"
+              className="mt-6"
               share={share}
               pairsWithDividends={fetchedWhitelistPairs}
             />

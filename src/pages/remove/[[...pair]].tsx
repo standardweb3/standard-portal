@@ -830,7 +830,7 @@ export default function Remove() {
                   <TransactionSettingsWithGas
                     allowedSlippage={allowedSlippage}
                   />
-                  {/* <AnalyticsLink path={`pairs/${pair}`} /> */}
+                  <AnalyticsLink path={`pairs/${pair}`} />
                 </div>
               </ViewportSmallDown>
               <ViewportMediumUp>
