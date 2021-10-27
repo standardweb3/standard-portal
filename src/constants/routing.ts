@@ -314,7 +314,11 @@ export const COMMON_BASES: ChainTokenList = {
     RINKEBY.USDC,
   ],
   [ChainId.SHIBUYA]: [...WRAPPED_NATIVE_ONLY[ChainId.SHIBUYA], SHIBUYA.USDC],
-  [ChainId.SHIDEN]: [...WRAPPED_NATIVE_ONLY[ChainId.SHIDEN]],
+  [ChainId.SHIDEN]: [
+    ...WRAPPED_NATIVE_ONLY[ChainId.SHIDEN],
+    SHIDEN.STND,
+    SHIDEN.USDC,
+  ],
   [ChainId.MATIC]: [
     ...WRAPPED_NATIVE_ONLY[ChainId.MATIC],
     MATIC.USDC,
