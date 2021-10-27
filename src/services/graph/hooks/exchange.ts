@@ -192,7 +192,7 @@ export function useBundle(
   const { chainId } = useActiveWeb3React();
   const { data } = useSWR(
     chainId ? [chainId, ethPriceQuery, JSON.stringify(variables)] : null,
-    () => getBundle(),
+    () => getBundle(chainId),
     swrConfig,
   );
   return data;

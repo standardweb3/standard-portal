@@ -32,6 +32,8 @@ import { useDividendPoolWhitelistPairBalances } from '../../state/user/hooks';
 import { DividendPairs } from '../../components-ui/Dividend/DividendPairs';
 import styled from '@emotion/styled';
 import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
+import { useBondedStrategy } from '../../services/graph/hooks/dividend';
+import { useBundle, useStandardPrice } from '../../services/graph';
 
 export const BondWrapper = styled.div`
   @media only screen and (min-width: 640px) {
@@ -55,6 +57,45 @@ export default function Dividend() {
   const addTransaction = useTransactionAdder();
 
   const dividendPoolAddress = useDividendPoolAddress();
+  // const bondedStrategy = useBondedStrategy();
+  // const bundle = useBundle();
+  // const ethPrice = bundle?.bundles?.[0]?.ethPrice;
+  // const stndPrice = useStandardPrice();
+
+  // const {
+  //   apr,
+  //   apy,
+  //   claimedReward,
+  //   reaminingReward,
+  //   totalReward,
+  // } = useMemo(() => {
+  //   if (!ethPrice || !stndPrice || !bondedStrategy)
+  //     return {
+  //       apr: null,
+  //       apy: null,
+  //       claimedReward: null,
+  //       reaminingReward: null,
+  //       totalReward: null,
+  //     };
+  //   else {
+  //     const date = Math.floor(Math.floor(Date.now() / 1000) / 86400);
+  //     const inception = Math.floor(parseInt(bondedStrategy.inception) / 86400);
+  //     const dateFromInception = date - inception;
+  //     const totalSupply = parseFloat(bondedStrategy.totalSupply) / 1e18;
+  //     const claimedReward = parseFloat(bondedStrategy.totalClaimedUSD);
+  //     const reaminingReward =
+  //       parseFloat(bondedStrategy.totalClaimedUSD) +
+  //       parseFloat(bondedStrategy.remainingRewardETH) * ethPrice;
+
+  //     const totalReward = claimedReward + reaminingReward;
+  //     const r = totalReward / (totalSupply * stndPrice);
+  //     const apr =
+  //       (Math.pow(r + 1, 1 / (dateFromInception + 1)) - 1) * 365 * 100;
+  //     const apy = (Math.pow(1 + apr / 100 / 365, 365) - 1) * 100;
+
+  //     return { apr, apy, claimedReward, reaminingReward, totalReward };
+  //   }
+  // }, [ethPrice, stndPrice, bondedStrategy]);
 
   const stnd = new Token(
     chainId,
@@ -169,6 +210,11 @@ export default function Dividend() {
                 swap fees are distributed as proportional to your share of the
                 pool letting both the platform and the community maintain
                 sustainability and grow together as one
+                <br />
+                <br />
+                <span className="font-bold">
+                  * There is a locking period of 30 days
+                </span>
               </div>
             }
             type="information"
