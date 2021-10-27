@@ -145,7 +145,9 @@ export default function Chart({ inputCurrency, outputCurrency }: ChartProps) {
 
   const weth = WNATIVE[chainId];
   const isWrapped =
-    (inputCurrency?.isNative && outputCurrency && weth?.equals(outputCurrency)) ||
+    (inputCurrency?.isNative &&
+      outputCurrency &&
+      weth?.equals(outputCurrency)) ||
     (outputCurrency?.isNative && inputCurrency && weth?.equals(inputCurrency));
 
   const pairAddress =
@@ -374,7 +376,7 @@ export default function Chart({ inputCurrency, outputCurrency }: ChartProps) {
           <div className="w-24 h-[300px] pb-4 flex m-auto flex-col items-center justify-center">
             <div className="text-xl font-black text-gray-200">Loading...</div>
           </div>
-        ) : hasData ? (
+        ) : false ? (
           <KChart
             options={options}
             autoWidth

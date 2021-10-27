@@ -75,6 +75,7 @@ import { TransactionSettingsWithGas } from '../../components-ui/Exchange/Transac
 import { RecipientInputPanel } from '../../components-ui/AddressInputPanel/RecipientInputPanel';
 import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
 import Chart from '../../components-ui/Chart';
+import { Alert } from '../../components-ui/Alert';
 
 export default function Swap() {
   const { account, chainId } = useActiveWeb3React();
@@ -523,6 +524,11 @@ export default function Swap() {
             </div>
           </ViewportSmallDown>
 
+          <Alert
+            className={DefinedStyles.pageAlertFull}
+            message={`Price chart will be functioning once the Shiden RPC stabilizes`}
+            type="information"
+          />
           <div
             className="
               w-full
