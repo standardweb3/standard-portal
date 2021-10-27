@@ -23,7 +23,6 @@ const FarmListItem = ({ farm, ...rest }) => {
   const token1 = useCurrency(farm.pair.token1.id);
 
   const isViewportMediumDown = useSizeMdDown();
-
   return (
     <Disclosure {...rest}>
       {({ open }) => (
