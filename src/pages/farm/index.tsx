@@ -96,11 +96,7 @@ export default function Farmbare() {
             <div className="w-full h-0 ml-4 font-bold bg-transparent border border-b-0 border-transparent rounded text-high-emphesis md:border-gradient-r-blue-pink-dark-800 opacity-20"></div>
           </div>
           <FarmList farms={filtered} term={term} /> */}
-
-                <div className="flex items-center text-lg font-bold text-high-emphesis whitespace-nowrap">
-                  <div className="w-full h-0 ml-4 font-bold bg-transparent border border-b-0 border-transparent rounded text-high-emphesis md:border-gradient-r-blue-pink-dark-800 opacity-20"></div>
-                </div>
-
+                <div className="text-grey">Average Blocks per day: 7200</div>
                 <FarmListV2 farms={poolsWithAllocation} />
               </div>
             </div>
