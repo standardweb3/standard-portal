@@ -2,12 +2,14 @@ export type BondedInfoType = {
   amount?: string;
   share?: number;
   className?: string;
+  total?: string;
 };
 
 export function BondedInfo({
   amount = '0',
   share = 0,
   className,
+  total,
 }: BondedInfoType) {
   return (
     <div className={className}>
@@ -27,6 +29,15 @@ export function BondedInfo({
       >
         <span className="font-bold">Your Share:</span>{' '}
         {(share * 100).toFixed(4)}%
+      </div>
+
+      <div
+        className="
+    text-grey
+    text-sm
+  "
+      >
+        <span className="font-bold">Total Bonded:</span> {total} STND
       </div>
     </div>
   );

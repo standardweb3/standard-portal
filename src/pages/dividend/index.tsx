@@ -66,7 +66,9 @@ export default function Dividend() {
 
   const bonded = useBonded();
   const bondedTotal = useBondSupply();
-  console.log(bondedTotal.toString());
+  const bondedTotalDecimals = (
+    bondedTotal?.div(BigNumber.from(1e10)).toNumber() / 100000000
+  ).toFixed(4);
   const remainingSeconds = useRemainingBondingTime();
 
   const share = useMemo(() => {
@@ -218,6 +220,7 @@ export default function Dividend() {
                           bonded?.toFixed(stnd.decimals) ?? 0,
                         )}
                         share={share ?? 0}
+                        total={bondedTotalDecimals}
                       />
 
                       <div className="w-[110px]">
@@ -232,6 +235,7 @@ export default function Dividend() {
                         amount={formatNumber(
                           bonded?.toFixed(stnd.decimals) ?? 0,
                         )}
+                        total={bondedTotalDecimals}
                         share={share ?? 0}
                       />
                     </ViewportSmallUp>
