@@ -204,12 +204,12 @@ export default function Dividend() {
                     sm:space-y-0
                     relative"
                   >
-                    <div className="absolute top-0 right-0">
+                    {/* <div className="absolute top-0 right-0">
                       <AnalyticsLink
                         iconClassName="!text-primary"
                         path="dividend"
                       />
-                    </div>
+                    </div> */}
                     <ViewportXSmall>
                       <BondedInfo
                         className="text-center"

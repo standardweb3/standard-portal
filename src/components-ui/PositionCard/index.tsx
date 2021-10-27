@@ -353,9 +353,9 @@ export function FullPositionCard({
                 </Button>
               </div>
             )}
-          <div className="flex justify-center">
+          {/* <div className="flex justify-center">
             <AnalyticsLink text path={`pairs/${pair.liquidityToken.address}`} />
-          </div>
+          </div> */}
         </div>
       </Transition>
     </div>

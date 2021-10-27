@@ -558,7 +558,7 @@ export default function Swap() {
                     <TransactionSettingsWithGas
                       allowedSlippage={allowedSlippage}
                     />
-                    <AnalyticsLink path={'tokens'} />
+                    {/* <AnalyticsLink path={'tokens'} /> */}
                   </div>
                 </ViewportSmallDown>
                 <ViewportMediumUp>
