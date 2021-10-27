@@ -91,38 +91,41 @@ const FarmListItemV2 = ({ farm, ...rest }) => {
                   lg:space-y-0 lg:space-x-2 lg:flex 
                   col-span-3 lg:col-span-3"
               >
-                <ViewportLargeUp>
-                  <div className="flex items-center space-x-2">
-                    {farm?.rewards?.map((reward, i) => (
-                      <div key={i} className="flex items-center">
-                        <Image
-                          src={reward.icon}
-                          width="30px"
-                          height="30px"
-                          className="rounded-full"
-                          layout="fixed"
-                          alt={reward.token}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </ViewportLargeUp>
                 <div className="space-y-2">
                   {farm?.rewards?.map((reward, i) => (
-                    <div
-                      key={i}
-                      className="flex flex-col lg:flex-row items-center space-y-2 lg:space-y-0 lg:space-x-2"
-                    >
+                    <div className="space-y-2">
                       <div
-                        className="text-xs md:text-sm whitespace-nowrap
-                          rounded-20 bg-background-farm-list px-3 py-2 font-bold"
+                        key={i}
+                        className="flex flex-col lg:flex-row items-center space-y-2 lg:space-y-0 lg:space-x-2"
                       >
-                        {formatNumber(reward.rewardPerBlock)}
+                        <ViewportLargeUp>
+                          <div className="flex items-center space-x-2">
+                            {farm?.rewards?.map((reward, i) => (
+                              <div key={i} className="flex items-center">
+                                <Image
+                                  src={reward.icon}
+                                  width="30px"
+                                  height="30px"
+                                  className="rounded-full"
+                                  layout="fixed"
+                                  alt={reward.token}
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </ViewportLargeUp>
+                        <div
+                          className="text-xs md:text-sm whitespace-nowrap
+                          rounded-20 bg-background-farm-list px-3 py-2 font-bold"
+                        >
+                          {formatNumber(reward.rewardPerBlock)}
+                        </div>
+
+                        <div className="text-xs md:text-sm text-grey">
+                          {reward.token}
+                        </div>
                       </div>
 
-                      <div className="text-xs md:text-sm text-grey">
-                        {reward.token}
-                      </div>
                       <div className="text-xs text-grey text-center">
                         (daily estimate)
                         <br />
