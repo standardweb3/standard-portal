@@ -283,6 +283,7 @@ export const ANALYTICS_URL: { [chainId in ChainId]?: string } = {
   [ChainId.MAINNET]: 'https://analytics.sushi.com',
   [ChainId.RINKEBY]: 'http://localhost:3001',
   [ChainId.MATIC]: 'https://analytics-polygon.sushi.com',
+  [ChainId.SHIDEN]: 'https://shiden.analytics.standard.tech',
   [ChainId.FANTOM]: 'https://analytics-ftm.sushi.com',
   [ChainId.BSC]: 'https://analytics-bsc.sushi.com',
   [ChainId.XDAI]: 'https://analytics-xdai.sushi.com',

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { isMobile } from 'react-device-detect';
 import { classNames } from '../../functions';
+import { Socials } from '../Socials';
 
 export function SidebarNavigation({ routes, chainId }) {
   const router = useRouter();

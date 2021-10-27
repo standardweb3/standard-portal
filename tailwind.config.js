@@ -46,6 +46,7 @@ module.exports = {
         yellow: '#ffde34',
         dark: '#0c0424',
         text: '#fff',
+        black: '#000',
         divider: 'rgba(255,255,255,0.05)',
         'icon-btn-grey': '#5B526A',
         background: '#170c34',

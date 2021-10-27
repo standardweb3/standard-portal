@@ -288,7 +288,7 @@ export default function WalletModal({
           <div>
             <div className="mt-2 mb-4 text-danger">
               {true || error instanceof UnsupportedChainIdError
-                ? 'Please connect to the appropriate Ethereum network'
+                ? 'Please connect to the appropriate network'
                 : 'Try refreshing the page'}
             </div>
             <Button

@@ -43,7 +43,7 @@ export default function Bridge() {
           content="Bridge your assets to SHIDEN network using anyswap"
         />
       </Head>
-      <Page>
+      <Page id="bridge-page" className={DefinedStyles.page}>
         {isViewerOpen && (
           <ImageViewer
             backgroundStyle={{ zIndex: 10 }}
@@ -57,7 +57,7 @@ export default function Bridge() {
         <PageHeader title="Bridge" />
 
         <PageContent>
-          <div className="space-y-8 pb-[60px] max-w-[1000px] p-4">
+          <div className="space-y-8 pb-[60px] w-full max-w-[1000px]">
             <Alert
               className={DefinedStyles.pageAlertFull}
               message={
@@ -71,7 +71,10 @@ export default function Bridge() {
               }
               type="warning"
             />
-            <ExternalLink href="https://anyswap.exchange/#/router">
+            <ExternalLink
+              href="https://anyswap.exchange/#/router"
+              className="!whitespace-normal"
+            >
               <Button>
                 <div className="flex items-center font-bold text-lg">
                   <div className="mr-2">Go to</div>
@@ -93,7 +96,7 @@ export default function Bridge() {
                 <div className="">
                   <ExternalLink
                     href="https://medium.com/@stakenode/standard-protocol-experience-the-dex-7f5134eb28e6"
-                    className="font-bold text-2xl"
+                    className="font-bold text-2xl break-normal !whitespace-normal"
                   >
                     Crossing assets from Ethereum to Shiden Network
                   </ExternalLink>
@@ -106,7 +109,7 @@ export default function Bridge() {
                 </div>
                 <div>
                   Go to the Anyswap router page —
-                  <ExternalLink href="https://anyswap.exchange/#/router<">
+                  <ExternalLink href="https://anyswap.exchange/#/router">
                     https://anyswap.exchange/#/router
                   </ExternalLink>{' '}
                   and connect the Metamask wallet on the ethereum network.
@@ -246,7 +249,7 @@ export default function Bridge() {
                 </div>
                 <Button>
                   <div className="flex items-center font-bold text-lg">
-                    <div className="">Go to</div>
+                    <div className="mr-2">Go to</div>
                     <Image
                       src="/img/bridge/anyswap.svg"
                       width="100px"
@@ -267,7 +270,7 @@ export default function Bridge() {
                 <div className="">
                   <ExternalLink
                     href="https://medium.com/@stakenode/standard-protocol-experience-the-dex-7f5134eb28e6"
-                    className="font-bold text-2xl"
+                    className="font-bold text-2xl !whitespace-normal"
                   >
                     Transferring Shiden #SDN token from polkadot.js or CEX to
                     Metamask account{' '}
@@ -287,13 +290,19 @@ export default function Bridge() {
                 </div>
                 <div>
                   👉 Kucoin:{' '}
-                  <ExternalLink href="https://stakenode.medium.com/?p=de1bba4e92a2">
+                  <ExternalLink
+                    href="https://stakenode.medium.com/?p=de1bba4e92a2"
+                    className="!whitespace-normal"
+                  >
                     https://stakenode.medium.com/?p=de1bba4e92a2
                   </ExternalLink>
                 </div>
                 <div>
                   👉 Polkadot.js:{' '}
-                  <ExternalLink href="https://stakenode.medium.com/?p=819da3798f45">
+                  <ExternalLink
+                    href="https://stakenode.medium.com/?p=819da3798f45"
+                    className="!whitespace-normal"
+                  >
                     https://stakenode.medium.com/?p=819da3798f45
                   </ExternalLink>
                 </div>
