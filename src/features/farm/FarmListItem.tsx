@@ -22,11 +22,7 @@ import { BigNumber } from 'ethers';
 const FarmListItem = ({ farm, ...rest }) => {
   const token0 = useCurrency(farm.pair.token0.id);
   const token1 = useCurrency(farm.pair.token1.id);
-
-  const amountDecimals = farm.amount
-    ?.div(BigNumber.from(1e10))
-    .div(BigNumber.from(1e8))
-    .toNumber();
+  const amountDecimals = farm.amount ? farm.amount / 1e18 : undefined;
 
   const totalSupply = farm.pair.totalSupply;
   const userShare = amountDecimals ? amountDecimals / totalSupply : 0;

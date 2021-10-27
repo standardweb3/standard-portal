@@ -40,11 +40,7 @@ export default function Farmbare() {
     sushiPerBlock.div(BigNumber.from(String(1e16))).toNumber() / 100;
 
   const poolsWithAllocation = poolsWithReserves.map((pool) => {
-    if (sushiPerBlock && totalAllocPoint) {
-      let sushiPerBlockDecimals = sushiPerBlock
-        .div(BigNumber.from(String(1e16)))
-        .toNumber();
-      sushiPerBlockDecimals /= 100;
+    if (sushiPerBlockDecimals) {
       const rewardPerBlock =
         (sushiPerBlockDecimals * pool.allocPoint.toNumber()) /
         totalAllocPoint.toNumber();
