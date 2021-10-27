@@ -222,7 +222,7 @@ export function useSushiPairs(
   const { chainId } = useActiveWeb3React();
   const shouldFetch = chainId;
   const { data } = useSWR(
-    shouldFetch ? ['sushiPairs', chainId, JSON.stringify(variables)] : null,
+    shouldFetch ? ['standardPairs', chainId, JSON.stringify(variables)] : null,
     (_, chainId) => getPairs(chainId, variables, query),
     swrConfig,
   );

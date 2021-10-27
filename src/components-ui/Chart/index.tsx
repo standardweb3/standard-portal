@@ -341,7 +341,7 @@ export default function Chart({
   }, [candlePeriod, candleData]);
 
   const hasData = candlestickSeries[0].data.length > 0;
-  const lastClose = false
+  const lastClose = hasData
     ? candlestickSeries[0].data[candlestickSeries[0].data.length - 1].close
     : price ?? undefined;
 
@@ -382,7 +382,7 @@ export default function Chart({
           <div className="w-24 h-[300px] pb-4 flex m-auto flex-col items-center justify-center">
             <div className="text-xl font-black text-gray-200">Loading...</div>
           </div>
-        ) : false ? (
+        ) : hasData ? (
           <KChart
             options={options}
             autoWidth
