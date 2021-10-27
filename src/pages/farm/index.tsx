@@ -34,6 +34,10 @@ export default function Farmbare() {
     icon:
       'https://raw.githubusercontent.com/digitalnativeinc/assets/master/blockchains/ethereum/assets/0x9040e237C3bF18347bb00957Dc22167D0f2b999d/logo.png',
   };
+  const sushiPerBlockDecimals =
+    sushiPerBlock &&
+    totalAllocPoint &&
+    sushiPerBlock.div(BigNumber.from(String(1e16))).toNumber() / 100;
 
   const poolsWithAllocation = poolsWithReserves.map((pool) => {
     if (sushiPerBlock && totalAllocPoint) {
@@ -96,7 +100,16 @@ export default function Farmbare() {
             <div className="w-full h-0 ml-4 font-bold bg-transparent border border-b-0 border-transparent rounded text-high-emphesis md:border-gradient-r-blue-pink-dark-800 opacity-20"></div>
           </div>
           <FarmList farms={filtered} term={term} /> */}
-                <div className="text-grey">Average Blocks per day: 7200</div>
+                <div>
+                  <div className="text-grey">Average Blocks per day: 7200</div>
+                  <div className="text-grey">
+                    Estimated STND farmed in a day:{' '}
+                    {sushiPerBlockDecimals
+                      ? 7200 * sushiPerBlockDecimals
+                      : 'Calculating...'}
+                  </div>
+                </div>
+
                 <FarmListV2 farms={poolsWithAllocation} />
               </div>
             </div>

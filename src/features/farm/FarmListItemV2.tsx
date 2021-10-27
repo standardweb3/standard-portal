@@ -123,6 +123,11 @@ const FarmListItemV2 = ({ farm, ...rest }) => {
                       <div className="text-xs md:text-sm text-grey">
                         {reward.token}
                       </div>
+                      <div className="text-xs text-grey text-center">
+                        (daily estimate)
+                        <br />
+                        {reward.rewardPerBlock * 7200} STND
+                      </div>
                     </div>
                   ))}
                 </div>
