@@ -1,8 +1,9 @@
 import { Currency } from '@digitalnative/standard-protocol-sdk';
 import { useCallback } from 'react';
-import { classNames } from '../../functions';
+import { classNames, formatNumber } from '../../functions';
 import { useActiveWeb3React } from '../../hooks';
 import useAddTokenToMetaMask from '../../hooks/useAddTokenToMetaMask';
+import { useStandardPrice } from '../../services/graph';
 import { useCurrencyBalance } from '../../state/wallet/hooks';
 import { CurrencyLogo } from '../CurrencyLogo';
 
@@ -15,6 +16,7 @@ export function TokenAdder({ currency }: TokenAdderProps) {
 
   const { addToken, success } = useAddTokenToMetaMask(currency);
   const balance = useCurrencyBalance(account ?? undefined, currency);
+  const stndPrice = useStandardPrice();
 
   return currency ? (
     <div
@@ -31,6 +33,7 @@ export function TokenAdder({ currency }: TokenAdderProps) {
         font-base font-medium`,
       )}
     >
+      {stndPrice && <div>{formatNumber(stndPrice, true)}</div>}
       <CurrencyLogo currency={currency} size={24} className="rounded-full" />
       {balance && (
         <div className="max-w-[3rem] truncate overflow-ellipsis">

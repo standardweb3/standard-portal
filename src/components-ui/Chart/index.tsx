@@ -12,7 +12,7 @@ import useDexCandles from '../../hooks/useDexCandles';
 import { CandlePeriod, NumericalCandlestickDatum } from '../../types/Candle';
 import React, { useEffect, useState } from 'react';
 import { CurrencyLogo } from '../CurrencyLogo';
-import { classNames } from '../../functions';
+import { classNames, formatNumber } from '../../functions';
 // import Lottie from 'lottie-react'
 // import solarbeamLoading from '../../animation/solarbeam-loading.json'
 import { computePairAddress } from '@digitalnative/standard-protocol-sdk';
@@ -322,9 +322,8 @@ export default function Chart({
     if (formattedCandleData && formattedCandleData.length) {
       let differentBases = inputCurrency?.decimals != outputCurrency?.decimals;
       if (differentBases) {
-        let decimals = Math.abs(
-          inputCurrency?.decimals - outputCurrency?.decimals,
-        );
+        let decimals = inputCurrency?.decimals - outputCurrency?.decimals;
+
         formattedCandleData = formattedCandleData.map((r) => {
           return {
             close: r.close * 10 ** decimals,
@@ -339,8 +338,8 @@ export default function Chart({
 
     setCandlestickSeries([{ data: formattedCandleData }]);
   }, [candlePeriod, candleData]);
-
   const hasData = candlestickSeries[0].data.length > 0;
+
   const lastClose = hasData
     ? candlestickSeries[0].data[candlestickSeries[0].data.length - 1].close
     : price ?? undefined;
@@ -374,7 +373,7 @@ export default function Chart({
           </div>
         </a>
         <div className="text-3xl font-black text-gray-200 truncate">
-          {(lastClose || 0).toFixed(2)}
+          {formatNumber(lastClose || 0)}
         </div>
       </div>
       <div className={'flex flex-1 h-[300px]'}>
