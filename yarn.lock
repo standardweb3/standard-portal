@@ -1587,10 +1587,10 @@
   dependencies:
     "@tenderly/hardhat-tenderly" "^1.0.12"
 
-"@digitalnative/standard-protocol-sdk@^0.0.117":
-  version "0.0.117"
-  resolved "https://registry.yarnpkg.com/@digitalnative/standard-protocol-sdk/-/standard-protocol-sdk-0.0.117.tgz#78597f8ec8063460107b0c78d3617c04d13d39e6"
-  integrity sha512-uFn1e+c8FEZOjsJjbJcKoKowdXp5RG1ly7il1fQqK4lZnCl+EhD3Lj1PoPp9cKEYnfGSNAAtl+pOYSYOvGiR/w==
+"@digitalnative/standard-protocol-sdk@^0.0.121":
+  version "0.0.121"
+  resolved "https://registry.yarnpkg.com/@digitalnative/standard-protocol-sdk/-/standard-protocol-sdk-0.0.121.tgz#555ddaeb24ff75aba3a45dac97ab14dbf01136be"
+  integrity sha512-Gs6DlhJdD6B2kQJQJV1ZA0DgoCgv1T14TU6hje07ZnwGo6GCzey4wd40diU/WVB6i5MjAtaI6xObu9qqws3/TQ==
   dependencies:
     big.js "^6.1.0"
     decimal.js-light "^2.5.0"

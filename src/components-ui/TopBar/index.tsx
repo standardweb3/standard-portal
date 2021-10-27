@@ -8,6 +8,7 @@ import { MenuIcon } from '@heroicons/react/outline';
 import { Slider } from '../Slider';
 import { ModalHeader } from '../Modal/ModalHeader';
 import NetworkDropDown from '../Dropdown/NetworkDropDown';
+import { Listings } from '../Listings';
 
 export function TopBar() {
   const { account, chainId, library } = useActiveWeb3React();
@@ -42,18 +43,24 @@ export function TopBar() {
         </div>
       </div>
       <Slider isOpen={menuOpen}>
-        <div className="p-8 w-full text-text space-y-4">
-          <ModalHeader
-            title={<Logo height="31px" width="128px" />}
-            onClose={handleMenuDismiss}
-            className="text-text"
-            xIconClassName="!w-8 !h-8"
-          />
-          <TopBarNavigation
-            onRouteClick={handleMenuDismiss}
-            routes={sidebarRoutes}
-            chainId={chainId}
-          />
+        <div className="p-8 flex flex-col justify-between h-full">
+          <div className="w-full text-text space-y-4">
+            <ModalHeader
+              title={<Logo height="31px" width="128px" />}
+              onClose={handleMenuDismiss}
+              className="text-text"
+              xIconClassName="!w-8 !h-8"
+            />
+            <TopBarNavigation
+              onRouteClick={handleMenuDismiss}
+              routes={sidebarRoutes}
+              chainId={chainId}
+            />
+          </div>
+
+          <div className="w-full space-y-4">
+            <Listings />
+          </div>
         </div>
       </Slider>
     </>

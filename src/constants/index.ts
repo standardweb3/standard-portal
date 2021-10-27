@@ -300,3 +300,7 @@ export const EIP_1559_ACTIVATION_BLOCK: { [chainId in ChainId]?: number } = {
 export * from './routing';
 export * from './addresses';
 export * from './tokens';
+
+export const MASTERPOOL_BLACKLIST = [
+  '0x13eDA47aFea562DC4b8Cb8645d6Aa54Fc4B28B61',
+];

@@ -37,8 +37,8 @@ const FarmListItemDetailsV2 = ({ farm, token0, token1 }) => {
     chainId,
     getAddress(farm.address),
     18,
-    'UNI-V2',
-    'Uniswap V2',
+    'LTR',
+    'Standard Liter Token',
   );
 
   // User liquidity token balance
@@ -96,7 +96,9 @@ const FarmListItemDetailsV2 = ({ farm, token0, token1 }) => {
                     w-full !py-3 !px-4 pr-20 
                     rounded-20 outline-none 
                     !bg-opaque-secondary focus:ring focus:ring-primary"
-                value={depositValue}
+                value={
+                  depositValue ? parseFloat(depositValue).toFixed(4) : undefined
+                }
                 onUserInput={setDepositValue}
               />
               {account && (
@@ -166,7 +168,11 @@ const FarmListItemDetailsV2 = ({ farm, token0, token1 }) => {
                   w-full !py-3 !px-4 pr-20 
                   rounded-20 outline-none 
                   !bg-opaque-secondary focus:ring focus:ring-primary"
-                value={withdrawValue}
+                value={
+                  withdrawValue
+                    ? parseFloat(withdrawValue).toFixed(4)
+                    : undefined
+                }
                 onUserInput={(value) => {
                   setWithdrawValue(value);
                 }}

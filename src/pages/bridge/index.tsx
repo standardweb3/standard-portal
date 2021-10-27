@@ -62,30 +62,62 @@ export default function Bridge() {
               className={DefinedStyles.pageAlertFull}
               message={
                 <div>
-                  STND can be bridged from Ethereum to Shiden Network using
-                  Anyswap.
+                  STND can be bridged from Ethereum to Shiden Network using{' '}
+                  <ExternalLink
+                    href="https://anyswap.exchange/#/router"
+                    className="!whitespace-normal"
+                  >
+                    Anyswap Router.
+                  </ExternalLink>
+                  <br />
+                  Other ERC-20 assets can be bridged using{' '}
+                  <ExternalLink
+                    href="https://anyswap.exchange/#/bridge"
+                    className="!whitespace-normal"
+                  >
+                    Anyswap Bridge.
+                  </ExternalLink>
+                  <br />
                   <br />
                   For more details, please read the guide below on how to
-                  transfer STND and other assets from Ethereum to Shiden Network
+                  transfer STND from Ethereum to Shiden Network
                 </div>
               }
               type="warning"
             />
-            <ExternalLink
-              href="https://anyswap.exchange/#/router"
-              className="!whitespace-normal"
-            >
-              <Button>
-                <div className="flex items-center font-bold text-lg">
-                  <div className="mr-2">Go to</div>
-                  <Image
-                    src="/img/bridge/anyswap.svg"
-                    width="100px"
-                    height="50px"
-                  />
-                </div>
-              </Button>
-            </ExternalLink>
+            <div className="flex space-x-4">
+              <ExternalLink
+                href="https://anyswap.exchange/#/router"
+                className="!whitespace-normal"
+              >
+                <Button>
+                  <div className="flex items-center font-bold text-lg">
+                    <div className="mr-2">Router</div>
+                    <Image
+                      src="/img/bridge/anyswap.svg"
+                      width="100px"
+                      height="50px"
+                    />
+                  </div>
+                </Button>
+              </ExternalLink>
+              <ExternalLink
+                href="https://anyswap.exchange/#/bridge"
+                className="!whitespace-normal"
+              >
+                <Button>
+                  <div className="flex items-center font-bold text-lg">
+                    <div className="mr-2">Bridge</div>
+                    <Image
+                      src="/img/bridge/anyswap.svg"
+                      width="100px"
+                      height="50px"
+                    />
+                  </div>
+                </Button>
+              </ExternalLink>
+            </div>
+
             <div
               className="
               p-0 md:p-8 
@@ -98,7 +130,7 @@ export default function Bridge() {
                     href="https://medium.com/@stakenode/standard-protocol-experience-the-dex-7f5134eb28e6"
                     className="font-bold text-2xl break-normal !whitespace-normal"
                   >
-                    Crossing assets from Ethereum to Shiden Network
+                    Crossing STND from Ethereum to Shiden Network
                   </ExternalLink>
                   <div className="text-xs">by Jimmy Tudesky</div>
                 </div>

@@ -27,9 +27,9 @@ export function TopBarNavigation({ routes, chainId, onRouteClick }) {
                   rounded-xl font-bold my-2"
               >
                 <Link href={route.urls[0]} prefetch={!isMobile}>
-                  <div className="flex items-center font-base py-3 px-3">
+                  <div className="flex items-center font-base py-3 px-3 text-text">
                     {React.createElement(route.iconActive, {
-                      className: 'stroke-current text-primary',
+                      className: 'stroke-current',
                     })}
                     <div className="ml-2 flex items-center">{route.name}</div>
                   </div>
@@ -51,10 +51,7 @@ export function TopBarNavigation({ routes, chainId, onRouteClick }) {
                   hover:text-text py-3 px-3"
                 >
                   {React.createElement(route.icon, {
-                    className: classNames(
-                      'stroke-current',
-                      route.name !== 'Dividend' && 'stroke-2',
-                    ),
+                    className: classNames('stroke-current'),
                   })}
                   <div className="ml-2 flex items-center">{route.name}</div>
                 </div>

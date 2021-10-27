@@ -1,10 +1,4 @@
-import {
-  classNames,
-  formatCurrencyAmount,
-  formatNumber,
-  formatNumberScale,
-  formatPercent,
-} from '../../functions';
+import { classNames, formatNumber } from '../../functions';
 
 import { Disclosure } from '@headlessui/react';
 import { Image } from '../../components-ui/Image';

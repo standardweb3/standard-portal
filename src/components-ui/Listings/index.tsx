@@ -20,21 +20,24 @@ export function Listings() {
   ];
 
   return (
-    <div className="grid grid-cols-5 justify-center items-center">
-      {LISTINGS.map((social) => {
-        return (
-          <div className="col-span-1 text-grey flex items-center justify-center">
-            <ExternalLink href={social.url} className="!text-grey">
-              {React.createElement(social.src, {
-                className: classNames(
-                  'stroke-current fill-current',
-                  // route.name !== 'Dividend' && 'stroke-1',
-                ),
-              })}
-            </ExternalLink>
-          </div>
-        );
-      })}
+    <div className="space-y-2">
+      <div className="text-xs text-grey">Available on</div>
+      <div className="w-full flex space-x-4 items-center">
+        {LISTINGS.map((social) => {
+          return (
+            <div className="col-span-1 text-grey flex items-center justify-center">
+              <ExternalLink href={social.url} className="!text-grey">
+                {React.createElement(social.src, {
+                  className: classNames(
+                    'stroke-current fill-current',
+                    // route.name !== 'Dividend' && 'stroke-1',
+                  ),
+                })}
+              </ExternalLink>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

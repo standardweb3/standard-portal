@@ -1,5 +1,9 @@
 import { AppDispatch, AppState } from '..';
-import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from '../../constants';
+import {
+  BASES_TO_TRACK_LIQUIDITY_FOR,
+  MASTERPOOL_BLACKLIST,
+  PINNED_PAIRS,
+} from '../../constants';
 import {
   // ChainId,
   // FACTORY_ADDRESS,
@@ -288,8 +292,8 @@ export function toV2LiquidityToken({
       protocol,
     }),
     18,
-    'UNI-V2',
-    'Uniswap V2',
+    'LTR',
+    'Standard Liter Token',
   );
 }
 
@@ -586,7 +590,9 @@ export function useMasterPoolPairs() {
     }
   }, [poolsPromise]);
 
-  return poolsData;
+  return poolsData.filter(
+    (pool) => !MASTERPOOL_BLACKLIST.includes(pool.lpToken.address),
+  );
 }
 
 export function useDivdendPoolWhitelistPairs() {
@@ -596,7 +602,13 @@ export function useDivdendPoolWhitelistPairs() {
   const whitelistLpTokens = useMemo(() => {
     return whitelist.map((pair) => {
       return {
-        lpToken: new Token(chainId, pair.address, 18, 'UNI-V2', 'Uniswap V2'),
+        lpToken: new Token(
+          chainId,
+          pair.address,
+          18,
+          'LTR',
+          'Standard Liter Token',
+        ),
         token0: pair.token0,
         token1: pair.token1,
       };
@@ -637,7 +649,13 @@ export function useAllPairs() {
         setPairs(
           values.map(
             (value) =>
-              new Token(chainId, value as string, 18, 'UNI-V2', 'Uniswap V2'),
+              new Token(
+                chainId,
+                value as string,
+                18,
+                'LTR',
+                'Standard Liter Token',
+              ),
           ),
         );
       });
