@@ -344,7 +344,6 @@ export default function Chart({
   const lastClose = false
     ? candlestickSeries[0].data[candlestickSeries[0].data.length - 1].close
     : price ?? undefined;
-  console.log('lastclose', lastClose);
 
   // const fmtLastClose = lastClose ? formattedNum(lastClose) : 'N/A'
   return (
