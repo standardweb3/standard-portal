@@ -21,7 +21,6 @@ export default function Farmbare() {
   const { totalAllocPoint, sushiPerBlock } = useMasterChefInfo();
   // const type =
   //   router.query.filter == null ? 'all' : (router.query.filter as string);
-
   const {
     poolsWithReserves,
     // next,
@@ -38,9 +37,10 @@ export default function Farmbare() {
 
   const poolsWithAllocation = poolsWithReserves.map((pool) => {
     if (sushiPerBlock && totalAllocPoint) {
-      const sushiPerBlockDecimals = sushiPerBlock
-        .div(BigNumber.from(String(1e18)))
+      let sushiPerBlockDecimals = sushiPerBlock
+        .div(BigNumber.from(String(1e16)))
         .toNumber();
+      sushiPerBlockDecimals /= 100;
       const rewardPerBlock =
         (sushiPerBlockDecimals * pool.allocPoint.toNumber()) /
         totalAllocPoint.toNumber();
