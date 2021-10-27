@@ -547,6 +547,7 @@ export default function Swap() {
               rounded-20`}
             >
               <Chart
+                price={trade?.executionPrice}
                 inputCurrency={currencies[Field.INPUT]}
                 outputCurrency={currencies[Field.OUTPUT]}
               />

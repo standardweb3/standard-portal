@@ -3,6 +3,7 @@ import {
   ChainId,
   Currency,
   getFactoryAddress,
+  Price,
   Token,
   WNATIVE,
   WNATIVE_ADDRESS,
@@ -124,9 +125,14 @@ const fillCandlestickGaps = (
 interface ChartProps {
   inputCurrency: Currency | Token | undefined;
   outputCurrency: Currency | Token | undefined;
+  price: Price<Currency, Currency>;
 }
 
-export default function Chart({ inputCurrency, outputCurrency }: ChartProps) {
+export default function Chart({
+  inputCurrency,
+  outputCurrency,
+  price,
+}: ChartProps) {
   const protocol = useProtocol();
   const { chainId } = useActiveWeb3React();
 
@@ -335,11 +341,12 @@ export default function Chart({ inputCurrency, outputCurrency }: ChartProps) {
   }, [candlePeriod, candleData]);
 
   const hasData = candlestickSeries[0].data.length > 0;
-  const lastClose = hasData
+  const lastClose = false
     ? candlestickSeries[0].data[candlestickSeries[0].data.length - 1].close
-    : undefined;
-  // const fmtLastClose = lastClose ? formattedNum(lastClose) : 'N/A'
+    : price ?? undefined;
+  console.log('lastclose', lastClose);
 
+  // const fmtLastClose = lastClose ? formattedNum(lastClose) : 'N/A'
   return (
     <>
       <div className="flex items-center space-x-4 justify-between mb-4">
