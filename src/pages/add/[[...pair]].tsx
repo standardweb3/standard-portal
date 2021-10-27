@@ -436,11 +436,11 @@ export default function Liquidity() {
         </ViewportMediumUp>
 
         <PageContent>
-          {chainId === ChainId.SHIBUYA && (
+          {chainId === ChainId.SHIDEN && (
             <Alert
               className={DefinedStyles.pageAlertMaxed}
               title={`Please Read!`}
-              message={`Adding liquidity for SBY-ERC20 does not work due to the Shibuya EVM error. Please wrap your SBY to WSBY and add WSBY-ERC20 liquidity instead`}
+              message={`Adding liquidity for SDN-ERC20 does not work due to the Shiden EVM error. Please wrap your SDN to WSDN and add WSDN-ERC20 liquidity instead`}
               type="warning"
             />
           )}
