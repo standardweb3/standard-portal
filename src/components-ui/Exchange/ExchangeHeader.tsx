@@ -49,7 +49,7 @@ export const ExchangeHeader: FC<ExchangeHeaderProps> = ({
       <div className="space-x-2 flex items-center">
         <TransactionSettingsWithGas allowedSlippage={allowedSlippage} />
         <AnalyticsLink
-          path={isSwap ? 'tokens' : pair ? `pairs/${pair}` : 'pairs'}
+          path={isSwap ? 'tokens' : pair ? `pairs` : 'pairs'}
         />
       </div>
     </div>

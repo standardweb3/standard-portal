@@ -349,7 +349,7 @@ export default function Chart({
     <>
       <div className="flex items-center space-x-4 justify-between mb-4">
         <a
-          href={`${ANALYTICS_URL[chainId]}/pairs/${pairAddress}`}
+          href={`${ANALYTICS_URL[chainId]}/pairs`}
           target="_blank"
           rel="noreferrer"
           className="flex items-center justify-center space-x-4 lg:mt-0 hover:text-gray-200 cursor-pointer rounded p-2 -ml-2 lg:w-min"
