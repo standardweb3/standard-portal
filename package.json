@@ -81,6 +81,7 @@
     "react-query": "^3.19.4",
     "react-redux": "^7.2.4",
     "react-responsive": "^9.0.0-beta.4",
+    "react-simple-image-viewer": "^1.1.1",
     "react-spring": "^9.2.4",
     "react-tabs": "^3.2.2",
     "react-tsparticles": "^1.33.3",

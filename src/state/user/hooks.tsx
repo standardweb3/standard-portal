@@ -593,7 +593,6 @@ export function useDivdendPoolWhitelistPairs() {
   const { chainId } = useActiveWeb3React();
   const protocol = useProtocol();
   const whitelist = getDividendPoolWhitelist(protocol, chainId);
-  console.log('whitelist,,', whitelist);
   const whitelistLpTokens = useMemo(() => {
     return whitelist.map((pair) => {
       return {
