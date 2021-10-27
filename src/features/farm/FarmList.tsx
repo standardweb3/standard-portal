@@ -11,7 +11,7 @@ const FarmList = ({ farms, term }) => {
 
   return items ? (
     <>
-      <div className="grid grid-cols-11 lg:grid-cols-11 text-base text-grey px-4">
+      <div className="grid grid-cols-12 sm:grid-cols-15 text-base text-grey px-4">
         <div
           className="
           flex items-center col-span-3
@@ -37,7 +37,7 @@ const FarmList = ({ farms, term }) => {
           flex items-center justify-start 
           text-xs
           sm:text-base
-          col-span-3 lg:col-span-3 "
+          col-span-3 lg:col-span-3"
         >
           Rewards (daily)
         </div>
@@ -46,12 +46,33 @@ const FarmList = ({ farms, term }) => {
           flex items-center justify-start 
           text-xs
           sm:text-base
-          col-span-3 lg:col-span-2 cursor-pointer"
+          col-span-3 lg:col-span-3 cursor-pointer"
           onClick={() => requestSort('roiPerYear')}
         >
           APR{isViewportXs && ' (yearly)'}
           {sortConfig &&
             sortConfig.key === 'roiPerYear' &&
+            ((sortConfig.direction === 'ascending' && (
+              <ChevronUpIcon width={12} height={12} />
+            )) ||
+              (sortConfig.direction === 'descending' && (
+                <ChevronDownIcon width={12} height={12} />
+              )))}
+        </div>
+        <div
+          className="
+          sm:flex items-center justify-start 
+          text-xs
+          hidden
+          sm:text-base
+          col-span-3
+          lg:col-span-3 
+          cursor-pointer"
+          onClick={() => requestSort('staked')}
+        >
+          Staked
+          {sortConfig &&
+            sortConfig.key === 'staked' &&
             ((sortConfig.direction === 'ascending' && (
               <ChevronUpIcon width={12} height={12} />
             )) ||

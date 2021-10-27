@@ -1,12 +1,10 @@
 import dynamic from 'next/dynamic';
 import {
-  ChainId,
   Currency,
   getFactoryAddress,
   Price,
   Token,
   WNATIVE,
-  WNATIVE_ADDRESS,
 } from '@digitalnative/standard-protocol-sdk';
 import useDexCandles from '../../hooks/useDexCandles';
 import { CandlePeriod, NumericalCandlestickDatum } from '../../types/Candle';

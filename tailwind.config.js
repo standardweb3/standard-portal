@@ -21,6 +21,12 @@ module.exports = {
       // => @media (min-width: 1536px) { ... }
     },
     extend: {
+      gridTemplateColumns: {
+        // Simple 16 column grid
+        '15': 'repeat(15, minmax(0, 1fr))',
+
+        // Complex site-specific column configuration
+      },
       borderRadius: {
         '20': '20px',
       },

@@ -17,10 +17,19 @@ import {
   ViewportSmallUp,
   ViewportXSmall,
 } from '../../components-ui/Responsive';
+import { BigNumber } from 'ethers';
 
 const FarmListItem = ({ farm, ...rest }) => {
   const token0 = useCurrency(farm.pair.token0.id);
   const token1 = useCurrency(farm.pair.token1.id);
+
+  const amountDecimals = farm.amount
+    ?.div(BigNumber.from(1e10))
+    .div(BigNumber.from(1e8))
+    .toNumber();
+
+  const totalSupply = farm.pair.totalSupply;
+  const userShare = amountDecimals ? amountDecimals / totalSupply : 0;
 
   const isViewportMediumDown = useSizeMdDown();
   return (
@@ -39,12 +48,12 @@ const FarmListItem = ({ farm, ...rest }) => {
               text-sm md:text-lg`,
             )}
           >
-            <div className="grid grid-cols-11 lg:grid-cols-11">
+            <div className="grid grid-cols-12 sm:grid-cols-15">
               <div className="col-span-3 lg:col-span-3 flex items-center">
                 <div
                   className="
-                inline-flex flex-col lg:flex-row items-center 
-                lg:space-x-4 lg:space-y-0 space-y-2"
+                inline-flex flex-col 2xl:flex-row items-center 
+                2xl:space-x-4 2xl:space-y-0 space-y-2"
                 >
                   <DoubleCurrencyLogo
                     currencyClassName="rounded-full"
@@ -55,7 +64,7 @@ const FarmListItem = ({ farm, ...rest }) => {
                   <div
                     className="
                     flex flex-col justify-center 
-                    text-sm lg:text-base"
+                    text-sm 2xl:text-base"
                   >
                     <div>
                       <span className="font-bold">
@@ -111,7 +120,7 @@ const FarmListItem = ({ farm, ...rest }) => {
                   ))}
                 </div>
               </div>
-              <div className="flex items-center col-span-3 lg:col-span-2">
+              <div className="flex items-center col-span-3 lg:col-span-3">
                 <div className="flex items-end justify-center space-x-2">
                   <ViewportXSmall>
                     <div className="font-bold text-right text-sm lg:text-base">
@@ -143,7 +152,41 @@ const FarmListItem = ({ farm, ...rest }) => {
               </div>
               <div
                 className="
-                col-span-2 lg:col-span-3
+                hidden
+                sm:flex
+                col-span-3 lg:col-span-3
+                space-y-1
+                lg:flex-col 
+                items-center
+                lg:items-start
+                "
+              >
+                <div className="text-primary font-bold text-sm sm:text-lg lg:text-xl">
+                  {isViewportMediumDown
+                    ? formatNumberScale(userShare * farm.tvl, true)
+                    : formatNumber(userShare * farm.tvl, true)}
+                </div>
+                <ViewportLargeUp>
+                  <div className="flex items-center space-x-1 text-xs">
+                    <div>
+                      <div>
+                        {formatNumber(Number(farm.pair.reserve0) * userShare)}
+                      </div>
+                      <div>
+                        {' '}
+                        {formatNumber(Number(farm.pair.reserve1) * userShare)}
+                      </div>
+                    </div>
+                    <div className="text-grey">
+                      <div>{farm.pair.token0.symbol}</div>
+                      <div> {farm.pair.token1.symbol}</div>
+                    </div>
+                  </div>
+                </ViewportLargeUp>
+              </div>
+              <div
+                className="
+                col-span-3 lg:col-span-3
                 space-y-1
                 flex lg:flex-col 
                 items-center
