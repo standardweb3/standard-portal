@@ -96,17 +96,17 @@ export const SUPPORTED_NETWORKS: {
     blockExplorerUrls: string[];
   };
 } = {
-  [ChainId.RINKEBY]: {
-    chainId: '0x4',
-    chainName: 'Rinkeby',
-    nativeCurrency: {
-      name: 'Ethereum',
-      symbol: 'ETH',
-      decimals: 18,
-    },
-    rpcUrls: ['https://rinkeby.infura.io/v3'],
-    blockExplorerUrls: ['https://rinkeby.etherscan.io'],
-  },
+  // [ChainId.RINKEBY]: {
+  //   chainId: '0x4',
+  //   chainName: 'Rinkeby',
+  //   nativeCurrency: {
+  //     name: 'Ethereum',
+  //     symbol: 'ETH',
+  //     decimals: 18,
+  //   },
+  //   rpcUrls: ['https://rinkeby.infura.io/v3'],
+  //   blockExplorerUrls: ['https://rinkeby.etherscan.io'],
+  // },
   // [ChainId.SHIBUYA]: {
   //   chainId: '0x51',
   //   chainName: 'Shibuya',
