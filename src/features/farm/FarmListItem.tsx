@@ -196,8 +196,13 @@ const FarmListItem = ({ farm, ...rest }) => {
                 <ViewportLargeUp>
                   <div className="flex items-center space-x-1 text-xs">
                     <div>
-                      <div>{Number(farm.pair.reserve0).toFixed(4)}</div>
-                      <div> {Number(farm.pair.reserve1).toFixed(4)}</div>
+                      <div>
+                        {Number(farm.pair.reserve0 * farm.share).toFixed(4)}
+                      </div>
+                      <div>
+                        {' '}
+                        {Number(farm.pair.reserve1 * farm.share).toFixed(4)}
+                      </div>
                     </div>
                     <div className="text-grey">
                       <div>{farm.pair.token0.symbol}</div>

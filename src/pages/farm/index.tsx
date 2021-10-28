@@ -170,9 +170,8 @@ export default function Farm() {
     const rewards = getRewards();
 
     const balance = Number(pool.balance / 1e10 / 1e8);
-
-    const tvl =
-      (balance / Number(swapPair.totalSupply)) * Number(swapPair.reserveUSD);
+    const farmShare = balance / Number(swapPair.totalSupply);
+    const tvl = farmShare * Number(swapPair.reserveUSD);
 
     const roiPerBlock =
       rewards.reduce((previousValue, currentValue) => {
@@ -196,6 +195,7 @@ export default function Farm() {
     return {
       ...pool,
       ...position,
+      share: farmShare,
       pair: {
         ...pair,
         decimals:
