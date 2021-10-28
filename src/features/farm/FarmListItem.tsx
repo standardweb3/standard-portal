@@ -17,7 +17,6 @@ import {
   ViewportSmallUp,
   ViewportXSmall,
 } from '../../components-ui/Responsive';
-import { BigNumber } from 'ethers';
 
 const FarmListItem = ({ farm, ...rest }) => {
   const token0 = useCurrency(farm.pair.token0.id);

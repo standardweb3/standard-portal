@@ -477,7 +477,7 @@ export default function Liquidity() {
                   <TransactionSettingsWithGas
                     allowedSlippage={allowedSlippage}
                   />
-                  <AnalyticsLink path={pair ? `pairs` : 'pairs'} />
+                  <AnalyticsLink path={pair ? `pairs/${pair}` : 'pairs'} />
                 </div>
               </ViewportSmallDown>
               <ViewportMediumUp>
