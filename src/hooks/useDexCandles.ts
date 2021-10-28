@@ -21,9 +21,9 @@ const useDexCandles = (
   let resultArray: RawCandlestickDatum[] = [];
 
   const [candleData, setCandleData] = useState<NumericalCandlestickDatum[]>([]);
-
   const fetchDexCandles = useCallback(async () => {
     if (pairAddress == '') {
+      setCandleData([]);
       return;
     }
     try {

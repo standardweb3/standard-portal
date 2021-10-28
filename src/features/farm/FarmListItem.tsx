@@ -158,8 +158,8 @@ const FarmListItem = ({ farm, ...rest }) => {
               >
                 <div className="text-primary font-bold text-sm sm:text-lg lg:text-xl">
                   {isViewportMediumDown
-                    ? formatNumberScale(userShare * farm.tvl, true)
-                    : formatNumber(userShare * farm.tvl, true)}
+                    ? formatNumberScale(userShare * farm.pair.reserveUSD, true)
+                    : formatNumber(userShare * farm.pair.reserveUSD, true)}
                 </div>
                 <ViewportLargeUp>
                   <div className="flex items-center space-x-1 text-xs">
