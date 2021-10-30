@@ -50,9 +50,12 @@ export default function Farm() {
 
   const _averageBlockTime =
     typeof averageBlockTime == 'number'
-      ? averageBlockTime
-      : averageBlockTime?.averageBlockTime ??
-        AVERAGE_BLOCK_TIME_IN_SECS[chainId];
+      ? averageBlockTime !== 0
+        ? averageBlockTime
+        : AVERAGE_BLOCK_TIME_IN_SECS[chainId]
+      : averageBlockTime && averageBlockTime?.averageBlockTime !== 0
+      ? averageBlockTime?.averageBlockTime
+      : AVERAGE_BLOCK_TIME_IN_SECS[chainId];
   // const masterChefV2TotalAllocPoint = useMasterChefV2TotalAllocPoint();
   const masterChefV2SushiPerBlock = useMasterChefV2SushiPerBlock();
   const blocksPerDay = 86400 / _averageBlockTime;

@@ -23,6 +23,7 @@ const FarmListItem = ({ farm, ...rest }) => {
   const token1 = useCurrency(farm.pair.token1.id);
   const amountDecimals = farm.amount ? farm.amount / 1e18 : undefined;
 
+  console.log(farm);
   const totalSupply = farm.pair.totalSupply;
   const userShare = amountDecimals ? amountDecimals / totalSupply : 0;
 
