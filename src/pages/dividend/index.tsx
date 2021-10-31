@@ -28,12 +28,17 @@ import {
   useRemainingBondingTime,
 } from '../../hooks/useBonded';
 import { BigNumber } from 'ethers';
-import { useDividendPoolWhitelistPairBalances } from '../../state/user/hooks';
+import {
+  useDividendPoolWhitelistPairBalances,
+  useDividendPoolWhitelistTokenBalances,
+} from '../../state/user/hooks';
 import { DividendPairs } from '../../components-ui/Dividend/DividendPairs';
 import styled from '@emotion/styled';
 import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
-import { useBondedStrategy } from '../../services/graph/hooks/dividend';
-import { useBundle, useStandardPrice } from '../../services/graph';
+import { DividendTokens } from '../../components-ui/Dividend/DividendTokens';
+import { useSushiPairs } from '../../services/graph';
+// import { useBondedStrategy } from '../../services/graph/hooks/dividend';
+// import { useBundle, useStandardPrice } from '../../services/graph';
 
 export const BondWrapper = styled.div`
   @media only screen and (min-width: 640px) {
@@ -50,9 +55,21 @@ export default function Dividend() {
   const [withdrawValue, setWithdrawValue] = useState('');
   const { pairsWithDividends } = useDividendPoolWhitelistPairBalances(10);
 
+  const swapPairs = useSushiPairs({
+    where: {
+      id_in: pairsWithDividends.map((pair) => pair.address.toLowerCase()),
+    },
+  });
+
+  const { tokensWithDividends } = useDividendPoolWhitelistTokenBalances(10);
+
   const fetchedWhitelistPairs = useMemo(() => {
     return pairsWithDividends.filter((pair) => pair.amount !== null);
   }, [pairsWithDividends]);
+
+  const fetchedWhitelistTokens = useMemo(() => {
+    return tokensWithDividends.filter((token) => token.amount !== null);
+  }, [tokensWithDividends]);
 
   const addTransaction = useTransactionAdder();
 
@@ -329,13 +346,23 @@ export default function Dividend() {
             </div>
 
             <div className="mt-6 text-grey text-xs">
-              * Reward from each pool has a claiming period of 30 days
+              * Reward from each pair has a claiming period of 30 days
             </div>
             <DividendPairs
               claim={handleClaim}
               className="mt-6"
               share={share}
               pairsWithDividends={fetchedWhitelistPairs}
+            />
+
+            <div className="mt-12 text-grey text-xs">
+              * Reward from each token has a claiming period of 30 days
+            </div>
+            <DividendTokens
+              claim={handleClaim}
+              className="mt-6"
+              share={share}
+              tokensWithDividends={fetchedWhitelistTokens}
             />
           </div>
         </PageContent>

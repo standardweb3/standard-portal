@@ -1587,10 +1587,10 @@
   dependencies:
     "@tenderly/hardhat-tenderly" "^1.0.12"
 
-"@digitalnative/standard-protocol-sdk@^0.0.123":
-  version "0.0.123"
-  resolved "https://registry.yarnpkg.com/@digitalnative/standard-protocol-sdk/-/standard-protocol-sdk-0.0.123.tgz#8f7b00a427feb2036f5fb43e7913abadfd26d97c"
-  integrity sha512-lVZFv+m5E00ScEkw2PeWGDiBYGxPta+JntnpBwyI57/sNuwW1Y0VsVP7guywlOidRZl6U/GbOLpM9Yy9w313rQ==
+"@digitalnative/standard-protocol-sdk@^0.0.130":
+  version "0.0.130"
+  resolved "https://registry.yarnpkg.com/@digitalnative/standard-protocol-sdk/-/standard-protocol-sdk-0.0.130.tgz#06dc6962c30c6025355c454ea09de81b4d676add"
+  integrity sha512-5R1s575gvWYI7j2edOAKwKNlOpKUmmWnhVvMs4iv5rDLorkE7k6hMbnuB76sbLEsNQaggZENRjSkCLiskl98oA==
   dependencies:
     big.js "^6.1.0"
     decimal.js-light "^2.5.0"
@@ -11112,7 +11112,12 @@ js-yaml@^3.13.1, js-yaml@^3.14.0:
     argparse "^1.0.7"
     esprima "^4.0.0"
 
-jsbi@^3.1.0, jsbi@^3.1.1:
+jsbi@^3.1.0:
+  version "3.2.5"
+  resolved "https://registry.yarnpkg.com/jsbi/-/jsbi-3.2.5.tgz#b37bb90e0e5c2814c1c2a1bcd8c729888a2e37d6"
+  integrity sha512-aBE4n43IPvjaddScbvWRA2YlTzKEynHzu7MqOyTipdHucf/VxS63ViCjxYRg86M8Rxwbt/GfzHl1kKERkt45fQ==
+
+jsbi@^3.1.1:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/jsbi/-/jsbi-3.2.2.tgz#277aa2c5d4b3000694be5f97266b23ff7f29803a"
   integrity sha512-c34oMAtJ6a05rV+v8LggKfbPWn2puqAmchk0/HbAFGozd5nptFMUgsJrkRZDmKXfcR8RG9maeehL4i2xI/kBBQ==
