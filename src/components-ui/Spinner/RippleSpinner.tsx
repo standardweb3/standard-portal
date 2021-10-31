@@ -4,13 +4,19 @@ import styled from '@emotion/styled';
 import { classNames } from '../../functions';
 
 export type RippleSpinnerProps = {
+  className?: string;
   rippleClassName?: string;
   size: number;
 };
 
-export function RippleSpinner({ rippleClassName, size }: RippleSpinnerProps) {
+export function RippleSpinner({
+  className,
+  rippleClassName,
+  size,
+}: RippleSpinnerProps) {
   return (
     <RippleWrapper
+      className={className}
       css={css`
         width: ${size}px;
         height: ${size}px;

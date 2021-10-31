@@ -371,7 +371,7 @@ export default function Dividend() {
                       <BondedInfo
                         className="text-center"
                         amount={formatNumber(
-                          bonded?.toFixed(stnd.decimals) ?? 0,
+                          parseFloat(bondedStrategy?.totalSupply ?? 0) ?? 0,
                         )}
                         share={share ?? 0}
                         total={bondedTotalDecimals}
