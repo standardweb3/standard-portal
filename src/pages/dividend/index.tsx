@@ -36,7 +36,7 @@ import { DividendPairs } from '../../components-ui/Dividend/DividendPairs';
 import styled from '@emotion/styled';
 import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
 import { DividendTokens } from '../../components-ui/Dividend/DividendTokens';
-import { useSushiPairs } from '../../services/graph';
+// import { useSushiPairs } from '../../services/graph';
 // import { useBondedStrategy } from '../../services/graph/hooks/dividend';
 // import { useBundle, useStandardPrice } from '../../services/graph';
 
@@ -55,11 +55,11 @@ export default function Dividend() {
   const [withdrawValue, setWithdrawValue] = useState('');
   const { pairsWithDividends } = useDividendPoolWhitelistPairBalances(10);
 
-  const swapPairs = useSushiPairs({
-    where: {
-      id_in: pairsWithDividends.map((pair) => pair.address.toLowerCase()),
-    },
-  });
+  // const swapPairs = useSushiPairs({
+  //   where: {
+  //     id_in: pairsWithDividends.map((pair) => pair.address.toLowerCase()),
+  //   },
+  // });
 
   const { tokensWithDividends } = useDividendPoolWhitelistTokenBalances(10);
 
