@@ -95,7 +95,6 @@ export const getEthPrice = async (
   chainId = ChainId.MAINNET,
   variables = undefined,
 ) => {
-  // console.log('getEthPrice')
   const data = await getBundle(chainId, undefined, variables);
   return data?.bundles?.[0]?.ethPrice;
 };

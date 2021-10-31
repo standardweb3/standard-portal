@@ -3,7 +3,7 @@ import { DividendPoolWhitelistTokenBalance } from '../../state/user/hooks';
 import { DividendToken } from './DividendToken';
 
 export type DividendTokensProps = {
-  tokensWithDividends: DividendPoolWhitelistTokenBalance[];
+  tokensWithDividends: any[];
   share: number;
   className?: string;
   claim: (address: string) => void;
@@ -25,7 +25,7 @@ export function DividendTokens({
       {tokensWithDividends.map((token) => {
         return (
           <DividendToken
-            key={token.token.address}
+            key={token.address}
             claim={claim}
             tokenWithDividend={token}
             share={share}

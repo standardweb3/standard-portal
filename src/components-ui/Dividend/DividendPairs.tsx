@@ -1,12 +1,13 @@
+import { Currency, CurrencyAmount } from '@digitalnative/standard-protocol-sdk';
 import { classNames } from '../../functions';
-import { DividendPoolWhitelistPairBalance } from '../../state/user/hooks';
 import { DividendPair } from './DividendPair';
 
 export type DividendPairsProps = {
-  pairsWithDividends: DividendPoolWhitelistPairBalance[];
+  pairsWithDividends: any[];
   share: number;
   className?: string;
   claim: (address: string) => void;
+  ethPrice: any;
 };
 
 export function DividendPairs({
@@ -22,7 +23,7 @@ export function DividendPairs({
         <div className="col-span-2">Total Dividend</div>
         <div className="col-span-2">Your Dividend</div>
       </div>
-      {pairsWithDividends.map((pair) => {
+      {pairsWithDividends.map((pair, i) => {
         return (
           <DividendPair
             key={pair.address}

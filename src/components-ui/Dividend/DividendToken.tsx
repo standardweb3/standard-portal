@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { formatNumber } from '../../functions';
+import { useCurrency } from '../../hooks/Tokens';
 import { useRemainingClaimTime } from '../../hooks/useBonded';
 import { DividendPoolWhitelistTokenBalance } from '../../state/user/hooks';
 import { Button } from '../Button';
@@ -8,7 +9,7 @@ import { useSizeXs } from '../Responsive';
 import { CountdownTimer } from '../Timer/CountdownTimer';
 
 export type DividendTokenProps = {
-  tokenWithDividend: DividendPoolWhitelistTokenBalance;
+  tokenWithDividend: any;
   share: number;
   claim: (address: string) => void;
 };
@@ -18,23 +19,23 @@ export function DividendToken({
   share,
   claim,
 }: DividendTokenProps) {
-  const { token, amount } = tokenWithDividend;
+  const {
+    address,
+    totalDividendUSD,
+    rewardUSD,
+    amount,
+    reward,
+  } = tokenWithDividend;
 
-  const remainingSeconds = useRemainingClaimTime(token.address);
+  const remainingSeconds = useRemainingClaimTime(address);
   const remaining = remainingSeconds !== null && remainingSeconds > 0;
-  // const totalPoolTokens = useTotalSupply(amount?.currency);
 
-  // const _reserve0 =
-  //   !!_token0 && CurrencyAmount.fromRawAmount(_token0, reserve0.toString());
-  // const _reserve1 =
-  //   !!_token1 && CurrencyAmount.fromRawAmount(_token1, reserve1.toString());
+  const token = useCurrency(address);
   const isViewportXs = useSizeXs();
 
-  const reward = Number(amount.toExact()) * share;
-
   const handleClaim = useCallback(() => {
-    claim(token.address);
-  }, [token]);
+    claim(address);
+  }, [address]);
 
   return (
     <div
@@ -65,15 +66,21 @@ export function DividendToken({
       </div>
 
       <div className="col-span-2 text-sm sm:text-base">
-        <div>
-          {formatNumber(amount.toExact(), false, true, 0.00001)} {token.symbol}
-        </div>
+        <div>{formatNumber(totalDividendUSD, true, true, 0.00001)} USD</div>
+        {!!amount && (
+          <div className="text-grey text-xs">
+            {formatNumber(amount, false, true, 0.00001)} {token.symbol}
+          </div>
+        )}
       </div>
 
       <div className="col-span-2 text-sm sm:text-base">
-        <div>
-          {formatNumber(reward, false, true, 0.00001)} {token.symbol}
-        </div>
+        <div>{formatNumber(rewardUSD, true, true, 0.00001)} USD</div>
+        {!!amount && (
+          <div className="text-grey text-xs">
+            {formatNumber(reward, false, true, 0.00001)} {token.symbol}
+          </div>
+        )}
       </div>
       <div className="flex flex-col mt-4 lg:mt-0 lg:items-end col-span-6 items-center lg:col-span-1 space-y-2">
         <Button

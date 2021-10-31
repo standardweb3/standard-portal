@@ -35,8 +35,9 @@ import {
 import { DividendPairs } from '../../components-ui/Dividend/DividendPairs';
 import styled from '@emotion/styled';
 import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
+import { useEthPrice, useSushiPairs, useTokens } from '../../services/graph';
+import { getAddress } from '@ethersproject/address';
 import { DividendTokens } from '../../components-ui/Dividend/DividendTokens';
-// import { useSushiPairs } from '../../services/graph';
 // import { useBondedStrategy } from '../../services/graph/hooks/dividend';
 // import { useBundle, useStandardPrice } from '../../services/graph';
 
@@ -50,25 +51,124 @@ export const BondWrapper = styled.div`
 
 export default function Dividend() {
   const { account, chainId } = useActiveWeb3React();
+
+  const stnd = new Token(
+    chainId,
+    STND_ADDRESS[chainId],
+    18,
+    'STND',
+    'Standard',
+  );
+
+  const bonded = useBonded();
+  const bondedTotal = useBondSupply();
+  const bondedTotalDecimals = (
+    bondedTotal?.div(BigNumber.from(1e10)).toNumber() / 100000000
+  ).toFixed(4);
+  const remainingSeconds = useRemainingBondingTime();
+
+  const share = useMemo(() => {
+    if (bonded !== null && bondedTotal !== null) {
+      if (bondedTotal.eq(BigNumber.from(0))) return 0;
+      return (
+        Number(bonded.toFixed(stnd.decimals)) /
+        Number(bondedTotal.toFixed(stnd.decimals))
+      );
+    }
+    return null;
+  }, [bonded, bondedTotal]);
+
   const [pendingTx, setPendingTx] = useState(false);
   const [depositValue, setDepositValue] = useState('');
   const [withdrawValue, setWithdrawValue] = useState('');
+
+  const ethPrice = useEthPrice();
+
   const { pairsWithDividends } = useDividendPoolWhitelistPairBalances(10);
-
-  // const swapPairs = useSushiPairs({
-  //   where: {
-  //     id_in: pairsWithDividends.map((pair) => pair.address.toLowerCase()),
-  //   },
-  // });
-
-  const { tokensWithDividends } = useDividendPoolWhitelistTokenBalances(10);
+  const swapPairs = useSushiPairs({
+    where: {
+      id_in: pairsWithDividends.map((pair) => pair.address.toLowerCase()),
+    },
+  });
 
   const fetchedWhitelistPairs = useMemo(() => {
-    return pairsWithDividends.filter((pair) => pair.amount !== null);
-  }, [pairsWithDividends]);
+    return swapPairs
+      ? pairsWithDividends
+          .filter((pair) => pair.amount !== null)
+          .map((pair) => {
+            const foundPair = swapPairs.find(
+              (swapPair) => swapPair.id === pair.address.toLowerCase(),
+            );
+
+            const amountDecimals = parseFloat(pair.amount.toExact());
+            const lpTokenPrice =
+              (parseFloat(foundPair?.reserveETH ?? 0) *
+                parseFloat(ethPrice ?? 0)) /
+              parseFloat(foundPair?.totalSupply ?? 0);
+            const totalDividendUSD = lpTokenPrice * amountDecimals;
+            const pairShare =
+              amountDecimals / parseFloat(foundPair?.totalSupply ?? 0);
+            const [token0Amount, token1Amount] = foundPair
+              ? [
+                  parseFloat(foundPair.reserve0 ?? 0) * pairShare,
+                  parseFloat(foundPair.reserve1 ?? 0) * pairShare,
+                ]
+              : [undefined, undefined];
+
+            const [rewardToken0Amount, rewardToken1Amount] =
+              !!token0Amount && !!token1Amount
+                ? [token0Amount * share, token1Amount * share]
+                : [undefined, undefined];
+
+            return {
+              address: pair.address,
+              amount: amountDecimals,
+              token0Address: foundPair && getAddress(foundPair.token0.id),
+              token1Address: foundPair && getAddress(foundPair.token1.id),
+              token0Amount,
+              token1Amount,
+              rewardToken0Amount,
+              rewardToken1Amount,
+              totalDividendUSD,
+            };
+          })
+      : [];
+  }, [pairsWithDividends, swapPairs]);
+
+  const { tokensWithDividends } = useDividendPoolWhitelistTokenBalances(10);
+  const exchangeTokens = useTokens({
+    where: {
+      id_in: tokensWithDividends.map((token) => token.address.toLowerCase()),
+    },
+  });
 
   const fetchedWhitelistTokens = useMemo(() => {
-    return tokensWithDividends.filter((token) => token.amount !== null);
+    return exchangeTokens
+      ? tokensWithDividends
+          .filter((token) => token.amount !== null)
+          .map((token) => {
+            const foundToken = exchangeTokens.find(
+              (exchangeToken) =>
+                exchangeToken.id === token.address.toLowerCase(),
+            );
+
+            const amountDecimals = parseFloat(token.amount.toExact());
+            // const reward = amountDecimals * share;
+            const tokenPrice =
+              parseFloat(foundToken?.derivedETH ?? 0) *
+              parseFloat(ethPrice ?? 0);
+
+            const totalDividendUSD = amountDecimals * tokenPrice;
+            const rewardUSD = totalDividendUSD * share;
+
+            return {
+              address: token.address,
+              totalDividendUSD,
+              rewardUSD,
+              amount: amountDecimals,
+            };
+          })
+      : [];
   }, [tokensWithDividends]);
 
   const addTransaction = useTransactionAdder();
@@ -113,32 +213,6 @@ export default function Dividend() {
   //     return { apr, apy, claimedReward, reaminingReward, totalReward };
   //   }
   // }, [ethPrice, stndPrice, bondedStrategy]);
-
-  const stnd = new Token(
-    chainId,
-    STND_ADDRESS[chainId],
-    18,
-    'STND',
-    'Standard',
-  );
-
-  const bonded = useBonded();
-  const bondedTotal = useBondSupply();
-  const bondedTotalDecimals = (
-    bondedTotal?.div(BigNumber.from(1e10)).toNumber() / 100000000
-  ).toFixed(4);
-  const remainingSeconds = useRemainingBondingTime();
-
-  const share = useMemo(() => {
-    if (bonded !== null && bondedTotal !== null) {
-      if (bondedTotal.eq(BigNumber.from(0))) return 0;
-      return (
-        Number(bonded.toFixed(stnd.decimals)) /
-        Number(bondedTotal.toFixed(stnd.decimals))
-      );
-    }
-    return null;
-  }, [bonded, bondedTotal]);
 
   const stndBalance = useTokenBalance(account, stnd);
   const onBondMax = () => setDepositValue(stndBalance?.toExact());
@@ -353,6 +427,7 @@ export default function Dividend() {
               className="mt-6"
               share={share}
               pairsWithDividends={fetchedWhitelistPairs}
+              ethPrice={ethPrice}
             />
 
             <div className="mt-12 text-grey text-xs">
