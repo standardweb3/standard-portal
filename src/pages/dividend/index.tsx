@@ -160,12 +160,14 @@ export default function Dividend() {
 
             const totalDividendUSD = amountDecimals * tokenPrice;
             const rewardUSD = totalDividendUSD * share;
+            const reward = amountDecimals * share;
 
             return {
               address: token.address,
               totalDividendUSD,
               rewardUSD,
               amount: amountDecimals,
+              reward,
             };
           })
       : [];
