@@ -16,11 +16,13 @@ export function DividendTokens({
   claim,
 }: DividendTokensProps) {
   return (
-    <div className={classNames('space-y-4', className)}>
-      <div className="grid grid-cols-6 lg:grid-cols-7 font-bold px-8">
+    <div
+      className={classNames('space-y-2 bg-opaque p-8 rounded-20', className)}
+    >
+      <div className="grid grid-cols-7 lg:grid-cols-7 font-bold">
         <div className="col-span-2">Token</div>
-        <div className="col-span-2">Total Dividend</div>
         <div className="col-span-2">Your Dividend</div>
+        <div className="col-span-2">Total Dividend</div>
       </div>
       {tokensWithDividends.map((token) => {
         return (

@@ -35,9 +35,19 @@ import {
 import { DividendPairs } from '../../components-ui/Dividend/DividendPairs';
 import styled from '@emotion/styled';
 import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
-import { useEthPrice, useSushiPairs, useTokens } from '../../services/graph';
+import {
+  useEthPrice,
+  useStandardPrice,
+  useSushiPairs,
+  useTokens,
+} from '../../services/graph';
 import { getAddress } from '@ethersproject/address';
 import { DividendTokens } from '../../components-ui/Dividend/DividendTokens';
+import { DividendKPIInfo } from '../../components-ui/Dividend/DividendKPIInfo';
+import {
+  useBondedStrategy,
+  useBondedStrategyHistory,
+} from '../../services/graph/hooks/dividend';
 // import { useBondedStrategy } from '../../services/graph/hooks/dividend';
 // import { useBundle, useStandardPrice } from '../../services/graph';
 
@@ -176,45 +186,46 @@ export default function Dividend() {
   const addTransaction = useTransactionAdder();
 
   const dividendPoolAddress = useDividendPoolAddress();
-  // const bondedStrategy = useBondedStrategy();
-  // const bundle = useBundle();
-  // const ethPrice = bundle?.bundles?.[0]?.ethPrice;
-  // const stndPrice = useStandardPrice();
+  const bondedStrategy = useBondedStrategy();
+  const bondedStrategyHistory = useBondedStrategyHistory();
+  const stndPrice = useStandardPrice();
 
-  // const {
-  //   apr,
-  //   apy,
-  //   claimedReward,
-  //   reaminingReward,
-  //   totalReward,
-  // } = useMemo(() => {
-  //   if (!ethPrice || !stndPrice || !bondedStrategy)
-  //     return {
-  //       apr: null,
-  //       apy: null,
-  //       claimedReward: null,
-  //       reaminingReward: null,
-  //       totalReward: null,
-  //     };
-  //   else {
-  //     const date = Math.floor(Math.floor(Date.now() / 1000) / 86400);
-  //     const inception = Math.floor(parseInt(bondedStrategy.inception) / 86400);
-  //     const dateFromInception = date - inception;
-  //     const totalSupply = parseFloat(bondedStrategy.totalSupply) / 1e18;
-  //     const claimedReward = parseFloat(bondedStrategy.totalClaimedUSD);
-  //     const reaminingReward =
-  //       parseFloat(bondedStrategy.totalClaimedUSD) +
-  //       parseFloat(bondedStrategy.remainingRewardETH) * ethPrice;
+  const {
+    apr,
+    apy,
+    claimedRewardUSD,
+    remainingRewardUSD,
+    totalRewardUSD,
+  } = useMemo(() => {
+    if (!ethPrice || !stndPrice || !bondedStrategyHistory)
+      return {
+        apr: null,
+        apy: null,
+        claimedReward: null,
+        reaminingReward: null,
+        totalReward: null,
+      };
+    else {
+      const date = Math.floor(Math.floor(Date.now() / 1000) / 86400);
+      const inception = Math.floor(parseInt(bondedStrategy.inception) / 86400);
+      const dateFromInception = date - inception;
+      const claimedRewardUSD = parseFloat(
+        bondedStrategyHistory.totalClaimedUSD,
+      );
+      const remainingRewardUSD = parseFloat(
+        bondedStrategyHistory.remainingRewardUSD,
+      );
+      const totalRewardUSD = claimedRewardUSD + remainingRewardUSD;
+      // const totalReward = claimedReward + remainingReward;
+      const r =
+        totalRewardUSD / parseFloat(bondedStrategyHistory.totalSupplyUSD);
+      const apr =
+        (Math.pow(r + 1, 1 / (dateFromInception + 1)) - 1) * 365 * 100;
+      const apy = (Math.pow(1 + apr / 100 / 365, 365) - 1) * 100;
 
-  //     const totalReward = claimedReward + reaminingReward;
-  //     const r = totalReward / (totalSupply * stndPrice);
-  //     const apr =
-  //       (Math.pow(r + 1, 1 / (dateFromInception + 1)) - 1) * 365 * 100;
-  //     const apy = (Math.pow(1 + apr / 100 / 365, 365) - 1) * 100;
-
-  //     return { apr, apy, claimedReward, reaminingReward, totalReward };
-  //   }
-  // }, [ethPrice, stndPrice, bondedStrategy]);
+      return { apr, apy, claimedRewardUSD, remainingRewardUSD, totalRewardUSD };
+    }
+  }, [ethPrice, stndPrice, bondedStrategy]);
 
   const stndBalance = useTokenBalance(account, stnd);
   const onBondMax = () => setDepositValue(stndBalance?.toExact());
@@ -419,6 +430,15 @@ export default function Dividend() {
                   }
                 />
               </div>
+            </div>
+            <div className="mt-6">
+              <DividendKPIInfo
+                apr={apr}
+                apy={apy}
+                totalRewardUSD={totalRewardUSD}
+                claimedRewardUSD={claimedRewardUSD}
+                remainingRewardUSD={remainingRewardUSD}
+              />
             </div>
 
             <div className="mt-6 text-grey text-xs">

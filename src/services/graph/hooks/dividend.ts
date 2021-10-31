@@ -2,6 +2,7 @@ import useSWR, { SWRConfiguration } from 'swr';
 import { useActiveWeb3React } from '../../../hooks';
 import {
   getBondedStrategy,
+  getBondedStrategyHistories,
   getBondedStrategyPairs,
 } from '../fetchers/dividend';
 
@@ -16,6 +17,22 @@ export function useBondedStrategy(
     swrConfig,
   );
   return data;
+}
+
+export function useBondedStrategyHistory(
+  variables = undefined,
+  swrConfig: SWRConfiguration = undefined,
+) {
+  const { chainId } = useActiveWeb3React();
+  const _variables = { first: 1, ...variables };
+  const { data } = useSWR(
+    chainId
+      ? ['bondedStrategyHistory', chainId, JSON.stringify(_variables)]
+      : null,
+    () => getBondedStrategyHistories(chainId, _variables),
+    swrConfig,
+  );
+  return data?.[0];
 }
 
 export function useBondedStrategyPairs(

@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 import { formatNumber } from '../../functions';
 import { useCurrency } from '../../hooks/Tokens';
 import { useRemainingClaimTime } from '../../hooks/useBonded';
-import { DividendPoolWhitelistTokenBalance } from '../../state/user/hooks';
 import { Button } from '../Button';
 import { CurrencyLogo } from '../CurrencyLogo';
 import { useSizeXs } from '../Responsive';
@@ -40,8 +39,9 @@ export function DividendToken({
   return (
     <div
       className="
-        bg-opaque-secondary rounded-20 p-8 
-        grid grid-cols-6 lg:grid-cols-7
+        min-h-[72px]
+        bg-opaque rounded-20 px-2 py-2
+        grid grid-cols-7 lg:grid-cols-7
         lg:space-y-0 items-center"
     >
       <div
@@ -60,33 +60,38 @@ export function DividendToken({
         <CurrencyLogo
           currency={token}
           className="rounded-full"
-          size={isViewportXs ? 26 : 34}
+          size={isViewportXs ? 26 : 38}
         />
         <div>{token.symbol}</div>
       </div>
 
       <div className="col-span-2 text-sm sm:text-base">
-        <div>{formatNumber(totalDividendUSD, true, true, 0.00001)} USD</div>
+        <div className="font-bold truncate">
+          {formatNumber(rewardUSD, true, true, 0.00001)} USD
+        </div>
         {!!amount && (
-          <div className="text-grey text-xs">
-            {formatNumber(amount, false, true, 0.00001)} {token.symbol}
+          <div className="text-grey text-xs truncate">
+            {formatNumber(reward, false, true, 0.00001)} {token.symbol}
           </div>
         )}
       </div>
 
       <div className="col-span-2 text-sm sm:text-base">
-        <div>{formatNumber(rewardUSD, true, true, 0.00001)} USD</div>
+        <div className="font-bold text-primary truncate">
+          {formatNumber(totalDividendUSD, true, true, 0.00001)} USD
+        </div>
         {!!amount && (
-          <div className="text-grey text-xs">
-            {formatNumber(reward, false, true, 0.00001)} {token.symbol}
+          <div className="text-grey text-xs truncate">
+            {formatNumber(amount, false, true, 0.00001)} {token.symbol}
           </div>
         )}
       </div>
-      <div className="flex flex-col mt-4 lg:mt-0 lg:items-end col-span-6 items-center lg:col-span-1 space-y-2">
+
+      <div className="flex flex-col mt-4 lg:mt-0 lg:items-center col-span-1 items-center lg:col-span-1 space-y-2">
         <Button
           onClick={handleClaim}
           disabled={share === null || share === 0 || remaining}
-          className="!font-bold px-8 text-lg"
+          className="!font-bold px-4 py-2 text-base"
         >
           {remaining ? <CountdownTimer time={remainingSeconds} /> : 'Claim'}
         </Button>
