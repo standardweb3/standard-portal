@@ -61,7 +61,7 @@ export const MenuItem = styled.div<{ disabled: boolean; selected: boolean }>`
   grid-template-columns: auto minmax(auto, 1fr) auto minmax(0, 72px);
   grid-gap: 16px;
   cursor: ${({ disabled }) => !disabled && 'pointer'};
-  pointer-events: ${({ disabled }) => disabled && 'none'};
+  // pointer-events: ${({ disabled }) => disabled && 'none'};
   :hover {
   }
   opacity: ${({ disabled, selected }) => (disabled || selected ? 0.5 : 1)};

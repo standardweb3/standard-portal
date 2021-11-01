@@ -145,7 +145,7 @@ function CurrencyRow({
           <RippleSpinner size={16} />
         ) : null}
         {!success && !currency.isNative && (
-          <div onClick={addToken}>
+          <div onClick={addToken} className="cursor-pointer">
             <PlusCircleIcon className="w-4 h-4 text-primary" />
           </div>
         )}
