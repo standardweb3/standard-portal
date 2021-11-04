@@ -75,10 +75,10 @@ import { TransactionSettingsWithGas } from '../../components-ui/Exchange/Transac
 import { RecipientInputPanel } from '../../components-ui/AddressInputPanel/RecipientInputPanel';
 import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
 import Chart from '../../components-ui/Chart';
-import { Alert } from '../../components-ui/Alert';
+import { usePrice, usePrices } from '../../services/graph/hooks/prices';
 
 export default function Swap() {
-  const { account, chainId } = useActiveWeb3React();
+  const { account } = useActiveWeb3React();
 
   /** PARSE TOKENS FROM CONTRACT ADDRESSES PROVIDED IN URL */
   const loadedUrlParams = useDefaultsFromURLSearch();
@@ -236,6 +236,7 @@ export default function Swap() {
     tradeToConfirm: V2Trade<Currency, Currency, TradeType> | undefined;
     attemptingTxn: boolean;
     swapErrorMessage: string | undefined;
+    ㄱ;
     txHash: string | undefined;
   }>({
     showConfirm: false,

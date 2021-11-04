@@ -17,6 +17,8 @@ import { computePairAddress } from '@digitalnative/standard-protocol-sdk';
 import { useProtocol } from '../../state/protocol/hooks';
 import { useActiveWeb3React } from '../../hooks';
 import { ANALYTICS_URL } from '../../constants';
+import { usePrices } from '../../services/graph/hooks/prices';
+import { useArbitrage } from '../../hooks/useArbitrage';
 const KChart = dynamic(() => import('kaktana-react-lightweight-charts'), {
   ssr: false,
 });
@@ -139,6 +141,7 @@ export default function Chart({
     { data: NumericalCandlestickDatum[] }[]
   >([{ data: [] }]);
 
+  // arbitrage
   const inputAddress = inputCurrency?.isToken
     ? inputCurrency.address
     : inputCurrency?.wrapped?.address ?? '';
@@ -340,7 +343,12 @@ export default function Chart({
 
   const lastClose = hasData
     ? candlestickSeries[0].data[candlestickSeries[0].data.length - 1].close
-    : price ?? undefined;
+    : parseFloat(price?.toFixed(10)) ?? undefined;
+
+  const symbols = [inputCurrency?.symbol, outputCurrency?.symbol];
+  const { cexPrice, ctod, dtoc } = useArbitrage(lastClose, symbols);
+  console.log(lastClose, cexPrice);
+  console.log(ctod, dtoc);
 
   // const fmtLastClose = lastClose ? formattedNum(lastClose) : 'N/A'
   return (
