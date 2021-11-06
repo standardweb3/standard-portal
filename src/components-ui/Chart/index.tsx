@@ -19,6 +19,7 @@ import { useActiveWeb3React } from '../../hooks';
 import { ANALYTICS_URL } from '../../constants';
 import { usePrices } from '../../services/graph/hooks/prices';
 import { useArbitrage } from '../../hooks/useArbitrage';
+import { Arbitrage } from '../Arbitrage';
 const KChart = dynamic(() => import('kaktana-react-lightweight-charts'), {
   ssr: false,
 });
@@ -347,8 +348,6 @@ export default function Chart({
 
   const symbols = [inputCurrency?.symbol, outputCurrency?.symbol];
   const { cexPrice, ctod, dtoc } = useArbitrage(lastClose, symbols);
-  console.log(lastClose, cexPrice);
-  console.log(ctod, dtoc);
 
   // const fmtLastClose = lastClose ? formattedNum(lastClose) : 'N/A'
   return (
@@ -381,6 +380,7 @@ export default function Chart({
         <div className="text-3xl font-black text-gray-200 truncate">
           {formatNumber(lastClose || 0)}
         </div>
+        <Arbitrage outbound={true} ctod={23} dtoc={23} />
       </div>
       <div className={'flex flex-1 h-[300px]'}>
         {isLoading ? (

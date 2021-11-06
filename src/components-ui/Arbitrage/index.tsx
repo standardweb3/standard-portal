@@ -1,11 +1,25 @@
-export function Arbitrage({ prices, symbols }) {
-  const orderMatches = prices?.[0]?.alias === symbols?.[0];
-  const [price1, price2] =
-    prices.length === 2
-      ? orderMatches
-        ? prices
-        : [prices[1], prices[0]]
-      : prices;
+import { useCallback, useState } from 'react';
+import ArbitrageToggle from './ArbitrageToggle';
 
-  return <div>Arbitrage</div>;
+export type ArbitrageTypes = {
+  outbound: boolean;
+  ctod: number;
+  dtoc: number;
+};
+
+export function Arbitrage({ outbound, ctod, dtoc }: ArbitrageTypes) {
+  const ctodRate = ctod - 1;
+  const dtoCRate = dtoc - 1;
+  const [toCex, setToCex] = useState(outbound);
+
+  const changeDirection = useCallback(() => {
+    setToCex(!toCex);
+  }, [setToCex, toCex]);
+
+  return (
+    <div>
+      Arbitrage
+      <ArbitrageToggle isActive={toCex} toggle={changeDirection} />
+    </div>
+  );
 }

@@ -236,7 +236,6 @@ export default function Swap() {
     tradeToConfirm: V2Trade<Currency, Currency, TradeType> | undefined;
     attemptingTxn: boolean;
     swapErrorMessage: string | undefined;
-    ㄱ;
     txHash: string | undefined;
   }>({
     showConfirm: false,
