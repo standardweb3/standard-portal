@@ -37,7 +37,9 @@ import { DividendPairs } from '../../components-ui/Dividend/DividendPairs';
 import styled from '@emotion/styled';
 import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
 import {
+  getExchangeAvailability,
   useEthPrice,
+  useExchangeAvailability,
   useStandardPrice,
   useSushiPairs,
   useTokens,
@@ -62,6 +64,7 @@ export const BondWrapper = styled.div`
 
 export default function Dividend() {
   const router = useRouter();
+  useExchangeAvailability(() => router.push('/dividendv2'));
   const { account, chainId } = useActiveWeb3React();
 
   const stnd = new Token(
@@ -95,7 +98,7 @@ export default function Dividend() {
   const [withdrawValue, setWithdrawValue] = useState('');
 
   const ethPrice = useEthPrice();
-  if (ethPrice === undefined) router.push('/dividendv2');
+  // if (ethPrice === undefined) router.push('/dividendv2');
 
   const { pairsWithDividends } = useDividendPoolWhitelistPairBalances(10);
   const swapPairs = useSushiPairs({

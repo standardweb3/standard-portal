@@ -3,6 +3,7 @@ import {
   getAlcxPrice,
   getBundle,
   getCvxPrice,
+  getExchangeAvailability,
   getLiquidityPositions,
   getMaticPrice,
   getOnePrice,
@@ -53,6 +54,12 @@ export function useFactory(
     swrConfig,
   );
   return data;
+}
+
+export async function useExchangeAvailability(fallbackCb) {
+  const { chainId } = useActiveWeb3React();
+  const data = await getExchangeAvailability(chainId);
+  data === undefined && fallbackCb();
 }
 
 export function useEthPrice(

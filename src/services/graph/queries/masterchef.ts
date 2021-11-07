@@ -73,3 +73,13 @@ export const masterChefV2SushiPerBlockQuery = gql`
     }
   }
 `;
+
+export const masterChefV2Query = gql`
+  query masterChefV2(
+    $id: String! = "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd"
+  ) {
+    masterChef(id: $id) {
+      id
+    }
+  }
+`;
