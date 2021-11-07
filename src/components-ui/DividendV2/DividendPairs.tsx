@@ -1,5 +1,5 @@
 import { classNames } from '../../functions';
-import { DividendPoolWhitelistPairBalance } from '../../state/user/hooks';
+import { DividendPoolWhitelistPairBalance } from '../../hooks/dividend/useDividendV2';
 import { DividendPair } from './DividendPair';
 
 export type DividendPairsProps = {

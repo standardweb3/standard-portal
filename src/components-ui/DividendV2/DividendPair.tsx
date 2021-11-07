@@ -1,10 +1,10 @@
 import { CurrencyAmount, JSBI } from '@digitalnative/standard-protocol-sdk';
 import { useCallback } from 'react';
 import { formatNumber } from '../../functions';
-import { useCurrency, useToken } from '../../hooks/Tokens';
+import { useCurrency } from '../../hooks/Tokens';
 import { useRemainingClaimTime } from '../../hooks/useBonded';
 import { useTotalSupply } from '../../hooks/useTotalSupply';
-import { DividendPoolWhitelistPairBalance } from '../../state/user/hooks';
+import { DividendPoolWhitelistPairBalance } from '../../hooks/dividend/useDividendV2';
 import { Button } from '../Button';
 import { DoubleCurrencyLogo } from '../CurrencyLogo/DoubleCurrencyLogo';
 import { useSizeXs } from '../Responsive';

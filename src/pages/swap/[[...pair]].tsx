@@ -7,8 +7,6 @@ import {
   Token,
   TradeType,
   Trade as V2Trade,
-  STND_ADDRESS,
-  PROTOCOLS,
 } from '@digitalnative/standard-protocol-sdk';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -75,7 +73,6 @@ import { TransactionSettingsWithGas } from '../../components-ui/Exchange/Transac
 import { RecipientInputPanel } from '../../components-ui/AddressInputPanel/RecipientInputPanel';
 import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
 import Chart from '../../components-ui/Chart';
-import { Alert } from '../../components-ui/Alert';
 
 export default function Swap() {
   const { account, chainId } = useActiveWeb3React();
