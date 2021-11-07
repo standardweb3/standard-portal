@@ -97,7 +97,7 @@
     "wcag-contrast": "^3.0.0"
   },
   "devDependencies": {
-    "@digitalnative/postcss-preset-env": "^6.7.0",
+    "@digitalnative/postcss-preset-env": "^0.0.4",
     "@emotion/babel-plugin": "^11.3.0",
     "@emotion/eslint-plugin": "^11.2.0",
     "@lingui/cli": "^3.10.2",
