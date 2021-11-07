@@ -1,6 +1,7 @@
 import {
   getMasterChefV1Farms,
   getMasterChefV1PairAddreses,
+  getMasterChefV2Availability,
   getMasterChefV2SushiPerBlock,
   getMasterChefV2TotalAllocPoint,
   getMasterChefV2Farms,
@@ -59,8 +60,7 @@ export function useMasterChefV1Farms(swrConfig = undefined) {
 
 export function useMasterChefV2Farms(swrConfig: SWRConfiguration = undefined) {
   const { chainId } = useActiveWeb3React();
-  const shouldFetch =
-    chainId
+  const shouldFetch = chainId;
   const { data } = useSWR(
     shouldFetch ? 'masterChefV2Farms' : null,
     () => getMasterChefV2Farms(chainId),
@@ -157,4 +157,10 @@ export function useFarmPairAddresses() {
       // miniChefPairAddresses,
     ],
   );
+}
+
+export async function useMasterChefV2Availability(fallbackCb) {
+  const { chainId } = useActiveWeb3React();
+  const data = await getMasterChefV2Availability(chainId);
+  data === undefined && fallbackCb();
 }

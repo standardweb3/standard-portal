@@ -127,7 +127,7 @@ export const SUPPORTED_NETWORKS: {
       decimals: 18,
     },
     rpcUrls: ['https://rpc.shiden.astar.network:8545'],
-    blockExplorerUrls: ['blockscout.com/shiden'],
+    blockExplorerUrls: ['https://blockscout.com/shiden'],
   },
   // [ChainId.MAINNET]: {
   //   chainId: '0x1',

@@ -7,8 +7,10 @@ import { useActiveWeb3React, useFuse } from '../../hooks';
 
 import {
   useAverageBlockTime,
+  useExchangeAvailability,
   useFarmPairAddresses,
   useFarms,
+  useMasterChefV2Availability,
   useMasterChefV2SushiPerBlock,
   useStandardPrice,
   useSushiPairs,
@@ -29,12 +31,16 @@ import { AVERAGE_BLOCK_TIME_IN_SECS } from '../../constants';
 
 export default function Farm() {
   const router = useRouter();
+  useExchangeAvailability(() => router.push('/farmv2'));
+  useMasterChefV2Availability(() => router.push('/farmv2'));
+
   const { chainId } = useActiveWeb3React();
 
   const type =
     router.query.filter == null ? 'all' : (router.query.filter as string);
 
   const pairAddresses = useFarmPairAddresses();
+
   const swapPairs = useSushiPairs({
     where: {
       id_in: pairAddresses,

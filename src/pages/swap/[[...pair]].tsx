@@ -72,7 +72,6 @@ import { TransactionSettingsWithGas } from '../../components-ui/Exchange/Transac
 import { RecipientInputPanel } from '../../components-ui/AddressInputPanel/RecipientInputPanel';
 import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
 import Chart from '../../components-ui/Chart';
-import { Alert } from '../../components-ui/Alert';
 
 export default function Swap() {
   const { account } = useActiveWeb3React();

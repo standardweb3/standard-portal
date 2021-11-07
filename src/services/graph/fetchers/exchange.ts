@@ -163,6 +163,11 @@ export const getEthPrice = async (
   return data?.bundles?.[0]?.ethPrice;
 };
 
+export const getExchangeAvailability = async (chainId = ChainId.MAINNET) => {
+  const data = await getBundle(chainId, undefined);
+  return data;
+};
+
 export const getStandardPrice = async (chainId = ChainId.MAINNET) => {
   return getTokenPrice(chainId, tokenPriceQuery, {
     id: STND_ADDRESS[chainId].toLowerCase(),
