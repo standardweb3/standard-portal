@@ -389,7 +389,9 @@ export default function Chart({
         ) : (
           <div className="h-[300px] pb-4 flex m-auto flex-col items-center justify-center">
             <div className="text-sm font-black text-gray-200">
-              {`Unfortunately, this pair doesn't have enough data.`}
+              {inputCurrency && outputCurrency
+                ? `Unfortunately, this pair doesn't have enough data.`
+                : 'Select both tokens'}
             </div>
           </div>
         )}

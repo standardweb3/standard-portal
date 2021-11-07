@@ -35,6 +35,7 @@ import { useRouter } from 'next/router';
 import { useCurrency } from '../../hooks/Tokens';
 import { Token } from '@digitalnative/standard-protocol-sdk';
 import { SearchV2 } from '../../components-ui/Search/SearchV2';
+import { WavySpinner } from '../../components-ui/Spinner/WavySpinner';
 
 export default function Tokens() {
   const { chainId } = useActiveWeb3React();
@@ -411,28 +412,35 @@ export default function Tokens() {
                 )}
               </select>
             </div>
-            <Table
-              columns={columns}
-              data={data}
-              initialPage={currentPage}
-              rowsPerPage={pageSize}
-              pageCount={lastPage + 1}
-              onNextPage={toNextPage}
-              onPrevPage={toPrevPage}
-              onFirstPage={toFirstPage}
-              onLastPage={toLastPage}
-              onToPage={toPage}
-              onChangePageSize={changepageSize}
-              onRowClick={handleRowClick}
-              headerClassName={headerClassName}
-              rowClassName={rowClassName}
-              rowsClassName={rowsClassName}
-              tableClassName={tableClassName}
-              searchTerm={term}
-              // fetchData={fetchData}
-              loading={false}
-              controlled
-            />
+            {!tokens ? (
+              <div className="text-center space-y-2">
+                <WavySpinner className="bg-text" />
+                <div className="text-sm">Loading Tokens...</div>
+              </div>
+            ) : (
+              <Table
+                columns={columns}
+                data={data}
+                initialPage={currentPage}
+                rowsPerPage={pageSize}
+                pageCount={lastPage + 1}
+                onNextPage={toNextPage}
+                onPrevPage={toPrevPage}
+                onFirstPage={toFirstPage}
+                onLastPage={toLastPage}
+                onToPage={toPage}
+                onChangePageSize={changepageSize}
+                onRowClick={handleRowClick}
+                headerClassName={headerClassName}
+                rowClassName={rowClassName}
+                rowsClassName={rowsClassName}
+                tableClassName={tableClassName}
+                searchTerm={term}
+                // fetchData={fetchData}
+                loading={false}
+                controlled
+              />
+            )}
           </div>
         </PageContent>
       </Page>
