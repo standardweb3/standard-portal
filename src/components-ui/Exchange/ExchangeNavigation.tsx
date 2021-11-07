@@ -47,7 +47,7 @@ export function ExchangeNavigation({ input, output }: ExchangeNavigationProps) {
             font-bold
           `}
         href={{
-          pathname: '/swap',
+          pathname: '/trade/buy',
           query: getQuery(input, output),
         }}
       >
@@ -57,7 +57,7 @@ export function ExchangeNavigation({ input, output }: ExchangeNavigationProps) {
             px-4 py-2
             rounded-full`}
         >
-          {`Swap`}
+          {`Trade`}
         </a>
       </NavigationLink>
       <NavigationLink

@@ -3,18 +3,11 @@ import farmIcon from '../public/icons/farm.svg';
 import poolIcon from '../public/icons/pool.svg';
 import dividendIcon from '../public/icons/dividend.svg';
 import bridgeIcon from '../public/icons/bridge.svg';
-import tokensIcon from '../public/icons/tokens.svg';
 
 export const sidebarRoutes = [
   {
-    name: 'Tokens',
-    urls: ['/tokens'],
-    icon: tokensIcon,
-    iconActive: tokensIcon,
-  },
-  {
-    name: 'Swap',
-    urls: ['/swap', '/add', 'liquidity'],
+    name: 'Trade',
+    urls: ['/trade', '/add', 'liquidity'],
     icon: swapIcon,
     iconActive: swapIcon,
   },

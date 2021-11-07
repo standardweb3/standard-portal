@@ -36,9 +36,8 @@ import { DividendPairs } from '../../components-ui/DividendV2/DividendPairs';
 import styled from '@emotion/styled';
 import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
 import { DividendTokens } from '../../components-ui/DividendV2/DividendTokens';
-// import { useSushiPairs } from '../../services/graph';
-// import { useBondedStrategy } from '../../services/graph/hooks/dividend';
-// import { useBundle, useStandardPrice } from '../../services/graph';
+import { ExternalLink } from '../../components-ui/ExternalLink';
+import Countdown from 'react-countdown';
 
 export const BondWrapper = styled.div`
   @media only screen and (min-width: 640px) {
@@ -201,6 +200,8 @@ export default function Dividend() {
     setPendingTx(false);
   };
 
+  const migrationDate = 1636502399;
+
   return (
     <>
       <Head>
@@ -239,6 +240,19 @@ export default function Dividend() {
               </div>
             }
             type="information"
+          />
+          <Alert
+            className={DefinedStyles.pageAlertFull}
+            title={`Dividend is migrating to V2`}
+            message={
+              <div>
+                <ExternalLink href="https://skelneko.medium.com/941ffeb8a386">
+                  xSTND
+                </ExternalLink>{' '}
+                is coming!
+              </div>
+            }
+            type="warning"
           />
 
           <div
@@ -317,12 +331,19 @@ export default function Dividend() {
                       }
                       atMax={atBondMax}
                       onMax={onBondMax}
-                      setBondAmout={setDepositValue}
+                      setBondAmount={setDepositValue}
                       bondAmount={depositValue}
                       onBond={handleBond}
                       approvalState={approvalState}
                       approve={approve}
                       balance={stndBalance?.toExact()}
+                      buttonClassName="!py-2"
+                      bondButtonBody={
+                        <div className="text-sm min-h-[14px]">
+                          Migrating to V2 in <br />
+                          <Countdown date={migrationDate * 1000} />
+                        </div>
+                      }
                     />
                   </div>
                 </div>

@@ -1,14 +1,9 @@
-import {
-  ChevronDoubleLeftIcon,
-  ChevronDoubleRightIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-} from '@heroicons/react/outline';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
 import React, { useCallback, useEffect } from 'react';
 import { useTable, usePagination } from 'react-table';
 import { classNames } from '../../functions';
 
-export type TokensTableProps = {
+export type TableProps = {
   initialPage: number;
   rowsPerPage: number;
   pageCount?: number;
@@ -28,6 +23,7 @@ export type TokensTableProps = {
     pageIndex: number;
     pageSize: number;
   }) => void;
+  onRowClick?: (row: any) => void;
   controlled?: boolean;
   headerClassName?: string;
   rowClassName?: string;
@@ -38,7 +34,7 @@ export type TokensTableProps = {
 // Let's add a fetchData method to our Table component that will be used to fetch
 // new data when pagination state changes
 // We can also add a loading state to let our table know it's loading new data
-export function TokensTable({
+export function Table({
   columns,
   data,
   initialPage = 0,
@@ -52,13 +48,14 @@ export function TokensTable({
   onToPage,
   onChangePageSize,
   fetchData,
+  onRowClick,
   controlled = false,
   headerClassName,
   rowClassName,
   rowsClassName,
   tableClassName,
   searchTerm,
-}: TokensTableProps) {
+}: TableProps) {
   const {
     getTableProps,
     getTableBodyProps,
@@ -139,6 +136,10 @@ export function TokensTable({
     [onChangePageSize],
   );
 
+  const handleRowClick = (row) => {
+    onRowClick && onRowClick(row);
+  };
+
   // Render the UI for your table
   return (
     <>
@@ -182,7 +183,7 @@ export function TokensTable({
           {page.map((row, i) => {
             prepareRow(row);
             return (
-              <div className={rowClassName}>
+              <div className={rowClassName} onClick={() => handleRowClick(row)}>
                 {row.cells.map((cell) => {
                   return (
                     <div className={cell.column.className}>

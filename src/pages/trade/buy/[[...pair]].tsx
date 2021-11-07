@@ -14,64 +14,65 @@ import {
   ApprovalState,
   useActiveWeb3React,
   useApproveCallbackFromTrade,
-} from '../../hooks';
-import { useAllTokens, useCurrency } from '../../hooks/Tokens';
-import useWrapCallback, { WrapType } from '../../hooks/useWrapCallback';
-import { useDefaultsFromURLSearch } from '../../state/swap/hooks';
+} from '../../../hooks';
+import { useAllTokens, useCurrency } from '../../../hooks/Tokens';
+import useWrapCallback, { WrapType } from '../../../hooks/useWrapCallback';
+import { useDefaultsFromURLSearch } from '../../../state/swap/hooks';
 import {
   useDerivedSwapInfo,
   useSwapActionHandlers,
   useSwapState,
-} from '../../state/swap/hooks';
+} from '../../../state/swap/hooks';
 import {
   useExpertModeManager,
   useUserSingleHopOnly,
-} from '../../state/user/hooks';
+} from '../../../state/user/hooks';
 
-import { Field } from '../../state/swap/actions';
-import useENSAddress from '../../hooks/useENSAddress';
-import { useUSDCValue } from '../../hooks/useUSDCPrice';
+import { Field } from '../../../state/swap/actions';
+import useENSAddress from '../../../hooks/useENSAddress';
+import { useUSDCValue } from '../../../hooks/useUSDCPrice';
 import {
   computeFiatValuePriceImpact,
   maxAmountSpend,
   warningSeverity,
-} from '../../functions';
-import { useSwapCallback } from '../../hooks/useSwapCallback';
-import confirmPriceImpactWithoutFee from '../../features/swap/confirmPriceImpactWithoutFee';
-import { useIsSwapUnsupported } from '../../hooks/useIsSwapUnsupported';
-import useIsArgentWallet from '../../hooks/useIsArgentWallet';
-import { PageHeader } from '../../components-ui/PageHeader';
-import { Page } from '../../components-ui/Page';
-import TokenWarningModal from '../../modals/TokenWarningModal';
-import { PageContent } from '../../components-ui/PageContent';
-import { ExchangeHeader } from '../../components-ui/Exchange/ExchangeHeader';
-import ConfirmSwapModal from '../../features/swap/ConfirmSwapModal';
-import { CurrencyInputPanel } from '../../components-ui/CurrencyInputPanel';
+} from '../../../functions';
+import { useSwapCallback } from '../../../hooks/useSwapCallback';
+import confirmPriceImpactWithoutFee from '../../../features/swap/confirmPriceImpactWithoutFee';
+import { useIsSwapUnsupported } from '../../../hooks/useIsSwapUnsupported';
+import useIsArgentWallet from '../../../hooks/useIsArgentWallet';
+import { PageHeader } from '../../../components-ui/PageHeader';
+import { Page } from '../../../components-ui/Page';
+import TokenWarningModal from '../../../modals/TokenWarningModal';
+import { PageContent } from '../../../components-ui/PageContent';
+import { ExchangeHeader } from '../../../components-ui/Exchange/ExchangeHeader';
+import ConfirmSwapModal from '../../../features/swap/ConfirmSwapModal';
+import { CurrencyInputPanel } from '../../../components-ui/CurrencyInputPanel';
 import {
   Button,
   ButtonConfirmed,
   ButtonError,
-} from '../../components-ui/Button';
-import { TradePrice } from '../../components-ui/TradePrice';
+} from '../../../components-ui/Button';
+import { TradePrice } from '../../../components-ui/TradePrice';
 import {
+  ChevronLeftIcon,
   MinusCircleIcon,
   SwitchHorizontalIcon,
 } from '@heroicons/react/outline';
-import { WalletConnector } from '../../components-ui/WalletConnector';
-import { RippleSpinner } from '../../components-ui/Spinner/RippleSpinner';
-import { DefinedStyles } from '../../utils/DefinedStyles';
-
-import switchIcon from '../../../public/icons/outlined/Switch.svg';
-import { PriceImpact } from '../../components-ui/PriceImpact';
+import { WalletConnector } from '../../../components-ui/WalletConnector';
+import { RippleSpinner } from '../../../components-ui/Spinner/RippleSpinner';
+import { DefinedStyles } from '../../../utils/DefinedStyles';
+import { PriceImpact } from '../../../components-ui/PriceImpact';
 import {
   ViewportMediumUp,
   ViewportSmallDown,
-} from '../../components-ui/Responsive';
-import { ExchangeNavigation } from '../../components-ui/Exchange/ExchangeNavigation';
-import { TransactionSettingsWithGas } from '../../components-ui/Exchange/TransactionSettingsWithGas';
-import { RecipientInputPanel } from '../../components-ui/AddressInputPanel/RecipientInputPanel';
-import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
-import Chart from '../../components-ui/Chart';
+} from '../../../components-ui/Responsive';
+import { ExchangeNavigation } from '../../../components-ui/Exchange/ExchangeNavigation';
+import { TransactionSettingsWithGas } from '../../../components-ui/Exchange/TransactionSettingsWithGas';
+import { RecipientInputPanel } from '../../../components-ui/AddressInputPanel/RecipientInputPanel';
+import { AnalyticsLink } from '../../../components-ui/AnalyticsLink';
+import Chart from '../../../components-ui/Chart';
+
+import switchIcon from '../../../../public/icons/outlined/Switch.svg';
 
 export default function Swap() {
   const { account } = useActiveWeb3React();
@@ -110,27 +111,10 @@ export default function Swap() {
       return !Boolean(token.address in defaultTokens);
     });
 
-  // const toggleNetworkModal = useNetworkModalToggle();
-
   const router = useRouter();
-
-  // toggle wallet when disconnected
-  // const toggleWalletModal = useWalletModalToggle();
 
   // for expert mode
   const [isExpertMode] = useExpertModeManager();
-  // const toggleSettings = useToggleSettingsMenu();
-
-  // // get custom setting values for user -- archer
-  // const [ttl] = useUserTransactionTTL()
-  // const [useArcher] = useUserArcherUseRelay()
-  // const [archerETHTip] = useUserArcherETHTip()
-  // const [archerGasPrice] = useUserArcherGasPrice()
-
-  // archer
-  // const archerRelay = chainId ? ARCHER_RELAY_URI?.[chainId] : undefined
-  // // const doArcher = archerRelay !== undefined && useArcher
-  // const doArcher = undefined
 
   // swap state
   const { independentField, typedValue, recipient } = useSwapState();
@@ -220,7 +204,7 @@ export default function Swap() {
   // reset if they close warning without tokens in params
   const handleDismissTokenWarning = useCallback(() => {
     setDismissTokenWarning(true);
-    router.push('/swap/');
+    router.push('/trade/buy/');
   }, [router]);
 
   // modal and loading
@@ -454,54 +438,30 @@ export default function Swap() {
     [onCurrencySelection],
   );
 
-  // useEffect(() => {
-  //   if (
-  //     doArcher &&
-  //     parsedAmounts[Field.INPUT] &&
-  //     maxAmountInput &&
-  //     parsedAmounts[Field.INPUT]?.greaterThan(maxAmountInput)
-  //   ) {
-  //     handleMaxInput();
-  //   }
-  // }, [handleMaxInput, parsedAmounts, maxAmountInput, doArcher]);
-
   const swapIsUnsupported = useIsSwapUnsupported(
     currencies?.INPUT,
     currencies?.OUTPUT,
   );
 
-  // const priceImpactTooHigh = priceImpactSeverity > 3 && !isExpertMode;
-
-  // const [animateSwapArrows, setAnimateSwapArrows] = useState<boolean>(false);
-
-  // const previousChainId = usePrevious<ChainId>(chainId);
-
-  // useEffect(() => {
-  //   if (
-  //     previousChainId &&
-  //     previousChainId !== chainId &&
-  //     router.asPath.includes(Currency.getNativeCurrencySymbol(previousChainId))
-  //   ) {
-  //     router.push(`/swap/${Currency.getNativeCurrencySymbol(chainId)}`);
-  //   }
-  // }, [chainId, previousChainId, router]);
   useEffect(() => {
     if (!isExpertMode) onChangeRecipient(null);
   }, [isExpertMode]);
 
+  const handleBack = () => router.push('/trade');
+
   return (
     <>
       <Head>
-        <title>SWAP | Standard Protocol</title>
+        <title>Trade | Standard Protocol</title>
         <meta
           key="description"
           name="description"
-          content="Swap ERC 20 tokens on Standard Protocol"
+          content="Trade ERC 20 tokens on Standard Protocol"
         />
       </Head>
-      <Page id="swap-page" className={DefinedStyles.page}>
+      <Page id="trade-buy-page" className={DefinedStyles.page}>
         <ViewportMediumUp>
-          <PageHeader title="swap" />
+          <PageHeader title="Trade" back href="/trade" />
         </ViewportMediumUp>
 
         <TokenWarningModal
@@ -512,7 +472,13 @@ export default function Swap() {
 
         <PageContent>
           <ViewportSmallDown>
-            <div className="w-full mb-8">
+            <div className="w-full mb-8 flex items-center space-x-4">
+              <button
+                className="rounded-full bg-opaque p-2"
+                onClick={handleBack}
+              >
+                <ChevronLeftIcon className="w-6 h-6" />
+              </button>
               <ExchangeNavigation
                 input={currencies[Field.INPUT]}
                 output={currencies[Field.OUTPUT]}

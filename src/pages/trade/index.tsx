@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import ReactGA from 'react-ga';
 import Head from 'next/head';
 import { Sparklines, SparklinesLine } from 'react-sparklines';
@@ -13,15 +13,13 @@ import {
   useSevenDayTokens,
   useTokens,
 } from '../../services/graph';
-import { Search } from '../../components-ui/Search';
-import { TokensTable } from '../../components-ui/Table/TokensTable';
+import { Table } from '../../components-ui/Table/Table';
 import { SimpleCurrencyLogo } from '../../components-ui/CurrencyLogo/SimpleCurrencyLogo';
 import {
   formatNumber,
   formatNumberScale,
   formatPercent,
 } from '../../functions';
-import { Button } from '../../components-ui/Button';
 import {
   useSizeMdDown,
   useSizeXs,
@@ -36,20 +34,42 @@ import { getSymbol, getTradeAddress } from '../../functions/native';
 import { useRouter } from 'next/router';
 import { useCurrency } from '../../hooks/Tokens';
 import { Token } from '@digitalnative/standard-protocol-sdk';
+import { SearchV2 } from '../../components-ui/Search/SearchV2';
 
 export default function Tokens() {
   const { chainId } = useActiveWeb3React();
   const router = useRouter();
-  useExchangeAvailability(() => router.push('/swap'));
+  useExchangeAvailability(() => router.push('/trade/buy'));
+  const [sortBy, setSortBy] = useState('top trading');
 
-  const handleTradeClick = (chainId, address, symbol) => {
-    router.push(`/swap?inputCurrency=${getTradeAddress(chainId, address)}`);
-
-    ReactGA.event({
-      category: 'Trade',
-      action: symbol,
-    });
+  const sortOptions = {
+    'top trading': (a, b) => {
+      return b.volume - a.volume;
+    },
+    'top gainers': (a, b) => {
+      return b.oneDayPriceChange - a.oneDayPriceChange;
+    },
+    'top losers': (a, b) => {
+      return a.oneDayPriceChange - b.oneDayPriceChange;
+    },
   };
+
+  const handleRowClick = useCallback(
+    (row: any) => {
+      ReactGA.event({
+        category: 'Trade',
+        action: row.values.info.symbol,
+      });
+      router.push(
+        `/trade/buy?outputCurrency=${getTradeAddress(
+          chainId,
+          row.values.info.id,
+        )}`,
+      );
+    },
+    [chainId],
+  );
+
   // const emptyTokens = useEmptyTokens();
   // const count = emptyTokens?.length ?? 0;
 
@@ -64,69 +84,81 @@ export default function Tokens() {
   const sevenDayTokens = useSevenDayTokens({});
   const sevenDayEthPrice = parseFloat(useSevenDayEthPrice() ?? 0);
 
-  const tokens =
-    useTokens({
-      // first: pageSize,
-      // skip: current * pageSize,
-    })?.map((token) => {
-      const oneDayToken = oneDayTokens?.find(({ id }) => token.id === id);
-      const priceYesterday = oneDayToken
-        ? oneDayToken.derivedETH * oneDayEthPrice
-        : 0;
+  const tokens = useTokens({});
 
-      const oneDayVolume = oneDayToken
-        ? token.volumeUSD - oneDayToken.volumeUSD
-        : 0;
+  const sortedTokens = useMemo(() => {
+    return (
+      tokens
+        ?.map((token) => {
+          const oneDayToken = oneDayTokens?.find(({ id }) => token.id === id);
+          const priceYesterday = oneDayToken
+            ? oneDayToken.derivedETH * oneDayEthPrice
+            : 0;
 
-      const sevenDayToken = sevenDayTokens?.find(({ id }) => token.id === id);
-      const priceWeekAgo = sevenDayToken
-        ? sevenDayToken.derivedETH * sevenDayEthPrice
-        : 0;
-      // const volumeWeekAgo = sevenDayToken
-      //   ? token.volumeUSD - sevenDayToken.volumeUSD
-      //   : 0;
+          const oneDayVolume = oneDayToken
+            ? token.volumeUSD - oneDayToken.volumeUSD
+            : 0;
 
-      const price = parseFloat(token.derivedETH) * ethPrice;
+          const sevenDayToken = sevenDayTokens?.find(
+            ({ id }) => token.id === id,
+          );
+          const priceWeekAgo = sevenDayToken
+            ? sevenDayToken.derivedETH * sevenDayEthPrice
+            : 0;
 
-      const sevenDayPriceChange = priceWeekAgo
-        ? ((price - priceWeekAgo) / priceWeekAgo) * 100
-        : 0;
+          const price = parseFloat(token.derivedETH) * ethPrice;
 
-      const oneDayPriceChange = priceYesterday
-        ? ((price - priceYesterday) / priceYesterday) * 100
-        : 0;
+          const sevenDayPriceChange = priceWeekAgo
+            ? ((price - priceWeekAgo) / priceWeekAgo) * 100
+            : 0;
 
-      // const oneDayVolume =
-      //   parseFloat(token.volumeUSD) - token.dayData && token.dayData.length > 0
-      //     ? token.dayData[token.dayData.length - 1].volumeUSD
-      //     : 0;
+          const oneDayPriceChange = priceYesterday
+            ? ((price - priceYesterday) / priceYesterday) * 100
+            : 0;
 
-      return {
-        name: token.name,
-        info: { symbol: token.symbol, id: token.id },
-        volume: oneDayVolume,
-        liquidity: token.liquidity * token.derivedETH * ethPrice,
-        price: token.derivedETH * ethPrice,
-        sevenDayPriceChange,
-        oneDayPriceChange,
-        sparklines: {
-          status: sevenDayPriceChange
-            ? sevenDayPriceChange > 0
-              ? 1
-              : sevenDayPriceChange === 0
-              ? 0
-              : -1
-            : oneDayPriceChange
-            ? oneDayPriceChange > 0
-              ? 1
-              : oneDayPriceChange === 0
-              ? 0
-              : -1
-            : 0,
-          data: token.dayData,
-        },
-      };
-    }) ?? [];
+          // const oneDayVolume =
+          //   parseFloat(token.volumeUSD) - token.dayData && token.dayData.length > 0
+          //     ? token.dayData[token.dayData.length - 1].volumeUSD
+          //     : 0;
+
+          return {
+            name: token.name,
+            info: { symbol: token.symbol, id: token.id },
+            volume: oneDayVolume,
+            liquidity: token.liquidity * token.derivedETH * ethPrice,
+            price: token.derivedETH * ethPrice,
+            sevenDayPriceChange,
+            oneDayPriceChange,
+            sparklines: {
+              status: sevenDayPriceChange
+                ? sevenDayPriceChange > 0
+                  ? 1
+                  : sevenDayPriceChange === 0
+                  ? 0
+                  : -1
+                : oneDayPriceChange
+                ? oneDayPriceChange > 0
+                  ? 1
+                  : oneDayPriceChange === 0
+                  ? 0
+                  : -1
+                : 0,
+              data: token.dayData,
+            },
+          };
+        })
+        .sort(sortOptions[sortBy]) ?? []
+    );
+  }, [
+    tokens,
+    ethPrice,
+    oneDayEthPrice,
+    sevenDayEthPrice,
+    oneDayTokens,
+    sevenDayTokens,
+    sortOptions,
+    sortBy,
+  ]);
 
   const columns = useMemo(
     () => [
@@ -211,7 +243,7 @@ export default function Tokens() {
         Header: 'Chart',
         accessor: 'sparklines',
         className:
-          'col-span-3 sm:col-span-4 lg:col-span-5 flex justify-center items-center',
+          'col-span-3 sm:col-span-4 lg:col-span-4 flex justify-center items-center',
         Cell: ({ value }) => {
           const isViewportXs = useSizeXs();
           const isViewportMdDown = useSizeMdDown();
@@ -244,26 +276,6 @@ export default function Tokens() {
           );
         },
       },
-      {
-        Header: '',
-        accessor: 'none',
-        className: 'col-span-2 flex justify-center items-center',
-        Cell: ({ row }) => {
-          return (
-            <Button
-              onClick={() =>
-                handleTradeClick(
-                  chainId,
-                  row.values.info.id,
-                  row.values.info.symbol,
-                )
-              }
-            >
-              Trade
-            </Button>
-          );
-        },
-      },
     ],
     [],
   );
@@ -272,17 +284,19 @@ export default function Tokens() {
   `;
 
   const rowsClassName = `
-    space-y-4
+    space-y-2
   `;
 
   const rowClassName = `
-    grid grid-cols-9 sm:grid-cols-16 lg:grid-cols-19
+    grid grid-cols-7 sm:grid-cols-14 lg:grid-cols-16
     bg-opaque px-4 py-4 rounded-20
+    cursor-pointer
+    hover:bg-tokenRow
   `;
 
   const headerClassName = `
    text-xs lg:text-sm
-  grid grid-cols-9 sm:grid-cols-16 lg:grid-cols-19
+  grid grid-cols-7 sm:grid-cols-14 lg:grid-cols-16
   px-4 py-4
   mb-2
   font-bold
@@ -295,7 +309,7 @@ export default function Tokens() {
   };
 
   const { result, term, search } = useFuse({
-    data: tokens,
+    data: sortedTokens,
     options,
   });
 
@@ -356,35 +370,48 @@ export default function Tokens() {
   return (
     <>
       <Head>
-        <title>Tokens | Standard Protocol</title>
+        <title>Trade | Standard Protocol</title>
         <meta
           key="description"
           name="description"
-          content="ERC 20 tokens on Standard Protocol"
+          content="Trade ERC 20 tokens on Standard Protocol"
         />
       </Head>
-      <Page id="tokens-page" className={DefinedStyles.page}>
+      <Page id="trade-page" className={DefinedStyles.page}>
         <ViewportMediumUp>
-          <PageHeader title="tokens" />
+          <PageHeader title="Trade" />
         </ViewportMediumUp>
         <PageContent>
           <div className="w-full text-text bg-opaque py-8 px-4 rounded-20">
-            <Search
-              className="mb-4"
-              search={search}
-              term={term}
-              inputProps={{
-                className: `
-          relative w-full
-          bg-transparent
-          bg-opaque 
-          rounded-20
-          border border-transparent
-          focus:border-primary
-          font-bold text-sm px-6 py-3.5`,
-              }}
-            />
-            <TokensTable
+            <div className="rounded-20 bg-opaque px-4 py-4 mb-6 flex items-center">
+              <SearchV2
+                className="flex-1"
+                search={search}
+                term={term}
+                inputProps={{
+                  className: `
+                  relative w-full
+                  bg-transparent
+                  font-bold text-sm`,
+                }}
+              />
+              <select
+                className="text-primary font-bold text-sm bg-transparent outline-none text-right pr-2"
+                value={sortBy}
+                onChange={(e) => {
+                  setSortBy(e.target.value);
+                }}
+              >
+                {['top trading', 'top gainers', 'top losers'].map(
+                  (sortOption) => (
+                    <option key={sortOption} value={sortOption}>
+                      {sortOption}
+                    </option>
+                  ),
+                )}
+              </select>
+            </div>
+            <Table
               columns={columns}
               data={data}
               initialPage={currentPage}
@@ -396,6 +423,7 @@ export default function Tokens() {
               onLastPage={toLastPage}
               onToPage={toPage}
               onChangePageSize={changepageSize}
+              onRowClick={handleRowClick}
               headerClassName={headerClassName}
               rowClassName={rowClassName}
               rowsClassName={rowsClassName}

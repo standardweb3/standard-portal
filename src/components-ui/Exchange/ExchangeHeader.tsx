@@ -36,7 +36,7 @@ export const ExchangeHeader: FC<ExchangeHeaderProps> = ({
 }) => {
   const router = useRouter();
   //   const [animateWallet, setAnimateWallet] = useState(false);
-  const isSwap = router.asPath.startsWith('/swap');
+  const isTrade = router.asPath.startsWith('/trade');
   return (
     <div
       className={`
@@ -49,7 +49,7 @@ export const ExchangeHeader: FC<ExchangeHeaderProps> = ({
       <div className="space-x-2 flex items-center">
         <TransactionSettingsWithGas allowedSlippage={allowedSlippage} />
         <AnalyticsLink
-          path={isSwap ? 'tokens' : pair ? `pairs/${pair}` : 'pairs'}
+          path={isTrade ? 'tokens' : pair ? `pairs/${pair}` : 'pairs'}
         />
       </div>
     </div>

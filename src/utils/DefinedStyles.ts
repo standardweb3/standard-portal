@@ -16,7 +16,7 @@ export const DefinedStyles = {
   w-full md:max-w-[600px] p-8`,
   pageAlertFull: 'w-full mb-6',
   pageAlertMaxed: 'w-full md:max-w-[600px] mb-6',
-  page: 'pt-[10%] pb-[60px] md:pt-0',
+  page: 'pt-[10%] pb-[60px] md:pt-0 max-w-[1500px]',
   pageContent: `
     w-full
     md:max-w-[600px]

@@ -198,7 +198,7 @@ export default function Farm() {
         <PageContent>
           <div
             className="
-            w-full py-4 lg:p-8
+            w-full
           "
           >
             <ViewportSmallDown>

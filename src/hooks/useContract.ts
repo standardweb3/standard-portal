@@ -1,5 +1,4 @@
 import {
-  ARCHER_ROUTER_ADDRESS,
   MINICHEF_ADDRESS,
   MULTICALL2_ADDRESS,
   ZAPPER_ADDRESS,
@@ -11,11 +10,9 @@ import {
 import {
   BAR_ADDRESS,
   ChainId,
-  FACTORY_ADDRESS,
   MAKER_ADDRESS,
   MASTERCHEF_ADDRESS,
   MASTERCHEF_V2_ADDRESS,
-  ROUTER_ADDRESS,
   STND_ADDRESS,
   SUSHI_ADDRESS,
   TIMELOCK_ADDRESS,
@@ -78,10 +75,8 @@ import WETH9_ABI from '../constants/abis/weth.json';
 import ZAPPER_ABI from '../constants/abis/zapper.json';
 import ZENKO_ABI from '../constants/abis/zenko.json';
 import { getContract } from '../functions/contract';
-import { getVerifyingContract } from 'limitorderv2-sdk';
 import { useActiveWeb3React } from './useActiveWeb3React';
 import { useMemo } from 'react';
-import { Console } from 'console';
 import {
   useDividendPoolAddress,
   useFactoryAddress,

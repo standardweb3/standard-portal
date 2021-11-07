@@ -52,6 +52,8 @@ import {
   useBondedStrategy,
   useBondedStrategyHistory,
 } from '../../services/graph/hooks/dividend';
+import { ExternalLink } from '../../components-ui/ExternalLink';
+import Countdown from 'react-countdown';
 // import { useBondedStrategy } from '../../services/graph/hooks/dividend';
 // import { useBundle, useStandardPrice } from '../../services/graph';
 
@@ -312,6 +314,8 @@ export default function Dividend() {
     setPendingTx(false);
   };
 
+  const migrationDate = 1636502399;
+
   return (
     <>
       <Head>
@@ -350,6 +354,20 @@ export default function Dividend() {
               </div>
             }
             type="information"
+          />
+
+          <Alert
+            className={DefinedStyles.pageAlertFull}
+            title={`Dividend is migrating to V2`}
+            message={
+              <div>
+                <ExternalLink href="https://skelneko.medium.com/941ffeb8a386">
+                  xSTND
+                </ExternalLink>{' '}
+                is coming! In the meanwhile, bonding will be disabled
+              </div>
+            }
+            type="warning"
           />
 
           <div
@@ -421,6 +439,7 @@ export default function Dividend() {
                   <div className="md:max-w-[75%]">
                     <BondInput
                       disabled={
+                        true ||
                         pendingTx ||
                         !depositValue ||
                         depositValue === '0' ||
@@ -428,12 +447,19 @@ export default function Dividend() {
                       }
                       atMax={atBondMax}
                       onMax={onBondMax}
-                      setBondAmout={setDepositValue}
+                      setBondAmount={setDepositValue}
                       bondAmount={depositValue}
                       onBond={handleBond}
                       approvalState={approvalState}
                       approve={approve}
                       balance={stndBalance?.toExact()}
+                      buttonClassName="!py-2"
+                      bondButtonBody={
+                        <div className="text-sm min-h-[14px]">
+                          Migrating to V2 in <br />
+                          <Countdown date={migrationDate * 1000} />
+                        </div>
+                      }
                     />
                   </div>
                 </div>

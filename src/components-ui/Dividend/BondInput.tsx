@@ -4,30 +4,35 @@ import { Button } from '../Button';
 import { Input as NumericalInput } from '../NumericalInput';
 import Image from '../Image';
 import { RippleSpinner } from '../Spinner/RippleSpinner';
+import { classNames } from '../../functions';
 
 export type BondInputTypes = {
   bondAmount: string;
-  setBondAmount: () => void;
+  setBondAmount: (amount: string) => void;
   onBond: () => void;
   approvalState: ApprovalState;
   approve: () => void;
   onMax: () => void;
-  disabed: boolean;
+  disabled: boolean;
   balance: string;
   atMax: boolean;
+  bondButtonBody?: any;
+  buttonClassName?: string;
 };
 
 export function BondInput({
   balance,
   bondAmount,
-  setBondAmout,
+  setBondAmount,
   onBond,
   approvalState,
   approve,
   onMax,
   disabled,
   atMax,
-}) {
+  bondButtonBody,
+  buttonClassName,
+}: BondInputTypes) {
   const { account } = useActiveWeb3React();
   return (
     <div className="grid grid-cols-2 items-end sm:space-x-3 space-y-3">
@@ -50,7 +55,7 @@ export function BondInput({
           text-right
           !bg-transparent"
             value={bondAmount}
-            onUserInput={setBondAmout}
+            onUserInput={setBondAmount}
           />
           {account && (
             <Button type="bordered" onClick={onMax}>
@@ -83,10 +88,10 @@ export function BondInput({
         ) : (
           <Button
             disabled={disabled}
-            className={DefinedStyles.fullButton}
+            className={classNames(DefinedStyles.fullButton, buttonClassName)}
             onClick={onBond}
           >
-            Bond
+            {bondButtonBody ?? 'Bond'}
           </Button>
         )}
       </div>
