@@ -11,7 +11,6 @@ import { ModalHeader } from '../../components-ui/Modal/ModalHeader';
 import { CurrencyLogo } from '../../components-ui/CurrencyLogo';
 import { ExternalLink } from '../../components-ui/ExternalLink';
 import { ListLogo } from '../../components-ui/Logo/ListLogo';
-import { ExclamationCircleIcon } from '@heroicons/react/outline';
 import { Alert } from '../../components-ui/Alert';
 
 interface ImportProps {
@@ -61,7 +60,11 @@ export function ImportToken({
                     {shortenAddress(token.address)}
                   </ExternalLink>
                 )}
-                <CurrencyLogo currency={token} size={'48px'} />
+                <CurrencyLogo
+                  currency={token}
+                  size={'48px'}
+                  className="rounded-full"
+                />
                 <div className="flex flex-col">
                   <div className="text-xl font-medium">{token.symbol}</div>
                   <div className="text-sm font-light">{token.name}</div>

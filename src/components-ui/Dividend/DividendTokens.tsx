@@ -6,7 +6,7 @@ export type DividendTokensProps = {
   tokensWithDividends: any[];
   share: number;
   className?: string;
-  claim: (address: string) => void;
+  claim: (address: string, name: string) => void;
 };
 
 export function DividendTokens({

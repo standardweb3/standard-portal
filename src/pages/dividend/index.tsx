@@ -1,4 +1,5 @@
 import { STND_ADDRESS, Token } from '@digitalnative/standard-protocol-sdk';
+import ReactGA from 'react-ga';
 import React, { useMemo, useState } from 'react';
 import { formatNumber, tryParseAmount } from '../../functions';
 
@@ -252,6 +253,12 @@ export default function Dividend() {
       addTransaction(tx, {
         summary: `Bond ${depositValue} STND`,
       });
+
+      ReactGA.event({
+        category: 'Dividend',
+        action: 'Bond',
+        label: depositValue,
+      });
     } catch (error) {
       console.error(error);
     }
@@ -267,13 +274,18 @@ export default function Dividend() {
       addTransaction(tx, {
         summary: `Unbond ${depositValue} STND`,
       });
+      ReactGA.event({
+        category: 'Dividend',
+        action: 'Unbond',
+        label: withdrawValue,
+      });
     } catch (error) {
       console.error(error);
     }
     setPendingTx(false);
   };
 
-  const handleClaim = async (address: string) => {
+  const handleClaim = async (address: string, name: string) => {
     setPendingTx(true);
     try {
       // KMP decimals depend on asset, SLP is always 18
@@ -281,6 +293,12 @@ export default function Dividend() {
 
       addTransaction(tx, {
         summary: `Claim dividend`,
+      });
+
+      ReactGA.event({
+        category: 'Dividend',
+        action: 'Claim',
+        label: name,
       });
     } catch (error) {
       console.error(error);

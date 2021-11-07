@@ -10,7 +10,7 @@ import { CountdownTimer } from '../Timer/CountdownTimer';
 export type DividendPairProps = {
   pairWithDividend: any;
   share: number;
-  claim: (address: string) => void;
+  claim: (address: string, name: string) => void;
 };
 
 export function DividendPair({
@@ -41,7 +41,7 @@ export function DividendPair({
   const reward = totalDividendUSD * share;
 
   const handleClaim = useCallback(() => {
-    claim(address);
+    claim(address, `${token0.symbol}/${token1.symbol}`);
   }, [address]);
 
   return (

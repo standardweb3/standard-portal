@@ -12,12 +12,12 @@ import {
   transactionsQuery,
   tokensTimeTravelQuery,
   emptyTokensQuery,
+  ethPriceTimeTravelQuery,
 } from '../queries';
 
 import { ChainId, STND_ADDRESS } from '@digitalnative/standard-protocol-sdk';
 import { GRAPH_HOST } from '../constants';
 import { request } from 'graphql-request';
-import { exchangeGraphClient } from '../clients/candles';
 import { getOneDayBlock, getOneWeekBlock } from '.';
 
 export const EXCHANGE = {
@@ -133,6 +133,28 @@ export const getTokenPrice = async (
   return token?.derivedETH * ethPrice;
 };
 
+export const getOneDayEthPrice = async (chainId = ChainId.MAINNET) => {
+  const block = await getOneDayBlock(chainId);
+
+  const data = await getBundle(chainId, ethPriceTimeTravelQuery, {
+    block: {
+      number: parseInt(block),
+    },
+  });
+  return data?.bundles?.[0]?.ethPrice;
+};
+
+export const getSevenDayEthPrice = async (chainId = ChainId.MAINNET) => {
+  const block = await getOneWeekBlock(chainId);
+
+  const data = await getBundle(chainId, ethPriceTimeTravelQuery, {
+    block: {
+      number: parseInt(block),
+    },
+  });
+  return data?.bundles?.[0]?.ethPrice;
+};
+
 export const getEthPrice = async (
   chainId = ChainId.MAINNET,
   variables = undefined,
@@ -219,11 +241,9 @@ export const getOnePrice = async () => {
 export const getBundle = async (
   chainId = ChainId.MAINNET,
   query = ethPriceQuery,
-  variables = {
-    id: 1,
-  },
+  variables?,
 ) => {
-  return exchange(chainId, query, variables);
+  return exchange(chainId, query, { ...variables, id: 1 });
 };
 
 export const getLiquidityPositions = async (

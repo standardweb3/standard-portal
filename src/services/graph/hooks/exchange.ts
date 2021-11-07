@@ -7,7 +7,9 @@ import {
   getLiquidityPositions,
   getMaticPrice,
   getOnePrice,
+  getOneDayEthPrice,
   getOneDayTokens,
+  getSevenDayEthPrice,
   getPicklePrice,
   getMphPrice,
   getSevenDayTokens,
@@ -53,6 +55,26 @@ export function useFactory(
   const { data } = useSWR(
     chainId ? ['factory', chainId, JSON.stringify(variables)] : null,
     () => getFactory(chainId, variables),
+    swrConfig,
+  );
+  return data;
+}
+
+export function useOneDayEthPrice(swrConfig: SWRConfiguration = undefined) {
+  const { chainId } = useActiveWeb3React();
+  const { data } = useSWR(
+    chainId ? ['oneDayEthPrice'] : null,
+    () => getOneDayEthPrice(chainId),
+    swrConfig,
+  );
+  return data;
+}
+
+export function useSevenDayEthPrice(swrConfig: SWRConfiguration = undefined) {
+  const { chainId } = useActiveWeb3React();
+  const { data } = useSWR(
+    chainId ? ['sevenDayEthPrice'] : null,
+    () => getSevenDayEthPrice(chainId),
     swrConfig,
   );
   return data;
@@ -195,7 +217,7 @@ export function useBundle(
   const { chainId } = useActiveWeb3React();
   const { data } = useSWR(
     chainId ? [chainId, ethPriceQuery, JSON.stringify(variables)] : null,
-    () => getBundle(chainId),
+    () => getBundle(chainId, ethPriceQuery),
     swrConfig,
   );
   return data;

@@ -5,7 +5,7 @@ export type DividendPairsProps = {
   pairsWithDividends: any[];
   share: number;
   className?: string;
-  claim: (address: string) => void;
+  claim: (address: string, name: string) => void;
   ethPrice: any;
 };
 
