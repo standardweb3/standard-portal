@@ -35,6 +35,8 @@ export default function Farm() {
     router.query.filter == null ? 'all' : (router.query.filter as string);
 
   const pairAddresses = useFarmPairAddresses();
+  if (pairAddresses.length === 0) router.push('/farmv2');
+
   const swapPairs = useSushiPairs({
     where: {
       id_in: pairAddresses,

@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import { STND_ADDRESS, Token } from '@digitalnative/standard-protocol-sdk';
 import React, { useMemo, useState } from 'react';
 import { formatNumber, tryParseAmount } from '../../functions';
@@ -16,13 +15,13 @@ import {
   ViewportSmallUp,
   ViewportXSmall,
 } from '../../components-ui/Responsive';
-import { DividendPercentage } from '../../components-ui/Dividend/DividendPercentage';
+import { DividendPercentage } from '../../components-ui/DividendV2/DividendPercentage';
 import { useTransactionAdder } from '../../state/transactions/hooks';
 import { useApproveCallback, useDividendPoolAddress } from '../../hooks';
 import useDividendPool from '../../features/dividend/useDividendPool';
-import { BondedInfo } from '../../components-ui/Dividend/BondedInfo';
-import { Unbond } from '../../components-ui/Dividend/Unbond';
-import { BondInput } from '../../components-ui/Dividend/BondInput';
+import { BondedInfo } from '../../components-ui/DividendV2/BondedInfo';
+import { Unbond } from '../../components-ui/DividendV2/Unbond';
+import { BondInput } from '../../components-ui/DividendV2/BondInput';
 import {
   useBonded,
   useBondSupply,
@@ -32,23 +31,12 @@ import { BigNumber } from 'ethers';
 import {
   useDividendPoolWhitelistPairBalances,
   useDividendPoolWhitelistTokenBalances,
-} from '../../state/user/hooks';
-import { DividendPairs } from '../../components-ui/Dividend/DividendPairs';
+} from '../../hooks/dividend/useDividendV2';
+import { DividendPairs } from '../../components-ui/DividendV2/DividendPairs';
 import styled from '@emotion/styled';
 import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
-import {
-  useEthPrice,
-  useStandardPrice,
-  useSushiPairs,
-  useTokens,
-} from '../../services/graph';
-import { getAddress } from '@ethersproject/address';
-import { DividendTokens } from '../../components-ui/Dividend/DividendTokens';
-import { DividendKPIInfo } from '../../components-ui/Dividend/DividendKPIInfo';
-import {
-  useBondedStrategy,
-  useBondedStrategyHistory,
-} from '../../services/graph/hooks/dividend';
+import { DividendTokens } from '../../components-ui/DividendV2/DividendTokens';
+// import { useSushiPairs } from '../../services/graph';
 // import { useBondedStrategy } from '../../services/graph/hooks/dividend';
 // import { useBundle, useStandardPrice } from '../../services/graph';
 
@@ -61,8 +49,70 @@ export const BondWrapper = styled.div`
 `;
 
 export default function Dividend() {
-  const router = useRouter();
   const { account, chainId } = useActiveWeb3React();
+  const [pendingTx, setPendingTx] = useState(false);
+  const [depositValue, setDepositValue] = useState('');
+  const [withdrawValue, setWithdrawValue] = useState('');
+  const { pairsWithDividends } = useDividendPoolWhitelistPairBalances(10);
+
+  // const swapPairs = useSushiPairs({
+  //   where: {
+  //     id_in: pairsWithDividends.map((pair) => pair.address.toLowerCase()),
+  //   },
+  // });
+
+  const { tokensWithDividends } = useDividendPoolWhitelistTokenBalances(10);
+
+  const fetchedWhitelistPairs = useMemo(() => {
+    return pairsWithDividends.filter((pair) => pair.amount !== null);
+  }, [pairsWithDividends]);
+
+  const fetchedWhitelistTokens = useMemo(() => {
+    return tokensWithDividends.filter((token) => token.amount !== null);
+  }, [tokensWithDividends]);
+
+  const addTransaction = useTransactionAdder();
+
+  const dividendPoolAddress = useDividendPoolAddress();
+  // const bondedStrategy = useBondedStrategy();
+  // const bundle = useBundle();
+  // const ethPrice = bundle?.bundles?.[0]?.ethPrice;
+  // const stndPrice = useStandardPrice();
+
+  // const {
+  //   apr,
+  //   apy,
+  //   claimedReward,
+  //   reaminingReward,
+  //   totalReward,
+  // } = useMemo(() => {
+  //   if (!ethPrice || !stndPrice || !bondedStrategy)
+  //     return {
+  //       apr: null,
+  //       apy: null,
+  //       claimedReward: null,
+  //       reaminingReward: null,
+  //       totalReward: null,
+  //     };
+  //   else {
+  //     const date = Math.floor(Math.floor(Date.now() / 1000) / 86400);
+  //     const inception = Math.floor(parseInt(bondedStrategy.inception) / 86400);
+  //     const dateFromInception = date - inception;
+  //     const totalSupply = parseFloat(bondedStrategy.totalSupply) / 1e18;
+  //     const claimedReward = parseFloat(bondedStrategy.totalClaimedUSD);
+  //     const reaminingReward =
+  //       parseFloat(bondedStrategy.totalClaimedUSD) +
+  //       parseFloat(bondedStrategy.remainingRewardETH) * ethPrice;
+
+  //     const totalReward = claimedReward + reaminingReward;
+  //     const r = totalReward / (totalSupply * stndPrice);
+  //     const apr =
+  //       (Math.pow(r + 1, 1 / (dateFromInception + 1)) - 1) * 365 * 100;
+  //     const apy = (Math.pow(1 + apr / 100 / 365, 365) - 1) * 100;
+
+  //     return { apr, apy, claimedReward, reaminingReward, totalReward };
+  //   }
+  // }, [ethPrice, stndPrice, bondedStrategy]);
 
   const stnd = new Token(
     chainId,
@@ -89,146 +139,6 @@ export default function Dividend() {
     }
     return null;
   }, [bonded, bondedTotal]);
-
-  const [pendingTx, setPendingTx] = useState(false);
-  const [depositValue, setDepositValue] = useState('');
-  const [withdrawValue, setWithdrawValue] = useState('');
-
-  const ethPrice = useEthPrice();
-  if (ethPrice === undefined) router.push('/dividendv2');
-
-  const { pairsWithDividends } = useDividendPoolWhitelistPairBalances(10);
-  const swapPairs = useSushiPairs({
-    where: {
-      id_in: pairsWithDividends.map((pair) => pair.address.toLowerCase()),
-    },
-  });
-
-  const fetchedWhitelistPairs = useMemo(() => {
-    return swapPairs
-      ? pairsWithDividends
-          .filter((pair) => pair.amount !== null)
-          .map((pair) => {
-            const foundPair = swapPairs.find(
-              (swapPair) => swapPair.id === pair.address.toLowerCase(),
-            );
-
-            const amountDecimals = parseFloat(pair.amount.toExact());
-            const lpTokenPrice =
-              (parseFloat(foundPair?.reserveETH ?? 0) *
-                parseFloat(ethPrice ?? 0)) /
-              parseFloat(foundPair?.totalSupply ?? 0);
-            const totalDividendUSD = lpTokenPrice * amountDecimals;
-            const pairShare =
-              amountDecimals / parseFloat(foundPair?.totalSupply ?? 0);
-            const [token0Amount, token1Amount] = foundPair
-              ? [
-                  parseFloat(foundPair.reserve0 ?? 0) * pairShare,
-                  parseFloat(foundPair.reserve1 ?? 0) * pairShare,
-                ]
-              : [undefined, undefined];
-
-            const [rewardToken0Amount, rewardToken1Amount] =
-              !!token0Amount && !!token1Amount
-                ? [token0Amount * share, token1Amount * share]
-                : [undefined, undefined];
-
-            return {
-              address: pair.address,
-              amount: amountDecimals,
-              token0Address: foundPair && getAddress(foundPair.token0.id),
-              token1Address: foundPair && getAddress(foundPair.token1.id),
-              token0Amount,
-              token1Amount,
-              rewardToken0Amount,
-              rewardToken1Amount,
-              totalDividendUSD,
-            };
-          })
-      : [];
-  }, [pairsWithDividends, swapPairs]);
-
-  const { tokensWithDividends } = useDividendPoolWhitelistTokenBalances(10);
-  const exchangeTokens = useTokens({
-    where: {
-      id_in: tokensWithDividends.map((token) => token.address.toLowerCase()),
-    },
-  });
-
-  const fetchedWhitelistTokens = useMemo(() => {
-    return exchangeTokens
-      ? tokensWithDividends
-          .filter((token) => token.amount !== null)
-          .map((token) => {
-            const foundToken = exchangeTokens.find(
-              (exchangeToken) =>
-                exchangeToken.id === token.address.toLowerCase(),
-            );
-
-            const amountDecimals = parseFloat(token.amount.toExact());
-            // const reward = amountDecimals * share;
-            const tokenPrice =
-              parseFloat(foundToken?.derivedETH ?? 0) *
-              parseFloat(ethPrice ?? 0);
-
-            const totalDividendUSD = amountDecimals * tokenPrice;
-            const rewardUSD = totalDividendUSD * share;
-            const reward = amountDecimals * share;
-
-            return {
-              address: token.address,
-              totalDividendUSD,
-              rewardUSD,
-              amount: amountDecimals,
-              reward,
-            };
-          })
-      : [];
-  }, [tokensWithDividends]);
-
-  const addTransaction = useTransactionAdder();
-
-  const dividendPoolAddress = useDividendPoolAddress();
-  const bondedStrategy = useBondedStrategy();
-  const bondedStrategyHistory = useBondedStrategyHistory();
-  const stndPrice = useStandardPrice();
-
-  const {
-    apr,
-    apy,
-    claimedRewardUSD,
-    remainingRewardUSD,
-    totalRewardUSD,
-  } = useMemo(() => {
-    if (!ethPrice || !stndPrice || !bondedStrategyHistory)
-      return {
-        apr: null,
-        apy: null,
-        claimedReward: null,
-        reaminingReward: null,
-        totalReward: null,
-      };
-    else {
-      const date = Math.floor(Math.floor(Date.now() / 1000) / 86400);
-      const inception = Math.floor(parseInt(bondedStrategy.inception) / 86400);
-      const dateFromInception = date - inception;
-      const claimedRewardUSD = parseFloat(
-        bondedStrategyHistory.totalClaimedUSD,
-      );
-      const remainingRewardUSD = parseFloat(
-        bondedStrategyHistory.remainingRewardUSD,
-      );
-      const totalRewardUSD = claimedRewardUSD + remainingRewardUSD;
-      // const totalReward = claimedReward + remainingReward;
-      const r =
-        totalRewardUSD / parseFloat(bondedStrategyHistory.totalSupplyUSD);
-      const apr =
-        (Math.pow(r + 1, 1 / (dateFromInception + 1)) - 1) * 365 * 100;
-      const apy = (Math.pow(1 + apr / 100 / 365, 365) - 1) * 100;
-
-      return { apr, apy, claimedRewardUSD, remainingRewardUSD, totalRewardUSD };
-    }
-  }, [ethPrice, stndPrice, bondedStrategy]);
 
   const stndBalance = useTokenBalance(account, stnd);
   const onBondMax = () => setDepositValue(stndBalance?.toExact());
@@ -374,7 +284,7 @@ export default function Dividend() {
                       <BondedInfo
                         className="text-center"
                         amount={formatNumber(
-                          parseFloat(bondedStrategy?.totalSupply ?? 0) ?? 0,
+                          bonded?.toFixed(stnd.decimals) ?? 0,
                         )}
                         share={share ?? 0}
                         total={bondedTotalDecimals}
@@ -434,15 +344,6 @@ export default function Dividend() {
                 />
               </div>
             </div>
-            <div className="mt-6">
-              <DividendKPIInfo
-                apr={apr}
-                apy={apy}
-                totalRewardUSD={totalRewardUSD}
-                claimedRewardUSD={claimedRewardUSD}
-                remainingRewardUSD={remainingRewardUSD}
-              />
-            </div>
 
             <div className="mt-6 text-grey text-xs">
               * Reward from each pair has a claiming period of 30 days
@@ -452,7 +353,6 @@ export default function Dividend() {
               className="mt-6"
               share={share}
               pairsWithDividends={fetchedWhitelistPairs}
-              ethPrice={ethPrice}
             />
 
             <div className="mt-12 text-grey text-xs">
