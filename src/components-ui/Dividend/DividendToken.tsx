@@ -10,7 +10,7 @@ import { CountdownTimer } from '../Timer/CountdownTimer';
 export type DividendTokenProps = {
   tokenWithDividend: any;
   share: number;
-  claim: (address: string) => void;
+  claim: (address: string, name: string) => void;
 };
 
 export function DividendToken({
@@ -33,7 +33,7 @@ export function DividendToken({
   const isViewportXs = useSizeXs();
 
   const handleClaim = useCallback(() => {
-    claim(address);
+    claim(address, token.symbol);
   }, [address]);
 
   return (

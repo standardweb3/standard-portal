@@ -32,7 +32,6 @@ import { Field } from '../../state/swap/actions';
 import useENSAddress from '../../hooks/useENSAddress';
 import { useUSDCValue } from '../../hooks/useUSDCPrice';
 import {
-  classNames,
   computeFiatValuePriceImpact,
   maxAmountSpend,
   warningSeverity,
@@ -75,7 +74,7 @@ import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
 import Chart from '../../components-ui/Chart';
 
 export default function Swap() {
-  const { account, chainId } = useActiveWeb3React();
+  const { account } = useActiveWeb3React();
 
   /** PARSE TOKENS FROM CONTRACT ADDRESSES PROVIDED IN URL */
   const loadedUrlParams = useDefaultsFromURLSearch();

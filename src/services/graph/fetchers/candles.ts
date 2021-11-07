@@ -18,6 +18,6 @@ export const CANDLES = {
   //   [ChainId.CELO]: 'sushiswap/celo-exchange',
 };
 
-export const candles = (chainId: ChainId) => {
-  return `${GRAPH_HOST[chainId]}/subgraphs/name/${CANDLES[chainId]}`
-}
+export const candlesUri = (chainId: ChainId) => {
+  return `${GRAPH_HOST[chainId]}/subgraphs/name/${CANDLES[chainId]}`;
+};

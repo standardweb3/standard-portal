@@ -10,11 +10,15 @@ import {
   tokenSubsetQuery,
   tokensQuery,
   transactionsQuery,
+  tokensTimeTravelQuery,
+  emptyTokensQuery,
+  ethPriceTimeTravelQuery,
 } from '../queries';
 
 import { ChainId, STND_ADDRESS } from '@digitalnative/standard-protocol-sdk';
 import { GRAPH_HOST } from '../constants';
 import { request } from 'graphql-request';
+import { getOneDayBlock, getOneWeekBlock } from '.';
 
 export const EXCHANGE = {
   [ChainId.MAINNET]: 'sushiswap/exchange',
@@ -32,12 +36,16 @@ export const EXCHANGE = {
   [ChainId.CELO]: 'sushiswap/celo-exchange',
 };
 
-export const exchange = async (chainId = ChainId.MAINNET, query, variables) =>
-  request(
+export const exchangeUri = (chainId = ChainId.MAINNET) =>
+  `${GRAPH_HOST[chainId]}/subgraphs/name/${EXCHANGE[chainId]}`;
+
+export const exchange = async (chainId = ChainId.MAINNET, query, variables) => {
+  return request(
     `${GRAPH_HOST[chainId]}/subgraphs/name/${EXCHANGE[chainId]}`,
     query,
     variables,
   );
+};
 
 export const getPairs = async (
   chainId = ChainId.MAINNET,
@@ -53,13 +61,47 @@ export const getTokenSubset = async (chainId = ChainId.MAINNET, variables) => {
   return tokens;
 };
 
+export const getEmptyTokens = async (
+  chainId = ChainId.MAINNET,
+  query = emptyTokensQuery,
+  variables,
+) => {
+  const { tokens } = await exchange(chainId, query, variables);
+  return tokens;
+};
+
 export const getTokens = async (
   chainId = ChainId.MAINNET,
   query = tokensQuery,
   variables,
 ) => {
-  // console.log('getTokens')
   const { tokens } = await exchange(chainId, query, variables);
+  return tokens;
+};
+
+export const getOneDayTokens = async (
+  chainId = ChainId.MAINNET,
+  query = tokensTimeTravelQuery,
+  variables,
+) => {
+  const block = await getOneDayBlock(chainId);
+  const { tokens } = await exchange(chainId, query, {
+    ...variables,
+    block: { number: parseInt(block) },
+  });
+  return tokens;
+};
+
+export const getSevenDayTokens = async (
+  chainId = ChainId.MAINNET,
+  query = tokensTimeTravelQuery,
+  variables,
+) => {
+  const block = await getOneWeekBlock(chainId);
+  const { tokens } = await exchange(chainId, query, {
+    ...variables,
+    block: { number: parseInt(block) },
+  });
   return tokens;
 };
 
@@ -89,6 +131,28 @@ export const getTokenPrice = async (
 
   const { token } = await exchange(chainId, query, variables);
   return token?.derivedETH * ethPrice;
+};
+
+export const getOneDayEthPrice = async (chainId = ChainId.MAINNET) => {
+  const block = await getOneDayBlock(chainId);
+
+  const data = await getBundle(chainId, ethPriceTimeTravelQuery, {
+    block: {
+      number: parseInt(block),
+    },
+  });
+  return data?.bundles?.[0]?.ethPrice;
+};
+
+export const getSevenDayEthPrice = async (chainId = ChainId.MAINNET) => {
+  const block = await getOneWeekBlock(chainId);
+
+  const data = await getBundle(chainId, ethPriceTimeTravelQuery, {
+    block: {
+      number: parseInt(block),
+    },
+  });
+  return data?.bundles?.[0]?.ethPrice;
 };
 
 export const getEthPrice = async (
@@ -182,11 +246,9 @@ export const getOnePrice = async () => {
 export const getBundle = async (
   chainId = ChainId.MAINNET,
   query = ethPriceQuery,
-  variables = {
-    id: 1,
-  },
+  variables?,
 ) => {
-  return exchange(chainId, query, variables);
+  return exchange(chainId, query, { ...variables, id: 1 });
 };
 
 export const getLiquidityPositions = async (
@@ -237,3 +299,37 @@ export const getTokenPairs = async (
     ? [...(pairs1 ? pairs1 : []), ...(pairs2 ? pairs2 : [])]
     : undefined;
 };
+
+// export const getOneDayTokens = async (chainId) => {
+//   const client = exchangeGraphClient(chainId);
+//   const block = await getOneDayBlock();
+
+//   const {
+//     data: { tokens: oneDayTokens },
+//   } = await client.query({
+//     query: tokensTimeTravelQuery,
+//     variables: {
+//       block,
+//     },
+//     fetchPolicy: 'no-cache',
+//   });
+
+//   return oneDayTokens;
+// };
+
+// export const getSevenDayTokens = async (chainId) => {
+//   const client = exchangeGraphClient(chainId);
+//   const block = await getOneWeekBlock();
+
+//   const {
+//     data: { tokens: sevenDayTokens },
+//   } = await client.query({
+//     query: tokensTimeTravelQuery,
+//     variables: {
+//       block,
+//     },
+//     fetchPolicy: 'no-cache',
+//   });
+
+//   return sevenDayTokens;
+// };
