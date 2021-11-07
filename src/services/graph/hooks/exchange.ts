@@ -79,7 +79,8 @@ export function useSevenDayEthPrice(swrConfig: SWRConfiguration = undefined) {
     swrConfig,
   );
   return data;
-  
+}
+
 export async function useExchangeAvailability(fallbackCb) {
   const { chainId } = useActiveWeb3React();
   const data = await getExchangeAvailability(chainId);

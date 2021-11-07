@@ -87,8 +87,11 @@ export function useDividendPoolWhitelistTokenBalances(pageSize: number) {
   const tokens = useDivdendPoolWhitelistTokens();
   const lastBlockNumber = useBlockNumber();
 
-  const lastPage = Math.floor(tokens.length / pageSize);
-  const { current, next, last } = usePagination(0, pageSize, lastPage);
+  const {
+    currentPage: current,
+    toNextPage: next,
+    lastPage: last,
+  } = usePagination(0, pageSize, tokens.length);
 
   const currentTokens = useMemo(() => {
     return tokens
@@ -152,8 +155,11 @@ export function useDividendPoolWhitelistPairBalances(pageSize: number) {
   const pairs = useDivdendPoolWhitelistPairs();
   const lastBlockNumber = useBlockNumber();
 
-  const lastPage = Math.floor(pairs.length / pageSize);
-  const { current, next, last } = usePagination(0, pageSize, lastPage);
+  const {
+    currentPage: current,
+    toNextPage: next,
+    lastPage: last,
+  } = usePagination(0, pageSize, pairs.length);
 
   const currentPairs = useMemo(() => {
     return pairs

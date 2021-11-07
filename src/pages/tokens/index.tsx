@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
 import ReactGA from 'react-ga';
 import Head from 'next/head';
-import Link from 'next/link';
 import { Sparklines, SparklinesLine } from 'react-sparklines';
 import { useActiveWeb3React, useFuse } from '../../hooks';
 import { usePagination } from '../../hooks/usePagination';
 import {
   useEthPrice,
+  useExchangeAvailability,
   useOneDayEthPrice,
   useOneDayTokens,
   useSevenDayEthPrice,
@@ -34,12 +34,13 @@ import { PageContent } from '../../components-ui/PageContent';
 import { DefinedStyles } from '../../utils/DefinedStyles';
 import { getSymbol, getTradeAddress } from '../../functions/native';
 import { useRouter } from 'next/router';
-import { useCurrency, useIsUserAddedToken, useToken } from '../../hooks/Tokens';
+import { useCurrency } from '../../hooks/Tokens';
 import { Token } from '@digitalnative/standard-protocol-sdk';
 
 export default function Tokens() {
   const { chainId } = useActiveWeb3React();
   const router = useRouter();
+  useExchangeAvailability(() => router.push('/swap'));
 
   const handleTradeClick = (chainId, address, symbol) => {
     router.push(`/swap?inputCurrency=${getTradeAddress(chainId, address)}`);
