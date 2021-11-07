@@ -101,7 +101,7 @@ const FarmList = ({ farms, term }) => {
               )))}
         </div>
       </div>
-      <div className="flex-col space-y-4">
+      <div className="flex-col space-y-2">
         {items.map((farm) => (
           <FarmListItem key={farm.pair.id} farm={farm} />
         ))}

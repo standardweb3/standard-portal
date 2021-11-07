@@ -47,7 +47,7 @@ export function ExchangeNavigation({ input, output }: ExchangeNavigationProps) {
             font-bold
           `}
         href={{
-          pathname: '/trade/buy',
+          pathname: input || output ? '/trade/buy' : '/trade',
           query: getQuery(input, output),
         }}
       >

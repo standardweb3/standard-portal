@@ -44,7 +44,7 @@ const FarmListV2 = ({ farms }) => {
           TVL
         </div>
       </div>
-      <div className="flex-col space-y-4">
+      <div className="flex-col space-y-2">
         {farms.map((farm) => (
           <FarmListItemV2 key={farm.address} farm={farm} />
         ))}
