@@ -361,7 +361,7 @@ export default function Dividend() {
             title={`Dividend is migrating to V2`}
             message={
               <div>
-                <ExternalLink href="https://skelneko.medium.com/941ffeb8a386">
+                <ExternalLink href="https://snapshot.org/#/stndgov.eth/proposal/0x73ba6565c31073f9092b3a62447a787da65eb5fea19c7477a02fe12be9ea9f11">
                   xSTND
                 </ExternalLink>{' '}
                 is coming! In the meanwhile, bonding will be disabled
