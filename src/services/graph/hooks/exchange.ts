@@ -3,11 +3,14 @@ import {
   getAlcxPrice,
   getBundle,
   getCvxPrice,
+  getEmptyTokens,
   getLiquidityPositions,
   getMaticPrice,
   getOnePrice,
+  getOneDayTokens,
   getPicklePrice,
   getMphPrice,
+  getSevenDayTokens,
   getStakePrice,
   getSushiPrice,
   getStandardPrice,
@@ -229,6 +232,23 @@ export function useSushiPairs(
   return data;
 }
 
+export function useEmptyTokens(
+  variables = undefined,
+  query = undefined,
+  swrConfig: SWRConfiguration = undefined,
+) {
+  const { chainId } = useActiveWeb3React();
+  const shouldFetch = chainId;
+  const { data } = useSWR(
+    shouldFetch
+      ? ['emptyTokens', chainId, query, JSON.stringify(variables)]
+      : null,
+    (_, chainId) => getEmptyTokens(chainId, query, variables),
+    swrConfig,
+  );
+  return data;
+}
+
 export function useTokens(
   variables = undefined,
   query = undefined,
@@ -239,6 +259,40 @@ export function useTokens(
   const { data } = useSWR(
     shouldFetch ? ['tokens', chainId, query, JSON.stringify(variables)] : null,
     (_, chainId) => getTokens(chainId, query, variables),
+    swrConfig,
+  );
+  return data;
+}
+
+export function useOneDayTokens(
+  variables = undefined,
+  query = undefined,
+  swrConfig: SWRConfiguration = undefined,
+) {
+  const { chainId } = useActiveWeb3React();
+  const shouldFetch = chainId;
+  const { data } = useSWR(
+    shouldFetch
+      ? ['oneDayTokens', chainId, query, JSON.stringify(variables)]
+      : null,
+    (_, chainId) => getOneDayTokens(chainId, query, variables),
+    swrConfig,
+  );
+  return data;
+}
+
+export function useSevenDayTokens(
+  variables = undefined,
+  query = undefined,
+  swrConfig: SWRConfiguration = undefined,
+) {
+  const { chainId } = useActiveWeb3React();
+  const shouldFetch = chainId;
+  const { data } = useSWR(
+    shouldFetch
+      ? ['sevenDaytokens', chainId, query, JSON.stringify(variables)]
+      : null,
+    (_, chainId) => getSevenDayTokens(chainId, query, variables),
     swrConfig,
   );
   return data;

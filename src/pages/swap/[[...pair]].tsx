@@ -7,8 +7,6 @@ import {
   Token,
   TradeType,
   Trade as V2Trade,
-  STND_ADDRESS,
-  PROTOCOLS,
 } from '@digitalnative/standard-protocol-sdk';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -34,7 +32,6 @@ import { Field } from '../../state/swap/actions';
 import useENSAddress from '../../hooks/useENSAddress';
 import { useUSDCValue } from '../../hooks/useUSDCPrice';
 import {
-  classNames,
   computeFiatValuePriceImpact,
   maxAmountSpend,
   warningSeverity,
@@ -78,7 +75,7 @@ import Chart from '../../components-ui/Chart';
 import { Alert } from '../../components-ui/Alert';
 
 export default function Swap() {
-  const { account, chainId } = useActiveWeb3React();
+  const { account } = useActiveWeb3React();
 
   /** PARSE TOKENS FROM CONTRACT ADDRESSES PROVIDED IN URL */
   const loadedUrlParams = useDefaultsFromURLSearch();

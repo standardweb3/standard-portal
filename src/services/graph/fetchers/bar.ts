@@ -1,5 +1,4 @@
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
-import { GRAPH_HOST } from '../constants';
 import { request } from 'graphql-request';
 
 const BAR = {

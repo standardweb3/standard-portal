@@ -94,7 +94,7 @@ export default function Dividend() {
 
   const ethPrice = useEthPrice();
 
-  const { pairsWithDividends } = useDividendPoolWhitelistPairBalances(10);
+  const { pairsWithDividends } = useDividendPoolWhitelistPairBalances(15);
   const swapPairs = useSushiPairs({
     where: {
       id_in: pairsWithDividends.map((pair) => pair.address.toLowerCase()),

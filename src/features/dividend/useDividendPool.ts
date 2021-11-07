@@ -1,6 +1,6 @@
 import { BigNumber } from 'ethers';
 import { useCallback } from 'react';
-import { useActiveWeb3React, useDividendPoolContract } from '../../hooks';
+import { useDividendPoolContract } from '../../hooks';
 
 export default function useDividendPool() {
   const contract = useDividendPoolContract();
