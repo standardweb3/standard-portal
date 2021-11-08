@@ -40,6 +40,9 @@ const FarmListItem = ({ farm, ...rest }) => {
               cursor-pointer 
               select-none 
               bg-opaque-farm-list
+              hover:bg-bright
+              transition
+              duration-500
               text-sm md:text-lg`,
             )}
           >

@@ -206,7 +206,7 @@ export default function Dividend() {
     remainingRewardUSD,
     totalRewardUSD,
   } = useMemo(() => {
-    if (!ethPrice || !stndPrice || !bondedStrategyHistory)
+    if (!ethPrice || !stndPrice || !bondedStrategyHistory || !bondedStrategy)
       return {
         apr: null,
         apy: null,
@@ -234,7 +234,7 @@ export default function Dividend() {
 
       return { apr, apy, claimedRewardUSD, remainingRewardUSD, totalRewardUSD };
     }
-  }, [ethPrice, stndPrice, bondedStrategy]);
+  }, [ethPrice, stndPrice, bondedStrategy, bondedStrategyHistory]);
 
   const stndBalance = useTokenBalance(account, stnd);
   const onBondMax = () => setDepositValue(stndBalance?.toExact());
@@ -243,7 +243,8 @@ export default function Dividend() {
   const typedDepositValue = tryParseAmount(depositValue, stnd);
 
   const atBondMax = stndBalance?.lessThan(typedDepositValue ?? 0);
-  const atUnbondMax = bonded?.lt(withdrawValue.toBigNumber(stnd.decimals));
+  const atUnbondMax =
+    withdrawValue && bonded?.lt(withdrawValue.toBigNumber(stnd.decimals));
 
   const [approvalState, approve] = useApproveCallback(
     typedDepositValue,
@@ -256,7 +257,7 @@ export default function Dividend() {
     setPendingTx(true);
     try {
       // KMP decimals depend on asset, SLP is always 18
-      const tx = await bond(depositValue.toBigNumber(stnd?.decimals));
+      const tx = await bond(depositValue.toBigNumber(stnd.decimals));
 
       addTransaction(tx, {
         summary: `Bond ${depositValue} STND`,
@@ -277,7 +278,7 @@ export default function Dividend() {
     setPendingTx(true);
     try {
       // KMP decimals depend on asset, SLP is always 18
-      const tx = await unbond(withdrawValue.toBigNumber(stnd?.decimals));
+      const tx = await unbond(withdrawValue.toBigNumber(stnd.decimals));
 
       addTransaction(tx, {
         summary: `Unbond ${depositValue} STND`,

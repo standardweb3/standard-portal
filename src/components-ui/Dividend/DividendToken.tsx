@@ -42,7 +42,11 @@ export function DividendToken({
         min-h-[72px]
         bg-opaque rounded-20 px-2 py-2
         grid grid-cols-7 lg:grid-cols-7
-        lg:space-y-0 items-center"
+        lg:space-y-0 items-center
+        cursor-pointer
+        hover:bg-bright
+        transition
+        duration-500"
     >
       <div
         className="

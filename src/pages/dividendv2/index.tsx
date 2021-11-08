@@ -146,7 +146,8 @@ export default function Dividend() {
   const typedDepositValue = tryParseAmount(depositValue, stnd);
 
   const atBondMax = stndBalance?.lessThan(typedDepositValue ?? 0);
-  const atUnbondMax = bonded?.lt(withdrawValue.toBigNumber(stnd.decimals));
+  const atUnbondMax =
+    withdrawValue && bonded?.lt(withdrawValue.toBigNumber(stnd.decimals));
 
   const [approvalState, approve] = useApproveCallback(
     typedDepositValue,

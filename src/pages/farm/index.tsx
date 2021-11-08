@@ -28,6 +28,7 @@ import {
   ViewportSmallDown,
 } from '../../components-ui/Responsive';
 import { AVERAGE_BLOCK_TIME_IN_SECS } from '../../constants';
+import { WavySpinner } from '../../components-ui/Spinner/WavySpinner';
 
 export default function Farm() {
   const router = useRouter();
@@ -242,8 +243,14 @@ export default function Farm() {
                 <div className="flex items-center text-lg font-bold text-high-emphesis whitespace-nowrap">
                   <div className="w-full h-0 ml-4 font-bold bg-transparent border border-b-0 border-transparent rounded text-high-emphesis md:border-gradient-r-blue-pink-dark-800 opacity-20"></div>
                 </div>
-
-                <FarmList farms={result} term={term} />
+                {farms.length === 0 ? (
+                  <div className="text-center space-y-2">
+                    <WavySpinner className="bg-text" />
+                    <div className="text-sm">Loading Farms...</div>
+                  </div>
+                ) : (
+                  <FarmList farms={result} term={term} />
+                )}
               </div>
             </div>
           </div>

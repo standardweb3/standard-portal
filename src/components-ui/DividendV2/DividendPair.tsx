@@ -79,9 +79,13 @@ export function DividendPair({
   return (
     <div
       className="
-        bg-opaque-secondary rounded-20 p-8 
+        bg-opaque-secondary rounded-20 px-4 py-4
         grid grid-cols-6 lg:grid-cols-7
-        lg:space-y-0 items-center"
+        lg:space-y-0 items-center
+        cursor-pointer
+        hover:bg-bright
+        transition
+        duration-500"
     >
       <div
         className="
