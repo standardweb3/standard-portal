@@ -48,14 +48,14 @@ export function DividendToken({
         className="
         col-span-2 
         flex flex-col 
-        sm:flex-row 
+        md:flex-row 
         items-center 
         text-sm
         sm:text-base
         font-bold 
         space-y-2
-        sm:space-y-0
-        sm:space-x-3"
+        md:space-y-0
+        md:space-x-3"
       >
         <CurrencyLogo
           currency={token}

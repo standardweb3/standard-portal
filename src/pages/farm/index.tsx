@@ -208,7 +208,7 @@ export default function Farm() {
             </ViewportSmallDown>
             <div
               className="
-              p-0 md:p-8 
+              p-0 md:p-5
               rounded-20 
               bg-transparent md:bg-opaque"
             >

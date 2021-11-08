@@ -1,5 +1,4 @@
 import { classNames } from '../../functions';
-import { DividendPoolWhitelistTokenBalance } from '../../state/user/hooks';
 import { DividendToken } from './DividendToken';
 
 export type DividendTokensProps = {
@@ -17,10 +16,15 @@ export function DividendTokens({
 }: DividendTokensProps) {
   return (
     <div
-      className={classNames('space-y-2 bg-opaque p-8 rounded-20', className)}
+      className={classNames(
+        'space-y-2 bg-transparent md:bg-opaque md:p-5 rounded-20',
+        className,
+      )}
     >
-      <div className="grid grid-cols-7 lg:grid-cols-7 font-bold">
-        <div className="col-span-2">Token</div>
+      <div className="grid grid-cols-7 lg:grid-cols-7 text-sm text-grey">
+        <div className="col-span-2 flex md:justify-start justify-center">
+          Token
+        </div>
         <div className="col-span-2">Your Dividend</div>
         <div className="col-span-2">Total Dividend</div>
       </div>

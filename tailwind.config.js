@@ -28,6 +28,7 @@ module.exports = {
         '15': 'repeat(15, minmax(0, 1fr))',
         '16': 'repeat(16, minmax(0, 1fr))',
         '17': 'repeat(17, minmax(0, 1fr))',
+        '18': 'repeat(18, minmax(0, 1fr))',
         '19': 'repeat(19, minmax(0, 1fr))',
         '20': 'repeat(20, minmax(0, 1fr))',
         '21': 'repeat(21, minmax(0, 1fr))',
@@ -41,7 +42,6 @@ module.exports = {
         bond: 'rgba(119, 36, 210, 1)',
         unbond:
           'linear-gradient(297.07deg, #8525EF 4.24%, #8525EF 4.25%, #41157C 35.24%, #170C34 85.03%)',
-        tokenRow: '#8525EF',
       },
       colors: {
         grey: '#BAB8C0',

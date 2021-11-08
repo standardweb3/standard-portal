@@ -25,7 +25,6 @@ export function SearchV2({
         )}
         onChange={(e) => search(e.target.value)}
         value={term}
-        placeholder="Search by name, symbol, address"
         {...inputProps}
       />
     </div>

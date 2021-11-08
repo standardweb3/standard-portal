@@ -21,6 +21,7 @@ import {
   formatPercent,
 } from '../../functions';
 import {
+  useSizeSmDown,
   useSizeMdDown,
   useSizeXs,
   ViewportMediumUp,
@@ -166,10 +167,10 @@ export default function Tokens() {
       {
         Header: 'Token',
         accessor: 'info',
-        className: 'col-span-2 flex items-center',
+        className: 'col-span-2 flex justify-center items-center',
         Cell: ({ value }) => {
           return (
-            <div className="flex justify-center items-center space-x-2">
+            <div className="flex justify-start w-full items-center space-x-2">
               <SimpleCurrencyLogo
                 className="rounded-full"
                 symbol={value.symbol}
@@ -186,11 +187,13 @@ export default function Tokens() {
         Header: 'Liquidity',
         accessor: 'liquidity',
         className: 'col-span-2 hidden sm:flex justify-center items-center',
-        Cell: ({ value }) => (
-          <div className="text-xs lg:text-sm">
-            {value !== null ? formatNumberScale(value, true) : '-'}
-          </div>
-        ),
+        Cell: ({ value }) => {
+          return (
+            <div className="text-xs lg:text-sm">
+              {value !== null ? formatNumberScale(value, true) : '-'}
+            </div>
+          );
+        },
       },
       {
         Header: 'Volume (24h)',
@@ -206,16 +209,20 @@ export default function Tokens() {
         Header: 'Price',
         accessor: 'price',
         className: 'col-span-2 flex justify-center items-center',
-        Cell: ({ value }) => (
-          <div className="text-xs lg:text-sm text-primary font-bold">
-            {value !== null ? formatNumber(value, true) : '-'}
-          </div>
-        ),
+        Cell: ({ row, value }) => {
+          const isViewportXs = useSizeXs();
+
+          return (
+            <div className="text-xs lg:text-sm text-primary font-bold">
+              <div>{value !== null ? formatNumber(value, true) : '-'}</div>
+            </div>
+          );
+        },
       },
       {
         Header: '24h',
         accessor: 'oneDayPriceChange',
-        className: 'col-span-2 justify-center items-center hidden sm:flex',
+        className: 'col-span-2 justify-center items-center flex',
         Cell: ({ value }) => (
           <div
             className={`text-xs lg:text-sm ${
@@ -241,10 +248,10 @@ export default function Tokens() {
         ),
       },
       {
-        Header: 'Chart',
+        Header: 'Chart (7d)',
         accessor: 'sparklines',
         className:
-          'col-span-3 sm:col-span-4 lg:col-span-4 flex justify-center items-center',
+          'col-span-2 sm:col-span-4 lg:col-span-4 flex justify-center items-center',
         Cell: ({ value }) => {
           const isViewportXs = useSizeXs();
           const isViewportMdDown = useSizeMdDown();
@@ -262,7 +269,7 @@ export default function Tokens() {
               <Sparklines
                 data={value.data?.map((d) => d.priceUSD) ?? []}
                 limit={7}
-                svgWidth={isViewportMdDown ? (isViewportXs ? 100 : 130) : 160}
+                svgWidth={isViewportMdDown ? (isViewportXs ? 70 : 130) : 160}
                 svgHeight={30}
               >
                 <SparklinesLine
@@ -289,7 +296,7 @@ export default function Tokens() {
   `;
 
   const rowClassName = `
-    grid grid-cols-7 sm:grid-cols-14 lg:grid-cols-16
+    grid grid-cols-8 sm:grid-cols-14 lg:grid-cols-16
     bg-opaque px-4 py-4 rounded-20
     cursor-pointer
     hover:bg-bright
@@ -297,7 +304,9 @@ export default function Tokens() {
   `;
 
   const headerClassName = `
-  hidden
+  text-grey text-xs
+  mb-2
+  grid grid-cols-8 sm:grid-cols-14 lg:grid-cols-16
 `;
 
   // fuzzy search
@@ -380,8 +389,8 @@ export default function Tokens() {
           <PageHeader title="Trade" />
         </ViewportMediumUp>
         <PageContent>
-          <div className="w-full text-text bg-opaque bg-transparent md:bg-opaque md:py-8 md:px-4 rounded-20">
-            <div className="rounded-20 bg-opaque px-4 py-4 mb-6 flex items-center">
+          <div className="w-full text-text bg-opaque bg-transparent md:bg-opaque md:py-5 md:px-4 rounded-20">
+            <div className="rounded-20 bg-opaque px-4 py-4 flex items-center">
               <SearchV2
                 className="flex-1"
                 search={search}
@@ -408,6 +417,9 @@ export default function Tokens() {
                   ),
                 )}
               </select>
+            </div>
+            <div className="text-xs text-grey pl-2 mt-2 mb-6">
+              * Search by name, symbol, address
             </div>
             {!tokens ? (
               <div className="text-center space-y-2">

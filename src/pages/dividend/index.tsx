@@ -388,7 +388,7 @@ export default function Dividend() {
                 col-span-3
                 lg:col-span-2
                 relative
-                rounded-20 p-8
+                rounded-20 p-4
                 bg-background-bond
                 "
               >
@@ -413,7 +413,7 @@ export default function Dividend() {
                       <BondedInfo
                         className="text-center"
                         amount={formatNumber(
-                          parseFloat(bondedStrategy?.totalSupply ?? 0) ?? 0,
+                          bonded?.toFixed(stnd.decimals) ?? 0,
                         )}
                         share={share ?? 0}
                         total={bondedTotalDecimals}

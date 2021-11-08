@@ -71,7 +71,7 @@ export default function Farmbare() {
         <PageContent>
           <div
             className="
-            w-full py-4 lg:p-8
+            w-full py-4
           "
           >
             <ViewportSmallDown>
@@ -81,7 +81,7 @@ export default function Farmbare() {
             </ViewportSmallDown>
             <div
               className="
-              p-0 md:p-8 
+              p-0 md:p-4
               rounded-20 
               bg-transparent md:bg-opaque"
             >
