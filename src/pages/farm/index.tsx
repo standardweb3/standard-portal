@@ -116,7 +116,7 @@ export default function Farm() {
         return (
           previousValue + currentValue.rewardPerBlock * currentValue.rewardPrice
         );
-      }, 0) / tvl;
+      }, 0) / (tvl > 0 ? tvl : 1);
 
     const roiPerHour = roiPerBlock * blocksPerHour;
 

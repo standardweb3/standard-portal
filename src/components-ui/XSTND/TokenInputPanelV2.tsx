@@ -1,39 +1,36 @@
-import { Token } from '@digitalnative/standard-protocol-sdk';
-import { useState } from 'react';
-import { classNames, tryParseAmount } from '../../functions';
-import { useActiveWeb3React } from '../../hooks';
-import { useTokenBalance } from '../../state/wallet/hooks';
+import { CurrencyAmount, Token } from '@digitalnative/standard-protocol-sdk';
+import { useEffect, useState } from 'react';
+import { classNames } from '../../functions';
 import { Button } from '../Button';
 import { CurrencyLogo } from '../CurrencyLogo';
 import { Input as NumericalInput } from '../NumericalInput';
 
-export type ControlledTokenInputPanelTypes = {
+export type TokenInputPanelV2Types = {
   token: Token;
   onAmountChange?: (amount: string) => void;
-  showMax?: boolean;
+  max?: CurrencyAmount<Token>;
   className?: string;
   inputClassName?: string;
   maxClassName?: string;
 };
 
-export function ControlledTokenInputPanel({
+export function TokenInputPanelV2({
   token,
   onAmountChange,
-  showMax,
+  max,
   className,
   inputClassName,
   maxClassName,
-}: ControlledTokenInputPanelTypes) {
+}: TokenInputPanelV2Types) {
   const [amount, setAmount] = useState('0');
 
-  const { account } = useActiveWeb3React();
-
-  const amountInCurrency = tryParseAmount(amount, token);
-  const balance = useTokenBalance(account, token);
-
   const onMax = () => {
-    setAmount(balance.toFixed(token.decimals));
+    max && setAmount(max.toFixed(token.decimals));
   };
+
+  useEffect(() => {
+    onAmountChange && onAmountChange(amount);
+  }, [amount, onAmountChange]);
 
   return (
     <div className={classNames('flex items-center', className)}>
@@ -43,18 +40,20 @@ export function ControlledTokenInputPanel({
       </div>
       <div className="flex-1 px-4">
         <NumericalInput
-          className={classNames('w-full', inputClassName)}
+          className={classNames('w-full text-right', inputClassName)}
           value={amount}
           onUserInput={setAmount}
         />
       </div>
-      <Button
-        onClick={onMax}
-        type="bordered"
-        className={classNames('text-sm', maxClassName)}
-      >
-        Max
-      </Button>
+      {max && (
+        <Button
+          onClick={onMax}
+          type="bordered"
+          className={classNames('text-sm', maxClassName)}
+        >
+          Max
+        </Button>
+      )}
     </div>
   );
 }

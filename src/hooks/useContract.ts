@@ -234,6 +234,17 @@ export function useSTNDContract(withSignerIfPossibe = true): Contract | null {
   );
 }
 
+export function useStakePoolContract(
+  withSignerIfPossible?: boolean,
+): Contract | null {
+  const { chainId } = useActiveWeb3React();
+  return useContract(
+    chainId && MASTERCHEF_V2_ADDRESS[chainId],
+    MASTERCHEF_ABI,
+    withSignerIfPossible,
+  );
+}
+
 export function useMasterChefContract(
   withSignerIfPossible?: boolean,
 ): Contract | null {

@@ -91,12 +91,14 @@ const FarmListItem = ({ farm }) => {
                 {farm.type}
               </div>
             )}
-            <div className="relative flex items-center w-full mb-4">
+            <div
+              className="relative flex items-center w-full mb-4 px-4 py-3
+                rounded-20 bg-opaque-secondary"
+            >
               <NumericalInput
                 className="
-                  w-full !py-3 !px-4 pr-20 
-                  rounded-20 outline-none 
-                  !bg-opaque-secondary focus:ring focus:ring-primary"
+                  w-full pr-2 
+                  outline-none"
                 value={depositValue}
                 onUserInput={setDepositValue}
               />
@@ -108,7 +110,6 @@ const FarmListItem = ({ farm }) => {
                       setDepositValue(balance.toFixed(liquidityToken.decimals));
                     }
                   }}
-                  className="absolute right-4"
                 >
                   MAX
                 </Button>
@@ -162,12 +163,14 @@ const FarmListItem = ({ farm }) => {
                 {farm.type}
               </div>
             )}
-            <div className="relative flex items-center w-full mb-4">
+            <div
+              className="relative flex items-center w-full mb-4 px-4 py-3
+                rounded-20 bg-opaque-secondary"
+            >
               <NumericalInput
                 className="
-                w-full !py-3 !px-4 pr-20 
-                rounded-20 outline-none 
-                !bg-opaque-secondary focus:ring focus:ring-primary"
+                w-full pr-2
+                outline-none"
                 value={withdrawValue}
                 onUserInput={(value) => {
                   setWithdrawValue(value);
@@ -181,7 +184,6 @@ const FarmListItem = ({ farm }) => {
                       setWithdrawValue(amount.toFixed(liquidityToken.decimals));
                     }
                   }}
-                  className="absolute right-4"
                 >
                   MAX
                 </Button>

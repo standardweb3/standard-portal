@@ -90,15 +90,15 @@ const FarmListItemDetailsV2 = ({ farm, token0, token1 }) => {
                 Wallet Balance: {formatNumber(balance?.toSignificant(6) ?? 0)}
               </div>
             )}
-            <div className="relative flex items-center w-full mb-4">
+            <div
+              className="relative flex items-center w-full mb-4 px-4 py-3
+                rounded-20 bg-opaque-secondary"
+            >
               <NumericalInput
                 className="
-                    w-full !py-3 !px-4 pr-20 
-                    rounded-20 outline-none 
-                    !bg-opaque-secondary focus:ring focus:ring-primary"
-                value={
-                  depositValue ? parseFloat(depositValue).toFixed(4) : undefined
-                }
+                    w-full pr-2 
+                    outline-none"
+                value={depositValue}
                 onUserInput={setDepositValue}
               />
               {account && (
@@ -109,7 +109,6 @@ const FarmListItemDetailsV2 = ({ farm, token0, token1 }) => {
                       setDepositValue(balance.toFixed(liquidityToken.decimals));
                     }
                   }}
-                  className="absolute right-4"
                 >
                   MAX
                 </Button>
@@ -162,17 +161,15 @@ const FarmListItemDetailsV2 = ({ farm, token0, token1 }) => {
                 Your Staked: {formatNumber(amount?.toSignificant(6)) ?? 0}
               </div>
             )}
-            <div className="relative flex items-center w-full mb-4">
+            <div
+              className="relative flex items-center w-full mb-4 px-4 py-3
+                rounded-20 bg-opaque-secondary"
+            >
               <NumericalInput
                 className="
-                  w-full !py-3 !px-4 pr-20 
-                  rounded-20 outline-none 
-                  !bg-opaque-secondary focus:ring focus:ring-primary"
-                value={
-                  withdrawValue
-                    ? parseFloat(withdrawValue).toFixed(4)
-                    : undefined
-                }
+                    w-full pr-2 
+                    outline-none"
+                value={withdrawValue}
                 onUserInput={(value) => {
                   setWithdrawValue(value);
                 }}
@@ -185,7 +182,6 @@ const FarmListItemDetailsV2 = ({ farm, token0, token1 }) => {
                       setWithdrawValue(amount.toFixed(liquidityToken.decimals));
                     }
                   }}
-                  className="absolute right-4"
                 >
                   MAX
                 </Button>

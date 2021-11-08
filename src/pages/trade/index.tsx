@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import ReactGA from 'react-ga';
 import Head from 'next/head';
 import { Sparklines, SparklinesLine } from 'react-sparklines';
@@ -21,7 +21,6 @@ import {
   formatPercent,
 } from '../../functions';
 import {
-  useSizeSmDown,
   useSizeMdDown,
   useSizeXs,
   ViewportMediumUp,
