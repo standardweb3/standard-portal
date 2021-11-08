@@ -292,15 +292,12 @@ export default function Tokens() {
     grid grid-cols-7 sm:grid-cols-14 lg:grid-cols-16
     bg-opaque px-4 py-4 rounded-20
     cursor-pointer
-    hover:bg-tokenRow
+    hover:bg-bright
+    transition duration-500
   `;
 
   const headerClassName = `
-   text-xs lg:text-sm
-  grid grid-cols-7 sm:grid-cols-14 lg:grid-cols-16
-  px-4 py-4
-  mb-2
-  font-bold
+  hidden
 `;
 
   // fuzzy search
@@ -383,7 +380,7 @@ export default function Tokens() {
           <PageHeader title="Trade" />
         </ViewportMediumUp>
         <PageContent>
-          <div className="w-full text-text bg-opaque py-8 px-4 rounded-20">
+          <div className="w-full text-text bg-opaque bg-transparent md:bg-opaque md:py-8 md:px-4 rounded-20">
             <div className="rounded-20 bg-opaque px-4 py-4 mb-6 flex items-center">
               <SearchV2
                 className="flex-1"

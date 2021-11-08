@@ -41,8 +41,7 @@ module.exports = {
         bond: 'rgba(119, 36, 210, 1)',
         unbond:
           'linear-gradient(297.07deg, #8525EF 4.24%, #8525EF 4.25%, #41157C 35.24%, #170C34 85.03%)',
-        tokenRow:
-          'linear-gradient(297.07deg, #170C34 -3.24%, #41157C 8.24%, #41157C 35.24%, #8525EF 95.03%)',
+        tokenRow: '#8525EF',
       },
       colors: {
         grey: '#BAB8C0',
