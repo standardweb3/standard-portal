@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  ChainId,
-  Currency,
-  Token,
-  currencyEquals,
-} from '@digitalnative/standard-protocol-sdk';
+import { Currency } from '@digitalnative/standard-protocol-sdk';
 
 import { Button } from '../../components-ui/Button';
 import { COMMON_BASES } from '../../constants/routing';

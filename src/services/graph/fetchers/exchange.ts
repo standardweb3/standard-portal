@@ -21,7 +21,7 @@ import { request } from 'graphql-request';
 import { getOneDayBlock, getOneWeekBlock } from '.';
 
 export const EXCHANGE = {
-  [ChainId.MAINNET]: 'sushiswap/exchange',
+  [ChainId.MAINNET]: 'billjhlee/ethereum-exchange',
   [ChainId.KOVAN]: 'digitalnative/standardprotocol',
   [ChainId.RINKEBY]: 'billjhlee/rinkeby-exchange',
   [ChainId.SHIBUYA]: 'digitalnativeinc/shibuya-exchange',

@@ -774,6 +774,22 @@ export const AXSUSHI = new Token(
   'Aave interest bearing XSUSHI',
 );
 
+export const SDN = new Token(
+  ChainId.MAINNET,
+  '0x00E856ee945A49bb73436e719D96910Cd9D116a4',
+  18,
+  'SDN',
+  'Shiden',
+);
+
+export const JPYC = new Token(
+  ChainId.MAINNET,
+  '0x2370f9d504c7a6E775bf6E14B3F12846b594cD53',
+  18,
+  'JPYC',
+  'JPY Coin',
+);
+
 type ChainTokenMap = {
   readonly [chainId in ChainId]?: Token;
 };
@@ -789,6 +805,20 @@ export const STND: ChainTokenMap = {
   [ChainId.RINKEBY]: new Token(
     ChainId.RINKEBY,
     STND_ADDRESS[ChainId.RINKEBY],
+    18,
+    'STND',
+    'Standard',
+  ),
+  [ChainId.SHIBUYA]: new Token(
+    ChainId.SHIBUYA,
+    STND_ADDRESS[ChainId.SHIBUYA],
+    18,
+    'STND',
+    'Standard',
+  ),
+  [ChainId.SHIDEN]: new Token(
+    ChainId.SHIDEN,
+    STND_ADDRESS[ChainId.SHIDEN],
     18,
     'STND',
     'Standard',

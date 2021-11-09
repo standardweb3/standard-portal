@@ -1587,7 +1587,7 @@
   dependencies:
     "@tenderly/hardhat-tenderly" "^1.0.12"
 
-"@digitalnative/postcss-preset-env@^6.7.0":
+"@digitalnative/postcss-preset-env@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@digitalnative/postcss-preset-env/-/postcss-preset-env-0.0.4.tgz#3537c85f21cd5884cbddb310082886e424c9bc84"
   integrity sha512-jjYBdKjwe2kwGDmjBEHHFpIUuV3Lf/Y+x0UVx/CpX+k+4dlByq47HTibd7ZYH0zFK0pF99C01BS2Nb0BCnttPA==
@@ -1630,10 +1630,10 @@
     postcss-selector-matches "^4.0.0"
     postcss-selector-not "^4.0.0"
 
-"@digitalnative/standard-protocol-sdk@^0.0.130":
-  version "0.0.130"
-  resolved "https://registry.yarnpkg.com/@digitalnative/standard-protocol-sdk/-/standard-protocol-sdk-0.0.130.tgz#06dc6962c30c6025355c454ea09de81b4d676add"
-  integrity sha512-5R1s575gvWYI7j2edOAKwKNlOpKUmmWnhVvMs4iv5rDLorkE7k6hMbnuB76sbLEsNQaggZENRjSkCLiskl98oA==
+"@digitalnative/standard-protocol-sdk@^0.0.132":
+  version "0.0.132"
+  resolved "https://registry.yarnpkg.com/@digitalnative/standard-protocol-sdk/-/standard-protocol-sdk-0.0.132.tgz#83e6d8a31b58520ac4cb6f7e268974b1715ae213"
+  integrity sha512-HozF/xgazYhAtqZUM94fC/NulD3MdNKi9UpkuHYNREfKaA51KIrfw4zi0Cpt7E9eo4d/nONNDx2c+/GXzExovw==
   dependencies:
     big.js "^6.1.0"
     decimal.js-light "^2.5.0"

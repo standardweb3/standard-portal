@@ -183,10 +183,14 @@ export function Table({
           {page.map((row, i) => {
             prepareRow(row);
             return (
-              <div className={rowClassName} onClick={() => handleRowClick(row)}>
+              <div
+                key={i}
+                className={rowClassName}
+                onClick={() => handleRowClick(row)}
+              >
                 {row.cells.map((cell) => {
                   return (
-                    <div className={cell.column.className}>
+                    <div className={cell.column.className} key={cell.value}>
                       {cell.render('Cell')}
                     </div>
                   );
