@@ -39,49 +39,65 @@ export function UnstakeStnd({
 
   const unstakeAmountDecimals = !!unstakeAmount ? parseFloat(unstakeAmount) : 0;
   const newStakeBalance =
-    stakedBalanceDecimals !== undefined &&
-    Math.max(stakedBalanceDecimals - unstakeAmountDecimals, 0);
+    stakedBalanceDecimals !== undefined
+      ? Math.max(stakedBalanceDecimals - unstakeAmountDecimals, 0)
+      : undefined;
 
   const newStakeShare =
-    newStakeBalance !== undefined &&
-    stakePoolStndTotalDecimals !== undefined &&
-    newStakeBalance / (stakePoolStndTotalDecimals - unstakeAmountDecimals);
+    newStakeBalance !== undefined && stakePoolStndTotalDecimals !== undefined
+      ? newStakeBalance / (stakePoolStndTotalDecimals - unstakeAmountDecimals)
+      : undefined;
 
   const estimatedXStndPerDay =
     newStakeShare !== undefined && xStndPerDay * newStakeShare;
 
   return (
     <div className="text-text">
-      <div className="text-right text-sm mb-2">
-        Staked: {formatNumber(stakedBalance?.toSignificant(6) ?? 0)}
+      <div className="my-4">
+        <EstimatedXStnd
+          estimate={estimatedXStndPerDay ?? 0}
+          stnd={stnd}
+          currentStaked={stakedBalanceDecimals ?? 0}
+          newStaked={newStakeBalance ?? 0}
+        />
       </div>
-      <TokenInputPanelV2
-        token={stnd}
-        max={stakedBalance}
-        onAmountChange={setUntakeAmount}
-        className="
+      <div className="grid grid-cols-2 gap-x-4">
+        <div className="col-span-2 grid grid-cols-2 gap-x-4 text-sm">
+          <div
+            className="
+            col-span-2
+            md:col-span-1
+            text-xs text-primary text-right mb-2
+            pr-2"
+          >
+            Staked: {formatNumber(stakedBalance?.toSignificant(6) ?? 0)}
+          </div>
+        </div>
+        <div className="col-span-2 md:col-span-1">
+          <TokenInputPanelV2
+            token={stnd}
+            max={stakedBalance}
+            onAmountChange={setUntakeAmount}
+            className="
             rounded-20 py-3 px-4
             bg-opaque
             text-text
         "
-        inputClassName="
+            inputClassName="
             !text-base
             !font-normal
         "
-      />
-      {estimatedXStndPerDay !== undefined && (
-        <div className="my-4">
-          <EstimatedXStnd
-            estimate={estimatedXStndPerDay}
-            stnd={stnd}
-            currentStaked={stakedBalanceDecimals}
-            newStaked={newStakeBalance}
           />
         </div>
-      )}
-      <Button className={classNames(DefinedStyles.fullButton, 'mt-4')}>
-        Unstake
-      </Button>{' '}
+        <Button
+          className={classNames(
+            DefinedStyles.fullButton,
+            'col-span-2 md:col-span-1',
+          )}
+        >
+          Unstake
+        </Button>
+      </div>
     </div>
   );
 }

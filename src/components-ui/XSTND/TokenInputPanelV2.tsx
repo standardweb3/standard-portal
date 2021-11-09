@@ -1,6 +1,6 @@
 import { CurrencyAmount, Token } from '@digitalnative/standard-protocol-sdk';
 import { useEffect, useState } from 'react';
-import { classNames } from '../../functions';
+import { classNames, formatNumber } from '../../functions';
 import { Button } from '../Button';
 import { CurrencyLogo } from '../CurrencyLogo';
 import { Input as NumericalInput } from '../NumericalInput';
@@ -8,6 +8,7 @@ import { Input as NumericalInput } from '../NumericalInput';
 export type TokenInputPanelV2Types = {
   token: Token;
   onAmountChange?: (amount: string) => void;
+  balance?: CurrencyAmount<Token>;
   max?: CurrencyAmount<Token>;
   className?: string;
   inputClassName?: string;
@@ -17,6 +18,7 @@ export type TokenInputPanelV2Types = {
 export function TokenInputPanelV2({
   token,
   onAmountChange,
+  balance,
   max,
   className,
   inputClassName,
@@ -35,8 +37,15 @@ export function TokenInputPanelV2({
   return (
     <div className={classNames('flex items-center', className)}>
       <div className="flex items-center space-x-2 font-bold">
-        <CurrencyLogo currency={token} className="rounded-full" />
-        <div>{token.symbol}</div>
+        <CurrencyLogo currency={token} size={34} className="rounded-full" />
+        <div className="space-y-0">
+          {/* <div>{token.symbol}</div> */}
+          {/* {balance && (
+            <div className="text-xs font-normal">
+              {formatNumber(balance.toExact())}
+            </div>
+          )} */}
+        </div>
       </div>
       <div className="flex-1 px-4">
         <NumericalInput

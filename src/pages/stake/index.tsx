@@ -68,7 +68,7 @@ export default function Stake() {
           <PageHeader title="Stake" />
         </ViewportMediumUp>
         <PageContent>
-          <div className="w-full max-w-[1000px]">
+          <div className="w-full max-w-[1200px]">
             <Alert
               className={DefinedStyles.pageAlertFull}
               title={`Stake`}
@@ -90,12 +90,12 @@ export default function Stake() {
             />
             <div
               className="
-              flex flex-col lg:flex-row items-stretch 
-              space-x-0 lg:space-x-4
-              space-y-4 lg:space-y-0
+              grid grid-cols-10
+              gap-4
+              items-stretch
               "
             >
-              <div className="flex-1">
+              <div className="col-span-10 xl:col-span-6">
                 <StndStaker
                   stnd={stnd}
                   xStndPerDay={xStndPerDay}
@@ -104,33 +104,19 @@ export default function Stake() {
                   stakePoolStndTotal={stakePoolStndTotal}
                 />
               </div>
-              <div
-                className="
-                flex
-                flex-col
-                sm:flex-row
-                lg:flex-col 
-                space-y-4 lg:space-x-0
-                sm:space-y-0 sm:space-x-4
-                lg:space-y-4 lg:space-x-0"
-              >
-                <ViewportSmallUp>
-                  <div className="flex flex-1">
-                    <StakePoolInfo
-                      stnd={stnd}
-                      className="flex-1"
-                      stakePoolStndTotal={stakePoolStndTotal}
-                      xStndPerDay={xStndPerDay}
-                    />
-                  </div>
-                </ViewportSmallUp>
-
-                <XStndClaimer className="flex-1" />
+              <div className="col-span-10 xl:col-span-4 flex">
+                <StakePoolInfo
+                  stnd={stnd}
+                  className="flex-1"
+                  stakePoolStndTotal={stakePoolStndTotal}
+                  xStndPerDay={xStndPerDay}
+                />
               </div>
             </div>
+            <XStndClaimer className="flex-1 mt-4" />
           </div>
         </PageContent>
-      </Page>{' '}
+      </Page>
     </>
   );
 }

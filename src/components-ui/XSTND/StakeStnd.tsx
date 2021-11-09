@@ -50,24 +50,6 @@ export function StakeStnd({
 
   return (
     <div className="text-text">
-      <div className="text-right text-sm mb-2">
-        Balance: {formatNumber(balance?.toSignificant(6) ?? 0)}
-      </div>
-      <TokenInputPanelV2
-        token={stnd}
-        max={balance}
-        onAmountChange={setStakeAmount}
-        className="
-            rounded-20 py-3 px-4
-            bg-opaque
-            text-text
-        "
-        inputClassName="
-            !text-base
-            !font-normal
-        "
-      />
-
       <div className="my-4">
         <EstimatedXStnd
           estimate={estimatedXStndPerDay ?? 0}
@@ -76,9 +58,44 @@ export function StakeStnd({
           newStaked={newStakeBalance ?? 0}
         />
       </div>
-      <Button className={classNames(DefinedStyles.fullButton, 'mt-4')}>
-        Stake
-      </Button>
+      <div className="grid grid-cols-2 gap-x-4">
+        <div className="col-span-2 grid grid-cols-2 gap-x-4 text-sm">
+          <div
+            className="
+            col-span-2
+            md:col-span-1
+            text-xs text-primary text-right mb-2
+            pr-2"
+          >
+            Balance: {formatNumber(balance?.toSignificant(6) ?? 0)} STND
+          </div>
+        </div>
+        <div className="col-span-2 md:col-span-1">
+          <TokenInputPanelV2
+            token={stnd}
+            max={balance}
+            onAmountChange={setStakeAmount}
+            className="
+            rounded-20 py-3 px-4
+            bg-opaque
+            text-text
+        "
+            inputClassName="
+            !text-base
+            !font-normal
+        "
+          />
+        </div>
+
+        <Button
+          className={classNames(
+            DefinedStyles.fullButton,
+            'col-span-2 md:col-span-1',
+          )}
+        >
+          Stake
+        </Button>
+      </div>
     </div>
   );
 }

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { StakeStnd } from './StakeStnd';
 import { UnstakeStnd } from './UnstakeStnd';
 import { StndStakerHeader } from './StndStakerHeader';
-import { useActiveWeb3React } from '../../hooks';
 import { CurrencyAmount, Token } from '@digitalnative/standard-protocol-sdk';
 
 export type StndStakerProps = {
@@ -20,7 +19,6 @@ export default function StndStaker({
   stakePoolStndTotal,
   xStndPerDay,
 }: StndStakerProps) {
-  const { account, chainId } = useActiveWeb3React();
   const [stake, setStake] = useState(true);
   //   const stakePoolStndTotalDecimals = parseFloat(
   //     stakePoolStndTotal?.toExact() ?? '0',

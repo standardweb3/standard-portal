@@ -1,6 +1,32 @@
 import { CurrencyAmount, Token } from '@digitalnative/standard-protocol-sdk';
-import { classNames, formatNumber } from '../../functions';
-import { CurrencyLogo } from '../CurrencyLogo';
+import styled from '@emotion/styled';
+import { classNames, formatNumber, formatPercent } from '../../functions';
+
+export const StakePoolInfoWrapper = styled.div`
+  background-repeat: no-repeat;
+  // background-image: url('/img/bg-bond.png');
+  // background-position: top 50px left -30px;
+  position: relative;
+  overflow: hidden;
+
+  &:before {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    z-index: -1;
+    top: -12px;
+    left: 5px;
+    background-repeat: no-repeat;
+    background-image: url('/img/bg-bond.png');
+
+    -webkit-transform: rotate(-34.72deg);
+    -moz-transform: rotate(-34.72deg);
+    -ms-transform: rotate(-34.72deg);
+    -o-transform: rotate(-34.72deg);
+    transform: rotate(-34.72deg);
+  }
+`;
 
 export type StakePoolInfoTypes = {
   stnd: Token;
@@ -16,32 +42,49 @@ export function StakePoolInfo({
   className,
 }: StakePoolInfoTypes) {
   return (
-    <div
+    <StakePoolInfoWrapper
       className={classNames(
-        'flex flex-col justify-center bg-opaque p-5 rounded-20 space-y-4',
+        `w-full
+        flex flex-col justify-start items-center
+        bg-opaque p-5 rounded-20`,
         className,
       )}
     >
-      <div className="flex flex-col items-center space-y-2">
-        <div className="text-sm">Total staked STND</div>
-        <div className="flex items-center space-x-2">
-          <CurrencyLogo currency={stnd} size={24} className="rounded-full" />
-          <div className="text-xl font-bold text-primary">
+      <div className="flex text-center font-bold mt-2 mb-4">Stats</div>
+      <div className="space-y-3 flex flex-col justify-center h-full">
+        <div className="w-full flex justify-between items-center space-x-4">
+          <div className="font-bold">
+            <span className="text-grey text-lg">Total minted</span>{' '}
+            <span className="text-primary text-2xl">xSTND</span>
+          </div>
+          <div className="text-2xl font-bold">{formatNumber(xStndPerDay)}</div>
+        </div>
+        <div className="w-full flex justify-between items-center space-x-2">
+          <div className="font-bold">
+            <span className="text-grey text-lg">Total staked</span>{' '}
+            <span className="text-primary text-2xl">STND</span>
+          </div>
+          <div className="text-2xl font-bold">
             {formatNumber(parseFloat(stakePoolStndTotal?.toExact() ?? '0'))}{' '}
-            STND
+          </div>
+        </div>
+        <div className="w-full flex justify-between items-center space-x-2">
+          <div className="font-bold">
+            <span className="text-grey text-lg">TVL</span>
+          </div>
+          <div className="text-2xl font-bold">
+            {formatNumber(parseFloat(stakePoolStndTotal?.toExact() ?? '0'))}{' '}
+          </div>
+        </div>
+        <div className="w-full flex justify-between items-center space-x-2">
+          <div className="font-bold">
+            <span className="text-grey text-lg">APY</span>
+          </div>
+          <div className="text-2xl font-bold">
+            {formatPercent(parseFloat(stakePoolStndTotal?.toExact() ?? '0'))}{' '}
           </div>
         </div>
       </div>
-      <div className="flex flex-col items-center space-y-2">
-        <div className="text-sm">Daily minted xSTND</div>
-
-        <div className="flex items-center space-x-2">
-          <CurrencyLogo currency={stnd} size={24} className="rounded-full" />
-          <div className="text-xl font-bold text-primary">
-            {formatNumber(xStndPerDay)} xSTND
-          </div>
-        </div>
-      </div>
-    </div>
+    </StakePoolInfoWrapper>
   );
 }
