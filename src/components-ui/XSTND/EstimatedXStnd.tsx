@@ -1,5 +1,4 @@
 import { Token } from '@digitalnative/standard-protocol-sdk';
-import styled from '@emotion/styled';
 import { formatNumber } from '../../functions';
 import { CurrencyLogo } from '../CurrencyLogo';
 
