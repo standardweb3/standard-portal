@@ -315,7 +315,7 @@ export default function Dividend() {
     setPendingTx(false);
   };
 
-  const migrationDate = 1636502399;
+  const migrationDate = 1638316799;
 
   return (
     <>
