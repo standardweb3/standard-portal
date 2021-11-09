@@ -74,9 +74,16 @@ export default function Stake() {
               title={`Stake`}
               message={
                 <div className="leading-relaxed">
-                  Dividends will involve bonding xSTND earned by staking STND.
+                  Other protocols take a big percentage of total pool growth as
+                  a fee and do not give back.
+                  <br /> At <strong>Standard’s Portal</strong>, portions of the
+                  swap fees are distributed as proportional to your share of the
+                  Dividend pool.
                   <br />
-                  Dividends will be distributed proportionally to xSTND bonders.
+                  <br />
+                  Stake your STND and earn xSTND.
+                  <br />
+                  Then, bond your xSTND to claim the dividends proportionally!
                 </div>
               }
               type="information"
