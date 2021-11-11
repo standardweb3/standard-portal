@@ -67,8 +67,7 @@ import {
 import { TransactionSettingsWithGas } from '../../components-ui/Exchange/TransactionSettingsWithGas';
 import { ExchangeNavigation } from '../../components-ui/Exchange/ExchangeNavigation';
 import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
-
-const DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE = new Percent(50, 10_000);
+import { DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE } from '../../constants/liquidity';
 
 export default function Liquidity() {
   const { account, chainId, library } = useActiveWeb3React();
