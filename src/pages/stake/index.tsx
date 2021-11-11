@@ -1,4 +1,3 @@
-// import ReactGA from 'react-ga';
 import Head from 'next/head';
 import StndStaker from '../../components-ui/XSTND/StndStaker';
 import { Page } from '../../components-ui/Page';
@@ -56,7 +55,7 @@ export default function Stake() {
                   <br />
                   <br />
                   Each xSTND will also grant you a voting right to the Standard
-                  Protocol's governance
+                  Protocol’s governance
                   <br />
                 </div>
               }
