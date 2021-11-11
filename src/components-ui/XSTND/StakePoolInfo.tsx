@@ -1,6 +1,9 @@
 import { CurrencyAmount, Token } from '@digitalnative/standard-protocol-sdk';
 import styled from '@emotion/styled';
 import { classNames, formatNumber, formatPercent } from '../../functions';
+import { useXStndInfo } from '../../hooks/stake/useXStndInfo';
+import { useStandardPrice } from '../../services/graph';
+import { CurrencyLogo } from '../CurrencyLogo';
 
 export const StakePoolInfoWrapper = styled.div`
   background-repeat: no-repeat;
@@ -30,19 +33,22 @@ export const StakePoolInfoWrapper = styled.div`
 
 export type StakePoolInfoTypes = {
   stnd: Token;
-  xStnd:Token;
-  xStndTotalSupply?: CurrencyAmount<Token> | undefined;
-  stakePoolStndTotal?: CurrencyAmount<Token> | undefined;
+  xStnd: Token;
   className?: string;
 };
 
-export function StakePoolInfo({
-  stnd,
-  xStnd,
-  xStndTotalSupply,
-  stakePoolStndTotal,
-  className,
-}: StakePoolInfoTypes) {
+export function StakePoolInfo({ stnd, xStnd, className }: StakePoolInfoTypes) {
+  const { stndBalance, xStndTotalSupply } = useXStndInfo();
+  const stndBalanceDecimals = parseFloat(stndBalance?.toExact() ?? '0');
+  const xStndTotalSupplyDecimals = parseFloat(
+    xStndTotalSupply?.toExact() ?? '0',
+  );
+  const stndPrice = useStandardPrice();
+  const ratio =
+    stndBalanceDecimals /
+    (xStndTotalSupplyDecimals === 0 ? 1 : xStndTotalSupplyDecimals);
+
+  const tvl = formatNumber(stndBalanceDecimals * stndPrice, true);
   return (
     <StakePoolInfoWrapper
       className={classNames(
@@ -53,13 +59,42 @@ export function StakePoolInfo({
       )}
     >
       <div className="flex text-center font-bold mt-2 mb-4">Stats</div>
+
+      <div
+        className="
+        flex items-center 
+        space-x-2 
+        rounded-20 border border-primary px-4 py-2
+        mb-4"
+      >
+        <div className="flex items-center space-x-2">
+          <CurrencyLogo currency={xStnd} className="rounded-full" size={24} />
+          <div className="font-bold">
+            1{' '}
+            <span className="bg-xstnd bg-clip-text text-transparent">
+              xSTND
+            </span>
+          </div>
+        </div>
+        <div>=</div>
+        <div className="flex items-center space-x-2">
+          <CurrencyLogo currency={stnd} className="rounded-full" size={24} />
+          <div className="font-bold">
+            {ratio} <span className="text-primary">STND</span>
+          </div>
+        </div>
+      </div>
       <div className="space-y-3 flex flex-col justify-center h-full">
         <div className="w-full flex justify-between items-center space-x-4">
           <div className="font-bold">
             <span className="text-grey text-lg">Total supply</span>{' '}
-            <span className="text-primary text-2xl">xSTND</span>
+            <span className="bg-xstnd bg-clip-text text-transparent text-2xl">
+              xSTND
+            </span>
           </div>
-          <div className="text-2xl font-bold">{formatNumber(parseFloat(xStndTotalSupply?.toExact() ?? '0'))}</div>
+          <div className="text-2xl font-bold">
+            {formatNumber(parseFloat(xStndTotalSupply?.toExact() ?? '0'))}
+          </div>
         </div>
         <div className="w-full flex justify-between items-center space-x-2">
           <div className="font-bold">
@@ -67,25 +102,23 @@ export function StakePoolInfo({
             <span className="text-primary text-2xl">STND</span>
           </div>
           <div className="text-2xl font-bold">
-            {formatNumber(parseFloat(stakePoolStndTotal?.toExact() ?? '0'))}{' '}
+            {formatNumber(parseFloat(stndBalance?.toExact() ?? '0'))}{' '}
           </div>
         </div>
         <div className="w-full flex justify-between items-center space-x-2">
           <div className="font-bold">
             <span className="text-grey text-lg">TVL</span>
           </div>
-          <div className="text-2xl font-bold">
-            {formatNumber(parseFloat(stakePoolStndTotal?.toExact() ?? '0'))}{' '}
-          </div>
+          <div className="text-2xl font-bold">{tvl} </div>
         </div>
-        <div className="w-full flex justify-between items-center space-x-2">
+        {/* <div className="w-full flex justify-between items-center space-x-2">
           <div className="font-bold">
             <span className="text-grey text-lg">APY</span>
           </div>
           <div className="text-2xl font-bold">
             {formatPercent(parseFloat(stakePoolStndTotal?.toExact() ?? '0'))}{' '}
           </div>
-        </div>
+        </div> */}
       </div>
     </StakePoolInfoWrapper>
   );

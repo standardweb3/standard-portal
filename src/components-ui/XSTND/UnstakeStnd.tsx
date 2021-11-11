@@ -1,8 +1,10 @@
 import {
   BAR_ADDRESS,
   CurrencyAmount,
+  getXStndAddress,
   STND_ADDRESS,
   Token,
+  ZERO,
 } from '@digitalnative/standard-protocol-sdk';
 import { useCallback, useState } from 'react';
 import { classNames, formatNumber, tryParseAmount } from '../../functions';
@@ -12,8 +14,10 @@ import {
   useActiveWeb3React,
   useApproveCallback,
 } from '../../hooks';
+import { useProtocol } from '../../state/protocol/hooks';
 import { DefinedStyles } from '../../utils/DefinedStyles';
 import { Button } from '../Button';
+import { RippleSpinner } from '../Spinner/RippleSpinner';
 import { EstimatedXStnd } from './EstimatedXStnd';
 import { TokenInputPanelV2 } from './TokenInputPanelV2';
 
@@ -34,8 +38,9 @@ export function UnstakeStnd({
   stndPrice,
   onUnstake,
 }: UnstakeStndTypes) {
+  const protocol = useProtocol();
   const { chainId } = useActiveWeb3React();
-  const [unstakeAmount, setUntakeAmount] = useState('0');
+  const [unstakeAmount, setUntakeAmount] = useState('');
   const [pendingTx, setPendingTx] = useState(false);
 
   const xStndBalanceDecimals =
@@ -43,14 +48,12 @@ export function UnstakeStnd({
 
   // const balanceDecimals = balance && parseFloat(balance.toExact());
   const unstakeCurrencyAmount = tryParseAmount(unstakeAmount, xStnd);
+  const InsufficientBalance = unstakeCurrencyAmount?.greaterThan(xStndBalance);
 
   const [approvalState, approve] = useApproveCallback(
     unstakeCurrencyAmount,
-    BAR_ADDRESS[chainId],
+    getXStndAddress(protocol, chainId),
   );
-
-  console.log(approvalState);
-  console.log(BAR_ADDRESS[chainId]);
 
   const handleClick = useCallback(async () => {
     if (approvalState === ApprovalState.NOT_APPROVED) {
@@ -60,6 +63,7 @@ export function UnstakeStnd({
         // setModalOpen(true)
         return;
       }
+      return;
     }
     const success = await sendTx(() => onUnstake(unstakeCurrencyAmount));
     if (!success) {
@@ -69,7 +73,26 @@ export function UnstakeStnd({
     }
   }, [unstakeCurrencyAmount, approvalState, setPendingTx, onUnstake]);
 
-  const unstakeAmountDecimals = !!unstakeAmount ? parseFloat(unstakeAmount) : 0;
+  // const unstakeAmountDecimals = !!unstakeAmount ? parseFloat(unstakeAmount) : 0;
+  const buttonBody = unstakeCurrencyAmount?.greaterThan(ZERO) ? (
+    approvalState !== ApprovalState.APPROVED ? (
+      approvalState === ApprovalState.PENDING ? (
+        <div className="flex items-center justify-center space-x-3">
+          <div>Approving</div> <RippleSpinner size={16} />
+        </div>
+      ) : (
+        'Approve'
+      )
+    ) : InsufficientBalance ? (
+      'Insufficient Balance'
+    ) : (
+      'Unstake'
+    )
+  ) : (
+    'Enter amount'
+  );
+  const diabled =
+    !unstakeCurrencyAmount?.greaterThan(ZERO) || InsufficientBalance;
 
   return (
     <div className="text-text">
@@ -94,7 +117,7 @@ export function UnstakeStnd({
         </div>
         <div className="col-span-2 mb-4">
           <TokenInputPanelV2
-            token={stnd}
+            token={xStnd}
             max={xStndBalance}
             onAmountChange={setUntakeAmount}
             className="
@@ -109,10 +132,11 @@ export function UnstakeStnd({
           />
         </div>
         <Button
+          disabled={diabled}
           className={classNames(DefinedStyles.fullButton, 'col-span-2')}
           onClick={handleClick}
         >
-          {approvalState === ApprovalState.APPROVED ? 'Unstake' : 'Approve'}
+          {buttonBody}
         </Button>
       </div>
     </div>

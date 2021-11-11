@@ -28,8 +28,7 @@ import { useWalletModalToggle } from '../../state/application/hooks';
 import { useState } from 'react';
 
 export default function Stake() {
-  const { account, chainId } = useActiveWeb3React();
-  const [modalOpen, setModalOpen] = useState(false);
+  const { account } = useActiveWeb3React();
 
   const stnd = useStnd();
   const xStnd = useXStnd();
@@ -37,13 +36,6 @@ export default function Stake() {
   const xStndBalance = useTokenBalance(account ?? undefined, xStnd);
 
   const stndPrice = useStandardPrice();
-  const { enter, leave } = useStndStaker();
-
-  const walletConnected = !!account;
-  const toggleWalletModal = useWalletModalToggle();
-
-  // set apr from graph later on
-  const [apr, setApr] = useState<any>();
 
   return (
     <>
@@ -66,16 +58,19 @@ export default function Stake() {
               title={`Stake`}
               message={
                 <div className="leading-relaxed">
-                  Other protocols take a big percentage of total pool growth as
-                  a fee and do not give back.
                   <br /> At <strong>Standard’s Portal</strong>, portions of the
-                  swap fees are distributed as proportional to your share of the
-                  Dividend pool.
+                  swap fees are distributed as proportional to your share of
+                  xSTND.
                   <br />
                   <br />
-                  Stake your STND and earn xSTND.
+                  Stake your STND to get xSTND.
                   <br />
-                  Then, bond your xSTND to claim the dividends proportionally!
+                  It will make you passive income and you can claim it anytime!
+                  <br />
+                  <br />
+                  Each xSTND will also grant you a voting right to the Standard
+                  Protocol's governance
+                  <br />
                 </div>
               }
               type="information"

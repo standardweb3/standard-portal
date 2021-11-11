@@ -1,7 +1,9 @@
 import {
   ChainId,
   Currency,
+  getXStndAddress,
   NATIVE,
+  Protocol,
   STND_ADDRESS,
   Token,
   WNATIVE,
@@ -142,11 +144,16 @@ export function useStnd() {
   return new Token(chainId, STND_ADDRESS[chainId], 18, 'STND', 'Standard');
 }
 
-
 export function useXStnd() {
   const { chainId } = useActiveWeb3React();
 
-  return new Token(chainId, STND_ADDRESS[chainId], 18, 'XSTND', 'XStandard');
+  return new Token(
+    chainId,
+    getXStndAddress(Protocol.STANDARD_PROTOCOL, chainId),
+    18,
+    'XSTND',
+    'XStandard',
+  );
 }
 
 // parse a name or symbol from a token response

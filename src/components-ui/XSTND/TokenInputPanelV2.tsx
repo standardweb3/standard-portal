@@ -24,7 +24,7 @@ export function TokenInputPanelV2({
   inputClassName,
   maxClassName,
 }: TokenInputPanelV2Types) {
-  const [amount, setAmount] = useState('0');
+  const [amount, setAmount] = useState('');
 
   const onMax = () => {
     max && setAmount(max.toExact());
