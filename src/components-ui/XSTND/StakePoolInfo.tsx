@@ -49,8 +49,9 @@ export function StakePoolInfo({ stnd, xStnd, className }: StakePoolInfoTypes) {
   );
   const stndPrice = useStandardPrice();
   const ratio =
-    stndBalanceDecimals /
-    (xStndTotalSupplyDecimals === 0 ? 1 : xStndTotalSupplyDecimals);
+    xStndTotalSupplyDecimals === 0
+      ? 1
+      : stndBalanceDecimals / xStndTotalSupplyDecimals;
 
   const tvl = formatNumber(stndBalanceDecimals * stndPrice, true);
 
