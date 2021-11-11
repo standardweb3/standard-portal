@@ -1,12 +1,10 @@
 import { usePendingXStnd } from '../../features/stake/hooks';
 import { classNames, formatNumber } from '../../functions';
-import { useStnd } from '../../hooks/Tokens';
 import { DefinedStyles } from '../../utils/DefinedStyles';
 import { Button } from '../Button';
 
 export function XStndClaimer({ className }) {
   const pendingXStnd = usePendingXStnd();
-  const stnd = useStnd();
 
   return (
     <div

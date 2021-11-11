@@ -1,31 +1,18 @@
-import ReactGA from 'react-ga';
+// import ReactGA from 'react-ga';
 import Head from 'next/head';
 import StndStaker from '../../components-ui/XSTND/StndStaker';
 import { Page } from '../../components-ui/Page';
-import {
-  ViewportMediumUp,
-  ViewportSmallUp,
-} from '../../components-ui/Responsive';
+import { ViewportMediumUp } from '../../components-ui/Responsive';
 import { PageHeader } from '../../components-ui/PageHeader';
 import { DefinedStyles } from '../../utils/DefinedStyles';
 import { PageContent } from '../../components-ui/PageContent';
-import { XStndClaimer } from '../../components-ui/XSTND/XStndClaimer';
 import { StakePoolInfo } from '../../components-ui/XSTND/StakePoolInfo';
-import {
-  useStakeInfo,
-  useStakePoolSushiPerBlock,
-} from '../../features/stake/hooks';
+
 import { useStnd, useXStnd } from '../../hooks/Tokens';
-import { useAverageBlockTime, useStandardPrice } from '../../services/graph';
+import { useStandardPrice } from '../../services/graph';
 import { useTokenBalance } from '../../state/wallet/hooks';
 import { useActiveWeb3React } from '../../hooks';
-import { MASTERCHEF_V2_ADDRESS } from '@digitalnative/standard-protocol-sdk';
-import { BigNumber } from 'ethers';
-import { AVERAGE_BLOCK_TIME_IN_SECS } from '../../constants';
 import { Alert } from '../../components-ui/Alert';
-import useStndStaker from '../../hooks/stake';
-import { useWalletModalToggle } from '../../state/application/hooks';
-import { useState } from 'react';
 
 export default function Stake() {
   const { account } = useActiveWeb3React();

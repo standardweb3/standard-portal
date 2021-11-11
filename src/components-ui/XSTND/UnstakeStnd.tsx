@@ -1,8 +1,6 @@
 import {
-  BAR_ADDRESS,
   CurrencyAmount,
   getXStndAddress,
-  STND_ADDRESS,
   Token,
   ZERO,
 } from '@digitalnative/standard-protocol-sdk';
@@ -18,7 +16,6 @@ import { useProtocol } from '../../state/protocol/hooks';
 import { DefinedStyles } from '../../utils/DefinedStyles';
 import { Button } from '../Button';
 import { RippleSpinner } from '../Spinner/RippleSpinner';
-import { EstimatedXStnd } from './EstimatedXStnd';
 import { TokenInputPanelV2 } from './TokenInputPanelV2';
 
 export type UnstakeStndTypes = {

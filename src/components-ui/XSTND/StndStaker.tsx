@@ -3,7 +3,6 @@ import { StakeStnd } from './StakeStnd';
 import { UnstakeStnd } from './UnstakeStnd';
 import { StndStakerHeader } from './StndStakerHeader';
 import { CurrencyAmount, Token } from '@digitalnative/standard-protocol-sdk';
-import { useStndStakerContract } from '../../hooks';
 import useStndStaker from '../../hooks/stake';
 
 export type StndStakerProps = {

@@ -1,8 +1,11 @@
-import { CurrencyAmount, Token } from '@digitalnative/standard-protocol-sdk';
+import { Token } from '@digitalnative/standard-protocol-sdk';
 import styled from '@emotion/styled';
+import { useMemo } from 'react';
 import { classNames, formatNumber, formatPercent } from '../../functions';
 import { useXStndInfo } from '../../hooks/stake/useXStndInfo';
-import { useStandardPrice } from '../../services/graph';
+import useCurrentBlockTimestamp from '../../hooks/useCurrentBlockTimestamp';
+import { useDayData, useStandardPrice } from '../../services/graph';
+import { useBarHistories } from '../../services/graph/hooks/bar';
 import { CurrencyLogo } from '../CurrencyLogo';
 
 export const StakePoolInfoWrapper = styled.div`
@@ -38,6 +41,7 @@ export type StakePoolInfoTypes = {
 };
 
 export function StakePoolInfo({ stnd, xStnd, className }: StakePoolInfoTypes) {
+  // const [apr, setApr] = useState();
   const { stndBalance, xStndTotalSupply } = useXStndInfo();
   const stndBalanceDecimals = parseFloat(stndBalance?.toExact() ?? '0');
   const xStndTotalSupplyDecimals = parseFloat(
@@ -49,6 +53,41 @@ export function StakePoolInfo({ stnd, xStnd, className }: StakePoolInfoTypes) {
     (xStndTotalSupplyDecimals === 0 ? 1 : xStndTotalSupplyDecimals);
 
   const tvl = formatNumber(stndBalanceDecimals * stndPrice, true);
+
+  const timestamp = useCurrentBlockTimestamp();
+  const day = timestamp && Math.floor(timestamp.toNumber() / 86400) * 86400;
+  const dayDatas = useDayData({ first: 1, skip: 1 });
+  // add first 1 skip 1
+  const barHistories = useBarHistories();
+
+  const feeUSD =
+    dayDatas && dayDatas[0] && parseFloat(dayDatas[0].volumeUSD) * (0.05 / 3);
+
+  const [barTotalSupply, barRatio] = useMemo(() => {
+    if (barHistories && barHistories[0])
+      return [
+        parseFloat(barHistories[0].xSushiSupply),
+        parseFloat(barHistories[0].ratio),
+      ];
+    return [undefined, undefined];
+  }, [barHistories]);
+
+  const apr =
+    feeUSD &&
+    barTotalSupply &&
+    ((feeUSD / barTotalSupply) * 365) / (barRatio * stndPrice);
+  // TODO: DROP AND USE SWR HOOKS INSTEAD
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const results = await sushiData.exchange.dayData();
+  //     const apr =
+  //       (((results[1].volumeUSD * 0.05) / data?.bar?.totalSupply) * 365) /
+  //       (data?.bar?.ratio * sushiPrice);
+
+  //     setApr(apr);
+  //   };
+  //   fetchData();
+  // }, [data?.bar?.ratio, data?.bar?.totalSupply, sushiPrice]);
   return (
     <StakePoolInfoWrapper
       className={classNames(
@@ -111,14 +150,14 @@ export function StakePoolInfo({ stnd, xStnd, className }: StakePoolInfoTypes) {
           </div>
           <div className="text-2xl font-bold">{tvl} </div>
         </div>
-        {/* <div className="w-full flex justify-between items-center space-x-2">
-          <div className="font-bold">
-            <span className="text-grey text-lg">APY</span>
+        {apr && (
+          <div className="w-full flex justify-between items-center space-x-2">
+            <div className="font-bold">
+              <span className="text-grey text-lg">APY</span>
+            </div>
+            <div className="text-2xl font-bold">{formatPercent(apr ?? 0)} </div>
           </div>
-          <div className="text-2xl font-bold">
-            {formatPercent(parseFloat(stakePoolStndTotal?.toExact() ?? '0'))}{' '}
-          </div>
-        </div> */}
+        )}
       </div>
     </StakePoolInfoWrapper>
   );
