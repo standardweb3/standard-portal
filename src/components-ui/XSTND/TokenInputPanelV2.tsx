@@ -27,7 +27,7 @@ export function TokenInputPanelV2({
   const [amount, setAmount] = useState('0');
 
   const onMax = () => {
-    max && setAmount(max.toFixed(token.decimals));
+    max && setAmount(max.toExact());
   };
 
   useEffect(() => {

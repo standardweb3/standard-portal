@@ -15,43 +15,35 @@ import {
   useStakeInfo,
   useStakePoolSushiPerBlock,
 } from '../../features/stake/hooks';
-import { useStnd } from '../../hooks/Tokens';
-import { useAverageBlockTime } from '../../services/graph';
+import { useStnd, useXStnd } from '../../hooks/Tokens';
+import { useAverageBlockTime, useStandardPrice } from '../../services/graph';
 import { useTokenBalance } from '../../state/wallet/hooks';
 import { useActiveWeb3React } from '../../hooks';
 import { MASTERCHEF_V2_ADDRESS } from '@digitalnative/standard-protocol-sdk';
 import { BigNumber } from 'ethers';
 import { AVERAGE_BLOCK_TIME_IN_SECS } from '../../constants';
 import { Alert } from '../../components-ui/Alert';
+import useStndStaker from '../../hooks/stake';
+import { useWalletModalToggle } from '../../state/application/hooks';
+import { useState } from 'react';
 
 export default function Stake() {
   const { account, chainId } = useActiveWeb3React();
+  const [modalOpen, setModalOpen] = useState(false);
 
   const stnd = useStnd();
-  const xStndPerBlock = useStakePoolSushiPerBlock();
-  const averageBlockTime = useAverageBlockTime();
-  const balance = useTokenBalance(account, stnd);
-  const stakedBalance = useStakeInfo(stnd);
-  const stakePoolStndTotal = useTokenBalance(
-    MASTERCHEF_V2_ADDRESS[chainId],
-    stnd,
-  );
+  const xStnd = useXStnd();
+  const stndBalance = useTokenBalance(account ?? undefined, stnd);
+  const xStndBalance = useTokenBalance(account ?? undefined, xStnd);
 
-  const xStndPerBlockDecimals =
-    xStndPerBlock &&
-    xStndPerBlock.div(BigNumber.from(String(1e16))).toNumber() / 100;
+  const stndPrice = useStandardPrice();
+  const { enter, leave } = useStndStaker();
 
-  const _averageBlockTime =
-    typeof averageBlockTime == 'number'
-      ? averageBlockTime !== 0
-        ? averageBlockTime
-        : AVERAGE_BLOCK_TIME_IN_SECS[chainId]
-      : averageBlockTime && averageBlockTime?.averageBlockTime !== 0
-      ? averageBlockTime?.averageBlockTime
-      : AVERAGE_BLOCK_TIME_IN_SECS[chainId];
+  const walletConnected = !!account;
+  const toggleWalletModal = useWalletModalToggle();
 
-  const blocksPerDay = 86400 / _averageBlockTime;
-  const xStndPerDay = blocksPerDay * (xStndPerBlockDecimals ?? 0);
+  // set apr from graph later on
+  const [apr, setApr] = useState<any>();
 
   return (
     <>
@@ -88,32 +80,21 @@ export default function Stake() {
               }
               type="information"
             />
-            <div
-              className="
-              grid grid-cols-10
-              gap-4
-              items-stretch
-              "
-            >
-              <div className="col-span-10 xl:col-span-6">
+
+            <div className="grid grid-cols-2 gap-4 items-stretch">
+              <div className="col-span-2 md:col-span-1">
                 <StndStaker
                   stnd={stnd}
-                  xStndPerDay={xStndPerDay}
-                  balance={balance}
-                  stakedBalance={stakedBalance}
-                  stakePoolStndTotal={stakePoolStndTotal}
+                  xStnd={xStnd}
+                  stndBalance={stndBalance}
+                  xStndBalance={xStndBalance}
+                  stndPrice={stndPrice}
                 />
               </div>
-              <div className="col-span-10 xl:col-span-4 flex">
-                <StakePoolInfo
-                  stnd={stnd}
-                  className="flex-1"
-                  stakePoolStndTotal={stakePoolStndTotal}
-                  xStndPerDay={xStndPerDay}
-                />
+              <div className="col-span-2 md:col-span-1">
+                <StakePoolInfo stnd={stnd} xStnd={xStnd} />
               </div>
             </div>
-            <XStndClaimer className="flex-1 mt-4" />
           </div>
         </PageContent>
       </Page>

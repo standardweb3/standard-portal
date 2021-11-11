@@ -3,21 +3,23 @@ import { StakeStnd } from './StakeStnd';
 import { UnstakeStnd } from './UnstakeStnd';
 import { StndStakerHeader } from './StndStakerHeader';
 import { CurrencyAmount, Token } from '@digitalnative/standard-protocol-sdk';
+import { useStndStakerContract } from '../../hooks';
+import useStndStaker from '../../hooks/stake';
 
 export type StndStakerProps = {
-  xStndPerDay: number;
+  xStnd: Token;
   stnd: Token;
-  balance: CurrencyAmount<Token> | undefined;
-  stakedBalance: CurrencyAmount<Token> | undefined;
-  stakePoolStndTotal: CurrencyAmount<Token> | undefined;
+  stndBalance: CurrencyAmount<Token> | undefined;
+  xStndBalance: CurrencyAmount<Token> | undefined;
+  stndPrice: CurrencyAmount<Token> | undefined;
 };
 
 export default function StndStaker({
+  xStnd,
   stnd,
-  balance,
-  stakedBalance,
-  stakePoolStndTotal,
-  xStndPerDay,
+  stndBalance,
+  xStndBalance,
+  stndPrice,
 }: StndStakerProps) {
   const [stake, setStake] = useState(true);
   //   const stakePoolStndTotalDecimals = parseFloat(
@@ -26,24 +28,29 @@ export default function StndStaker({
 
   const onStake = () => setStake(true);
   const onUnstake = () => setStake(false);
+
+  const { enter, leave } = useStndStaker();
+
   return (
-    <div className="bg-opaque p-5 rounded-20">
+    <div className="bg-opaque p-5 rounded-20 h-full">
       <StndStakerHeader stake={stake} onStake={onStake} onUnstake={onUnstake} />
       {stake ? (
         <StakeStnd
+          onStake={enter}
+          xStnd={xStnd}
           stnd={stnd}
-          balance={balance}
-          stakedBalance={stakedBalance}
-          xStndPerDay={xStndPerDay}
-          stakePoolStndTotal={stakePoolStndTotal}
+          stndBalance={stndBalance}
+          xStndBalance={xStndBalance}
+          stndPrice={stndPrice}
         />
       ) : (
         <UnstakeStnd
+          onUnstake={leave}
+          xStnd={xStnd}
           stnd={stnd}
-          balance={balance}
-          stakedBalance={stakedBalance}
-          xStndPerDay={xStndPerDay}
-          stakePoolStndTotal={stakePoolStndTotal}
+          stndBalance={stndBalance}
+          xStndBalance={xStndBalance}
+          stndPrice={stndPrice}
         />
       )}
     </div>

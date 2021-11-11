@@ -30,15 +30,17 @@ export const StakePoolInfoWrapper = styled.div`
 
 export type StakePoolInfoTypes = {
   stnd: Token;
-  xStndPerDay: number;
-  stakePoolStndTotal: CurrencyAmount<Token> | undefined;
+  xStnd:Token;
+  xStndTotalSupply?: CurrencyAmount<Token> | undefined;
+  stakePoolStndTotal?: CurrencyAmount<Token> | undefined;
   className?: string;
 };
 
 export function StakePoolInfo({
   stnd,
+  xStnd,
+  xStndTotalSupply,
   stakePoolStndTotal,
-  xStndPerDay,
   className,
 }: StakePoolInfoTypes) {
   return (
@@ -54,10 +56,10 @@ export function StakePoolInfo({
       <div className="space-y-3 flex flex-col justify-center h-full">
         <div className="w-full flex justify-between items-center space-x-4">
           <div className="font-bold">
-            <span className="text-grey text-lg">Total minted</span>{' '}
+            <span className="text-grey text-lg">Total supply</span>{' '}
             <span className="text-primary text-2xl">xSTND</span>
           </div>
-          <div className="text-2xl font-bold">{formatNumber(xStndPerDay)}</div>
+          <div className="text-2xl font-bold">{formatNumber(parseFloat(xStndTotalSupply?.toExact() ?? '0'))}</div>
         </div>
         <div className="w-full flex justify-between items-center space-x-2">
           <div className="font-bold">

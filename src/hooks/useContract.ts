@@ -324,6 +324,18 @@ export function useSushiBarContract(
   );
 }
 
+export function useStndStakerContract(
+  withSignerIfPossible?: boolean,
+): Contract | null {
+  const { chainId } = useActiveWeb3React();
+  return useContract(
+    chainId && BAR_ADDRESS[chainId],
+    BAR_ABI,
+    withSignerIfPossible,
+  );
+}
+
+
 export function useMakerContract(): Contract | null {
   const { chainId } = useActiveWeb3React();
   return useContract(chainId && MAKER_ADDRESS[chainId], MAKER_ABI, false);
