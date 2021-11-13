@@ -1,12 +1,12 @@
 import { classNames } from '../../functions';
-import { DividendPoolWhitelistPairBalance } from '../../state/user/hooks';
 import { DividendPair } from './DividendPair';
 
 export type DividendPairsProps = {
-  pairsWithDividends: DividendPoolWhitelistPairBalance[];
+  pairsWithDividends: any[];
   share: number;
   className?: string;
-  claim: (address: string) => void;
+  claim: (address: string, name: string) => void;
+  ethPrice: any;
 };
 
 export function DividendPairs({
@@ -16,13 +16,20 @@ export function DividendPairs({
   claim,
 }: DividendPairsProps) {
   return (
-    <div className={classNames('space-y-4', className)}>
-      <div className="grid grid-cols-6 lg:grid-cols-7 font-bold px-8">
-        <div className="col-span-2">Pair</div>
-        <div className="col-span-2">Total Dividend</div>
+    <div
+      className={classNames(
+        'space-y-2 bg-transparent md:bg-opaque md:p-5 rounded-20',
+        className,
+      )}
+    >
+      <div className="grid grid-cols-7 lg:grid-cols-7 text-sm text-grey">
+        <div className="col-span-2 flex md:justify-start justify-center">
+          Pair
+        </div>
         <div className="col-span-2">Your Dividend</div>
+        <div className="col-span-2">Total Dividend</div>
       </div>
-      {pairsWithDividends.map((pair) => {
+      {pairsWithDividends.map((pair, i) => {
         return (
           <DividendPair
             key={pair.address}

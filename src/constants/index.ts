@@ -17,7 +17,7 @@ import { BigNumber } from 'ethers';
 export const POOL_DENY = ['14', '29', '45', '30'];
 
 // Block time here is slightly higher (~1s) than average in order to avoid ongoing proposals past the displayed time
-export const AVERAGE_BLOCK_TIME_IN_SECS = 13;
+// export const AVERAGE_BLOCK_TIME_IN_SECS = 13;
 
 export const ARCHER_RELAY_URI: { [chainId in ChainId]?: string } = {
   [ChainId.MAINNET]: 'https://api.archerdao.io/v1/transaction',
@@ -283,6 +283,7 @@ export const ANALYTICS_URL: { [chainId in ChainId]?: string } = {
   [ChainId.MAINNET]: 'https://analytics.sushi.com',
   [ChainId.RINKEBY]: 'http://localhost:3001',
   [ChainId.MATIC]: 'https://analytics-polygon.sushi.com',
+  [ChainId.SHIDEN]: 'https://shiden.analytics.standard.tech',
   [ChainId.FANTOM]: 'https://analytics-ftm.sushi.com',
   [ChainId.BSC]: 'https://analytics-bsc.sushi.com',
   [ChainId.XDAI]: 'https://analytics-xdai.sushi.com',
@@ -299,3 +300,11 @@ export const EIP_1559_ACTIVATION_BLOCK: { [chainId in ChainId]?: number } = {
 export * from './routing';
 export * from './addresses';
 export * from './tokens';
+
+export const MASTERPOOL_BLACKLIST = [
+  '0x13eDA47aFea562DC4b8Cb8645d6Aa54Fc4B28B61',
+];
+
+export const AVERAGE_BLOCK_TIME_IN_SECS = {
+  [ChainId.SHIDEN]: 13,
+};

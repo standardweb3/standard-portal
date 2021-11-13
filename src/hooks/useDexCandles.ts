@@ -21,9 +21,9 @@ const useDexCandles = (
   let resultArray: RawCandlestickDatum[] = [];
 
   const [candleData, setCandleData] = useState<NumericalCandlestickDatum[]>([]);
-
   const fetchDexCandles = useCallback(async () => {
     if (pairAddress == '') {
+      setCandleData([]);
       return;
     }
     try {
@@ -50,7 +50,6 @@ const useDexCandles = (
       // eslint-disable-next-line react-hooks/exhaustive-deps
       resultArray = resultArray.concat(results.data.candles);
       const token0 = resultArray[0]?.token0;
-      const token1 = resultArray[0]?.token1;
 
       let parsedData = resultArray.map(
         ({ time, open, high, low, close }: RawCandlestickDatum) => {

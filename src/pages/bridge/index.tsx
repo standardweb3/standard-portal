@@ -1,125 +1,350 @@
-import {
-  ChainId,
-  Currency,
-  WNATIVE,
-} from '@digitalnative/standard-protocol-sdk';
-import { useRouter } from 'next/router';
-import { useEffect, useMemo, useState } from 'react';
-import { getCurChainInfo } from '../../bridge/functions/bridge';
-import { useFetchRouterTokenList } from '../../bridge/hooks/fetchLists';
-import {
-  NETWORK_ICON,
-  NETWORK_LABEL,
-  SUPPORTED_NETWORKS,
-} from '../../constants/networks';
-import { AvailableChainsInfo } from '../../features/bridge/types';
-import {
-  useActiveWeb3React,
-  useAnyswapTokenContract,
-  useTokenContract,
-} from '../../hooks';
-import { useAnyswapInfo } from '../../hooks/bridge/useBridge';
-import { useTransactionAdder } from '../../state/transactions/hooks';
-import { useCurrencyBalance } from '../../state/wallet/hooks';
+import { Page } from '../../components-ui/Page';
+import Head from 'next/head';
+import { PageHeader } from '../../components-ui/PageHeader';
+import { ExternalLink } from '../../components-ui/ExternalLink';
+import Image from 'next/image';
+import { useCallback, useState } from 'react';
+import ImageViewer from 'react-simple-image-viewer';
+import { PageContent } from '../../components-ui/PageContent';
+import { Button } from '../../components-ui/Button';
+import { Alert } from '../../components-ui/Alert';
+import { DefinedStyles } from '../../utils/DefinedStyles';
 
 export default function Bridge() {
-  const { account, chainId } = useActiveWeb3React();
-  const { push } = useRouter();
+  const [currentImage, setCurrentImage] = useState(0);
+  const [isViewerOpen, setIsViewerOpen] = useState(false);
 
-  const addTransaction = useTransactionAdder();
+  const images = [
+    '/img/bridge/bridge0.png',
+    '/img/bridge/bridge1.png',
+    '/img/bridge/bridge2.png',
+    '/img/bridge/bridge3.png',
+    '/img/bridge/bridge4.png',
+    '/img/bridge/bridge5.png',
+    '/img/bridge/bridge6.png',
+  ];
 
-  const chainFrom = {
-    id: chainId,
-    icon: NETWORK_ICON[chainId],
-    name: NETWORK_LABEL[chainId],
+  const openImageViewer = useCallback((index) => {
+    setCurrentImage(index);
+    setIsViewerOpen(true);
+  }, []);
+
+  const closeImageViewer = () => {
+    setCurrentImage(0);
+    setIsViewerOpen(false);
   };
+  return (
+    <>
+      <Head>
+        <title>Bridge | Standard Protocol</title>
+        <meta
+          key="description"
+          name="description"
+          content="Bridge your assets to SHIDEN network using anyswap"
+        />
+      </Head>
+      <Page id="bridge-page" className={DefinedStyles.page}>
+        {isViewerOpen && (
+          <ImageViewer
+            backgroundStyle={{ zIndex: 10 }}
+            src={images}
+            currentIndex={currentImage}
+            disableScroll={false}
+            closeOnClickOutside={true}
+            onClose={closeImageViewer}
+          />
+        )}
+        <PageHeader title="Bridge" />
 
-  const [inputBridgeValue, setInputBridgeValue] = useState('');
-  const [selectCurrency, setSelectCurrency] = useState<any>();
-  const [selectChain, setSelectChain] = useState<any>();
-  const [selectChainList, setSelectChainList] = useState<Array<any>>([]);
-  const [recipient, setRecipient] = useState<any>(account ?? '');
-  const [swapType, setSwapType] = useState('swap');
+        <PageContent>
+          <div className="space-y-8 pb-[60px] w-full max-w-[1000px]">
+            <Alert
+              className={DefinedStyles.pageAlertFull}
+              message={
+                <div>
+                  STND can be bridged from Ethereum to Shiden Network using{' '}
+                  <ExternalLink
+                    href="https://anyswap.exchange/#/router"
+                    className="!whitespace-normal"
+                  >
+                    Anyswap Router.
+                  </ExternalLink>
+                  <br />
+                  Other ERC-20 assets can be bridged using{' '}
+                  <ExternalLink
+                    href="https://anyswap.exchange/#/bridge"
+                    className="!whitespace-normal"
+                  >
+                    Anyswap Bridge.
+                  </ExternalLink>
+                  <br />
+                  <br />
+                  For more details, please read the guide below on how to
+                  transfer STND from Ethereum to Shiden Network
+                </div>
+              }
+              type="warning"
+            />
+            <div className="flex space-x-4">
+              <ExternalLink
+                href="https://anyswap.exchange/#/router"
+                className="!whitespace-normal"
+              >
+                <Button>
+                  <div className="flex items-center font-bold text-lg">
+                    <div className="mr-2">Router</div>
+                    <Image
+                      src="/img/bridge/anyswap.svg"
+                      width="100px"
+                      height="50px"
+                    />
+                  </div>
+                </Button>
+              </ExternalLink>
+              <ExternalLink
+                href="https://anyswap.exchange/#/bridge"
+                className="!whitespace-normal"
+              >
+                <Button>
+                  <div className="flex items-center font-bold text-lg">
+                    <div className="mr-2">Bridge</div>
+                    <Image
+                      src="/img/bridge/anyswap.svg"
+                      width="100px"
+                      height="50px"
+                    />
+                  </div>
+                </Button>
+              </ExternalLink>
+            </div>
 
-  const [intervalCount, setIntervalCount] = useState<number>(0);
-  const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false);
+            <div
+              className="
+              p-0 md:p-8 
+              rounded-20  
+              md:bg-opaque"
+            >
+              <div className="space-y-4">
+                <div className="">
+                  <ExternalLink
+                    href="https://medium.com/@stakenode/standard-protocol-experience-the-dex-7f5134eb28e6"
+                    className="font-bold text-2xl break-normal !whitespace-normal"
+                  >
+                    Crossing STND from Ethereum to Shiden Network
+                  </ExternalLink>
+                  <div className="text-xs">by Jimmy Tudesky</div>
+                </div>
+                <div>
+                  To cross-chain #STND from ethereum erc20 to Shiden #STND, You
+                  need to use the router provided by Anyswap and have STND
+                  tokens on the Metamask wallet.
+                </div>
+                <div>
+                  Go to the Anyswap router page —
+                  <ExternalLink href="https://anyswap.exchange/#/router">
+                    https://anyswap.exchange/#/router
+                  </ExternalLink>{' '}
+                  and connect the Metamask wallet on the ethereum network.
+                </div>
+                <div
+                  className="cursor-pointer"
+                  onClick={() => openImageViewer(0)}
+                >
+                  <Image
+                    src={images[0]}
+                    width={6}
+                    height={3}
+                    layout="responsive"
+                  />
+                </div>
+                <div>
+                  Click on the token selection drop-down menu on the ethereum
+                  network section, and select STND from the list, or simply type
+                  STND in the search name section.
+                </div>
+                <div
+                  className="cursor-pointer"
+                  onClick={() => openImageViewer(1)}
+                >
+                  <Image
+                    src={images[1]}
+                    width={6}
+                    height={3}
+                    layout="responsive"
+                  />
+                </div>
+                <div>
+                  Enter the #STND amount You want to send via the router.
+                </div>
+                <div className="font-bold italic">
+                  *If You are using the router for the first time, You will have
+                  to hit the “Approve” button first and confirm the transaction
+                  in Metamask. Please keep in mind that each transaction needs
+                  some eth for fees. *Please read carefully all Infos at the
+                  bottom about minimum and maximum transfer amounts and tx fees.
+                </div>
+                <div
+                  className="cursor-pointer"
+                  onClick={() => openImageViewer(2)}
+                >
+                  <Image
+                    src={images[2]}
+                    width={6}
+                    height={3}
+                    layout="responsive"
+                  />
+                </div>
+                <div>
+                  After You approve the #STND token spend in Metamask You are
+                  able to do Swap with the router. Click “swap” and confirm tx
+                  in Metamask.
+                </div>
+                <div
+                  className="cursor-pointer"
+                  onClick={() => openImageViewer(3)}
+                >
+                  <Image
+                    src={images[3]}
+                    width={6}
+                    height={3}
+                    layout="responsive"
+                  />
+                </div>
+                <div>
+                  After the transaction is completed — (You can check with
+                  Metamask or explorer — <br />
+                  <span className="font-bold">
+                    *Please keep in mind that the estimated Time of cross-chain
+                    Arrival is around 10–30 min.)
+                  </span>
+                </div>
+                <div
+                  className="max-w-[400px] cursor-pointer"
+                  onClick={() => openImageViewer(4)}
+                >
+                  <Image
+                    src={images[4]}
+                    width={6}
+                    height={3}
+                    layout="responsive"
+                  />
+                </div>
+                <div>
+                  Your STND will be available on Shiden Network Metamask wallet
+                  account. Just switch networks from ethereum to Shiden. Now You
+                  are ready to use <span className="font-bold">#STND</span> on
+                  Standard DEX on Shiden Network.
+                </div>
 
-  const [delayAction, setDelayAction] = useState<boolean>(false);
+                <div className="font-bold italic">
+                  To cross other assets like #USDC, #USDT, #WBTC, etc. which You
+                  will eventually use on Standard DEX for liquidity provision
+                  and LP farming, You need to use Anyswap bridge —
+                  https://anyswap.exchange/#/bridge
+                </div>
+                <div>
+                  To use the Anyswap bridge, connect with Metamask on the
+                  ethereum network. Select token You want to bridge on the
+                  ethereum side, select Shiden Network in the lower section as
+                  destination network and confirm the transaction with Metamask.
+                </div>
+                <div
+                  className="cursor-pointer"
+                  onClick={() => openImageViewer(5)}
+                >
+                  <Image
+                    src={images[5]}
+                    width={6}
+                    height={3}
+                    layout="responsive"
+                  />
+                </div>
+                <div>
+                  After confirmation in Metamask, You can track Your bridge
+                  progress with the provided link in the pop-up.
+                </div>
+                <div
+                  className="max-w-[400px] cursor-pointer"
+                  onClick={() => openImageViewer(6)}
+                >
+                  <Image
+                    src={images[6]}
+                    width={6}
+                    height={3}
+                    layout="responsive"
+                  />
+                </div>
+                <div className="font-bold italic">
+                  After the transaction is confirmed on Anyswap bridge, change
+                  the network in Metamask to Shiden and Your assets are ready to
+                  use on Standard DEX
+                </div>
+                <Button>
+                  <div className="flex items-center font-bold text-lg">
+                    <div className="mr-2">Go to</div>
+                    <Image
+                      src="/img/bridge/anyswap.svg"
+                      width="100px"
+                      height="50px"
+                    />
+                  </div>
+                </Button>
+              </div>
+            </div>
 
-  const [curChain, setCurChain] = useState<any>({
-    chain: chainId,
-    ts: '',
-    bl: '',
-  });
-  const [destChain, setDestChain] = useState<any>({
-    chain: '',
-    ts: '',
-    bl: '',
-  });
-
-  const destConfig = useMemo(() => {
-    // console.log(selectCurrency)
-    if (
-      selectCurrency &&
-      selectCurrency?.destChains &&
-      selectCurrency?.destChains[selectChain]
-    ) {
-      return selectCurrency?.destChains[selectChain];
-    }
-    return false;
-  }, [selectCurrency, selectChain]);
-
-  const isRouter = useMemo(() => {
-    // console.log(destConfig)
-    if (['swapin', 'swapout'].includes(destConfig?.type)) {
-      return false;
-    }
-    return true;
-  }, [destConfig]);
-
-  const useDestAddress = useMemo(() => {
-    if (isRouter) {
-      return destConfig?.routerToken;
-    }
-    return destConfig?.DepositAddress;
-  }, [destConfig, isRouter]);
-
-  const isNativeToken = useMemo(() => {
-    if (
-      selectCurrency &&
-      selectCurrency.address &&
-      chainId &&
-      getCurChainInfo(chainId) &&
-      getCurChainInfo(chainId).nativeToken &&
-      getCurChainInfo(chainId).nativeToken.toLowerCase() ===
-        selectCurrency.address.toLowerCase()
-    ) {
-      return true;
-    }
-    return false;
-  }, [selectCurrency, chainId]);
-
-  const isUnderlying = useMemo(() => {
-    if (selectCurrency && selectCurrency?.underlying) {
-      return true;
-    }
-    return false;
-  }, [selectCurrency, selectChain]);
-
-  const isDestUnderlying = useMemo(() => {
-    if (
-      selectCurrency &&
-      selectCurrency?.destChains &&
-      selectCurrency?.destChains[selectChain] &&
-      selectCurrency?.destChains[selectChain]?.underlying
-    ) {
-      return true;
-    }
-    return false;
-  }, [selectCurrency, selectChain]);
-
-  const tokens = useFetchRouterTokenList();
-  return <div>bridge</div>;
+            <div
+              className="
+              p-0 md:p-8 
+              rounded-20  
+              md:bg-opaque"
+            >
+              <div className="space-y-4">
+                <div className="">
+                  <ExternalLink
+                    href="https://medium.com/@stakenode/standard-protocol-experience-the-dex-7f5134eb28e6"
+                    className="font-bold text-2xl !whitespace-normal"
+                  >
+                    Transferring Shiden #SDN token from polkadot.js or CEX to
+                    Metamask account{' '}
+                  </ExternalLink>
+                  <div className="text-xs">by Jimmy Tudesky</div>
+                </div>
+                <div>
+                  To use the <span className="font-bold">#SDN</span> token on
+                  Standard Protocol DEX, to provide liquidity and enter farming,
+                  You need to have <span className="font-bold">#SDN</span>{' '}
+                  tokens on Metamask on Shiden Network.
+                </div>
+                <div>
+                  To get #SDN tokens to Metamask simply follow those tutorials
+                  below. One is to send tokens directly from CEX, another is in
+                  regards to the polkadot.js interface.
+                </div>
+                <div>
+                  👉 Kucoin:{' '}
+                  <ExternalLink
+                    href="https://stakenode.medium.com/?p=de1bba4e92a2"
+                    className="!whitespace-normal"
+                  >
+                    https://stakenode.medium.com/?p=de1bba4e92a2
+                  </ExternalLink>
+                </div>
+                <div>
+                  👉 Polkadot.js:{' '}
+                  <ExternalLink
+                    href="https://stakenode.medium.com/?p=819da3798f45"
+                    className="!whitespace-normal"
+                  >
+                    https://stakenode.medium.com/?p=819da3798f45
+                  </ExternalLink>
+                </div>
+              </div>
+            </div>
+          </div>
+        </PageContent>
+      </Page>
+    </>
+  );
 
   // useEffect(() => {
   //   let tokens: Currency[] = Object.keys((anyswapInfo && anyswapInfo[chainFrom.id]) || {})

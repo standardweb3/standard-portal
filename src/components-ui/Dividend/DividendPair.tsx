@@ -1,19 +1,16 @@
-import { CurrencyAmount, JSBI } from '@digitalnative/standard-protocol-sdk';
 import { useCallback } from 'react';
 import { formatNumber } from '../../functions';
-import { useCurrency, useToken } from '../../hooks/Tokens';
+import { useCurrency } from '../../hooks/Tokens';
 import { useRemainingClaimTime } from '../../hooks/useBonded';
-import { useTotalSupply } from '../../hooks/useTotalSupply';
-import { DividendPoolWhitelistPairBalance } from '../../state/user/hooks';
 import { Button } from '../Button';
 import { DoubleCurrencyLogo } from '../CurrencyLogo/DoubleCurrencyLogo';
 import { useSizeXs } from '../Responsive';
 import { CountdownTimer } from '../Timer/CountdownTimer';
 
 export type DividendPairProps = {
-  pairWithDividend: DividendPoolWhitelistPairBalance;
+  pairWithDividend: any;
   share: number;
-  claim: (address: string) => void;
+  claim: (address: string, name: string) => void;
 };
 
 export function DividendPair({
@@ -22,127 +19,105 @@ export function DividendPair({
   claim,
 }: DividendPairProps) {
   const {
-    token0,
-    token1,
-    amount,
-    reserve0,
-    reserve1,
     address,
+    token0Address,
+    token1Address,
+    token0Amount,
+    token1Amount,
+    rewardToken0Amount,
+    rewardToken1Amount,
+    totalDividendUSD,
+    // amount,
   } = pairWithDividend;
 
   const remainingSeconds = useRemainingClaimTime(address);
   const remaining = remainingSeconds !== null && remainingSeconds > 0;
-  const totalPoolTokens = useTotalSupply(amount?.currency);
 
-  const _token0 = useCurrency(token0);
-  const _token1 = useCurrency(token1);
-  const _reserve0 =
-    !!_token0 && CurrencyAmount.fromRawAmount(_token0, reserve0.toString());
-  const _reserve1 =
-    !!_token1 && CurrencyAmount.fromRawAmount(_token1, reserve1.toString());
+  const token0 = useCurrency(token0Address);
+  const token1 = useCurrency(token1Address);
+
   const isViewportXs = useSizeXs();
 
-  const [token0Amount, token1Amount] =
-    !!amount && !!_reserve0 && !!_reserve1 && !!totalPoolTokens
-      ? [
-          CurrencyAmount.fromRawAmount(
-            _token0,
-            JSBI.divide(
-              JSBI.multiply(amount.quotient, _reserve0.quotient),
-              totalPoolTokens.quotient,
-            ),
-          ),
-          CurrencyAmount.fromRawAmount(
-            _token1,
-            JSBI.divide(
-              JSBI.multiply(amount.quotient, _reserve1.quotient),
-              totalPoolTokens.quotient,
-            ),
-          ),
-        ]
-      : [undefined, undefined];
-
-  const [rewardToken0Amount, rewardToken1Amount] =
-    !!token0Amount && !!token1Amount
-      ? [
-          Number(token0Amount.toExact()) * share,
-          Number(token1Amount.toExact()) * share,
-        ]
-      : [undefined, undefined];
-
-  const reward = Number(amount.toExact()) * share;
+  const reward = totalDividendUSD * share;
 
   const handleClaim = useCallback(() => {
-    claim(address);
+    claim(address, `${token0.symbol}/${token1.symbol}`);
   }, [address]);
 
   return (
     <div
       className="
-        bg-opaque-secondary rounded-20 p-8 
-        grid grid-cols-6 lg:grid-cols-7
-        lg:space-y-0 items-center"
+        bg-opaque rounded-20 px-2 py-2
+        grid grid-cols-7 lg:grid-cols-7
+        lg:space-y-0 items-center
+        cursor-pointer
+        hover:bg-bright
+        transition
+        duration-500"
     >
       <div
         className="
         col-span-2 
         flex flex-col 
-        sm:flex-row 
+        md:flex-row 
         items-center 
         text-sm
-        sm:text-base
+        md:text-base
         font-bold 
         space-y-2
-        sm:space-y-0
-        sm:space-x-3"
+        md:space-y-0
+        md:space-x-3"
       >
         <DoubleCurrencyLogo
-          currency0={_token0}
-          currency1={_token1}
+          currency0={token0}
+          currency1={token1}
           currencyClassName="rounded-full"
-          size={isViewportXs ? 26 : 34}
+          size={isViewportXs ? 26 : 38}
         />
         <div>
-          {_token0.symbol}-{_token1.symbol}
+          {token0?.symbol}-{token1?.symbol}
         </div>
       </div>
 
       <div className="col-span-2 text-sm sm:text-base">
-        <div>{formatNumber(amount.toExact(), false, true, 0.00001)} LTR</div>
-        {!!token0Amount && !!token1Amount && (
+        <div className="font-bold truncate">
+          {formatNumber(reward, true, true, 0.00001)} USD
+        </div>
+        {!!rewardToken0Amount && !!rewardToken0Amount && (
           <div className="text-grey text-xs">
-            <div>
-              {formatNumber(token0Amount.toExact(), false, true, 0.00001)}{' '}
-              {_token0.symbol}
+            <div className="truncate">
+              {formatNumber(rewardToken0Amount, false, true, 0.00001)}{' '}
+              {token0?.symbol}
             </div>
-            <div>
-              {formatNumber(token1Amount.toExact(), false, true, 0.00001)}{' '}
-              {_token1.symbol}
+            <div className="truncate">
+              {formatNumber(rewardToken1Amount, false, true, 0.00001)}{' '}
+              {token1?.symbol}
             </div>
           </div>
         )}
       </div>
 
       <div className="col-span-2 text-sm sm:text-base">
-        <div>{formatNumber(reward, false, true, 0.00001)} LTR</div>
-        {!!rewardToken0Amount && !!rewardToken0Amount && (
+        <div className="font-bold text-primary truncate">
+          {formatNumber(totalDividendUSD, true, true, 0.00001)} USD
+        </div>
+        {!!token0Amount && !!token1Amount && (
           <div className="text-grey text-xs">
-            <div>
-              {formatNumber(rewardToken0Amount, false, true, 0.00001)}{' '}
-              {_token0.symbol}
+            <div className="truncate">
+              {formatNumber(token0Amount, false, true, 0.00001)} {token0.symbol}
             </div>
-            <div>
-              {formatNumber(rewardToken1Amount, false, true, 0.00001)}{' '}
-              {_token1.symbol}
+            <div className="truncate">
+              {formatNumber(token1Amount, false, true, 0.00001)} {token1.symbol}
             </div>
           </div>
         )}
       </div>
-      <div className="flex flex-col mt-4 lg:mt-0 lg:items-end col-span-6 items-center lg:col-span-1 space-y-2">
+
+      <div className="flex flex-col mt-4 lg:mt-0 lg:items-center col-span-1 items-center lg:col-span-1 space-y-2">
         <Button
           onClick={handleClaim}
           disabled={share === null || share === 0 || remaining}
-          className="!font-bold px-8 text-lg"
+          className="!font-bold px-4 py-2 text-base"
         >
           {remaining ? <CountdownTimer time={remainingSeconds} /> : 'Claim'}
         </Button>

@@ -1,5 +1,9 @@
 import { AppDispatch, AppState } from '..';
-import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from '../../constants';
+import {
+  BASES_TO_TRACK_LIQUIDITY_FOR,
+  MASTERPOOL_BLACKLIST,
+  PINNED_PAIRS,
+} from '../../constants';
 import {
   // ChainId,
   // FACTORY_ADDRESS,
@@ -13,6 +17,8 @@ import {
   CurrencyAmount,
   Currency,
   getDividendPoolWhitelist,
+  getDividendPoolWhitelistPairs,
+  getDividendPoolWhitelistTokens,
 } from '@digitalnative/standard-protocol-sdk';
 import {
   SerializedPair,
@@ -288,13 +294,34 @@ export function toV2LiquidityToken({
       protocol,
     }),
     18,
-    'UNI-V2',
-    'Uniswap V2',
+    'LTR',
+    'Standard Liter Token',
   );
 }
 
+export function useTokensDividendBalances(tokens) {
+  const ERC20Interface = new Interface(ERC20_ABI);
+
+  const dividendPoolAddress = useDividendPoolAddress();
+
+  const balances = useMultipleContractSingleData(
+    tokens,
+    ERC20Interface,
+    'balanceOf',
+    [dividendPoolAddress],
+    undefined,
+    100_000,
+  );
+
+  const anyLoading: boolean = useMemo(
+    () => balances.some((callState) => callState.loading),
+    [balances],
+  );
+
+  return { balances, anyLoading };
+}
+
 export function usePairsDividendBalances(pairs) {
-  const PAIR_INTERFACE = new Interface(IUniswapV2PairABI);
   const ERC20Interface = new Interface(ERC20_ABI);
 
   const dividendPoolAddress = useDividendPoolAddress();
@@ -308,20 +335,12 @@ export function usePairsDividendBalances(pairs) {
     100_000,
   );
 
-  const reserves = useMultipleContractSingleData(
-    pairs,
-    PAIR_INTERFACE,
-    'getReserves',
-  );
-
   const anyLoading: boolean = useMemo(
-    () =>
-      balances.some((callState) => callState.loading) ||
-      reserves.some((callState) => callState.loading),
-    [balances, reserves],
+    () => balances.some((callState) => callState.loading),
+    [balances],
   );
 
-  return { balances, reserves, anyLoading };
+  return { balances, anyLoading };
 }
 
 export type FarmingPoolWithReserve = {
@@ -335,21 +354,102 @@ export type FarmingPoolWithReserve = {
   lastRewardBlock: BigNumber;
 };
 
+export type DividendPoolWhitelistTokenBalance = {
+  address: string;
+  amount: CurrencyAmount<Currency> | null;
+};
+
 export type DividendPoolWhitelistPairBalance = {
   address: string;
-  reserve0: any | null;
-  reserve1: any | null;
   token0: string;
   token1: string;
   amount: CurrencyAmount<Currency> | null;
 };
 
+// export type DividendPoolWhitelist = {
+//   pairs: DividendPoolWhitelistPairBalance[];
+//   tokens: DividendPoolWhitelistTokenBalance[];
+// };
+
+export function useDividendPoolWhitelistTokenBalances(pageSize: number) {
+  const tokens = useDivdendPoolWhitelistTokens();
+  const lastBlockNumber = useBlockNumber();
+
+  // const lastPage = Math.floor(tokens.length / pageSize);
+  const {
+    currentPage: current,
+    toNextPage: next,
+    lastPage: last,
+  } = usePagination(0, pageSize, tokens.length);
+
+  const currentTokens = useMemo(() => {
+    return tokens
+      .slice(current * pageSize, (current + 1) * pageSize)
+      .map((token) => token.address);
+  }, [tokens, current]);
+
+  const { balances, anyLoading } = useTokensDividendBalances(currentTokens);
+
+  const tokensWithDividends: DividendPoolWhitelistTokenBalance[] = useMemo(() => {
+    if (!anyLoading) {
+      let position = 0;
+      return tokens.map((token, i) => {
+        if (i >= current * pageSize && i < current * pageSize + pageSize) {
+          const value = balances?.[position++]?.result?.[0];
+          const amount = value ? JSBI.BigInt(value.toString()) : undefined;
+          return {
+            address: token.address,
+            amount: amount ? CurrencyAmount.fromRawAmount(token, amount) : null,
+          };
+        }
+        return {
+          address: token.address,
+          amount: null,
+        };
+      });
+    }
+    return [];
+  }, [balances, anyLoading, current, lastBlockNumber]);
+
+  return { tokensWithDividends, next, current, loading: anyLoading, last };
+  // useEffect(() => {
+  //   console.log(pairDividends);
+  // }, [pairDividends]);
+  // const pairsWithDividends = useMemo(
+  //   () =>
+  //   pairs.reduce<{ [address: string]: CurrencyAmount<Currency> }>(
+  //       (memo, address, i) => {
+  //         const value = results?.[i]?.result?.[0];
+  //         if (value && chainId)
+  //           memo[address] = CurrencyAmount.fromRawAmount(
+  //             Ether.onChain(chainId),
+  //             JSBI.BigInt(value.toString()),
+  //           );
+  //         return memo;
+  //       },
+  //       {},
+  //     ),
+  //   [pairs, chainId, results],
+  // );
+
+  // useEffect(() => {
+  //   const _pairWithDividends = [...pairWithDividends]
+  //   for (let i = current * pageSize; i < (current + 1) * pageSize && i < total; i++) {
+  //     _pairWithDividends[i] =
+  //   }
+  // }, [current])
+}
+
 export function useDividendPoolWhitelistPairBalances(pageSize: number) {
   const pairs = useDivdendPoolWhitelistPairs();
   const lastBlockNumber = useBlockNumber();
 
-  const lastPage = Math.floor(pairs.length / pageSize);
-  const { current, next, last } = usePagination(0, pageSize, lastPage);
+  // const lastPage = Math.floor(pairs.length / pageSize);
+  const {
+    currentPage: current,
+    toNextPage: next,
+    lastPage: last,
+  } = usePagination(0, pageSize, pairs.length);
 
   const currentPairs = useMemo(() => {
     return pairs
@@ -357,25 +457,20 @@ export function useDividendPoolWhitelistPairBalances(pageSize: number) {
       .map((pair) => pair.lpToken.address);
   }, [pairs, current]);
 
-  const { balances, reserves, anyLoading } = usePairsDividendBalances(
-    currentPairs,
-  );
+  const { balances, anyLoading } = usePairsDividendBalances(currentPairs);
 
   const pairsWithDividends: DividendPoolWhitelistPairBalance[] = useMemo(() => {
     if (!anyLoading) {
       let position = 0;
       return pairs.map((pair, i) => {
         if (i >= current * pageSize && i < current * pageSize + pageSize) {
-          const value = balances?.[position]?.result?.[0];
-          const reserve = reserves?.[position++].result;
+          const value = balances?.[position++]?.result?.[0];
           const amount = value ? JSBI.BigInt(value.toString()) : undefined;
           return {
             address: pair.lpToken.address,
             amount: amount
               ? CurrencyAmount.fromRawAmount(pair.lpToken, amount)
               : null,
-            reserve0: reserve ? reserve.reserve0 : null,
-            reserve1: reserve ? reserve.reserve1 : null,
             token0: pair.token0,
             token1: pair.token1,
           };
@@ -383,8 +478,6 @@ export function useDividendPoolWhitelistPairBalances(pageSize: number) {
         return {
           address: pair.lpToken.address,
           amount: null,
-          reserve0: null,
-          reserve1: null,
           token0: pair.token0,
           token1: pair.token1,
         };
@@ -426,8 +519,12 @@ export function useMasterPoolPairsWithReserves(pageSize: number) {
   const pairs = useMasterPoolPairs();
   const lastBlockNumber = useBlockNumber();
 
-  const lastPage = Math.floor(pairs.length / pageSize);
-  const { current, next, last } = usePagination(0, pageSize, lastPage);
+  // const lastPage = Math.floor(pairs.length / pageSize);
+  const {
+    currentPage: current,
+    toNextPage: next,
+    lastPage: last,
+  } = usePagination(0, pageSize, pairs.length);
 
   const currentPairs = useMemo(() => {
     return pairs
@@ -586,24 +683,44 @@ export function useMasterPoolPairs() {
     }
   }, [poolsPromise]);
 
-  return poolsData;
+  return poolsData.filter(
+    (pool) => !MASTERPOOL_BLACKLIST.includes(pool.lpToken.address),
+  );
 }
 
 export function useDivdendPoolWhitelistPairs() {
   const { chainId } = useActiveWeb3React();
   const protocol = useProtocol();
-  const whitelist = getDividendPoolWhitelist(protocol, chainId);
-  const whitelistLpTokens = useMemo(() => {
-    return whitelist.map((pair) => {
+  const pairs = getDividendPoolWhitelistPairs(protocol, chainId);
+  const whitelistLpPairs = useMemo(() => {
+    return pairs?.map((pair) => {
       return {
-        lpToken: new Token(chainId, pair.address, 18, 'UNI-V2', 'Uniswap V2'),
+        lpToken: new Token(chainId, pair.address, 18, pair.symbol, pair.name),
         token0: pair.token0,
         token1: pair.token1,
       };
     });
-  }, [whitelist]);
+  }, [pairs]);
 
-  return whitelistLpTokens;
+  return whitelistLpPairs ?? [];
+}
+
+export function useDivdendPoolWhitelistTokens() {
+  const { chainId } = useActiveWeb3React();
+  const protocol = useProtocol();
+  const tokens = getDividendPoolWhitelistTokens(protocol, chainId);
+  const whitelistLpTokens = useMemo(() => {
+    return tokens?.map((token) => {
+      return new Token(
+        chainId,
+        token.address,
+        token.decimals,
+        token.symbol,
+        token.name,
+      );
+    });
+  }, [tokens]);
+  return whitelistLpTokens ?? [];
 }
 
 export function useAllPairs() {
@@ -637,7 +754,13 @@ export function useAllPairs() {
         setPairs(
           values.map(
             (value) =>
-              new Token(chainId, value as string, 18, 'UNI-V2', 'Uniswap V2'),
+              new Token(
+                chainId,
+                value as string,
+                18,
+                'LTR',
+                'Standard Liter Token',
+              ),
           ),
         );
       });

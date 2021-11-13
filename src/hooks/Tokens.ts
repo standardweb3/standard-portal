@@ -4,7 +4,6 @@ import {
   NATIVE,
   Token,
   WNATIVE,
-  currencyEquals,
 } from '@digitalnative/standard-protocol-sdk';
 // import { ExtendedEther, WETH9_EXTENDED } from '../constants';
 import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks';

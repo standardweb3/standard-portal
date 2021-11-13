@@ -1,17 +1,16 @@
 import dynamic from 'next/dynamic';
 import {
-  ChainId,
   Currency,
   getFactoryAddress,
+  Price,
   Token,
   WNATIVE,
-  WNATIVE_ADDRESS,
 } from '@digitalnative/standard-protocol-sdk';
 import useDexCandles from '../../hooks/useDexCandles';
 import { CandlePeriod, NumericalCandlestickDatum } from '../../types/Candle';
 import React, { useEffect, useState } from 'react';
 import { CurrencyLogo } from '../CurrencyLogo';
-import { classNames } from '../../functions';
+import { classNames, formatNumber } from '../../functions';
 // import Lottie from 'lottie-react'
 // import solarbeamLoading from '../../animation/solarbeam-loading.json'
 import { computePairAddress } from '@digitalnative/standard-protocol-sdk';
@@ -124,9 +123,14 @@ const fillCandlestickGaps = (
 interface ChartProps {
   inputCurrency: Currency | Token | undefined;
   outputCurrency: Currency | Token | undefined;
+  price: Price<Currency, Currency>;
 }
 
-export default function Chart({ inputCurrency, outputCurrency }: ChartProps) {
+export default function Chart({
+  inputCurrency,
+  outputCurrency,
+  price,
+}: ChartProps) {
   const protocol = useProtocol();
   const { chainId } = useActiveWeb3React();
 
@@ -143,10 +147,12 @@ export default function Chart({ inputCurrency, outputCurrency }: ChartProps) {
     ? outputCurrency.address
     : inputCurrency?.wrapped?.address ?? '';
 
-  const weth = WNATIVE[ChainId.MOONRIVER];
+  const weth = WNATIVE[chainId];
   const isWrapped =
-    (inputCurrency?.isNative && weth.equals(outputCurrency)) ||
-    (outputCurrency?.isNative && weth.equals(inputCurrency));
+    (inputCurrency?.isNative &&
+      outputCurrency &&
+      weth?.equals(outputCurrency)) ||
+    (outputCurrency?.isNative && inputCurrency && weth?.equals(inputCurrency));
 
   const pairAddress =
     inputCurrency && outputCurrency && !isWrapped
@@ -314,9 +320,8 @@ export default function Chart({ inputCurrency, outputCurrency }: ChartProps) {
     if (formattedCandleData && formattedCandleData.length) {
       let differentBases = inputCurrency?.decimals != outputCurrency?.decimals;
       if (differentBases) {
-        let decimals = Math.abs(
-          inputCurrency?.decimals - outputCurrency?.decimals,
-        );
+        let decimals = inputCurrency?.decimals - outputCurrency?.decimals;
+
         formattedCandleData = formattedCandleData.map((r) => {
           return {
             close: r.close * 10 ** decimals,
@@ -331,18 +336,18 @@ export default function Chart({ inputCurrency, outputCurrency }: ChartProps) {
 
     setCandlestickSeries([{ data: formattedCandleData }]);
   }, [candlePeriod, candleData]);
-
   const hasData = candlestickSeries[0].data.length > 0;
+
   const lastClose = hasData
     ? candlestickSeries[0].data[candlestickSeries[0].data.length - 1].close
-    : undefined;
-  // const fmtLastClose = lastClose ? formattedNum(lastClose) : 'N/A'
+    : price ?? undefined;
 
+  // const fmtLastClose = lastClose ? formattedNum(lastClose) : 'N/A'
   return (
     <>
       <div className="flex items-center space-x-4 justify-between mb-4">
         <a
-          href={`${ANALYTICS_URL[chainId]}/pairs/${pairAddress}`}
+          href={`${ANALYTICS_URL[chainId]}/pairs`}
           target="_blank"
           rel="noreferrer"
           className="flex items-center justify-center space-x-4 lg:mt-0 hover:text-gray-200 cursor-pointer rounded p-2 -ml-2 lg:w-min"
@@ -366,7 +371,7 @@ export default function Chart({ inputCurrency, outputCurrency }: ChartProps) {
           </div>
         </a>
         <div className="text-3xl font-black text-gray-200 truncate">
-          {(lastClose || 0).toFixed(2)}
+          {formatNumber(lastClose || 0)}
         </div>
       </div>
       <div className={'flex flex-1 h-[300px]'}>
@@ -384,7 +389,9 @@ export default function Chart({ inputCurrency, outputCurrency }: ChartProps) {
         ) : (
           <div className="h-[300px] pb-4 flex m-auto flex-col items-center justify-center">
             <div className="text-sm font-black text-gray-200">
-              {`Unfortunately, this pair doesn't have enough data.`}
+              {inputCurrency && outputCurrency
+                ? `Unfortunately, this pair doesn't have enough data.`
+                : 'Select both tokens'}
             </div>
           </div>
         )}

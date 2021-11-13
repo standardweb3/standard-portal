@@ -42,11 +42,9 @@ export default function NetworkModal(): JSX.Element | null {
     }
   };
 
-  const supportedChainIds = useMemo(
-    () =>
-      Object.keys(SUPPORTED_NETWORKS).filter((val) => Number(val) !== chainId),
-    [chainId],
-  );
+  const supportedChainIds = useMemo(() => Object.keys(SUPPORTED_NETWORKS), [
+    chainId,
+  ]);
 
   return (
     <Modal

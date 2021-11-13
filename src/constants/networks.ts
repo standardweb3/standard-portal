@@ -96,28 +96,28 @@ export const SUPPORTED_NETWORKS: {
     blockExplorerUrls: string[];
   };
 } = {
-  [ChainId.RINKEBY]: {
-    chainId: '0x4',
-    chainName: 'Rinkeby',
-    nativeCurrency: {
-      name: 'Ethereum',
-      symbol: 'ETH',
-      decimals: 18,
-    },
-    rpcUrls: ['https://rinkeby.infura.io/v3'],
-    blockExplorerUrls: ['https://rinkeby.etherscan.io'],
-  },
-  [ChainId.SHIBUYA]: {
-    chainId: '0x51',
-    chainName: 'Shibuya',
-    nativeCurrency: {
-      name: 'Shibuya',
-      symbol: 'SBY',
-      decimals: 18,
-    },
-    rpcUrls: ['https://rpc.shibuya.astar.network:8545'],
-    blockExplorerUrls: ['https://shibuya.subscan.io'],
-  },
+  // [ChainId.RINKEBY]: {
+  //   chainId: '0x4',
+  //   chainName: 'Rinkeby',
+  //   nativeCurrency: {
+  //     name: 'Ethereum',
+  //     symbol: 'ETH',
+  //     decimals: 18,
+  //   },
+  //   rpcUrls: ['https://rinkeby.infura.io/v3'],
+  //   blockExplorerUrls: ['https://rinkeby.etherscan.io'],
+  // },
+  // [ChainId.SHIBUYA]: {
+  //   chainId: '0x51',
+  //   chainName: 'Shibuya',
+  //   nativeCurrency: {
+  //     name: 'Shibuya',
+  //     symbol: 'SBY',
+  //     decimals: 18,
+  //   },
+  //   rpcUrls: ['https://rpc.shibuya.astar.network:8545'],
+  //   blockExplorerUrls: ['https://shibuya.subscan.io'],
+  // },
   [ChainId.SHIDEN]: {
     chainId: '0x150',
     chainName: 'Shiden',
@@ -127,7 +127,7 @@ export const SUPPORTED_NETWORKS: {
       decimals: 18,
     },
     rpcUrls: ['https://rpc.shiden.astar.network:8545'],
-    blockExplorerUrls: ['https://shiden.subscan.io'],
+    blockExplorerUrls: ['https://blockscout.com/shiden'],
   },
   // [ChainId.MAINNET]: {
   //   chainId: '0x1',

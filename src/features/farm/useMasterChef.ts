@@ -12,7 +12,7 @@ import { Chef } from './enum';
 import { useCallback } from 'react';
 import { useChefContract } from './hooks';
 import { useSingleCallResult } from '../../state/multicall/hooks';
-import { calculateGasMargin } from '../../functions';
+// import { calculateGasMargin } from '../../functions';
 
 export default function useMasterChef(chef: Chef) {
   const { account } = useActiveWeb3React();

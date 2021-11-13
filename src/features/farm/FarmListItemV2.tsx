@@ -1,10 +1,4 @@
-import {
-  classNames,
-  formatCurrencyAmount,
-  formatNumber,
-  formatNumberScale,
-  formatPercent,
-} from '../../functions';
+import { classNames, formatNumber } from '../../functions';
 
 import { Disclosure } from '@headlessui/react';
 import { Image } from '../../components-ui/Image';
@@ -62,6 +56,9 @@ const FarmListItemV2 = ({ farm, ...rest }) => {
                 cursor-pointer 
                 select-none 
                 bg-opaque-farm-list
+                hover:bg-bright
+                transition
+                duration-500
                 text-sm md:text-lg`,
             )}
           >
@@ -97,36 +94,42 @@ const FarmListItemV2 = ({ farm, ...rest }) => {
                   lg:space-y-0 lg:space-x-2 lg:flex 
                   col-span-3 lg:col-span-3"
               >
-                <ViewportLargeUp>
-                  <div className="flex items-center space-x-2">
-                    {farm?.rewards?.map((reward, i) => (
-                      <div key={i} className="flex items-center">
-                        <Image
-                          src={reward.icon}
-                          width="30px"
-                          height="30px"
-                          className="rounded-full"
-                          layout="fixed"
-                          alt={reward.token}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </ViewportLargeUp>
                 <div className="space-y-2">
                   {farm?.rewards?.map((reward, i) => (
-                    <div
-                      key={i}
-                      className="flex flex-col lg:flex-row items-center space-y-2 lg:space-y-0 lg:space-x-2"
-                    >
-                      <div
-                        className="text-xs md:text-sm whitespace-nowrap
+                    <div key={i} className="space-y-2">
+                      <div className="flex flex-col lg:flex-row items-center space-y-2 lg:space-y-0 lg:space-x-2">
+                        <ViewportLargeUp>
+                          <div className="flex items-center space-x-2">
+                            {farm?.rewards?.map((reward, i) => (
+                              <div key={i} className="flex items-center">
+                                <Image
+                                  src={reward.icon}
+                                  width="30px"
+                                  height="30px"
+                                  className="rounded-full"
+                                  layout="fixed"
+                                  alt={reward.token}
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </ViewportLargeUp>
+                        <div
+                          className="text-xs md:text-sm whitespace-nowrap
                           rounded-20 bg-background-farm-list px-3 py-2 font-bold"
-                      >
-                        {formatNumber(reward.rewardPerBlock)}
+                        >
+                          {formatNumber(reward.rewardPerBlock)}
+                        </div>
+
+                        <div className="text-xs md:text-sm text-grey">
+                          {reward.token}
+                        </div>
                       </div>
-                      <div className="text-xs md:text-sm text-grey">
-                        {reward.token}
+
+                      <div className="text-xs text-grey text-center">
+                        (daily estimate)
+                        <br />
+                        {reward.rewardPerBlock * 7200} STND
                       </div>
                     </div>
                   ))}

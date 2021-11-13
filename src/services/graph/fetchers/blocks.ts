@@ -16,6 +16,7 @@ export const BLOCKS = {
   [ChainId.MAINNET]: 'blocklytics/ethereum-blocks',
   [ChainId.RINKEBY]: 'billjhlee/rinkeby-blocks',
   [ChainId.SHIBUYA]: 'digitalnativeinc/shibuya-blocks',
+  [ChainId.SHIDEN]: 'digitalnativeinc/shiden-blocks',
   [ChainId.XDAI]: 'matthewlilley/xdai-blocks',
   [ChainId.MATIC]: 'matthewlilley/polygon-blocks',
   [ChainId.FANTOM]: 'matthewlilley/fantom-blocks',
@@ -41,7 +42,7 @@ export const getBlocks = async (chainId = ChainId.MAINNET, start, end) => {
 };
 
 export const getOneDayBlock = async (chainId = ChainId.MAINNET) => {
-  const date = startOfHour(subDays(Date.now(), 1));
+  const date = startOfMinute(subDays(Date.now(), 1));
   const start = Math.floor(Number(date) / 1000);
   const end = Math.floor(Number(date) / 1000) + 600;
   const { blocks } = await fetcher(chainId, blocksQuery, { start, end });
@@ -49,7 +50,7 @@ export const getOneDayBlock = async (chainId = ChainId.MAINNET) => {
 };
 
 export const getOneWeekBlock = async (chainId = ChainId.MAINNET) => {
-  const date = startOfHour(subDays(Date.now(), 7));
+  const date = startOfMinute(subDays(Date.now(), 7));
   const start = Math.floor(Number(date) / 1000);
   const end = Math.floor(Number(date) / 1000) + 600;
   const { blocks } = await fetcher(chainId, blocksQuery, { start, end });
@@ -60,7 +61,7 @@ export const getCustomDayBlock = async (
   chainId = ChainId.MAINNET,
   days: number,
 ) => {
-  const date = startOfHour(subDays(Date.now(), days));
+  const date = startOfMinute(subDays(Date.now(), days));
   const start = Math.floor(Number(date) / 1000);
   const end = Math.floor(Number(date) / 1000) + 600;
   const { blocks } = await request(

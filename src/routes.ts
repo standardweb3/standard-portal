@@ -1,38 +1,42 @@
-import swapIconActive from '../public/icons/filled/Swap.svg';
-import swapIcon from '../public/icons/outlined/Swap.svg';
-import farmIconActive from '../public/icons/filled/Farm.svg';
-import farmIcon from '../public/icons/outlined/Farm.svg';
-import poolIconActive from '../public/icons/filled/Vault.svg';
-import poolIcon from '../public/icons/outlined/Vault.svg';
-import dividendIconActive from '../public/icons/filled/Dividend.svg';
-import dividendIcon from '../public/icons/outlined/Dividend.svg';
+import swapIcon from '../public/icons/swap.svg';
+import farmIcon from '../public/icons/farm.svg';
+import poolIcon from '../public/icons/pool.svg';
+import dividendIcon from '../public/icons/dividend.svg';
+import bridgeIcon from '../public/icons/bridge.svg';
 
 export const sidebarRoutes = [
   {
-    name: 'Swap',
-    urls: ['/swap', '/add', 'liquidity'],
+    name: 'Trade',
+    urls: ['/trade', '/add', 'liquidity'],
     icon: swapIcon,
-    iconActive: swapIconActive,
+    iconActive: swapIcon,
   },
   {
     name: 'Pool',
     urls: ['/pool'],
     icon: poolIcon,
-    iconActive: poolIconActive,
+    iconActive: poolIcon,
   },
 
   {
     name: 'Farm',
     urls: ['/farm'],
     icon: farmIcon,
-    iconActive: farmIconActive,
+    iconActive: farmIcon,
     // hidden: [ChainId.SHIBUYA],
   },
   {
     name: 'Dividend',
     urls: ['/dividend'],
     icon: dividendIcon,
-    iconActive: dividendIconActive,
+    iconActive: dividendIcon,
+    // hidden: [ChainId.SHIDEN],
+  },
+  {
+    name: 'Bridge',
+    urls: ['/bridge'],
+    icon: bridgeIcon,
+    iconActive: bridgeIcon,
     // hidden: [ChainId.SHIDEN],
   },
 ];

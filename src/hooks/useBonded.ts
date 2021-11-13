@@ -68,14 +68,14 @@ export function useLastBonded() {
   return lastBonded;
 }
 
-export function useLastClaimed(token: string) {
+export function useLastClaimed(token?: string) {
   const { account } = useActiveWeb3React();
   const dividendPoolContract = useDividendPoolContract();
   const lastBlockNumber = useBlockNumber();
   const [lastClaimed, setLastClaimed] = useState(null);
 
   useEffect(() => {
-    if (dividendPoolContract !== null) {
+    if (token && dividendPoolContract !== null) {
       dividendPoolContract
         .getLastClaimed(token)
         .then((res) => {
@@ -88,7 +88,7 @@ export function useLastClaimed(token: string) {
   return lastClaimed;
 }
 
-export function useRemainingClaimTime(token: string): number | null {
+export function useRemainingClaimTime(token?: string): number | null {
   const lastClaimed = useLastClaimed(token);
   const currentBlockTimestamp = useCurrentBlockTimestamp();
   const diff =

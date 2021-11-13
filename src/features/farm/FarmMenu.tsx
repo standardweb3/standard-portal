@@ -1,10 +1,6 @@
-import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import { NavigationLink } from '../../components-ui/NavigationLink';
 import React from 'react';
 import { useActiveWeb3React } from '../../hooks';
-import { ExternalLink } from '../../components-ui/ExternalLink';
-import { ANALYTICS_URL } from '../../constants';
-import { ChartBarIcon } from '@heroicons/react/outline';
 import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
 
 const Menu = ({ positionsLength }) => {

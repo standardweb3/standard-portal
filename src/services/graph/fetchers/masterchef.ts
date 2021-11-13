@@ -7,6 +7,7 @@ import {
   miniChefPoolsQuery,
   poolsQuery,
   poolsV2Query,
+  masterChefV2Query,
 } from '../queries';
 
 import { getTokenSubset } from './exchange';
@@ -31,6 +32,7 @@ export const MASTERCHEF_V2 = {
   [ChainId.MAINNET]: 'sushiswap/master-chefv2',
   [ChainId.RINKEBY]: 'billjhlee/rinkeby-master-pool',
   [ChainId.SHIBUYA]: 'digitalnativeinc/shibuya-master-pool',
+  [ChainId.SHIDEN]: 'digitalnativeinc/shiden-master-pool',
 };
 
 export const masterChefV2 = async (query, chainId = ChainId.MAINNET) =>
@@ -57,6 +59,11 @@ export const getMasterChefV2TotalAllocPoint = async (chainId: ChainId) => {
     masterChef: { totalAllocPoint },
   } = await masterChefV2(masterChefV2TotalAllocPointQuery, chainId);
   return totalAllocPoint;
+};
+
+export const getMasterChefV2Availability = async (chainId: ChainId) => {
+  const data = await masterChefV2(masterChefV2Query, chainId);
+  return data;
 };
 
 export const getMasterChefV2SushiPerBlock = async (chainId: ChainId) => {

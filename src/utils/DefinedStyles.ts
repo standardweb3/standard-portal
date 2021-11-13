@@ -16,12 +16,12 @@ export const DefinedStyles = {
   w-full md:max-w-[600px] p-8`,
   pageAlertFull: 'w-full mb-6',
   pageAlertMaxed: 'w-full md:max-w-[600px] mb-6',
-  page: 'pt-[10%] pb-[60px] md:pt-0',
+  page: 'pt-[10%] pb-[60px] md:pt-0 max-w-[1500px]',
   pageContent: `
     w-full
     md:max-w-[600px]
     bg-opaque
-    rounded-20 p-4 sm:p-8
+    rounded-20 p-5 sm:p-5
     text-text
   `,
   manageTab: ` 

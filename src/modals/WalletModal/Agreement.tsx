@@ -12,7 +12,7 @@ export default function Agreement({
       <input
         // className="checkbox"
         name="agreed"
-        className="checkbox"
+        // className="checkbox"
         type="checkbox"
         checked={agreed}
         onChange={(cb: any) => {

@@ -64,8 +64,7 @@ import {
 import { ExchangeNavigation } from '../../components-ui/Exchange/ExchangeNavigation';
 import { TransactionSettingsWithGas } from '../../components-ui/Exchange/TransactionSettingsWithGas';
 import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
-
-const DEFAULT_REMOVE_LIQUIDITY_SLIPPAGE_TOLERANCE = new Percent(5, 100);
+import { DEFAULT_REMOVE_LIQUIDITY_SLIPPAGE_TOLERANCE } from '../../constants/liquidity';
 
 export default function Remove() {
   const router = useRouter();
@@ -85,12 +84,12 @@ export default function Remove() {
   );
 
   // toggle wallet when disconnected
-  const toggleWalletModal = useWalletModalToggle();
+  // const toggleWalletModal = useWalletModalToggle();
 
-  const { price } = useDerivedMintInfo(
-    currencyA ?? undefined,
-    currencyB ?? undefined,
-  );
+  // const { price } = useDerivedMintInfo(
+  //   currencyA ?? undefined,
+  //   currencyB ?? undefined,
+  // );
 
   // burn state
   const { independentField, typedValue } = useBurnState();
@@ -134,9 +133,9 @@ export default function Remove() {
         : parsedAmounts[Field.CURRENCY_B]?.toSignificant(6) ?? '',
   };
 
-  const atMaxAmount = parsedAmounts[Field.LIQUIDITY_PERCENT]?.equalTo(
-    new Percent('1'),
-  );
+  // const atMaxAmount = parsedAmounts[Field.LIQUIDITY_PERCENT]?.equalTo(
+  //   new Percent('1'),
+  // );
 
   // pair contract
   const pairContract: Contract | null = usePairContract(
@@ -760,27 +759,27 @@ export default function Remove() {
         currencyB?.equals(WNATIVE[chainId])),
   );
 
-  const handleSelectCurrencyA = useCallback(
-    (currency: Currency) => {
-      if (currencyIdB && currencyId(currency) === currencyIdB) {
-        router.push(`/remove/${currencyId(currency)}/${currencyIdA}`);
-      } else {
-        router.push(`/remove/${currencyId(currency)}/${currencyIdB}`);
-      }
-    },
-    [currencyIdA, currencyIdB, router],
-  );
+  // const handleSelectCurrencyA = useCallback(
+  //   (currency: Currency) => {
+  //     if (currencyIdB && currencyId(currency) === currencyIdB) {
+  //       router.push(`/remove/${currencyId(currency)}/${currencyIdA}`);
+  //     } else {
+  //       router.push(`/remove/${currencyId(currency)}/${currencyIdB}`);
+  //     }
+  //   },
+  //   [currencyIdA, currencyIdB, router],
+  // );
 
-  const handleSelectCurrencyB = useCallback(
-    (currency: Currency) => {
-      if (currencyIdA && currencyId(currency) === currencyIdA) {
-        router.push(`/remove/${currencyIdB}/${currencyId(currency)}`);
-      } else {
-        router.push(`/remove/${currencyIdA}/${currencyId(currency)}`);
-      }
-    },
-    [currencyIdA, currencyIdB, router],
-  );
+  // const handleSelectCurrencyB = useCallback(
+  //   (currency: Currency) => {
+  //     if (currencyIdA && currencyId(currency) === currencyIdA) {
+  //       router.push(`/remove/${currencyIdB}/${currencyId(currency)}`);
+  //     } else {
+  //       router.push(`/remove/${currencyIdA}/${currencyId(currency)}`);
+  //     }
+  //   },
+  //   [currencyIdA, currencyIdB, router],
+  // );
 
   const handleDismissConfirmation = useCallback(() => {
     setShowConfirm(false);
@@ -830,7 +829,13 @@ export default function Remove() {
                   <TransactionSettingsWithGas
                     allowedSlippage={allowedSlippage}
                   />
-                  <AnalyticsLink path={`pairs/${pair}`} />
+                  <AnalyticsLink
+                    path={
+                      pair?.liquidityToken?.address
+                        ? `pairs/${pair.liquidityToken.address}`
+                        : 'pairs'
+                    }
+                  />
                 </div>
               </ViewportSmallDown>
               <ViewportMediumUp>
