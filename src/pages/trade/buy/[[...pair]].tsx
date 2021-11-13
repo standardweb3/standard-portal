@@ -383,7 +383,7 @@ export default function Swap() {
   }, [priceImpact, trade]);
 
   // errors
-  const [showInverted, setShowInverted] = useState<boolean>(false);
+  const [showInverted, setShowInverted] = useState<boolean>(true);
 
   const isArgentWallet = useIsArgentWallet();
 

@@ -6,7 +6,6 @@ import {
   Currency,
   CurrencyAmount,
   currencyEquals,
-  Percent,
   WNATIVE,
 } from '@digitalnative/standard-protocol-sdk';
 import { BigNumber } from 'ethers';
