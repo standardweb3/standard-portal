@@ -1630,10 +1630,10 @@
     postcss-selector-matches "^4.0.0"
     postcss-selector-not "^4.0.0"
 
-"@digitalnative/standard-protocol-sdk@^0.0.132":
-  version "0.0.132"
-  resolved "https://registry.yarnpkg.com/@digitalnative/standard-protocol-sdk/-/standard-protocol-sdk-0.0.132.tgz#83e6d8a31b58520ac4cb6f7e268974b1715ae213"
-  integrity sha512-HozF/xgazYhAtqZUM94fC/NulD3MdNKi9UpkuHYNREfKaA51KIrfw4zi0Cpt7E9eo4d/nONNDx2c+/GXzExovw==
+"@digitalnative/standard-protocol-sdk@^0.0.141":
+  version "0.0.141"
+  resolved "https://registry.yarnpkg.com/@digitalnative/standard-protocol-sdk/-/standard-protocol-sdk-0.0.141.tgz#8617f0d4ace193c9ae16c34d27e55bb889deee49"
+  integrity sha512-wYYIXyaNxu7d7V6K8+/JiH9X1gJ515fEplWZGsqaAvZVaqGsNIfnjh2ZOC/TZ4WuKfO+9yZUSsxglet0SgASeA==
   dependencies:
     big.js "^6.1.0"
     decimal.js-light "^2.5.0"
