@@ -38,7 +38,6 @@ import { DividendPairs } from '../../components-ui/Dividend/DividendPairs';
 import styled from '@emotion/styled';
 import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
 import {
-  getExchangeAvailability,
   useEthPrice,
   useExchangeAvailability,
   useStandardPrice,
