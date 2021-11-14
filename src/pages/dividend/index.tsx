@@ -38,7 +38,6 @@ import { DividendPairs } from '../../components-ui/Dividend/DividendPairs';
 import styled from '@emotion/styled';
 import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
 import {
-  getExchangeAvailability,
   useEthPrice,
   useExchangeAvailability,
   useStandardPrice,
@@ -315,7 +314,7 @@ export default function Dividend() {
     setPendingTx(false);
   };
 
-  const migrationDate = 1636502399;
+  const migrationDate = 1638316799;
 
   return (
     <>

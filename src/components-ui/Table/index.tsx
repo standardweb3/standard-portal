@@ -128,8 +128,8 @@ export function Table({
       </pre>
       <table {...getTableProps()}>
         <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
+          {headerGroups.map((headerGroup, i) => (
+            <tr {...headerGroup.getHeaderGroupProps()} key={i}>
               {headerGroup.headers.map((column) => (
                 <th {...column.getHeaderProps()}>
                   {column.render('Header')}
@@ -149,7 +149,7 @@ export function Table({
           {page.map((row, i) => {
             prepareRow(row);
             return (
-              <div {...row.getRowProps()} className="">
+              <div {...row.getRowProps()} className="" key={i}>
                 {row.cells.map((cell) => {
                   return (
                     <td {...cell.getCellProps()}>{cell.render('Cell')}</td>

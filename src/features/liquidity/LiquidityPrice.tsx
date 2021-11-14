@@ -5,7 +5,6 @@ import { ONE_BIPS } from '../../constants';
 import React, { useState } from 'react';
 import { classNames } from '../../functions';
 import { SwitchHorizontalIcon } from '@heroicons/react/outline';
-import { useCallback } from 'react';
 
 function TradePrice({ price, currencies }) {
   const [showInverted, setShowInverted] = useState(false);
@@ -22,15 +21,17 @@ function TradePrice({ price, currencies }) {
     >
       {showInverted ? (
         <div className="select-none">
-          {`${price?.invert()?.toSignificant(6) ?? '-'} ${
+          {`1 ${
+            currencies[Field.CURRENCY_B]?.symbol
+          } = ${price?.invert()?.toSignificant(6) ?? '-'} ${
             currencies[Field.CURRENCY_A]?.symbol
-          } per ${currencies[Field.CURRENCY_B]?.symbol}`}
+          }`}
         </div>
       ) : (
         <div className="select-none">
-          {`${price?.toSignificant(6) ?? '-'} ${
-            currencies[Field.CURRENCY_B]?.symbol
-          } per ${currencies[Field.CURRENCY_A]?.symbol}`}
+          {`1 ${currencies[Field.CURRENCY_A]?.symbol} = ${price?.toSignificant(
+            6,
+          ) ?? '-'} ${currencies[Field.CURRENCY_B]?.symbol}`}
         </div>
       )}
       <div className="bg-opaque-secondary p-2 rounded-20 text-text">

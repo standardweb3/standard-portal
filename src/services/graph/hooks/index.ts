@@ -161,6 +161,13 @@ export function useFarmPairAddresses() {
 
 export async function useMasterChefV2Availability(fallbackCb) {
   const { chainId } = useActiveWeb3React();
-  const data = await getMasterChefV2Availability(chainId);
-  data === undefined && fallbackCb();
+  useSWR(
+    chainId ? ['masterChefAvailability'] : null,
+    () => getMasterChefV2Availability(chainId),
+    {
+      loadingTimeout: 3000,
+      onLoadingSlow: fallbackCb(),
+      onError: fallbackCb(),
+    },
+  );
 }

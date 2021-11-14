@@ -32,7 +32,7 @@ const FarmListV2 = ({ farms }) => {
           sm:text-base
           col-span-3 lg:col-span-3 cursor-pointer"
         >
-          Staked
+          TVL (farm)
         </div>
         <div
           className="
@@ -41,7 +41,7 @@ const FarmListV2 = ({ farms }) => {
           sm:text-base
           col-span-3 lg:col-span-3 cursor-pointer"
         >
-          TVL
+          TVL (Pair)
         </div>
       </div>
       <div className="flex-col space-y-2">

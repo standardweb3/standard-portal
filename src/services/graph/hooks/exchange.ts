@@ -81,10 +81,20 @@ export function useSevenDayEthPrice(swrConfig: SWRConfiguration = undefined) {
   return data;
 }
 
-export async function useExchangeAvailability(fallbackCb) {
+export async function useExchangeAvailability(
+  fallbackCb,
+  swrConfig: SWRConfiguration = undefined,
+) {
   const { chainId } = useActiveWeb3React();
-  const data = await getExchangeAvailability(chainId);
-  data === undefined && fallbackCb();
+  useSWR(
+    chainId ? ['exchangeAvailability'] : null,
+    () => getExchangeAvailability(chainId),
+    {
+      loadingTimeout: 3000,
+      onLoadingSlow: fallbackCb(),
+      onError: fallbackCb(),
+    },
+  );
 }
 
 export function useEthPrice(

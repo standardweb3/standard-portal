@@ -21,7 +21,6 @@ import {
   formatPercent,
 } from '../../functions';
 import {
-  useSizeSmDown,
   useSizeMdDown,
   useSizeXs,
   ViewportMediumUp,
@@ -87,6 +86,12 @@ export default function Tokens() {
   const sevenDayEthPrice = parseFloat(useSevenDayEthPrice() ?? 0);
 
   const tokens = useTokens({});
+  // console.log('tokens', tokens);
+  useEffect(() => {
+    if (tokens !== undefined && tokens.length === 0) {
+      router.push('/trade/buy');
+    }
+  }, [tokens]);
 
   const sortedTokens = useMemo(() => {
     return (
