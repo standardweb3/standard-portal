@@ -1,14 +1,14 @@
-import {formatSwapTokenList, getLocalRPC} from './methods'
-import {tokenListUrl, VERSION, USE_VERSION} from '../constant'
+import { formatSwapTokenList, getLocalRPC } from './methods';
+import { tokenListUrl, VERSION, USE_VERSION } from '../constant';
 
-export const CELO_MAIN_CHAINID = 42220
-export const CELO_MAINNET = getLocalRPC(CELO_MAIN_CHAINID, 'https://forno.celo.org')
-export const CELO_MAIN_EXPLORER = 'https://explorer.celo.org'
+export const CELO_MAIN_CHAINID = 42220;
+export const CELO_MAINNET = 'https://forno.celo.org';
+export const CELO_MAIN_EXPLORER = 'https://explorer.celo.org';
 
-export const tokenList = []
-export const testTokenList = []
+export const tokenList = [];
+export const testTokenList = [];
 
-const symbol = 'CELO'
+const symbol = 'CELO';
 
 const bridgeToken = {
   [VERSION.V1]: {
@@ -19,9 +19,9 @@ const bridgeToken = {
     bridgeInitToken: '',
     bridgeInitChain: '56',
     nativeToken: '',
-    crossBridgeInitToken: ''
+    crossBridgeInitToken: '',
   },
-}
+};
 
 export default {
   [CELO_MAIN_CHAINID]: {
@@ -35,9 +35,7 @@ export default {
     v2FactoryToken: '',
     timelock: '',
     nodeRpc: CELO_MAINNET,
-    nodeRpcList: [
-      CELO_MAINNET,
-    ],
+    nodeRpcList: [CELO_MAINNET],
     chainID: CELO_MAIN_CHAINID,
     lookHash: CELO_MAIN_EXPLORER + '/tx/',
     lookAddr: CELO_MAIN_EXPLORER + '/address/',
@@ -50,6 +48,6 @@ export default {
     label: CELO_MAIN_CHAINID,
     isSwitch: 1,
     suffix: 'CELO',
-    anyToken: ''
+    anyToken: '',
   },
-}
+};

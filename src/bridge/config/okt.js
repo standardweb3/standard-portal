@@ -1,14 +1,14 @@
-import {formatSwapTokenList, getLocalRPC} from './methods'
-import {tokenListUrl, VERSION, USE_VERSION} from '../constant'
+import { formatSwapTokenList, getLocalRPC } from './methods';
+import { tokenListUrl, VERSION, USE_VERSION } from '../constant';
 
-export const OKT_MAIN_CHAINID = 66
-export const OKT_MAINNET = getLocalRPC(OKT_MAIN_CHAINID, 'https://exchainrpc.okex.org')
-export const OKT_MAIN_EXPLORER = 'https://www.oklink.com/okexchain'
+export const OKT_MAIN_CHAINID = 66;
+export const OKT_MAINNET = 'https://exchainrpc.okex.org';
+export const OKT_MAIN_EXPLORER = 'https://www.oklink.com/okexchain';
 
-export const tokenList = []
-export const testTokenList = []
+export const tokenList = [];
+export const testTokenList = [];
 
-const symbol = 'OKT'
+const symbol = 'OKT';
 
 const bridgeToken = {
   [VERSION.V1_1]: {
@@ -18,15 +18,15 @@ const bridgeToken = {
   [VERSION.V2_2]: {
     bridgeInitToken: '0xc946daf81b08146b1c7a8da2a851ddf2b3eaaf85',
     bridgeInitChain: '56',
-    nativeToken: ''
+    nativeToken: '',
   },
   [VERSION.V5]: {
     bridgeInitToken: '0xc946daf81b08146b1c7a8da2a851ddf2b3eaaf85',
     bridgeInitChain: '56',
     nativeToken: '',
-    crossBridgeInitToken: '0x218c3c3d49d0e7b37aff0d8bb079de36ae61a4c0'
+    crossBridgeInitToken: '0x218c3c3d49d0e7b37aff0d8bb079de36ae61a4c0',
   },
-}
+};
 
 export default {
   [OKT_MAIN_CHAINID]: {
@@ -41,9 +41,7 @@ export default {
     v2FactoryToken: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
     timelock: '0x9a8541Ddf3a932a9A922B607e9CF7301f1d47bD1',
     nodeRpc: OKT_MAINNET,
-    nodeRpcList: [
-      OKT_MAINNET,
-    ],
+    nodeRpcList: [OKT_MAINNET],
     chainID: OKT_MAIN_CHAINID,
     lookHash: OKT_MAIN_EXPLORER + '/tx/',
     lookAddr: OKT_MAIN_EXPLORER + '/address/',
@@ -56,6 +54,6 @@ export default {
     label: OKT_MAIN_CHAINID,
     isSwitch: 1,
     suffix: 'OKT',
-    anyToken: ''
+    anyToken: '',
   },
-}
+};

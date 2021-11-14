@@ -1,33 +1,33 @@
-import {formatSwapTokenList, getLocalRPC} from './methods'
-import {tokenListUrl, VERSION, USE_VERSION} from '../constant'
+import { formatSwapTokenList, getLocalRPC } from './methods';
+import { tokenListUrl, VERSION, USE_VERSION } from '../constant';
 
-export const MATIC_MAIN_CHAINID = 137
+export const MATIC_MAIN_CHAINID = 137;
 // export const MATIC_MAINNET = 'https://rpc-mainnet.maticvigil.com'
 // export const MATIC_MAINNET = process.env.NODE_ENV === 'development' ? 'https://rpc-mainnet.maticvigil.com' : 'https://maticnode1.anyswap.exchange'
-export const MATIC_MAINNET = process.env.NODE_ENV === 'development' ? getLocalRPC(MATIC_MAIN_CHAINID, 'https://rpc-mainnet.matic.network') : getLocalRPC(MATIC_MAIN_CHAINID, 'https://maticnode1.anyswap.exchange')
+export const MATIC_MAINNET = 'https://maticnode1.anyswap.exchange';
 // export const MATIC_MAIN_EXPLORER = 'https://explorer-mainnet.maticvigil.com'
-export const MATIC_MAIN_EXPLORER = 'https://polygonscan.com'
+export const MATIC_MAIN_EXPLORER = 'https://polygonscan.com';
 // console.log(MATIC_MAINNET)
 export const tokenList = [
   {
-    "address": "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6",
-    "chainId": MATIC_MAIN_CHAINID,
-    "decimals": 8,
-    "name": "Wrapped BTC",
-    "symbol": "WBTC"
+    address: '0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6',
+    chainId: MATIC_MAIN_CHAINID,
+    decimals: 8,
+    name: 'Wrapped BTC',
+    symbol: 'WBTC',
   },
   {
-    "address": "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
-    "chainId": MATIC_MAIN_CHAINID,
-    "decimals": 18,
-    "name": "Dai Stablecoin",
-    "symbol": "DAI"
+    address: '0x8f3cf7ad23cd3cadbd9735aff958023239c6a063',
+    chainId: MATIC_MAIN_CHAINID,
+    decimals: 18,
+    name: 'Dai Stablecoin',
+    symbol: 'DAI',
   },
-]
+];
 
-export const testTokenList = []
+export const testTokenList = [];
 
-const symbol = 'MATIC'
+const symbol = 'MATIC';
 
 const bridgeToken = {
   [VERSION.V1]: {
@@ -37,7 +37,7 @@ const bridgeToken = {
   [VERSION.V1_1]: {
     bridgeInitToken: '0xdf00960e0adfea78ee29da7fcca17cfdddc0a4ca',
     bridgeInitChain: '56',
-    nativeToken: ''
+    nativeToken: '',
   },
   [VERSION.V2]: {
     bridgeInitToken: '0x9610b01aaa57ec026001f7ec5cface51bfea0ba6',
@@ -54,9 +54,9 @@ const bridgeToken = {
   [VERSION.V5]: {
     bridgeInitToken: '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
     bridgeInitChain: '56',
-    crossBridgeInitToken: '0x6ab6d61428fde76768d7b45d8bfeec19c6ef91a8'
-  }
-}
+    crossBridgeInitToken: '0x6ab6d61428fde76768d7b45d8bfeec19c6ef91a8',
+  },
+};
 
 export default {
   [MATIC_MAIN_CHAINID]: {
@@ -92,6 +92,6 @@ export default {
     label: MATIC_MAIN_CHAINID,
     isSwitch: 1,
     suffix: 'MATIC',
-    anyToken: '0x6ab6d61428fde76768d7b45d8bfeec19c6ef91a8'
+    anyToken: '0x6ab6d61428fde76768d7b45d8bfeec19c6ef91a8',
   },
-}
+};

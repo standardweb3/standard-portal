@@ -1,14 +1,14 @@
-import {formatSwapTokenList, getLocalRPC} from './methods'
-import {tokenListUrl, VERSION, USE_VERSION} from '../constant'
+import { formatSwapTokenList, getLocalRPC } from './methods';
+import { tokenListUrl, VERSION, USE_VERSION } from '../constant';
 
-export const KCC_MAIN_CHAINID = 321
-export const KCC_MAINNET = getLocalRPC(KCC_MAIN_CHAINID, 'https://rpc-mainnet.kcc.network')
-export const KCC_MAIN_EXPLORER = 'https://explorer.kcc.io/cn'
+export const KCC_MAIN_CHAINID = 321;
+export const KCC_MAINNET = 'https://rpc-mainnet.kcc.network';
+export const KCC_MAIN_EXPLORER = 'https://explorer.kcc.io/cn';
 
-export const tokenList = []
-export const testTokenList = []
+export const tokenList = [];
+export const testTokenList = [];
 
-const symbol = 'KCC'
+const symbol = 'KCC';
 
 const bridgeToken = {
   [VERSION.V1]: {
@@ -19,9 +19,9 @@ const bridgeToken = {
     bridgeInitToken: '',
     bridgeInitChain: '56',
     nativeToken: '',
-    crossBridgeInitToken: '0x639a647fbe20b6c8ac19e48e2de44ea792c62c5c'
+    crossBridgeInitToken: '0x639a647fbe20b6c8ac19e48e2de44ea792c62c5c',
   },
-}
+};
 
 export default {
   [KCC_MAIN_CHAINID]: {
@@ -36,9 +36,7 @@ export default {
     v2FactoryToken: '',
     timelock: '',
     nodeRpc: KCC_MAINNET,
-    nodeRpcList: [
-      KCC_MAINNET,
-    ],
+    nodeRpcList: [KCC_MAINNET],
     chainID: KCC_MAIN_CHAINID,
     lookHash: KCC_MAIN_EXPLORER + '/tx/',
     lookAddr: KCC_MAIN_EXPLORER + '/address/',
@@ -51,6 +49,6 @@ export default {
     label: KCC_MAIN_CHAINID,
     isSwitch: 1,
     suffix: '',
-    anyToken: ''
+    anyToken: '',
   },
-}
+};

@@ -96,6 +96,17 @@ export const SUPPORTED_NETWORKS: {
     blockExplorerUrls: string[];
   };
 } = {
+  [ChainId.MAINNET]: {
+    chainId: '0x1',
+    chainName: 'Ethereum',
+    nativeCurrency: {
+      name: 'Ethereum',
+      symbol: 'ETH',
+      decimals: 18,
+    },
+    rpcUrls: ['https://mainnet.infura.io/v3'],
+    blockExplorerUrls: ['https://etherscan.com'],
+  },
   // [ChainId.RINKEBY]: {
   //   chainId: '0x4',
   //   chainName: 'Rinkeby',
@@ -129,17 +140,6 @@ export const SUPPORTED_NETWORKS: {
     rpcUrls: ['https://rpc.shiden.astar.network:8545'],
     blockExplorerUrls: ['https://blockscout.com/shiden'],
   },
-  // [ChainId.MAINNET]: {
-  //   chainId: '0x1',
-  //   chainName: 'Ethereum',
-  //   nativeCurrency: {
-  //     name: 'Ethereum',
-  //     symbol: 'ETH',
-  //     decimals: 18,
-  //   },
-  //   rpcUrls: ['https://mainnet.infura.io/v3'],
-  //   blockExplorerUrls: ['https://etherscan.com'],
-  // },
   // [ChainId.FANTOM]: {
   //   chainId: '0xfa',
   //   chainName: 'Fantom',

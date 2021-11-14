@@ -1,14 +1,14 @@
-import {formatSwapTokenList, getLocalRPC} from './methods'
-import {tokenListUrl, VERSION, USE_VERSION} from '../constant'
+import { formatSwapTokenList, getLocalRPC } from './methods';
+import { tokenListUrl, VERSION, USE_VERSION } from '../constant';
 
-export const IOTEX_MAIN_CHAINID = 4689
-export const IOTEX_MAINNET = getLocalRPC(IOTEX_MAIN_CHAINID, 'https://babel-api.mainnet.iotex.io')
-export const IOTEX_MAIN_EXPLORER = 'https://iotexscan.io'
+export const IOTEX_MAIN_CHAINID = 4689;
+export const IOTEX_MAINNET = 'https://babel-api.mainnet.iotex.io';
+export const IOTEX_MAIN_EXPLORER = 'https://iotexscan.io';
 
-export const tokenList = []
-export const testTokenList = []
+export const tokenList = [];
+export const testTokenList = [];
 
-const symbol = 'IOTX'
+const symbol = 'IOTX';
 
 const bridgeToken = {
   [VERSION.V1]: {
@@ -19,9 +19,9 @@ const bridgeToken = {
     bridgeInitToken: '0xa00744882684c3e4747faefd68d283ea44099d03',
     bridgeInitChain: '56',
     nativeToken: '0xa00744882684c3e4747faefd68d283ea44099d03',
-    crossBridgeInitToken: ''
+    crossBridgeInitToken: '',
   },
-}
+};
 
 export default {
   [IOTEX_MAIN_CHAINID]: {
@@ -35,9 +35,7 @@ export default {
     v2FactoryToken: '',
     timelock: '',
     nodeRpc: IOTEX_MAINNET,
-    nodeRpcList: [
-      IOTEX_MAINNET,
-    ],
+    nodeRpcList: [IOTEX_MAINNET],
     chainID: IOTEX_MAIN_CHAINID,
     lookHash: IOTEX_MAIN_EXPLORER + '/tx/',
     lookAddr: IOTEX_MAIN_EXPLORER + '/address/',
@@ -50,6 +48,6 @@ export default {
     label: IOTEX_MAIN_CHAINID,
     isSwitch: 1,
     suffix: 'IoTeX',
-    anyToken: ''
+    anyToken: '',
   },
-}
+};

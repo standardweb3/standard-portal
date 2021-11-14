@@ -12,19 +12,25 @@ export function useFetchRouterTokenList() {
   );
 
   const tokens = useMemo(() => {
-    let flattened = [];
-    Object.keys(data || {}).forEach((version) => {
-      if (version.indexOf('ARB') !== -1) return;
-      Object.values(data[version]).forEach((token: any) => {
-        if (
-          version.toLowerCase().indexOf('underlying') !== -1 &&
-          token.symbol === 'DAI'
-        )
-          return;
-        flattened.push(token);
-      });
-    });
-    return flattened;
+    const list: any = {};
+
+    if (data) {
+      for (const version in data) {
+        if (version.indexOf('ARB') !== -1) continue;
+        for (const token in data[version]) {
+          if (
+            version.toLowerCase().indexOf('underlying') !== -1 &&
+            data[version][token].symbol === 'DAI'
+          )
+            continue;
+          list[token] = {
+            ...data[version][token],
+            sort: version.toLowerCase().indexOf('stable') !== -1 ? 0 : 1,
+          };
+        }
+      }
+    }
+    return list;
   }, [data, error]);
 
   return tokens;

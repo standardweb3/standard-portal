@@ -1,33 +1,31 @@
-import {formatSwapTokenList, getLocalRPC} from './methods'
-import {tokenListUrl, VERSION, USE_VERSION} from '../constant'
+import { formatSwapTokenList, getLocalRPC } from './methods';
+import { tokenListUrl, VERSION, USE_VERSION } from '../constant';
 
-export const AVAX_MAIN_CHAINID = 43114
-export const AVAX_MAINNET = getLocalRPC(AVAX_MAIN_CHAINID, 'https://api.avax.network/ext/bc/C/rpc')
-export const AVAX_MAIN_EXPLORER = 'https://avascan.info/blockchain/c'
+export const AVAX_MAIN_CHAINID = 43114;
+export const AVAX_MAINNET = 'https://api.avax.network/ext/bc/C/rpc';
+export const AVAX_MAIN_EXPLORER = 'https://avascan.info/blockchain/c';
 
-export const tokenList = [
+export const tokenList = [];
 
-]
-
-const symbol = 'AVAX'
+const symbol = 'AVAX';
 
 const bridgeToken = {
   [VERSION.V1]: {
     bridgeInitToken: '',
-    bridgeInitChain: ''
+    bridgeInitChain: '',
   },
   [VERSION.V1_1]: {
     bridgeInitToken: '0x165dbb08de0476271714952c3c1f068693bd60d7',
     bridgeInitChain: '56',
-    nativeToken: ''
+    nativeToken: '',
   },
   [VERSION.V5]: {
     bridgeInitToken: '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664',
     bridgeInitChain: '56',
     nativeToken: '',
-    crossBridgeInitToken: '0xb44a9b6905af7c801311e8f4e76932ee959c663c'
+    crossBridgeInitToken: '0xb44a9b6905af7c801311e8f4e76932ee959c663c',
   },
-}
+};
 
 export default {
   [AVAX_MAIN_CHAINID]: {
@@ -41,9 +39,7 @@ export default {
     v2FactoryToken: '',
     timelock: '',
     nodeRpc: AVAX_MAINNET,
-    nodeRpcList: [
-      AVAX_MAINNET
-    ],
+    nodeRpcList: [AVAX_MAINNET],
     chainID: AVAX_MAIN_CHAINID,
     lookHash: AVAX_MAIN_EXPLORER + '/tx/',
     lookAddr: AVAX_MAIN_EXPLORER + '/address/',
@@ -56,6 +52,6 @@ export default {
     label: AVAX_MAIN_CHAINID,
     isSwitch: 1,
     suffix: 'AVAX',
-    anyToken: '0xb44a9b6905af7c801311e8f4e76932ee959c663c'
+    anyToken: '0xb44a9b6905af7c801311e8f4e76932ee959c663c',
   },
-}
+};

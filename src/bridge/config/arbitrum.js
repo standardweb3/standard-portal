@@ -1,44 +1,44 @@
-import {formatSwapTokenList, getLocalRPC} from './methods'
-import {tokenListUrl, VERSION, USE_VERSION} from '../constant'
+import { formatSwapTokenList, getLocalRPC } from './methods';
+import { tokenListUrl, VERSION, USE_VERSION } from '../constant';
 
-export const ARBITRUM_MAIN_CHAINID = 42161
-export const ARBITRUM_MAINNET = getLocalRPC(ARBITRUM_MAIN_CHAINID, 'https://arb1.arbitrum.io/rpc')
-export const ARBITRUM_MAIN_EXPLORER = 'https://arbiscan.io/'
+export const ARBITRUM_MAIN_CHAINID = 42161;
+export const ARBITRUM_MAINNET = 'https://arb1.arbitrum.io/rpc';
+export const ARBITRUM_MAIN_EXPLORER = 'https://arbiscan.io/';
 
-export const ARBITRUM_TEST_CHAINID = 421611
-export const ARBITRUM_TESTNET = getLocalRPC(ARBITRUM_TEST_CHAINID, 'https://rinkeby.arbitrum.io/rpc')
-export const ARBITRUM_TEST_EXPLORER = 'https://rinkeby-explorer.arbitrum.io/#'
+export const ARBITRUM_TEST_CHAINID = 421611;
+export const ARBITRUM_TESTNET = 'https://rinkeby.arbitrum.io/rpc';
+export const ARBITRUM_TEST_EXPLORER = 'https://rinkeby-explorer.arbitrum.io/#';
 
-export const tokenList = []
+export const tokenList = [];
 
-const symbol = 'ETH'
+const symbol = 'ETH';
 
 const bridgeToken = {
   [VERSION.V3]: {
     bridgeInitToken: '0x461d52769884ca6235b685ef2040f47d30c94eb5',
     bridgeInitChain: '1',
-    nativeToken: '0x461d52769884ca6235b685ef2040f47d30c94eb5'
+    nativeToken: '0x461d52769884ca6235b685ef2040f47d30c94eb5',
   },
   [VERSION.V3_1]: {
     bridgeInitToken: '0x765277eebeca2e31912c9946eae1021199b39c61',
     bridgeInitChain: '1',
-    nativeToken: '0x765277eebeca2e31912c9946eae1021199b39c61'
+    nativeToken: '0x765277eebeca2e31912c9946eae1021199b39c61',
   },
   [VERSION.V2_T2]: {
     bridgeInitToken: '0x218c3c3d49d0e7b37aff0d8bb079de36ae61a4c0',
     bridgeInitChain: '4',
-    nativeToken: ''
+    nativeToken: '',
   },
   [VERSION.V2_T3]: {
     bridgeInitToken: '0x338726dd694db9e2230ec2bb8624a2d7f566c96d',
     bridgeInitChain: '4',
-    nativeToken: '0x338726dd694db9e2230ec2bb8624a2d7f566c96d'
+    nativeToken: '0x338726dd694db9e2230ec2bb8624a2d7f566c96d',
   },
   [VERSION.V5]: {
     bridgeInitToken: '0xfea7a6a0b346362bf88a9e4a88416b77a57d6c2a',
     bridgeInitChain: '1',
     nativeToken: '',
-    crossBridgeInitToken: ''
+    crossBridgeInitToken: '',
   },
   // [VERSION.V5]: {
   //   bridgeInitToken: '0x765277eebeca2e31912c9946eae1021199b39c61',
@@ -46,10 +46,9 @@ const bridgeToken = {
   //   nativeToken: '0x765277eebeca2e31912c9946eae1021199b39c61',
   //   crossBridgeInitToken: ''
   // },
-}
+};
 
 export default {
-  
   [ARBITRUM_MAIN_CHAINID]: {
     tokenListUrl: tokenListUrl + ARBITRUM_MAIN_CHAINID,
     tokenList: formatSwapTokenList(symbol, tokenList),
@@ -62,9 +61,7 @@ export default {
     v2FactoryToken: '',
     timelock: '',
     nodeRpc: ARBITRUM_MAINNET,
-    nodeRpcList: [
-      ARBITRUM_MAINNET
-    ],
+    nodeRpcList: [ARBITRUM_MAINNET],
     chainID: ARBITRUM_MAIN_CHAINID,
     lookHash: ARBITRUM_MAIN_EXPLORER + '/tx/',
     lookAddr: ARBITRUM_MAIN_EXPLORER + '/address/',
@@ -78,7 +75,7 @@ export default {
     label: ARBITRUM_MAIN_CHAINID,
     isSwitch: 1,
     suffix: 'ARBITRUM',
-    anyToken: ''
+    anyToken: '',
   },
   [ARBITRUM_TEST_CHAINID]: {
     tokenListUrl: tokenListUrl + ARBITRUM_TEST_CHAINID,
@@ -91,9 +88,7 @@ export default {
     v2FactoryToken: '',
     timelock: '',
     nodeRpc: ARBITRUM_TESTNET,
-    nodeRpcList: [
-      ARBITRUM_TESTNET
-    ],
+    nodeRpcList: [ARBITRUM_TESTNET],
     chainID: ARBITRUM_TEST_CHAINID,
     lookHash: ARBITRUM_TEST_EXPLORER + '/tx/',
     lookAddr: ARBITRUM_TEST_EXPLORER + '/address/',
@@ -106,6 +101,6 @@ export default {
     type: 'main',
     label: ARBITRUM_TEST_CHAINID,
     isSwitch: 1,
-    suffix: 'ARBITRUM'
+    suffix: 'ARBITRUM',
   },
-}
+};

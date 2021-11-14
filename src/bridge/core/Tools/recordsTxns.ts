@@ -1,21 +1,21 @@
-import {postUrlData} from './getUrlData'
-import {recordsTxnsUrl} from '../constants'
+import { postUrlData } from './getUrlData';
+import { recordsTxnsUrl } from '../constants';
 
 interface RecordsTxnsProp {
-  hash: string
-  chainId:any
-  selectChain:any,
-  account: string | null | undefined,
-  value: any,
-  formatvalue: string,
-  to: string,
-  symbol: string | undefined,
-  version?: string | undefined,
-  pairid?: string | undefined,
-  token?: string | undefined,
+  hash: string;
+  chainId: any;
+  selectChain: any;
+  account: string | null | undefined;
+  value: any;
+  formatvalue: string;
+  to: string;
+  symbol: string | undefined;
+  version?: string | undefined;
+  pairid?: string | undefined;
+  token?: string | undefined;
 }
 
-export function recordsTxns ({
+export function recordsTxns({
   hash,
   chainId,
   selectChain,
@@ -28,29 +28,32 @@ export function recordsTxns ({
   pairid,
   token,
 }: RecordsTxnsProp) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     // console.log(hash)
-    const url = recordsTxnsUrl
-    const useVersion = version
+    const url = recordsTxnsUrl;
+    const useVersion = version;
     // console.log(version)
     // console.log(USE_VERSION)
-    postUrlData({url, params: {
-      hash: hash,
-      srcChainID: chainId,
-      destChainID: selectChain,
-      token: token,
-      from: account,
-      version: useVersion,
-      value: value,
-      formatvalue: formatvalue,
-      to: to,
-      symbol: symbol,
-      pairid: pairid
-    }}).then(res => {
-      console.log(res)
-      resolve(res)
-    })
-  })
+    postUrlData({
+      url,
+      params: {
+        hash: hash,
+        srcChainID: chainId,
+        destChainID: selectChain,
+        token: token,
+        from: account,
+        version: useVersion,
+        value: value,
+        formatvalue: formatvalue,
+        to: to,
+        symbol: symbol,
+        pairid: pairid,
+      },
+    }).then((res) => {
+      console.log('recorded tx', res);
+      resolve(res);
+    });
+  });
 }
 
 // recordsTxns({

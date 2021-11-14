@@ -1,14 +1,14 @@
-import {formatSwapTokenList, getLocalRPC} from './methods'
-import {tokenListUrl, VERSION, USE_VERSION} from '../constant'
+import { formatSwapTokenList, getLocalRPC } from './methods';
+import { tokenListUrl, VERSION, USE_VERSION } from '../constant';
 
-export const XDAI_MAIN_CHAINID = 100
-export const XDAI_MAINNET = getLocalRPC(XDAI_MAIN_CHAINID, 'https://rpc.xdaichain.com')
-export const XDAI_MAIN_EXPLORER = 'https://blockscout.com/xdai/mainnet'
+export const XDAI_MAIN_CHAINID = 100;
+export const XDAI_MAINNET = 'https://rpc.xdaichain.com';
+export const XDAI_MAIN_EXPLORER = 'https://blockscout.com/xdai/mainnet';
 
-export const tokenList = []
-export const testTokenList = []
+export const tokenList = [];
+export const testTokenList = [];
 
-const symbol = 'xDAI'
+const symbol = 'xDAI';
 
 const bridgeToken = {
   [VERSION.V1]: {
@@ -19,9 +19,9 @@ const bridgeToken = {
     bridgeInitToken: '',
     bridgeInitChain: '56',
     nativeToken: '',
-    crossBridgeInitToken: '0xb44a9b6905af7c801311e8f4e76932ee959c663c'
+    crossBridgeInitToken: '0xb44a9b6905af7c801311e8f4e76932ee959c663c',
   },
-}
+};
 
 export default {
   [XDAI_MAIN_CHAINID]: {
@@ -36,9 +36,7 @@ export default {
     v2FactoryToken: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
     timelock: '0x9a8541Ddf3a932a9A922B607e9CF7301f1d47bD1',
     nodeRpc: XDAI_MAINNET,
-    nodeRpcList: [
-      XDAI_MAINNET,
-    ],
+    nodeRpcList: [XDAI_MAINNET],
     chainID: XDAI_MAIN_CHAINID,
     lookHash: XDAI_MAIN_EXPLORER + '/tx/',
     lookAddr: XDAI_MAIN_EXPLORER + '/address/',
@@ -51,6 +49,6 @@ export default {
     label: XDAI_MAIN_CHAINID,
     isSwitch: 1,
     suffix: 'xDAI',
-    anyToken: '0xb44a9b6905af7c801311e8f4e76932ee959c663c'
+    anyToken: '0xb44a9b6905af7c801311e8f4e76932ee959c663c',
   },
-}
+};

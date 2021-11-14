@@ -20,17 +20,20 @@ import { useTotalSupply } from '../../hooks/useTotalSupply';
 import { Transition } from '@headlessui/react';
 import { DefinedStyles } from '../../utils/DefinedStyles';
 import { AnalyticsLink } from '../AnalyticsLink';
+import { classNames } from '../../functions';
 
 interface PositionCardProps {
   pair: Pair;
   showUnwrapped?: boolean;
   border?: string;
-  stakedBalance?: CurrencyAmount<Token>; // optional balance to indicate that liquidity is deposited in mining pool
+  stakedBalance?: CurrencyAmount<Token>;
+  className?: string; // optional balance to indicate that liquidity is deposited in mining pool
 }
 
 export function MinimalPositionCard({
   pair,
   showUnwrapped = false,
+  className,
 }: PositionCardProps) {
   const { account } = useActiveWeb3React();
 
@@ -76,7 +79,7 @@ export function MinimalPositionCard({
     <>
       {userPoolBalance &&
       JSBI.greaterThan(userPoolBalance.quotient, JSBI.BigInt(0)) ? (
-        <div className="rounded-20 bg-opaque">
+        <div className={classNames('rounded-20 bg-opaque', className)}>
           <div
             className="
               flex flex-row items-center justify-between

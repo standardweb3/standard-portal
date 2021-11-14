@@ -1,37 +1,33 @@
-import {formatSwapTokenList, getLocalRPC} from './methods'
-import {tokenListUrl, VERSION, USE_VERSION} from '../constant'
+import { formatSwapTokenList, getLocalRPC } from './methods';
+import { tokenListUrl, VERSION, USE_VERSION } from '../constant';
 
-export const FSN_MAIN_CHAINID = 32659
-export const FSN_MAINNET = getLocalRPC(FSN_MAIN_CHAINID, 'https://mainnet.anyswap.exchange')
-export const FSN_MAINNET1 = 'https://mainnet.anyswap.exchange'
-export const FSN_MAIN_EXPLORER = 'https://fsnex.com'
+export const FSN_MAIN_CHAINID = 32659;
+export const FSN_MAINNET = 'https://mainnet.anyswap.exchange';
+export const FSN_MAINNET1 = 'https://mainnet.anyswap.exchange';
+export const FSN_MAIN_EXPLORER = 'https://fsnex.com';
 
 // export const FSN_TESTNET = 'https://testnet.anyswap.exchange'
-export const FSN_TEST_CHAINID = 46688
-export const FSN_TESTNET = getLocalRPC(FSN_TEST_CHAINID, 'https://testnet.fsn.dev/api')
-export const FSN_TEST_EXPLORER = 'https://fsnex.com'
+export const FSN_TEST_CHAINID = 46688;
+export const FSN_TESTNET = 'https://testnet.fsn.dev/api';
+export const FSN_TEST_EXPLORER = 'https://fsnex.com';
 
-export const tokenList = [
+export const tokenList = [];
+export const testTokenList = [];
 
-]
-export const testTokenList = [
-
-]
-
-const symbol = 'FSN'
+const symbol = 'FSN';
 
 const bridgeToken = {
   [VERSION.V1]: {
     bridgeInitToken: '',
-    bridgeInitChain: ''
+    bridgeInitChain: '',
   },
   [VERSION.V5]: {
     bridgeInitToken: '',
     bridgeInitChain: '56',
     nativeToken: '',
-    crossBridgeInitToken: 'FSN'
+    crossBridgeInitToken: 'FSN',
   },
-}
+};
 
 export default {
   [FSN_MAIN_CHAINID]: {
@@ -49,7 +45,7 @@ export default {
     nodeRpcList: [
       FSN_MAINNET,
       'https://mainnet.anyswap.exchange',
-      'https://fsn.dev/api'
+      'https://fsn.dev/api',
     ],
     rpc1: FSN_MAINNET1,
     chainID: FSN_MAIN_CHAINID,
@@ -64,7 +60,7 @@ export default {
     label: FSN_MAIN_CHAINID,
     isSwitch: 1,
     suffix: 'Fusion',
-    anyToken: '0x0c74199d22f732039e843366a236ff4f61986b32'
+    anyToken: '0x0c74199d22f732039e843366a236ff4f61986b32',
   },
   [FSN_TEST_CHAINID]: {
     tokenListUrl: tokenListUrl + FSN_TEST_CHAINID,
@@ -78,9 +74,7 @@ export default {
     v2FactoryToken: '',
     timelock: '',
     nodeRpc: FSN_TESTNET,
-    nodeRpcList: [
-      FSN_TESTNET,
-    ],
+    nodeRpcList: [FSN_TESTNET],
     chainID: FSN_TEST_CHAINID,
     lookHash: FSN_TEST_EXPLORER + '/transaction/',
     lookAddr: FSN_TEST_EXPLORER + '/address/',
@@ -92,6 +86,6 @@ export default {
     type: 'test',
     label: FSN_TEST_CHAINID,
     isSwitch: 1,
-    suffix: 'Fusion'
-  }
-}
+    suffix: 'Fusion',
+  },
+};

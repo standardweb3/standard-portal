@@ -1,38 +1,37 @@
-import {formatSwapTokenList, getLocalRPC} from './methods'
-import {tokenListUrl, VERSION, USE_VERSION} from '../constant'
+import { formatSwapTokenList, getLocalRPC } from './methods';
+import { tokenListUrl, VERSION, USE_VERSION } from '../constant';
 
-export const OPTIMISM_MAIN_CHAINID = ''
-export const OPTIMISM_MAINNET = getLocalRPC(OPTIMISM_MAIN_CHAINID, '')
-export const OPTIMISM_MAIN_EXPLORER = ''
+export const OPTIMISM_MAIN_CHAINID = '';
+export const OPTIMISM_MAINNET = '';
+export const OPTIMISM_MAIN_EXPLORER = '';
 
-export const OPTIMISM_TEST_CHAINID = 69
-export const OPTIMISM_TESTNET = getLocalRPC(OPTIMISM_TEST_CHAINID, 'https://kovan.optimism.io')
-export const OPTIMISM_TEST_EXPLORER = 'https://kovan-l2-explorer.surge.sh'
+export const OPTIMISM_TEST_CHAINID = 69;
+export const OPTIMISM_TESTNET = 'https://kovan.optimism.io';
+export const OPTIMISM_TEST_EXPLORER = 'https://kovan-l2-explorer.surge.sh';
 
-export const tokenList = []
+export const tokenList = [];
 
-const symbol = 'OPTIMISM'
+const symbol = 'OPTIMISM';
 
 const bridgeToken = {
   [VERSION.V3]: {
     bridgeInitToken: '0x461d52769884ca6235b685ef2040f47d30c94eb5',
     bridgeInitChain: '1',
-    nativeToken: '0x461d52769884ca6235b685ef2040f47d30c94eb5'
+    nativeToken: '0x461d52769884ca6235b685ef2040f47d30c94eb5',
   },
   [VERSION.V2_T2]: {
     bridgeInitToken: '',
     bridgeInitChain: '4',
-    nativeToken: ''
+    nativeToken: '',
   },
   [VERSION.V2_T3]: {
     bridgeInitToken: '0x4200000000000000000000000000000000000006',
     bridgeInitChain: '421611',
-    nativeToken: ''
+    nativeToken: '',
   },
-}
+};
 
 export default {
-  
   [OPTIMISM_MAIN_CHAINID]: {
     tokenListUrl: tokenListUrl + OPTIMISM_MAIN_CHAINID,
     tokenList: formatSwapTokenList(symbol, tokenList),
@@ -44,9 +43,7 @@ export default {
     v2FactoryToken: '',
     timelock: '',
     nodeRpc: OPTIMISM_MAINNET,
-    nodeRpcList: [
-      OPTIMISM_MAINNET,
-    ],
+    nodeRpcList: [OPTIMISM_MAINNET],
     chainID: OPTIMISM_MAIN_CHAINID,
     lookHash: OPTIMISM_MAIN_EXPLORER + '/tx/',
     lookAddr: OPTIMISM_MAIN_EXPLORER + '/address/',
@@ -60,7 +57,7 @@ export default {
     label: OPTIMISM_MAIN_CHAINID,
     isSwitch: 1,
     suffix: 'OPTIMISM',
-    anyToken: ''
+    anyToken: '',
   },
   [OPTIMISM_TEST_CHAINID]: {
     tokenListUrl: tokenListUrl + OPTIMISM_TEST_CHAINID,
@@ -85,6 +82,6 @@ export default {
     type: 'main',
     label: OPTIMISM_TEST_CHAINID,
     isSwitch: 1,
-    suffix: 'OPTIMISM'
+    suffix: 'OPTIMISM',
   },
-}
+};

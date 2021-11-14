@@ -1,38 +1,38 @@
-import {formatSwapTokenList, getLocalRPC} from './methods'
-import {tokenListUrl, VERSION, USE_VERSION} from '../constant'
+import { formatSwapTokenList, getLocalRPC } from './methods';
+import { tokenListUrl, VERSION, USE_VERSION } from '../constant';
 
-export const OMGX_MAIN_CHAINID = ''
-export const OMGX_MAINNET = getLocalRPC(OMGX_MAIN_CHAINID, '')
-export const OMGX_MAIN_EXPLORER = ''
+export const OMGX_MAIN_CHAINID = '';
+export const OMGX_MAINNET = '';
+export const OMGX_MAIN_EXPLORER = '';
 
-export const OMGX_TEST_CHAINID = 28
-export const OMGX_TESTNET = getLocalRPC(OMGX_TEST_CHAINID, 'https://rinkeby.omgx.network')
-export const OMGX_TEST_EXPLORER = 'https://blockexplorer.rinkeby.omgx.network/?network=OmgX'
+export const OMGX_TEST_CHAINID = 28;
+export const OMGX_TESTNET = 'https://rinkeby.omgx.network';
+export const OMGX_TEST_EXPLORER =
+  'https://blockexplorer.rinkeby.omgx.network/?network=OmgX';
 
-export const tokenList = []
+export const tokenList = [];
 
-const symbol = 'OMGX'
+const symbol = 'OMGX';
 
 const bridgeToken = {
   [VERSION.V3]: {
     bridgeInitToken: '0x461d52769884ca6235b685ef2040f47d30c94eb5',
     bridgeInitChain: '1',
-    nativeToken: '0x461d52769884ca6235b685ef2040f47d30c94eb5'
+    nativeToken: '0x461d52769884ca6235b685ef2040f47d30c94eb5',
   },
   [VERSION.V2_T2]: {
     bridgeInitToken: '',
     bridgeInitChain: '4',
-    nativeToken: ''
+    nativeToken: '',
   },
   [VERSION.V2_T3]: {
     bridgeInitToken: '0x4200000000000000000000000000000000000006',
     bridgeInitChain: '421611',
-    nativeToken: ''
+    nativeToken: '',
   },
-}
+};
 
 export default {
-  
   [OMGX_MAIN_CHAINID]: {
     tokenListUrl: tokenListUrl + OMGX_MAIN_CHAINID,
     tokenList: formatSwapTokenList(symbol, tokenList),
@@ -44,9 +44,7 @@ export default {
     v2FactoryToken: '',
     timelock: '',
     nodeRpc: OMGX_MAINNET,
-    nodeRpcList: [
-      OMGX_MAINNET,
-    ],
+    nodeRpcList: [OMGX_MAINNET],
     chainID: OMGX_MAIN_CHAINID,
     lookHash: OMGX_MAIN_EXPLORER + '/tx/',
     lookAddr: OMGX_MAIN_EXPLORER + '/address/',
@@ -60,7 +58,7 @@ export default {
     label: OMGX_MAIN_CHAINID,
     isSwitch: 1,
     suffix: 'OMGX',
-    anyToken: ''
+    anyToken: '',
   },
   [OMGX_TEST_CHAINID]: {
     tokenListUrl: tokenListUrl + OMGX_TEST_CHAINID,
@@ -73,9 +71,7 @@ export default {
     v2FactoryToken: '',
     timelock: '',
     nodeRpc: OMGX_TESTNET,
-    nodeRpcList: [
-      OMGX_TESTNET,
-    ],
+    nodeRpcList: [OMGX_TESTNET],
     chainID: OMGX_TEST_CHAINID,
     lookHash: OMGX_TEST_EXPLORER + '/tx/',
     lookAddr: OMGX_TEST_EXPLORER + '/address/',
@@ -88,6 +84,6 @@ export default {
     type: 'main',
     label: OMGX_TEST_CHAINID,
     isSwitch: 1,
-    suffix: 'OMGX'
+    suffix: 'OMGX',
   },
-}
+};
