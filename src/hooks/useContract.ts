@@ -555,7 +555,7 @@ export function useSushiRollContract(
   if (chainId) {
     switch (chainId) {
       case ChainId.MAINNET:
-        address = '0x16E58463eb9792Bc236d8860F5BC69A81E26E32B';
+        address = '0xdB7De7d268E6132E4A8099A671D123317415b404';
         break;
       case ChainId.ROPSTEN:
         address = '0xCaAbdD9Cf4b61813D4a52f980d6BC1B713FE66F5';

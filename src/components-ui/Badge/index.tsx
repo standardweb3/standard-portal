@@ -11,8 +11,7 @@ export interface BadgeProps {
 
 export const COLOR = {
   default: '',
-  primary:
-    'bg-pink bg-opacity-20 outline-primary rounded-20 text-xs text-primary px-2 py-1',
+  primary: 'bg-primary bg-opacity-20 rounded-20 text-xs text-primary px-2 py-1',
 };
 
 export const SIZE = {

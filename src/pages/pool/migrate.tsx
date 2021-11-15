@@ -59,8 +59,7 @@ const AmountInput = ({ state }: { state: MigrateState }) => {
   if (!state.mode || !state.selectedLPToken) {
     return (
       <>
-        <div className="text-primary">Amount of Tokens</div>
-        <div className="p-3 text-center rounded cursor-not-allowed bg-dark-800">
+        <div className="p-3 text-center cursor-not-allowed bg-opaque rounded-20">
           <div>
             {state.mode && state.lpTokens.length === 0
               ? 'No LP tokens found'
@@ -73,7 +72,7 @@ const AmountInput = ({ state }: { state: MigrateState }) => {
 
   return (
     <>
-      <div className="text-primary">{`Amount of Tokens`}</div>
+      <div className="text-grey text-sm">{`Amount of Tokens`}</div>
 
       <div
         className="
@@ -116,16 +115,18 @@ const LPTokenSelect = ({
         flex items-center justify-between 
         px-3 py-5 rounded-20 
         cursor-pointer 
-        bg-opaque hover:bg-bright"
+        bg-opaque hover:bg-bright 
+        space-x-3"
       onClick={() => onToggle(lpToken)}
     >
       <div className="flex items-center space-x-3">
         <DoubleCurrencyLogo
+          currencyClassName="rounded-full"
           currency0={lpToken.tokenA}
           currency1={lpToken.tokenB}
           size={20}
         />
-        <div className="text-primary">{`${lpToken.tokenA.symbol}/${lpToken.tokenB.symbol}`}</div>
+        <div>{`${lpToken.tokenA.symbol} / ${lpToken.tokenB.symbol}`}</div>
         {lpToken.version && <Badge color="primary">{lpToken.version}</Badge>}
       </div>
       {isSelected ? (
@@ -227,7 +228,15 @@ const MigrateButtons = ({
     !state.selectedLPToken ||
     !state.amount
   ) {
-    return <ButtonConfirmed disabled={true}>Migrate</ButtonConfirmed>;
+    return (
+      <ButtonConfirmed
+        className={DefinedStyles.fullButton}
+        color="primary"
+        disabled={true}
+      >
+        Migrate
+      </ButtonConfirmed>
+    );
   }
 
   const insufficientAmount = JSBI.lessThan(
@@ -245,7 +254,7 @@ const MigrateButtons = ({
     try {
       await state.onMigrate();
     } catch (e) {
-      console.log(e);
+      // console.log(e);
       setError(e);
     }
   };
@@ -258,16 +267,10 @@ const MigrateButtons = ({
         `Loading`
       ) : (
         <>
-          <div className="flex justify-between">
-            <div className="text-sm">
-              {`Balance`}:{' '}
-              <span className="text-primary">
-                {state.selectedLPToken.balance.toSignificant(4)}
-              </span>
-            </div>
-          </div>
           {state.mode === 'approve' && (
             <ButtonConfirmed
+              className={DefinedStyles.fullButton}
+              color="primary"
               onClick={approve}
               confirmed={approval === ApprovalState.APPROVED}
               disabled={
@@ -284,6 +287,8 @@ const MigrateButtons = ({
           {((state.mode === 'approve' && approval === ApprovalState.APPROVED) ||
             state.mode === 'permit') && (
             <ButtonConfirmed
+              className={DefinedStyles.fullButton}
+              color="primary"
               disabled={
                 noLiquidityTokens ||
                 state.isMigrationPending ||
@@ -299,8 +304,8 @@ const MigrateButtons = ({
       {error.message && error.code !== 4001 && (
         <div className="font-medium text-center text-red">{error.message}</div>
       )}
-      <div className="text-sm text-center text-low-emphesis">
-        {`Your ${exchange} ${state.selectedLPToken.tokenA.symbol}/${state.selectedLPToken.tokenB.symbol} liquidity will become SushiSwap ${state.selectedLPToken.tokenA.symbol}/${state.selectedLPToken.tokenB.symbol} liquidity.`}
+      <div className="text-sm text-center text-grey">
+        {`Your ${exchange} ${state.selectedLPToken.tokenA.symbol}/${state.selectedLPToken.tokenB.symbol} liquidity will become Standard Protocol ${state.selectedLPToken.tokenA.symbol}/${state.selectedLPToken.tokenB.symbol} liquidity.`}
       </div>
     </div>
   );
@@ -386,7 +391,7 @@ export default function Migrate() {
         <PageContent>
           <div>
             <Alert
-              className={DefinedStyles.pageAlertMaxed}
+              className={DefinedStyles.pageAlertFull}
               title={`${exchange} Liquidity Migration`}
               message={`Migrate your ${exchange} Liquidity to Standard Protocol`}
               type="warning"
@@ -395,7 +400,7 @@ export default function Migrate() {
               {!account ? (
                 <WalletConnector className="w-full" />
               ) : state.loading ? (
-                <div className="p-4 text-center text-grey flex items-center space-x-4">
+                <div className="p-4 text-center text-grey flex items-center space-x-3">
                   <div>{`Loading your liquidity positions`}</div>{' '}
                   <RippleSpinner size={16} />
                 </div>
@@ -408,7 +413,7 @@ export default function Migrate() {
                   {!state.loading && state.lpTokens.length > 0 && (
                     <div>
                       <div>{`Your Liquidity`}</div>
-                      <div className="text-primary">
+                      <div className="text-grey text-sm">
                         {`Click on a pool below, input the amount you wish to migrate or select max, and click
                         migrate`}
                       </div>
@@ -417,7 +422,18 @@ export default function Migrate() {
                   <ExchangeLiquidityPairs state={state} exchange={exchange} />
                   <AmountInput state={state} />
                   {state.selectedLPToken && (
-                    <MigrateButtons state={state} exchange={exchange} />
+                    <>
+                      <div className="flex justify-between">
+                        <div className="text-sm">
+                          {`Balance`}:{' '}
+                          <span className="text-primary">
+                            {state.selectedLPToken.balance?.toSignificant(4) ??
+                              0}
+                          </span>
+                        </div>
+                      </div>
+                      <MigrateButtons state={state} exchange={exchange} />
+                    </>
                   )}
                 </>
               )}
