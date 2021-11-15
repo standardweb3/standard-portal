@@ -160,9 +160,9 @@ export function Table({
       </pre> */}
       <div className={tableClassName}>
         <div>
-          {headerGroups.map((headerGroup) => {
+          {headerGroups.map((headerGroup,i) => {
             return (
-              <div className={headerClassName}>
+              <div className={headerClassName} key={i}>
                 {headerGroup.headers.map((column) => (
                   <div className={column.className}>
                     {column.render('Header')}
@@ -184,9 +184,9 @@ export function Table({
             prepareRow(row);
             return (
               <div className={rowClassName} onClick={() => handleRowClick(row)}>
-                {row.cells.map((cell) => {
+                {row.cells.map((cell, i) => {
                   return (
-                    <div className={cell.column.className}>
+                    <div className={cell.column.className} key={i}>
                       {cell.render('Cell')}
                     </div>
                   );
