@@ -165,9 +165,12 @@ export async function useMasterChefV2Availability(fallbackCb) {
     chainId ? ['masterChefAvailability'] : null,
     () => getMasterChefV2Availability(chainId),
     {
-      loadingTimeout: 3000,
-      onLoadingSlow: fallbackCb(),
-      onError: fallbackCb(),
+      // loadingTimeout: 3000,
+      // onLoadingSlow:() => {
+      //   console
+      // }
+      // onLoadingSlow: fallbackCb(),
+      // onError: fallbackCb(),
     },
   );
 }

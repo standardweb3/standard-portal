@@ -88,6 +88,7 @@ export default function Tokens() {
   const tokens = useTokens({});
   // console.log('tokens', tokens);
   useEffect(() => {
+    console.log('tokens', tokens)
     if (tokens !== undefined && tokens.length === 0) {
       router.push('/trade/buy');
     }
