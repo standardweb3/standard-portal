@@ -155,14 +155,14 @@ export function StakePoolInfo({ stnd, xStnd, className }: StakePoolInfoTypes) {
           </div>
           <div className="text-2xl font-bold">{tvl} </div>
         </div>
-        {apr !== undefined && (
+        {/* {apr !== undefined && (
           <div className="w-full flex justify-between items-center space-x-2">
             <div className="font-bold">
               <span className="text-grey text-lg">Yesterday's APR</span>
             </div>
             <div className="text-2xl font-bold">{formatPercent(apr ?? 0)} </div>
           </div>
-        )}
+        )} */}
       </div>
     </StakePoolInfoWrapper>
   );
