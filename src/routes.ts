@@ -23,7 +23,7 @@ export const sidebarRoutes = [
 
   {
     name: 'Farm',
-    urls: ['/farmv2'],
+    urls: ['/farm'],
     icon: farmIcon,
     iconActive: farmIcon,
     // hidden: [ChainId.SHIBUYA],
