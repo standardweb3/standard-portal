@@ -60,7 +60,7 @@ export function StakePoolInfo({ stnd, xStnd, className }: StakePoolInfoTypes) {
   const day = timestamp && Math.floor(timestamp.toNumber() / 86400) * 86400;
   const dayDatas = useDayData({ first: 1, skip: 1 });
   // add first 1 skip 1
-  const barHistories = useBarHistories({ first: 1 });
+  const barHistories = useBarHistories({ first: 1, skip: 1 });
   // const bar = useBar();
   // console.log(bar);
 
