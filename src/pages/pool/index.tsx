@@ -168,7 +168,7 @@ export default function Pool() {
                   <Button
                     type="bordered"
                     id="create-pool-button"
-                    onClick={() => router.push(`/pool/migrate`)}
+                    onClick={() => router.push(`/migrate`)}
                   >
                     Migrate
                   </Button>

@@ -113,7 +113,7 @@ export function StakePoolInfo({ stnd, xStnd, className }: StakePoolInfoTypes) {
             <div className="font-bold">
               1{' '}
               <span className="bg-xstnd bg-clip-text text-transparent">
-                xSTND
+                dSTND
               </span>
             </div>
           </div>
@@ -131,7 +131,7 @@ export function StakePoolInfo({ stnd, xStnd, className }: StakePoolInfoTypes) {
           <div className="font-bold">
             <span className="text-grey text-lg">Total supply</span>{' '}
             <span className="bg-xstnd bg-clip-text text-transparent text-2xl">
-              xSTND
+              dSTND
             </span>
           </div>
           <div className="text-2xl font-bold">

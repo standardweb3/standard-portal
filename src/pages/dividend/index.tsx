@@ -51,7 +51,8 @@ export default function Stake() {
                   <br />
                   Stake your STND to get dSTND.
                   <br />
-                  It will make you passive income and you can claim it anytime!
+                  It will make you have passive income from our protocol fees
+                  and you can claim it anytime!
                   <br />
                   <br />
                   Each dSTND will also grant you a voting right to the Standard

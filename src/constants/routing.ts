@@ -315,7 +315,7 @@ export const COMMON_BASES: ChainTokenList = {
     USDT,
     WBTC,
     STND[ChainId.MAINNET],
-    SDN,
+    // SDN,
     JPYC,
   ],
   [ChainId.RINKEBY]: [

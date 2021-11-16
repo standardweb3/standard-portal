@@ -2,7 +2,9 @@ import swapIcon from '../public/icons/swap.svg';
 import farmIcon from '../public/icons/farm.svg';
 import poolIcon from '../public/icons/pool.svg';
 import dividendIcon from '../public/icons/dividend.svg';
+import dividendv1Icon from '../public/icons/dividendv1.svg';
 import bridgeIcon from '../public/icons/bridge.svg';
+import migrateIcon from '../public/icons/migrate.svg';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
 export const sidebarRoutes = [
@@ -36,8 +38,8 @@ export const sidebarRoutes = [
   {
     name: 'Dividend V1',
     urls: ['/v1dividend'],
-    icon: dividendIcon,
-    iconActive: dividendIcon,
+    icon: dividendv1Icon,
+    iconActive: dividendv1Icon,
     hidden: [ChainId.MAINNET],
   },
   {
@@ -45,6 +47,13 @@ export const sidebarRoutes = [
     urls: ['/bridge'],
     icon: bridgeIcon,
     iconActive: bridgeIcon,
+    // hidden: [ChainId.SHIDEN],
+  },
+  {
+    name: 'Migrate',
+    urls: ['/migrate'],
+    icon: migrateIcon,
+    iconActive: migrateIcon,
     // hidden: [ChainId.SHIDEN],
   },
 ];
