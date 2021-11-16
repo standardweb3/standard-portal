@@ -485,7 +485,7 @@ export default function Add({ liquidityToken, tokenAId, tokenBId }) {
             showCommonBases
           />
         </div>
-        {oneCurrencyIsWETH && <div>use W{WNATIVE[chainId].symbol}</div>}
+        {/* {oneCurrencyIsWETH && <div>use W{WNATIVE[chainId].symbol}</div>} */}
 
         {currencies[Field.CURRENCY_A] &&
           currencies[Field.CURRENCY_B] &&
