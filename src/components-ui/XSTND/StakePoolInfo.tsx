@@ -60,7 +60,7 @@ export function StakePoolInfo({ stnd, xStnd, className }: StakePoolInfoTypes) {
   const day = timestamp && Math.floor(timestamp.toNumber() / 86400) * 86400;
   const dayDatas = useDayData({ first: 1, skip: 1 });
   // add first 1 skip 1
-  const barHistories = useBarHistories();
+  const barHistories = useBarHistories({ first: 1 });
   // const bar = useBar();
   // console.log(bar);
 
@@ -78,8 +78,8 @@ export function StakePoolInfo({ stnd, xStnd, className }: StakePoolInfoTypes) {
 
   const apr =
     feeUSD &&
-    xStndTotalSupplyDecimals &&
-    (feeUSD / (xStndTotalSupplyDecimals * barRatio * stndPrice)) * 365;
+    barTotalSupply &&
+    (feeUSD / (barTotalSupply * barRatio * stndPrice)) * 365;
   // TODO: DROP AND USE SWR HOOKS INSTEAD
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -158,7 +158,7 @@ export function StakePoolInfo({ stnd, xStnd, className }: StakePoolInfoTypes) {
         {apr !== undefined && (
           <div className="w-full flex justify-between items-center space-x-2">
             <div className="font-bold">
-              <span className="text-grey text-lg">APR</span>
+              <span className="text-grey text-lg">Yesterday's APR</span>
             </div>
             <div className="text-2xl font-bold">{formatPercent(apr ?? 0)} </div>
           </div>
