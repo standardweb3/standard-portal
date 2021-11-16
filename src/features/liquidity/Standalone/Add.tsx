@@ -58,19 +58,27 @@ import UnsupportedCurrencyFooter from '../../swap/UnsupportedCurrencyFooter';
 
 export default function Add({ liquidityToken, tokenAId, tokenBId }) {
   const { account, chainId, library } = useActiveWeb3React();
-  const [currencyIdA, currencyIdB] = [
-    tokenAId || undefined,
-    tokenBId || undefined,
-  ];
+  const [currencyIdA, setCurrencyIdA] = useState(tokenAId || undefined);
+  const [currencyIdB, setcurrencyIdB] = useState(tokenBId || undefined);
+  // const [currencyIdA, currencyIdB] = [
+  //   tokenAId || undefined,
+  //   tokenBId || undefined,
+  // ];
 
   const currencyA = useCurrency(currencyIdA);
   const currencyB = useCurrency(currencyIdB);
 
-  const oneCurrencyIsWETH = Boolean(
-    chainId &&
-      ((currencyA && currencyEquals(currencyA, WNATIVE[chainId])) ||
-        (currencyB && currencyEquals(currencyB, WNATIVE[chainId]))),
-  );
+  // const oneCurrencyIsWETH = Boolean(
+  //   chainId &&
+  //     ((currencyA && currencyEquals(currencyA, WNATIVE[chainId])) ||
+  //       (currencyB && currencyEquals(currencyB, WNATIVE[chainId]))),
+  // );
+
+  const currencyAIsWeth =
+    chainId && currencyA && currencyEquals(currencyA, WNATIVE[chainId]);
+  const currencyBIsWeth =
+    chainId && currencyB && currencyEquals(currencyB, WNATIVE[chainId]);
+  const oneCurrencyIsWETH = currencyAIsWeth || currencyBIsWeth;
 
   const currencyAIsETH = currencyIdA === 'ETH';
   const currencyBIsETH = currencyIdB === 'ETH';
@@ -477,6 +485,7 @@ export default function Add({ liquidityToken, tokenAId, tokenBId }) {
             showCommonBases
           />
         </div>
+        {oneCurrencyIsWETH && <div>use W{WNATIVE[chainId].symbol}</div>}
 
         {currencies[Field.CURRENCY_A] &&
           currencies[Field.CURRENCY_B] &&

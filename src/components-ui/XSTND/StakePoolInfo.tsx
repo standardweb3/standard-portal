@@ -63,7 +63,7 @@ export function StakePoolInfo({ stnd, xStnd, className }: StakePoolInfoTypes) {
   const barHistories = useBarHistories();
 
   const feeUSD =
-    dayDatas && dayDatas[0] && parseFloat(dayDatas[0].volumeUSD) * (0.05 / 3);
+    dayDatas && dayDatas[0] && parseFloat(dayDatas[0].volumeUSD) * (0.0005 / 3);
 
   const [barTotalSupply, barRatio] = useMemo(() => {
     if (barHistories && barHistories[0])

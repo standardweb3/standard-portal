@@ -49,6 +49,7 @@ export default function Farm() {
   });
 
   const farms = useFarms();
+  console.log(farms);
 
   const positions = usePositions();
 
