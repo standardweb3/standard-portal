@@ -94,8 +94,10 @@ export const dayDatasQuery = gql`
     $first: Int! = 1000
     $date: Int! = 0
     $where: DayData_filter
+    $skip: Int! = 0
   ) {
     dayDatas(
+      skip: $skip
       first: $first
       orderBy: date
       orderDirection: desc

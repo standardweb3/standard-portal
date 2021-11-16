@@ -10,6 +10,7 @@ import {
 import {
   BAR_ADDRESS,
   ChainId,
+  getXStndAddress,
   MAKER_ADDRESS,
   MASTERCHEF_ADDRESS,
   MASTERCHEF_V2_ADDRESS,
@@ -32,6 +33,7 @@ import { MERKLE_DISTRIBUTOR_ADDRESS, STND, SUSHI } from '../constants';
 import ALCX_REWARDER_ABI from '../constants/abis/alcx-rewarder.json';
 import ARCHER_ROUTER_ABI from '../constants/abis/archer-router.json';
 import BAR_ABI from '../constants/abis/bar.json';
+import XSTND_ABI from '../constants/abis/xstnd.json';
 import BASE_SWAPPER_ABI from '../constants/abis/swapper.json';
 import BENTOBOX_ABI from '../constants/abis/bentobox.json';
 import BORING_HELPER_ABI from '../constants/abis/boring-helper.json';
@@ -82,6 +84,7 @@ import {
   useFactoryAddress,
   useRouterAddressWithChainId,
 } from '.';
+import { useProtocol } from '../state/protocol/hooks';
 
 const UNI_FACTORY_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f';
 
@@ -234,6 +237,17 @@ export function useSTNDContract(withSignerIfPossibe = true): Contract | null {
   );
 }
 
+export function useStakePoolContract(
+  withSignerIfPossible?: boolean,
+): Contract | null {
+  const { chainId } = useActiveWeb3React();
+  return useContract(
+    chainId && MASTERCHEF_V2_ADDRESS[chainId],
+    MASTERCHEF_ABI,
+    withSignerIfPossible,
+  );
+}
+
 export function useMasterChefContract(
   withSignerIfPossible?: boolean,
 ): Contract | null {
@@ -309,6 +323,18 @@ export function useSushiBarContract(
   return useContract(
     chainId && BAR_ADDRESS[chainId],
     BAR_ABI,
+    withSignerIfPossible,
+  );
+}
+
+export function useStndStakerContract(
+  withSignerIfPossible?: boolean,
+): Contract | null {
+  const protocol = useProtocol();
+  const { chainId } = useActiveWeb3React();
+  return useContract(
+    chainId && getXStndAddress(protocol, chainId),
+    XSTND_ABI,
     withSignerIfPossible,
   );
 }
