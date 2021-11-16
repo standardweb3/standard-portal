@@ -29,10 +29,7 @@ export type UnstakeStndTypes = {
 
 export function UnstakeStnd({
   xStnd,
-  stnd,
-  stndBalance,
   xStndBalance,
-  stndPrice,
   onUnstake,
 }: UnstakeStndTypes) {
   const protocol = useProtocol();
@@ -119,7 +116,7 @@ export function UnstakeStnd({
             text-xs text-primary text-right mb-2
             pr-2"
           >
-            Balance: {formatNumber(xStndBalance?.toSignificant(6) ?? 0)} xSTND
+            Balance: {formatNumber(xStndBalance?.toSignificant(6) ?? 0)} dSTND
           </div>
         </div>
         <div className="col-span-2 mb-4">

@@ -92,8 +92,8 @@ export async function useExchangeAvailability(
     {
       revalidateOnMount: true,
       revalidateOnReconnect: true,
-      loadingTimeout: 5000,
-      onLoadingSlow: fallbackCb
+      loadingTimeout: 10000,
+      onLoadingSlow: fallbackCb,
     },
   );
 }

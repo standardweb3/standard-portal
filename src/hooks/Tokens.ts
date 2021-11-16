@@ -151,8 +151,8 @@ export function useXStnd() {
     chainId,
     getXStndAddress(Protocol.STANDARD_PROTOCOL, chainId),
     18,
-    'XSTND',
-    'XStandard',
+    'dSTND',
+    'dStandard',
   );
 }
 

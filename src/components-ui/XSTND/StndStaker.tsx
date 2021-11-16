@@ -62,7 +62,7 @@ export default function StndStaker({
               <div className="font-bold">
                 1{' '}
                 <span className="bg-xstnd bg-clip-text text-transparent">
-                  xSTND
+                  dSTND
                 </span>
               </div>
             </div>

@@ -30,7 +30,7 @@ export default function Stake() {
         <meta
           key="description"
           name="description"
-          content="Stake STND for xSTND"
+          content="Stake STND for dSTND"
         />
       </Head>
       <Page id="stake-page" className={DefinedStyles.page}>
@@ -46,15 +46,15 @@ export default function Stake() {
                 <div className="leading-relaxed">
                   <br /> At <strong>Standard’s Portal</strong>, portions of the
                   swap fees are distributed as proportional to your share of
-                  xSTND.
+                  dSTND.
                   <br />
                   <br />
-                  Stake your STND to get xSTND.
+                  Stake your STND to get dSTND.
                   <br />
                   It will make you passive income and you can claim it anytime!
                   <br />
                   <br />
-                  Each xSTND will also grant you a voting right to the Standard
+                  Each dSTND will also grant you a voting right to the Standard
                   Protocol’s governance
                   <br />
                 </div>

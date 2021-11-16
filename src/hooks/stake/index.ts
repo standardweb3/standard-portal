@@ -13,7 +13,7 @@ const useStndStaker = () => {
       if (amount?.quotient) {
         try {
           const tx = await barContract?.enter(amount?.quotient.toString());
-          return addTransaction(tx, { summary: 'Stake STND for xSTND' });
+          return addTransaction(tx, { summary: 'Stake STND for dSTND' });
         } catch (e) {
           return e;
         }
@@ -27,7 +27,7 @@ const useStndStaker = () => {
       if (amount?.quotient) {
         try {
           const tx = await barContract?.leave(amount?.quotient.toString());
-          return addTransaction(tx, { summary: 'Claim STND with xSTND' });
+          return addTransaction(tx, { summary: 'Claim STND with dSTND' });
         } catch (e) {
           return e;
         }

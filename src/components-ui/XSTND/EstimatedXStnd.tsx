@@ -30,7 +30,7 @@ export function EstimatedXStnd({ stnd, estimate, currentStaked, newStaked }) {
           <div className="text-base md:text-lg flex items-end space-x-1">
             <div>Estimated</div>
             <div className="bg-xstnd bg-clip-text text-transparent">
-              <span className="text-2xl font-bold">xSTND</span>
+              <span className="text-2xl font-bold">dSTND</span>
               <span className="text-xs"> per day</span>
             </div>
           </div>
