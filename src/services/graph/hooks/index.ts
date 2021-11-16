@@ -90,6 +90,7 @@ export function useMiniChefFarms(swrConfig: SWRConfiguration = undefined) {
 export function useFarms(swrConfig: SWRConfiguration = undefined) {
   // const masterChefV1Farms = useMasterChefV1Farms();
   const masterChefV2Farms = useMasterChefV2Farms();
+  console.log(masterChefV2Farms);
   // const miniChefFarms = useMiniChefFarms();
   // useEffect(() => {
   //   console.log('debug', { masterChefV1Farms, masterChefV2Farms, miniChefFarms })
