@@ -26,14 +26,7 @@ export type StakeStndTypes = {
   stndPrice: CurrencyAmount<Token> | undefined;
   onStake: (amount: CurrencyAmount<Token> | undefined) => Promise<any>;
 };
-export function StakeStnd({
-  xStnd,
-  stnd,
-  stndBalance,
-  xStndBalance,
-  stndPrice,
-  onStake,
-}: StakeStndTypes) {
+export function StakeStnd({ stnd, stndBalance, onStake }: StakeStndTypes) {
   const protocol = useProtocol();
   const { chainId } = useActiveWeb3React();
   const [stakeAmount, setStakeAmount] = useState('');
@@ -51,7 +44,17 @@ export function StakeStnd({
     getXStndAddress(protocol, chainId),
   );
 
+  const disabled =
+    !stakeCurrencyAmount?.greaterThan(ZERO) ||
+    InsufficientBalance ||
+    approvalState === ApprovalState.PENDING ||
+    pendingTx;
+
   const handleClick = useCallback(async () => {
+    if (disabled) return;
+
+    setPendingTx(true);
+
     if (approvalState === ApprovalState.NOT_APPROVED) {
       const success = await sendTx(() => approve());
       if (!success) {
@@ -59,14 +62,18 @@ export function StakeStnd({
         // setModalOpen(true)
         return;
       }
+      setPendingTx(false);
       return;
     }
     const success = await sendTx(() => onStake(stakeCurrencyAmount));
+
     if (!success) {
       setPendingTx(false);
       // setModalOpen(true)
       return;
     }
+    setStakeAmount('');
+    setPendingTx(false);
   }, [stakeCurrencyAmount, approvalState, setPendingTx, onStake]);
 
   // const stakeAmountDecimals = !!stakeAmount ? parseFloat(stakeAmount) : 0;
@@ -85,7 +92,9 @@ export function StakeStnd({
   // const estimatedXStndReward = (
   //   parseFloat(stakeCurrencyAmount.add(stakedBalance).toExact()) /
   const buttonBody = stakeCurrencyAmount?.greaterThan(ZERO) ? (
-    approvalState !== ApprovalState.APPROVED ? (
+    InsufficientBalance ? (
+      'Insufficient Balance'
+    ) : approvalState !== ApprovalState.APPROVED ? (
       approvalState === ApprovalState.PENDING ? (
         <div className="flex items-center justify-center space-x-3">
           <div>Approving</div> <RippleSpinner size={16} />
@@ -93,17 +102,12 @@ export function StakeStnd({
       ) : (
         'Approve'
       )
-    ) : InsufficientBalance ? (
-      'Insufficient Balance'
     ) : (
       'Stake'
     )
   ) : (
     'Enter amount'
   );
-
-  const diabled =
-    !stakeCurrencyAmount?.greaterThan(ZERO) || InsufficientBalance;
 
   return (
     <div className="text-text">
@@ -130,6 +134,7 @@ export function StakeStnd({
           <TokenInputPanelV2
             token={stnd}
             max={stndBalance}
+            amount={stakeAmount}
             onAmountChange={setStakeAmount}
             className="
             rounded-20 py-3 px-4
@@ -144,7 +149,7 @@ export function StakeStnd({
         </div>
 
         <Button
-          disabled={diabled}
+          disabled={disabled}
           className={classNames(DefinedStyles.fullButton, 'col-span-2')}
           onClick={handleClick}
         >

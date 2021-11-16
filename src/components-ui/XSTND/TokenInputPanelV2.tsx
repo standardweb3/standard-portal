@@ -13,6 +13,7 @@ export type TokenInputPanelV2Types = {
   className?: string;
   inputClassName?: string;
   maxClassName?: string;
+  amount?: string;
 };
 
 export function TokenInputPanelV2({
@@ -23,15 +24,19 @@ export function TokenInputPanelV2({
   className,
   inputClassName,
   maxClassName,
+  amount: propAmount,
 }: TokenInputPanelV2Types) {
   const [amount, setAmount] = useState('');
 
+  const inputAmount = propAmount !== undefined ? propAmount : amount;
+  const setInputAmount = propAmount !== undefined ? onAmountChange : setAmount;
+
   const onMax = () => {
-    max && setAmount(max.toExact());
+    max && setInputAmount(max.toExact());
   };
 
   useEffect(() => {
-    onAmountChange && onAmountChange(amount);
+    propAmount === undefined && onAmountChange && onAmountChange(amount);
   }, [amount, onAmountChange]);
 
   return (
@@ -50,8 +55,8 @@ export function TokenInputPanelV2({
       <div className="flex-1 px-4">
         <NumericalInput
           className={classNames('w-full text-right', inputClassName)}
-          value={amount}
-          onUserInput={setAmount}
+          value={inputAmount}
+          onUserInput={setInputAmount}
         />
       </div>
       {max && (

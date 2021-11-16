@@ -90,9 +90,10 @@ export async function useExchangeAvailability(
     chainId ? ['exchangeAvailability'] : null,
     () => getExchangeAvailability(chainId),
     {
-      loadingTimeout: 3000,
-      onLoadingSlow: fallbackCb(),
-      onError: fallbackCb(),
+      revalidateOnMount: true,
+      revalidateOnReconnect: true,
+      loadingTimeout: 5000,
+      onLoadingSlow: fallbackCb
     },
   );
 }

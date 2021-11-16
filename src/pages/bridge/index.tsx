@@ -62,7 +62,7 @@ export default function Bridge() {
               className={DefinedStyles.pageAlertFull}
               message={
                 <div>
-                  STND can be bridged from Ethereum to Shiden Network using{' '}
+                  STND can be bridged between Ethereum and Shiden Network using{' '}
                   <ExternalLink
                     href="https://anyswap.exchange/#/router"
                     className="!whitespace-normal"
@@ -130,7 +130,7 @@ export default function Bridge() {
                     href="https://medium.com/@stakenode/standard-protocol-experience-the-dex-7f5134eb28e6"
                     className="font-bold text-2xl break-normal !whitespace-normal"
                   >
-                    Crossing STND from Ethereum to Shiden Network
+                    Crossing STND between Ethereum and Shiden Network
                   </ExternalLink>
                   <div className="text-xs">by Jimmy Tudesky</div>
                 </div>

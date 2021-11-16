@@ -4,6 +4,9 @@ import { UnstakeStnd } from './UnstakeStnd';
 import { StndStakerHeader } from './StndStakerHeader';
 import { CurrencyAmount, Token } from '@digitalnative/standard-protocol-sdk';
 import useStndStaker from '../../hooks/stake';
+import { useXStndInfo } from '../../hooks/stake/useXStndInfo';
+import { CurrencyLogo } from '../CurrencyLogo';
+import { ViewportSmallDown } from '../Responsive';
 
 export type StndStakerProps = {
   xStnd: Token;
@@ -24,15 +27,59 @@ export default function StndStaker({
   //   const stakePoolStndTotalDecimals = parseFloat(
   //     stakePoolStndTotal?.toExact() ?? '0',
   //   );
-
+  const { stndBalance: stndTotalStaked, xStndTotalSupply } = useXStndInfo();
+  const stndBalanceDecimals = parseFloat(stndTotalStaked?.toExact() ?? '0');
+  const xStndTotalSupplyDecimals = parseFloat(
+    xStndTotalSupply?.toExact() ?? '0',
+  );
+  const ratio =
+    xStndTotalSupplyDecimals === 0
+      ? 1
+      : stndBalanceDecimals / xStndTotalSupplyDecimals;
   const onStake = () => setStake(true);
   const onUnstake = () => setStake(false);
 
   const { enter, leave } = useStndStaker();
 
   return (
-    <div className="bg-opaque p-5 rounded-20 h-full">
+    <div className="md:bg-opaque p-0 md:p-5 rounded-20 w-full h-full">
       <StndStakerHeader stake={stake} onStake={onStake} onUnstake={onUnstake} />
+      <ViewportSmallDown>
+        <div className="w-full flex justify-center my-4">
+          <div
+            className="
+          bg-opaque-inactive rounded-20
+        inline-flex items-center 
+        space-x-2 
+        rounded-20 px-4 py-2"
+          >
+            <div className="flex items-center space-x-2">
+              <CurrencyLogo
+                currency={xStnd}
+                className="rounded-full"
+                size={24}
+              />
+              <div className="font-bold">
+                1{' '}
+                <span className="bg-xstnd bg-clip-text text-transparent">
+                  xSTND
+                </span>
+              </div>
+            </div>
+            <div>=</div>
+            <div className="flex items-center space-x-2">
+              <CurrencyLogo
+                currency={stnd}
+                className="rounded-full"
+                size={24}
+              />
+              <div className="font-bold">
+                {ratio} <span className="text-primary">STND</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ViewportSmallDown>
       {stake ? (
         <StakeStnd
           onStake={enter}

@@ -37,7 +37,7 @@ export function UnstakeStnd({
 }: UnstakeStndTypes) {
   const protocol = useProtocol();
   const { chainId } = useActiveWeb3React();
-  const [unstakeAmount, setUntakeAmount] = useState('');
+  const [unstakeAmount, setUnstakeAmount] = useState('');
   const [pendingTx, setPendingTx] = useState(false);
 
   const xStndBalanceDecimals =
@@ -52,7 +52,16 @@ export function UnstakeStnd({
     getXStndAddress(protocol, chainId),
   );
 
+  const disabled =
+    !unstakeCurrencyAmount?.greaterThan(ZERO) ||
+    InsufficientBalance ||
+    approvalState === ApprovalState.PENDING ||
+    pendingTx;
+
   const handleClick = useCallback(async () => {
+    if (disabled) return;
+
+    setPendingTx(true);
     if (approvalState === ApprovalState.NOT_APPROVED) {
       const success = await sendTx(() => approve());
       if (!success) {
@@ -60,6 +69,7 @@ export function UnstakeStnd({
         // setModalOpen(true)
         return;
       }
+      setPendingTx(false);
       return;
     }
     const success = await sendTx(() => onUnstake(unstakeCurrencyAmount));
@@ -68,11 +78,15 @@ export function UnstakeStnd({
       // setModalOpen(true)
       return;
     }
+    setUnstakeAmount('');
+    setPendingTx(false);
   }, [unstakeCurrencyAmount, approvalState, setPendingTx, onUnstake]);
 
   // const unstakeAmountDecimals = !!unstakeAmount ? parseFloat(unstakeAmount) : 0;
   const buttonBody = unstakeCurrencyAmount?.greaterThan(ZERO) ? (
-    approvalState !== ApprovalState.APPROVED ? (
+    InsufficientBalance ? (
+      'Insufficient Balance'
+    ) : approvalState !== ApprovalState.APPROVED ? (
       approvalState === ApprovalState.PENDING ? (
         <div className="flex items-center justify-center space-x-3">
           <div>Approving</div> <RippleSpinner size={16} />
@@ -80,16 +94,12 @@ export function UnstakeStnd({
       ) : (
         'Approve'
       )
-    ) : InsufficientBalance ? (
-      'Insufficient Balance'
     ) : (
       'Unstake'
     )
   ) : (
     'Enter amount'
   );
-  const diabled =
-    !unstakeCurrencyAmount?.greaterThan(ZERO) || InsufficientBalance;
 
   return (
     <div className="text-text">
@@ -116,7 +126,8 @@ export function UnstakeStnd({
           <TokenInputPanelV2
             token={xStnd}
             max={xStndBalance}
-            onAmountChange={setUntakeAmount}
+            amount={unstakeAmount}
+            onAmountChange={setUnstakeAmount}
             className="
             rounded-20 py-3 px-4
             bg-opaque
@@ -129,7 +140,7 @@ export function UnstakeStnd({
           />
         </div>
         <Button
-          disabled={diabled}
+          disabled={disabled}
           className={classNames(DefinedStyles.fullButton, 'col-span-2')}
           onClick={handleClick}
         >

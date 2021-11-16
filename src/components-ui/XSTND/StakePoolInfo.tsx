@@ -7,6 +7,7 @@ import useCurrentBlockTimestamp from '../../hooks/useCurrentBlockTimestamp';
 import { useDayData, useStandardPrice } from '../../services/graph';
 import { useBarHistories } from '../../services/graph/hooks/bar';
 import { CurrencyLogo } from '../CurrencyLogo';
+import { ViewportMediumUp } from '../Responsive';
 
 export const StakePoolInfoWrapper = styled.div`
   background-repeat: no-repeat;
@@ -99,31 +100,32 @@ export function StakePoolInfo({ stnd, xStnd, className }: StakePoolInfoTypes) {
       )}
     >
       <div className="flex text-center font-bold mt-2 mb-4">Stats</div>
-
-      <div
-        className="
+      <ViewportMediumUp>
+        <div
+          className="
         flex items-center 
         space-x-2 
         rounded-20 border border-primary px-4 py-2
         mb-4"
-      >
-        <div className="flex items-center space-x-2">
-          <CurrencyLogo currency={xStnd} className="rounded-full" size={24} />
-          <div className="font-bold">
-            1{' '}
-            <span className="bg-xstnd bg-clip-text text-transparent">
-              xSTND
-            </span>
+        >
+          <div className="flex items-center space-x-2">
+            <CurrencyLogo currency={xStnd} className="rounded-full" size={24} />
+            <div className="font-bold">
+              1{' '}
+              <span className="bg-xstnd bg-clip-text text-transparent">
+                xSTND
+              </span>
+            </div>
+          </div>
+          <div>=</div>
+          <div className="flex items-center space-x-2">
+            <CurrencyLogo currency={stnd} className="rounded-full" size={24} />
+            <div className="font-bold">
+              {ratio} <span className="text-primary">STND</span>
+            </div>
           </div>
         </div>
-        <div>=</div>
-        <div className="flex items-center space-x-2">
-          <CurrencyLogo currency={stnd} className="rounded-full" size={24} />
-          <div className="font-bold">
-            {ratio} <span className="text-primary">STND</span>
-          </div>
-        </div>
-      </div>
+      </ViewportMediumUp>
       <div className="space-y-3 flex flex-col justify-center h-full">
         <div className="w-full flex justify-between items-center space-x-4">
           <div className="font-bold">
@@ -151,10 +153,10 @@ export function StakePoolInfo({ stnd, xStnd, className }: StakePoolInfoTypes) {
           </div>
           <div className="text-2xl font-bold">{tvl} </div>
         </div>
-        {apr && (
+        {apr !== undefined && (
           <div className="w-full flex justify-between items-center space-x-2">
             <div className="font-bold">
-              <span className="text-grey text-lg">APY</span>
+              <span className="text-grey text-lg">APR</span>
             </div>
             <div className="text-2xl font-bold">{formatPercent(apr ?? 0)} </div>
           </div>
