@@ -5,7 +5,7 @@ import { classNames, formatNumber, formatPercent } from '../../functions';
 import { useXStndInfo } from '../../hooks/stake/useXStndInfo';
 import useCurrentBlockTimestamp from '../../hooks/useCurrentBlockTimestamp';
 import { useDayData, useStandardPrice } from '../../services/graph';
-import { useBarHistories } from '../../services/graph/hooks/bar';
+import { useBar, useBarHistories } from '../../services/graph/hooks/bar';
 import { CurrencyLogo } from '../CurrencyLogo';
 import { ViewportMediumUp } from '../Responsive';
 
@@ -61,6 +61,8 @@ export function StakePoolInfo({ stnd, xStnd, className }: StakePoolInfoTypes) {
   const dayDatas = useDayData({ first: 1, skip: 1 });
   // add first 1 skip 1
   const barHistories = useBarHistories();
+  // const bar = useBar();
+  // console.log(bar);
 
   const feeUSD =
     dayDatas && dayDatas[0] && parseFloat(dayDatas[0].volumeUSD) * (0.0005 / 3);
@@ -76,8 +78,8 @@ export function StakePoolInfo({ stnd, xStnd, className }: StakePoolInfoTypes) {
 
   const apr =
     feeUSD &&
-    barTotalSupply &&
-    ((feeUSD / barTotalSupply) * 365) / (barRatio * stndPrice);
+    xStndTotalSupplyDecimals &&
+    (feeUSD / (xStndTotalSupplyDecimals * barRatio * stndPrice)) * 365;
   // TODO: DROP AND USE SWR HOOKS INSTEAD
   // useEffect(() => {
   //   const fetchData = async () => {
