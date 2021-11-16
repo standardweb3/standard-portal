@@ -3,6 +3,7 @@ import {
   Currency,
   CurrencyAmount,
   currencyEquals,
+  NATIVE,
   WNATIVE,
 } from '@digitalnative/standard-protocol-sdk';
 import { useCallback, useState } from 'react';
@@ -82,6 +83,23 @@ export default function Add({ liquidityToken, tokenAId, tokenBId }) {
 
   const currencyAIsETH = currencyIdA === 'ETH';
   const currencyBIsETH = currencyIdB === 'ETH';
+
+  const oneCurrencyIsETH = currencyAIsETH || currencyBIsETH;
+
+  const handleWrapUnwrap = useCallback(() => {
+    if (currencyAIsETH) {
+      setCurrencyIdA(WNATIVE[chainId].address);
+    }
+    if (currencyBIsETH) {
+      setcurrencyIdB(WNATIVE[chainId].address);
+    }
+    if (currencyAIsWeth) {
+      setCurrencyIdA('ETH');
+    }
+    if (currencyBIsWeth) {
+      setcurrencyIdB('ETH');
+    }
+  }, [currencyAIsWeth, currencyAIsETH, currencyBIsETH, currencyBIsWeth]);
 
   const [isExpertMode] = useExpertModeManager();
 
@@ -485,7 +503,17 @@ export default function Add({ liquidityToken, tokenAId, tokenBId }) {
             showCommonBases
           />
         </div>
-        {/* {oneCurrencyIsWETH && <div>use W{WNATIVE[chainId].symbol}</div>} */}
+        {(oneCurrencyIsWETH || oneCurrencyIsETH) && (
+          <div
+            className="text-blue cursor-pointer pl-3"
+            onClick={handleWrapUnwrap}
+          >
+            use{' '}
+            {oneCurrencyIsWETH
+              ? NATIVE[chainId].symbol
+              : WNATIVE[chainId].symbol}
+          </div>
+        )}
 
         {currencies[Field.CURRENCY_A] &&
           currencies[Field.CURRENCY_B] &&
