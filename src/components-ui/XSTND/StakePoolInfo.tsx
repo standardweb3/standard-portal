@@ -123,7 +123,7 @@ export function StakePoolInfo({ stnd, xStnd, className }: StakePoolInfoTypes) {
           <div className="flex items-center space-x-2">
             <CurrencyLogo currency={stnd} className="rounded-full" size={24} />
             <div className="font-bold">
-              {ratio} <span className="text-primary">STND</span>
+              {formatNumber(ratio)} <span className="text-primary">STND</span>
             </div>
           </div>
         </div>
