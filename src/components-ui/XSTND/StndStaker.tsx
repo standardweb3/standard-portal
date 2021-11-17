@@ -7,6 +7,7 @@ import useStndStaker from '../../hooks/stake';
 import { useXStndInfo } from '../../hooks/stake/useXStndInfo';
 import { CurrencyLogo } from '../CurrencyLogo';
 import { ViewportSmallDown } from '../Responsive';
+import { formatNumber } from '../../functions';
 
 export type StndStakerProps = {
   xStnd: Token;
@@ -74,7 +75,7 @@ export default function StndStaker({
                 size={24}
               />
               <div className="font-bold">
-                {ratio} <span className="text-primary">STND</span>
+                {formatNumber(ratio)} <span className="text-primary">STND</span>
               </div>
             </div>
           </div>

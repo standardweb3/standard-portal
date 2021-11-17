@@ -345,42 +345,68 @@ export default function Chart({
   const lastClose = hasData
     ? candlestickSeries[0].data[candlestickSeries[0].data.length - 1].close
     : parseFloat(price?.toFixed(10)) ?? undefined;
-
   const symbols = [inputCurrency?.symbol, outputCurrency?.symbol];
-  const { cexPrice, ctod, dtoc } = useArbitrage(lastClose, symbols);
+  const { ctod, dtoc } = useArbitrage(!isLoading && lastClose, symbols);
+
+  const [outbound, setOutbound] = useState(false);
+
+  useEffect(() => {
+    if (dtoc >= 1) setOutbound(true);
+    else setOutbound(false);
+  }, [dtoc]);
 
   // const fmtLastClose = lastClose ? formattedNum(lastClose) : 'N/A'
   return (
     <>
       <div className="flex items-center space-x-4 justify-between mb-4">
-        <a
-          href={`${ANALYTICS_URL[chainId]}/pairs`}
-          target="_blank"
-          rel="noreferrer"
-          className="flex items-center justify-center space-x-4 lg:mt-0 hover:text-gray-200 cursor-pointer rounded p-2 -ml-2 lg:w-min"
-        >
-          <div className="flex items-center space-x-2">
-            <CurrencyLogo
-              currency={inputCurrency}
-              size={'30px'}
-              className={'rounded-full'}
-            />
-            <div className="text-xl font-medium">{inputCurrency?.symbol}</div>
+        <div className="grid grid-cols-2 w-full gap-4">
+          <div className="space-y-2 col-span-2 lg:col-span-1">
+            <a
+              href={`${ANALYTICS_URL[chainId]}/pairs`}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center justify-center space-x-4 lg:mt-0 hover:text-gray-200 cursor-pointer rounded p-2 -ml-2 lg:w-min"
+            >
+              <div className="flex items-center space-x-2">
+                <CurrencyLogo
+                  currency={inputCurrency}
+                  size={'30px'}
+                  className={'rounded-full'}
+                />
+                <div className="text-xl font-medium">
+                  {inputCurrency?.symbol}
+                </div>
+              </div>
+              <div className="text-lg font-medium text-h">/</div>
+              <div className="flex items-center space-x-2">
+                <CurrencyLogo
+                  currency={outputCurrency}
+                  size={'30px'}
+                  className={'rounded-full'}
+                />
+                <div className="text-xl font-medium">
+                  {outputCurrency?.symbol}
+                </div>
+              </div>
+            </a>
+
+            <div className="text-3xl font-black text-gray-200 text-center lg:text-left truncate">
+              {formatNumber(lastClose || 0)}
+            </div>
           </div>
-          <div className="text-lg font-medium text-h">/</div>
-          <div className="flex items-center space-x-2">
-            <CurrencyLogo
-              currency={outputCurrency}
-              size={'30px'}
-              className={'rounded-full'}
-            />
-            <div className="text-xl font-medium">{outputCurrency?.symbol}</div>
-          </div>
-        </a>
-        <div className="text-3xl font-black text-gray-200 truncate">
-          {formatNumber(lastClose || 0)}
+          {ctod !== undefined && dtoc !== undefined && (
+            <div className="col-span-2 lg:col-span-1 flex justify-center lg:justify-end order-first lg:order-last">
+              <div className="bg-opaque rounded-20 lg:bg-transparent p-4 lg:p-0">
+                <Arbitrage
+                  outbound={outbound}
+                  setOutbound={setOutbound}
+                  ctod={ctod}
+                  dtoc={dtoc}
+                />
+              </div>
+            </div>
+          )}
         </div>
-        <Arbitrage outbound={true} ctod={23} dtoc={23} />
       </div>
       <div className={'flex flex-1 h-[300px]'}>
         {isLoading ? (
