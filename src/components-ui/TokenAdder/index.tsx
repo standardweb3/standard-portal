@@ -28,12 +28,14 @@ export function TokenAdder({ currency }: TokenAdderProps) {
         bg-opaque-secondary
         rounded-20
         px-3 py-2
-        flex items-center space-x-1 
+        flex items-center space-x-1 t
         text-sm 
         font-base font-medium`,
       )}
     >
-      {stndPrice && <div>{formatNumber(stndPrice, true)}</div>}
+      {!Number.isNaN(parseFloat(stndPrice ?? '0')) && stndPrice && (
+        <div>{formatNumber(stndPrice, true)}</div>
+      )}
       <CurrencyLogo currency={currency} size={24} className="rounded-full" />
       {balance && (
         <div className="max-w-[3rem] truncate overflow-ellipsis">

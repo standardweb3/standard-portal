@@ -7,8 +7,10 @@ import { useActiveWeb3React, useFuse } from '../../hooks';
 
 import {
   useAverageBlockTime,
+  useExchangeAvailability,
   useFarmPairAddresses,
   useFarms,
+  useMasterChefV2Availability,
   useMasterChefV2SushiPerBlock,
   useStandardPrice,
   useSushiPairs,
@@ -26,15 +28,20 @@ import {
   ViewportSmallDown,
 } from '../../components-ui/Responsive';
 import { AVERAGE_BLOCK_TIME_IN_SECS } from '../../constants';
+import { WavySpinner } from '../../components-ui/Spinner/WavySpinner';
 
 export default function Farm() {
   const router = useRouter();
+  useExchangeAvailability(() => router.push('/farmv2'));
+  useMasterChefV2Availability(() => router.push('/farmv2'));
+
   const { chainId } = useActiveWeb3React();
 
   const type =
     router.query.filter == null ? 'all' : (router.query.filter as string);
 
   const pairAddresses = useFarmPairAddresses();
+
   const swapPairs = useSushiPairs({
     where: {
       id_in: pairAddresses,
@@ -97,77 +104,6 @@ export default function Farm() {
 
       const defaultRewards = [defaultReward];
 
-      //   if (pool.chef === Chef.MASTERCHEF_V2) {
-      //     // override for mcv2...
-      //     pool.owner.totalAllocPoint = masterChefV2TotalAllocPoint
-
-      //     const icon = ['0', '3', '4', '8'].includes(pool.id)
-      //       ? `https://raw.githubusercontent.com/sushiswap/icons/master/token/${pool.rewardToken.symbol.toLowerCase()}.jpg`
-      //       : `https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/${getAddress(
-      //           pool.rewarder.rewardToken
-      //         )}/logo.png`
-
-      //     const decimals = 10 ** pool.rewardToken.decimals
-
-      //     const rewardPerBlock =
-      //       pool.rewardToken.symbol === 'ALCX'
-      //         ? pool.rewarder.rewardPerSecond / decimals
-      //         : (pool.rewarder.rewardPerSecond / decimals) * averageBlockTime
-
-      //     const rewardPerDay =
-      //       pool.rewardToken.symbol === 'ALCX'
-      //         ? (pool.rewarder.rewardPerSecond / decimals) * blocksPerDay
-      //         : (pool.rewarder.rewardPerSecond / decimals) * averageBlockTime * blocksPerDay
-
-      //     const reward = {
-      //       token: pool.rewardToken.symbol,
-      //       icon: icon,
-      //       rewardPerBlock: rewardPerBlock,
-      //       rewardPerDay: rewardPerDay,
-      //       rewardPrice: pool.rewardToken.derivedETH * ethPrice,
-      //     }
-
-      //     return [...defaultRewards, reward]
-      //   } else if (pool.chef === Chef.MINICHEF) {
-      //     const sushiPerSecond = ((pool.allocPoint / pool.miniChef.totalAllocPoint) * pool.miniChef.sushiPerSecond) / 1e18
-      //     const sushiPerBlock = sushiPerSecond * averageBlockTime
-      //     const sushiPerDay = sushiPerBlock * blocksPerDay
-      //     const rewardPerSecond =
-      //       ((pool.allocPoint / pool.miniChef.totalAllocPoint) * pool.rewarder.rewardPerSecond) / 1e18
-      //     const rewardPerBlock = rewardPerSecond * averageBlockTime
-      //     const rewardPerDay = rewardPerBlock * blocksPerDay
-
-      //     const reward = {
-      //       [ChainId.MATIC]: {
-      //         token: 'MATIC',
-      //         icon: 'https://raw.githubusercontent.com/sushiswap/icons/master/token/polygon.jpg',
-      //         rewardPrice: maticPrice,
-      //       },
-      //       [ChainId.XDAI]: {
-      //         token: 'STAKE',
-      //         icon: 'https://raw.githubusercontent.com/sushiswap/icons/master/token/stake.jpg',
-      //         rewardPrice: stakePrice,
-      //       },
-      //       [ChainId.HARMONY]: {
-      //         token: 'ONE',
-      //         icon: 'https://raw.githubusercontent.com/sushiswap/icons/master/token/one.jpg',
-      //         rewardPrice: onePrice,
-      //       },
-      //     }
-
-      //     return [
-      //       {
-      //         ...defaultReward,
-      //         rewardPerBlock: sushiPerBlock,
-      //         rewardPerDay: sushiPerDay,
-      //       },
-      //       {
-      //         ...reward[chainId],
-      //         rewardPerBlock: rewardPerBlock,
-      //         rewardPerDay: rewardPerDay,
-      //       },
-      //     ]
-      //   }
       return defaultRewards;
     }
     const rewards = getRewards();
@@ -263,7 +199,7 @@ export default function Farm() {
         <PageContent>
           <div
             className="
-            w-full py-4 lg:p-8
+            w-full
           "
           >
             <ViewportSmallDown>
@@ -273,7 +209,7 @@ export default function Farm() {
             </ViewportSmallDown>
             <div
               className="
-              p-0 md:p-8 
+              p-0 md:p-5
               rounded-20 
               bg-transparent md:bg-opaque"
             >
@@ -307,8 +243,14 @@ export default function Farm() {
                 <div className="flex items-center text-lg font-bold text-high-emphesis whitespace-nowrap">
                   <div className="w-full h-0 ml-4 font-bold bg-transparent border border-b-0 border-transparent rounded text-high-emphesis md:border-gradient-r-blue-pink-dark-800 opacity-20"></div>
                 </div>
-
-                <FarmList farms={result} term={term} />
+                {farms.length === 0 ? (
+                  <div className="text-center space-y-2">
+                    <WavySpinner className="bg-text" />
+                    <div className="text-sm">Loading Farms...</div>
+                  </div>
+                ) : (
+                  <FarmList farms={result} term={term} />
+                )}
               </div>
             </div>
           </div>

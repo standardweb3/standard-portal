@@ -358,9 +358,21 @@ export const tokenPairsQuery = gql`
   ${pairFieldsQuery}
 `;
 
+export const emptyTokensQuery = gql`
+  query tokensQuery($block: Block_height, $where: Token_filter) {
+    tokens(where: $where, block: $block) {
+      id
+      # hourData(first: 168, skip: 0, orderBy: date, order: asc) {
+      #   priceUSD
+      # }
+    }
+  }
+`;
+
 export const tokensQuery = gql`
   query tokensQuery(
     $first: Int! = 1000
+    $skip: Int! = 0
     $block: Block_height
     $where: Token_filter
   ) {
@@ -370,11 +382,13 @@ export const tokensQuery = gql`
       where: $where
       orderDirection: desc
       block: $block
+      skip: $skip
     ) {
       ...tokenFields
       dayData(first: 7, skip: 0, orderBy: date, order: asc) {
         id
         priceUSD
+        volumeUSD
       }
       # hourData(first: 168, skip: 0, orderBy: date, order: asc) {
       #   priceUSD

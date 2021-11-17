@@ -1,4 +1,6 @@
+import { useRouter } from 'next/router';
 import { STND_ADDRESS, Token } from '@digitalnative/standard-protocol-sdk';
+import ReactGA from 'react-ga';
 import React, { useMemo, useState } from 'react';
 import { formatNumber, tryParseAmount } from '../../functions';
 
@@ -37,6 +39,7 @@ import styled from '@emotion/styled';
 import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
 import {
   useEthPrice,
+  useExchangeAvailability,
   useStandardPrice,
   useSushiPairs,
   useTokens,
@@ -48,6 +51,8 @@ import {
   useBondedStrategy,
   useBondedStrategyHistory,
 } from '../../services/graph/hooks/dividend';
+import { ExternalLink } from '../../components-ui/ExternalLink';
+import Countdown from 'react-countdown';
 // import { useBondedStrategy } from '../../services/graph/hooks/dividend';
 // import { useBundle, useStandardPrice } from '../../services/graph';
 
@@ -60,6 +65,8 @@ export const BondWrapper = styled.div`
 `;
 
 export default function Dividend() {
+  const router = useRouter();
+  useExchangeAvailability(() => router.push('/dividendv2'));
   const { account, chainId } = useActiveWeb3React();
 
   const stnd = new Token(
@@ -93,8 +100,9 @@ export default function Dividend() {
   const [withdrawValue, setWithdrawValue] = useState('');
 
   const ethPrice = useEthPrice();
+  // if (ethPrice === undefined) router.push('/dividendv2');
 
-  const { pairsWithDividends } = useDividendPoolWhitelistPairBalances(10);
+  const { pairsWithDividends } = useDividendPoolWhitelistPairBalances(15);
   const swapPairs = useSushiPairs({
     where: {
       id_in: pairsWithDividends.map((pair) => pair.address.toLowerCase()),
@@ -197,7 +205,7 @@ export default function Dividend() {
     remainingRewardUSD,
     totalRewardUSD,
   } = useMemo(() => {
-    if (!ethPrice || !stndPrice || !bondedStrategyHistory)
+    if (!ethPrice || !stndPrice || !bondedStrategyHistory || !bondedStrategy)
       return {
         apr: null,
         apy: null,
@@ -225,7 +233,7 @@ export default function Dividend() {
 
       return { apr, apy, claimedRewardUSD, remainingRewardUSD, totalRewardUSD };
     }
-  }, [ethPrice, stndPrice, bondedStrategy]);
+  }, [ethPrice, stndPrice, bondedStrategy, bondedStrategyHistory]);
 
   const stndBalance = useTokenBalance(account, stnd);
   const onBondMax = () => setDepositValue(stndBalance?.toExact());
@@ -234,7 +242,8 @@ export default function Dividend() {
   const typedDepositValue = tryParseAmount(depositValue, stnd);
 
   const atBondMax = stndBalance?.lessThan(typedDepositValue ?? 0);
-  const atUnbondMax = bonded?.lt(withdrawValue.toBigNumber(stnd.decimals));
+  const atUnbondMax =
+    withdrawValue && bonded?.lt(withdrawValue.toBigNumber(stnd.decimals));
 
   const [approvalState, approve] = useApproveCallback(
     typedDepositValue,
@@ -247,10 +256,16 @@ export default function Dividend() {
     setPendingTx(true);
     try {
       // KMP decimals depend on asset, SLP is always 18
-      const tx = await bond(depositValue.toBigNumber(stnd?.decimals));
+      const tx = await bond(depositValue.toBigNumber(stnd.decimals));
 
       addTransaction(tx, {
         summary: `Bond ${depositValue} STND`,
+      });
+
+      ReactGA.event({
+        category: 'Dividend',
+        action: 'Bond',
+        label: depositValue,
       });
     } catch (error) {
       console.error(error);
@@ -262,10 +277,15 @@ export default function Dividend() {
     setPendingTx(true);
     try {
       // KMP decimals depend on asset, SLP is always 18
-      const tx = await unbond(withdrawValue.toBigNumber(stnd?.decimals));
+      const tx = await unbond(withdrawValue.toBigNumber(stnd.decimals));
 
       addTransaction(tx, {
         summary: `Unbond ${depositValue} STND`,
+      });
+      ReactGA.event({
+        category: 'Dividend',
+        action: 'Unbond',
+        label: withdrawValue,
       });
     } catch (error) {
       console.error(error);
@@ -273,7 +293,7 @@ export default function Dividend() {
     setPendingTx(false);
   };
 
-  const handleClaim = async (address: string) => {
+  const handleClaim = async (address: string, name: string) => {
     setPendingTx(true);
     try {
       // KMP decimals depend on asset, SLP is always 18
@@ -282,11 +302,19 @@ export default function Dividend() {
       addTransaction(tx, {
         summary: `Claim dividend`,
       });
+
+      ReactGA.event({
+        category: 'Dividend',
+        action: 'Claim',
+        label: name,
+      });
     } catch (error) {
       console.error(error);
     }
     setPendingTx(false);
   };
+
+  const migrationDate = 1638316799;
 
   return (
     <>
@@ -328,6 +356,20 @@ export default function Dividend() {
             type="information"
           />
 
+          <Alert
+            className={DefinedStyles.pageAlertFull}
+            title={`Dividend is migrating to V2`}
+            message={
+              <div>
+                <ExternalLink href="https://snapshot.org/#/stndgov.eth/proposal/0x73ba6565c31073f9092b3a62447a787da65eb5fea19c7477a02fe12be9ea9f11">
+                  xSTND
+                </ExternalLink>{' '}
+                is coming! In the meanwhile, bonding will be disabled
+              </div>
+            }
+            type="warning"
+          />
+
           <div
             className="
             w-full py-4 lg:py-8
@@ -346,7 +388,7 @@ export default function Dividend() {
                 col-span-3
                 lg:col-span-2
                 relative
-                rounded-20 p-8
+                rounded-20 p-4
                 bg-background-bond
                 "
               >
@@ -371,7 +413,7 @@ export default function Dividend() {
                       <BondedInfo
                         className="text-center"
                         amount={formatNumber(
-                          parseFloat(bondedStrategy?.totalSupply ?? 0) ?? 0,
+                          bonded?.toFixed(stnd.decimals) ?? 0,
                         )}
                         share={share ?? 0}
                         total={bondedTotalDecimals}
@@ -397,6 +439,7 @@ export default function Dividend() {
                   <div className="md:max-w-[75%]">
                     <BondInput
                       disabled={
+                        true ||
                         pendingTx ||
                         !depositValue ||
                         depositValue === '0' ||
@@ -404,12 +447,19 @@ export default function Dividend() {
                       }
                       atMax={atBondMax}
                       onMax={onBondMax}
-                      setBondAmout={setDepositValue}
+                      setBondAmount={setDepositValue}
                       bondAmount={depositValue}
                       onBond={handleBond}
                       approvalState={approvalState}
                       approve={approve}
                       balance={stndBalance?.toExact()}
+                      buttonClassName="!py-2"
+                      bondButtonBody={
+                        <div className="text-sm min-h-[14px]">
+                          Migrating to V2 in <br />
+                          <Countdown date={migrationDate * 1000} />
+                        </div>
+                      }
                     />
                   </div>
                 </div>

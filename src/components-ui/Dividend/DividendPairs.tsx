@@ -5,7 +5,7 @@ export type DividendPairsProps = {
   pairsWithDividends: any[];
   share: number;
   className?: string;
-  claim: (address: string) => void;
+  claim: (address: string, name: string) => void;
   ethPrice: any;
 };
 
@@ -17,10 +17,15 @@ export function DividendPairs({
 }: DividendPairsProps) {
   return (
     <div
-      className={classNames('space-y-2 bg-opaque p-8 rounded-20', className)}
+      className={classNames(
+        'space-y-2 bg-transparent md:bg-opaque md:p-5 rounded-20',
+        className,
+      )}
     >
-      <div className="grid grid-cols-7 lg:grid-cols-7 text-grey">
-        <div className="col-span-2">Pair</div>
+      <div className="grid grid-cols-7 lg:grid-cols-7 text-sm text-grey">
+        <div className="col-span-2 flex md:justify-start justify-center">
+          Pair
+        </div>
         <div className="col-span-2">Your Dividend</div>
         <div className="col-span-2">Total Dividend</div>
       </div>

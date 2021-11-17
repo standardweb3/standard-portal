@@ -10,7 +10,7 @@ import { CountdownTimer } from '../Timer/CountdownTimer';
 export type DividendTokenProps = {
   tokenWithDividend: any;
   share: number;
-  claim: (address: string) => void;
+  claim: (address: string, name: string) => void;
 };
 
 export function DividendToken({
@@ -33,7 +33,7 @@ export function DividendToken({
   const isViewportXs = useSizeXs();
 
   const handleClaim = useCallback(() => {
-    claim(address);
+    claim(address, token.symbol);
   }, [address]);
 
   return (
@@ -42,20 +42,24 @@ export function DividendToken({
         min-h-[72px]
         bg-opaque rounded-20 px-2 py-2
         grid grid-cols-7 lg:grid-cols-7
-        lg:space-y-0 items-center"
+        lg:space-y-0 items-center
+        cursor-pointer
+        hover:bg-bright
+        transition
+        duration-500"
     >
       <div
         className="
         col-span-2 
         flex flex-col 
-        sm:flex-row 
+        md:flex-row 
         items-center 
         text-sm
         sm:text-base
         font-bold 
         space-y-2
-        sm:space-y-0
-        sm:space-x-3"
+        md:space-y-0
+        md:space-x-3"
       >
         <CurrencyLogo
           currency={token}

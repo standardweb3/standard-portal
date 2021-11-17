@@ -6,11 +6,18 @@ export interface ToggleProps {
   id?: string;
   isActive: boolean;
   toggle: () => void;
+  disabled?: boolean;
 }
 
-export default function ArbitrageToggle({ id, isActive, toggle }: ToggleProps) {
+export default function ArbitrageToggle({
+  id,
+  disabled,
+  isActive,
+  toggle,
+}: ToggleProps) {
   return (
     <Switch
+      disabled={disabled}
       checked={isActive}
       onChange={toggle}
       className={classNames(

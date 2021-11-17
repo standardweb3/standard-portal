@@ -26,6 +26,7 @@ interface ExchangeHeaderProps {
   output?: Currency;
   pair?: string;
   allowedSlippage?: Percent;
+  hideNavigation?: Boolean;
 }
 
 export const ExchangeHeader: FC<ExchangeHeaderProps> = ({
@@ -33,10 +34,11 @@ export const ExchangeHeader: FC<ExchangeHeaderProps> = ({
   output,
   pair,
   allowedSlippage,
+  hideNavigation,
 }) => {
   const router = useRouter();
   //   const [animateWallet, setAnimateWallet] = useState(false);
-  const isSwap = router.asPath.startsWith('/swap');
+  const isTrade = router.asPath.startsWith('/trade');
   return (
     <div
       className={`
@@ -45,11 +47,11 @@ export const ExchangeHeader: FC<ExchangeHeaderProps> = ({
       w-full
       mb-6`}
     >
-      <ExchangeNavigation input={input} output={output} />
+      {!hideNavigation && <ExchangeNavigation input={input} output={output} />}
       <div className="space-x-2 flex items-center">
         <TransactionSettingsWithGas allowedSlippage={allowedSlippage} />
         <AnalyticsLink
-          path={isSwap ? 'tokens' : pair ? `pairs/${pair}` : 'pairs'}
+          path={isTrade ? 'tokens' : pair ? `pairs/${pair}` : 'pairs'}
         />
       </div>
     </div>

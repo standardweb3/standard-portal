@@ -23,7 +23,15 @@ module.exports = {
     extend: {
       gridTemplateColumns: {
         // Simple 16 column grid
+        '13': 'repeat(13, minmax(0, 1fr))',
+        '14': 'repeat(14, minmax(0, 1fr))',
         '15': 'repeat(15, minmax(0, 1fr))',
+        '16': 'repeat(16, minmax(0, 1fr))',
+        '17': 'repeat(17, minmax(0, 1fr))',
+        '18': 'repeat(18, minmax(0, 1fr))',
+        '19': 'repeat(19, minmax(0, 1fr))',
+        '20': 'repeat(20, minmax(0, 1fr))',
+        '21': 'repeat(21, minmax(0, 1fr))',
 
         // Complex site-specific column configuration
       },
@@ -39,6 +47,7 @@ module.exports = {
         grey: '#BAB8C0',
         'grey-2': '#3A324B',
         primary: '#F365BD',
+        bright: '#8525EF',
         highlight: '#8DE7D8',
         secondary: '#170c34',
         link: '#31a6f4',
@@ -94,6 +103,6 @@ module.exports = {
   plugins: [
     require('tailwindcss-textshadow'),
     require('tailwind-scrollbar'),
-    require('daisyui'),
+    // require('daisyui'),
   ],
 };

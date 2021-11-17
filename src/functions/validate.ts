@@ -1,7 +1,6 @@
 // CONVENTION isFoo -> boolean
 
-import { ChainId, Currency, Token } from '@digitalnative/standard-protocol-sdk';
-
+import { Token } from '@digitalnative/standard-protocol-sdk';
 import { BigNumber } from 'ethers';
 import { TokenAddressMap } from '../state/lists/hooks';
 import { getAddress } from '@ethersproject/address';

@@ -1,7 +1,7 @@
 import { pricesQuery } from '../queries/prices';
 import { request } from 'graphql-request';
 
-const PRICE_AGGREGATOR_URL = 'http://localhost:5000/graphql';
+const PRICE_AGGREGATOR_URL = 'https://price.proxy.standardtech.xyz/graphql';
 
 const priceAgrregator = async (query, variables) => {
   return request(PRICE_AGGREGATOR_URL, query, variables);
