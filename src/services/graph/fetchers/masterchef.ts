@@ -29,7 +29,7 @@ export const miniChef = async (query, chainId = ChainId.MAINNET) =>
   request(`${GRAPH_HOST[chainId]}/subgraphs/name/${MINICHEF[chainId]}`, query);
 
 export const MASTERCHEF_V2 = {
-  [ChainId.MAINNET]: 'sushiswap/master-chefv2',
+  [ChainId.MAINNET]: 'billjhlee/ethereum-master-pool',
   [ChainId.RINKEBY]: 'billjhlee/rinkeby-master-pool',
   [ChainId.SHIBUYA]: 'digitalnativeinc/shibuya-master-pool',
   [ChainId.SHIDEN]: 'digitalnativeinc/shiden-master-pool',

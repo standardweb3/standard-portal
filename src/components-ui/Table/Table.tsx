@@ -57,8 +57,8 @@ export function Table({
   searchTerm,
 }: TableProps) {
   const {
-    getTableProps,
-    getTableBodyProps,
+    // getTableProps,
+    // getTableBodyProps,
     headerGroups,
     prepareRow,
     page,
@@ -160,11 +160,11 @@ export function Table({
       </pre> */}
       <div className={tableClassName}>
         <div>
-          {headerGroups.map((headerGroup,i) => {
+          {headerGroups.map((headerGroup, i) => {
             return (
               <div className={headerClassName} key={i}>
-                {headerGroup.headers.map((column) => (
-                  <div className={column.className}>
+                {headerGroup.headers.map((column, i) => (
+                  <div className={column.className} key={i}>
                     {column.render('Header')}
                     <span>
                       {column.isSorted
@@ -183,7 +183,11 @@ export function Table({
           {page.map((row, i) => {
             prepareRow(row);
             return (
-              <div className={rowClassName} onClick={() => handleRowClick(row)}>
+              <div
+                className={rowClassName}
+                onClick={() => handleRowClick(row)}
+                key={i}
+              >
                 {row.cells.map((cell, i) => {
                   return (
                     <div className={cell.column.className} key={i}>

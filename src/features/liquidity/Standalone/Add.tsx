@@ -3,6 +3,7 @@ import {
   Currency,
   CurrencyAmount,
   currencyEquals,
+  NATIVE,
   WNATIVE,
 } from '@digitalnative/standard-protocol-sdk';
 import { useCallback, useState } from 'react';
@@ -58,22 +59,47 @@ import UnsupportedCurrencyFooter from '../../swap/UnsupportedCurrencyFooter';
 
 export default function Add({ liquidityToken, tokenAId, tokenBId }) {
   const { account, chainId, library } = useActiveWeb3React();
-  const [currencyIdA, currencyIdB] = [
-    tokenAId || undefined,
-    tokenBId || undefined,
-  ];
+  const [currencyIdA, setCurrencyIdA] = useState(tokenAId || undefined);
+  const [currencyIdB, setcurrencyIdB] = useState(tokenBId || undefined);
+  // const [currencyIdA, currencyIdB] = [
+  //   tokenAId || undefined,
+  //   tokenBId || undefined,
+  // ];
 
   const currencyA = useCurrency(currencyIdA);
   const currencyB = useCurrency(currencyIdB);
 
-  const oneCurrencyIsWETH = Boolean(
-    chainId &&
-      ((currencyA && currencyEquals(currencyA, WNATIVE[chainId])) ||
-        (currencyB && currencyEquals(currencyB, WNATIVE[chainId]))),
-  );
+  // const oneCurrencyIsWETH = Boolean(
+  //   chainId &&
+  //     ((currencyA && currencyEquals(currencyA, WNATIVE[chainId])) ||
+  //       (currencyB && currencyEquals(currencyB, WNATIVE[chainId]))),
+  // );
+
+  const currencyAIsWeth =
+    chainId && currencyA && currencyEquals(currencyA, WNATIVE[chainId]);
+  const currencyBIsWeth =
+    chainId && currencyB && currencyEquals(currencyB, WNATIVE[chainId]);
+  const oneCurrencyIsWETH = currencyAIsWeth || currencyBIsWeth;
 
   const currencyAIsETH = currencyIdA === 'ETH';
   const currencyBIsETH = currencyIdB === 'ETH';
+
+  const oneCurrencyIsETH = currencyAIsETH || currencyBIsETH;
+
+  const handleWrapUnwrap = useCallback(() => {
+    if (currencyAIsETH) {
+      setCurrencyIdA(WNATIVE[chainId].address);
+    }
+    if (currencyBIsETH) {
+      setcurrencyIdB(WNATIVE[chainId].address);
+    }
+    if (currencyAIsWeth) {
+      setCurrencyIdA('ETH');
+    }
+    if (currencyBIsWeth) {
+      setcurrencyIdB('ETH');
+    }
+  }, [currencyAIsWeth, currencyAIsETH, currencyBIsETH, currencyBIsWeth]);
 
   const [isExpertMode] = useExpertModeManager();
 
@@ -477,6 +503,17 @@ export default function Add({ liquidityToken, tokenAId, tokenBId }) {
             showCommonBases
           />
         </div>
+        {(oneCurrencyIsWETH || oneCurrencyIsETH) && (
+          <div
+            className="text-blue cursor-pointer pl-3"
+            onClick={handleWrapUnwrap}
+          >
+            use{' '}
+            {oneCurrencyIsWETH
+              ? NATIVE[chainId].symbol
+              : WNATIVE[chainId].symbol}
+          </div>
+        )}
 
         {currencies[Field.CURRENCY_A] &&
           currencies[Field.CURRENCY_B] &&
