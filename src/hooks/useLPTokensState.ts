@@ -127,7 +127,7 @@ const useLPTokensState = () => {
           [ChainId.MAINNET]: [
             `https://api.covalenthq.com/v1/${ChainId.MAINNET}/address/${String(
               account,
-            ).toLowerCase()}/stacks/uniswap_v2/balances/?key=ckey_cba3674f2ce5450f9d5dd290589`,
+            ).toLowerCase()}/stacks/uniswap_v2/balances/?key=ckey_d6f720c1720b4d05850d3b7815c`,
           ],
           [ChainId.BSC]: [
             `https://api.covalenthq.com/v1/${ChainId.BSC}/address/${String(
@@ -198,7 +198,7 @@ const useLPTokensState = () => {
           const token = new Token(
             chainId as ChainId,
             getAddress(pair.pool_token.contract_address),
-            tokenDetails[getAddress(pair.pool_token.contract_address)].decimals,
+            pair.pool_token.contract_decimals,
             tokenDetails[getAddress(pair.pool_token.contract_address)].symbol,
             tokenDetails[getAddress(pair.pool_token.contract_address)].name,
           );
@@ -220,14 +220,14 @@ const useLPTokensState = () => {
             tokenA: new Token(
               chainId as ChainId,
               tokenA.token,
-              tokenA.decimals,
+              tokenA.decimals.toNumber(),
               tokenA.symbol,
               tokenA.name,
             ),
             tokenB: new Token(
               chainId as ChainId,
               tokenB.token,
-              tokenB.decimals,
+              tokenB.decimals.toNumber(),
               tokenB.symbol,
               tokenB.name,
             ),

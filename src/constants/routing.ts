@@ -45,8 +45,11 @@ import {
   XDAI,
   XSUSHI,
   SHIBUYA,
+  STND,
   RINKEBY,
   SHIDEN,
+  SDN,
+  JPYC,
 } from './tokens';
 // a list of tokens by chain
 import {
@@ -131,9 +134,13 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
     USDC,
     USDT,
     WBTC,
-    RUNE,
-    NFTX,
-    STETH,
+    // RUNE,
+    STND[ChainId.MAINNET],
+    SDN,
+    JPYC,
+    SDN,
+    // NFTX,
+    // STETH,
   ],
   [ChainId.RINKEBY]: [
     ...WRAPPED_NATIVE_ONLY[ChainId.RINKEBY],
@@ -299,6 +306,7 @@ export const CUSTOM_BASES: {
 
 /**
  * Shows up in the currency select for swap and add liquidity
+ *
  */
 export const COMMON_BASES: ChainTokenList = {
   [ChainId.MAINNET]: [
@@ -307,6 +315,9 @@ export const COMMON_BASES: ChainTokenList = {
     USDC,
     USDT,
     WBTC,
+    STND[ChainId.MAINNET],
+    SDN,
+    JPYC,
   ],
   [ChainId.RINKEBY]: [
     ...WRAPPED_NATIVE_ONLY[ChainId.RINKEBY],
@@ -400,6 +411,9 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
     USDC,
     USDT,
     WBTC,
+    STND[ChainId.MAINNET],
+    SDN,
+    JPYC,
   ],
   [ChainId.RINKEBY]: [
     ...WRAPPED_NATIVE_ONLY[ChainId.RINKEBY],
@@ -493,24 +507,24 @@ export const PINNED_PAIRS: {
   readonly [chainId in ChainId]?: [Token, Token][];
 } = {
   [ChainId.MAINNET]: [
-    [SUSHI[ChainId.MAINNET] as Token, WNATIVE[ChainId.MAINNET]],
-    [
-      new Token(
-        ChainId.MAINNET,
-        '0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643',
-        8,
-        'cDAI',
-        'Compound Dai',
-      ),
-      new Token(
-        ChainId.MAINNET,
-        '0x39AA39c021dfbaE8faC545936693aC917d5E7563',
-        8,
-        'cUSDC',
-        'Compound USD Coin',
-      ),
-    ],
-    [USDC, USDT],
-    [DAI, USDT],
+    // [SUSHI[ChainId.MAINNET] as Token, WNATIVE[ChainId.MAINNET]],
+    // [
+    //   new Token(
+    //     ChainId.MAINNET,
+    //     '0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643',
+    //     8,
+    //     'cDAI',
+    //     'Compound Dai',
+    //   ),
+    //   new Token(
+    //     ChainId.MAINNET,
+    //     '0x39AA39c021dfbaE8faC545936693aC917d5E7563',
+    //     8,
+    //     'cUSDC',
+    //     'Compound USD Coin',
+    //   ),
+    // ],
+    // [USDC, USDT],
+    // [DAI, USDT],
   ],
 };

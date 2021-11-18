@@ -294,7 +294,7 @@ export function toV2LiquidityToken({
       protocol,
     }),
     18,
-    'LTR',
+    tokenA && tokenB ? `${tokenA.symbol}/${tokenB.symbol}` : 'LTR',
     'Standard Liter Token',
   );
 }

@@ -3,7 +3,7 @@ import { request } from 'http';
 import { GRAPH_HOST } from '../constants';
 
 export const CANDLES = {
-  //   [ChainId.MAINNET]: 'sushiswap/exchange',
+  [ChainId.MAINNET]: 'billjhlee/ethereum-candles',
   //   [ChainId.KOVAN]: 'digitalnative/standardprotocol',
   [ChainId.RINKEBY]: 'billjhlee/rinkeby-exchange-candles',
   [ChainId.SHIBUYA]: 'digitalnativeinc/shibuya-exchange',

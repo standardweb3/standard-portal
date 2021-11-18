@@ -1580,10 +1580,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha512-5a6wqoJV/xEdbRNKVo6I4hO3VjyDq//8q2f9I6PBAvMesJHFauXDorcNCsr9RzvsZnaWi5NYCcfyqP1QeFHFbw==
 
-"@digitalnative/default-token-list@0.0.21":
-  version "0.0.21"
-  resolved "https://registry.yarnpkg.com/@digitalnative/default-token-list/-/default-token-list-0.0.21.tgz#9bfb08abfe1d2f1d4cad27869a6c206f06e05f0c"
-  integrity sha512-ScbTO9U+U3b6zfChvv4fmdW8oyYwP8jdcqNuNM3g0wqSW9BDEjjbWf9eRo7S/6SjtwGWFOoV4byTN7FUpv3d/A==
+"@digitalnative/default-token-list@0.0.23":
+  version "0.0.23"
+  resolved "https://registry.yarnpkg.com/@digitalnative/default-token-list/-/default-token-list-0.0.23.tgz#456365d52e27cf7dbc29f57f87cd1dbaef57d8bc"
+  integrity sha512-dtfGyv+fABj+oDFlz1qWFdKDkzZslx+pk1Xnorn1hUHjS9nAV80zNUPn5VKqqqh96L+Rrlgh2tM5guXAnht36w==
   dependencies:
     "@tenderly/hardhat-tenderly" "^1.0.12"
 
@@ -1630,10 +1630,10 @@
     postcss-selector-matches "^4.0.0"
     postcss-selector-not "^4.0.0"
 
-"@digitalnative/standard-protocol-sdk@^0.0.140":
-  version "0.0.140"
-  resolved "https://registry.yarnpkg.com/@digitalnative/standard-protocol-sdk/-/standard-protocol-sdk-0.0.140.tgz#d6cc72950e58c2ede4a6287142a5d5c4ad31fc0e"
-  integrity sha512-em61AHPaLnMPOtVOZMMKdGdMUSYsM4lsD/dgVZb6OUHlqS7DaWFR2pOzovZiuF4TlEnsFTPqPMHhz+OMYWctMQ==
+"@digitalnative/standard-protocol-sdk@^0.0.142":
+  version "0.0.142"
+  resolved "https://registry.yarnpkg.com/@digitalnative/standard-protocol-sdk/-/standard-protocol-sdk-0.0.142.tgz#de1702d17a0ec0b958fcd3118ce5dffc8adcc4de"
+  integrity sha512-weVvV444RKtG4T5dLro8GDOvLM+T1CHRm+OYeHy7LRAMuXNHOxA0z82i8yY1d3Qsj92loIZfuaX8SydKGud1zg==
   dependencies:
     big.js "^6.1.0"
     decimal.js-light "^2.5.0"

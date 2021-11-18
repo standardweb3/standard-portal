@@ -1,5 +1,3 @@
-import { formatPercent } from '../../functions';
-import { useBondedStrategy } from '../../services/graph/hooks/dividend';
 import { RippleSpinner } from '../Spinner/RippleSpinner';
 
 export type DividendKPIInfoProps = {

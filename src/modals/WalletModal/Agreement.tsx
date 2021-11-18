@@ -10,7 +10,7 @@ export default function Agreement({
   return (
     <div className="flex items-center space-x-2">
       <input
-        // className="checkbox"
+        className="checkbox"
         name="agreed"
         // className="checkbox"
         type="checkbox"

@@ -42,6 +42,7 @@ module.exports = {
         bond: 'rgba(119, 36, 210, 1)',
         unbond:
           'linear-gradient(297.07deg, #8525EF 4.24%, #8525EF 4.25%, #41157C 35.24%, #170C34 85.03%)',
+        xstnd: 'linear-gradient(#A18CD1 0%, #FBC2EB 100%)',
       },
       colors: {
         grey: '#BAB8C0',
@@ -93,7 +94,8 @@ module.exports = {
       },
     },
     boxShadow: {
-      dark: '0px 4px 50px rgba(81, 29, 102, 0.5);',
+      dark: '0px 4px 50px rgba(81, 29, 102, 0.5)',
+      arbitrage: '0px 0px 10px #BBE7E0',
     },
   },
   variants: {

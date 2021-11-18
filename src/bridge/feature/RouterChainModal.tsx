@@ -31,7 +31,7 @@ export default function RouterChainSelectModal({
         {chainIds.map((chainId) => {
           return (
             <div
-              className="flex items-center space-x-2"
+              className="flex items-center space-x-2 cursor-pointer"
               key={chainId}
               onClick={() => {
                 onChainSelect && onChainSelect(chainId);

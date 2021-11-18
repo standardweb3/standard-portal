@@ -1,4 +1,4 @@
-import React, { FC, Fragment } from 'react';
+import React, { FC } from 'react';
 import { useActiveWeb3React } from '../../hooks';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import Image from 'next/image';
@@ -47,7 +47,7 @@ const Component: FC<NetworkGuardProps> = ({ children, networks = [] }) => {
                 onClick={() => {
                   const params = SUPPORTED_NETWORKS[key];
                   cookie.set('chainId', key);
-                  if ([ChainId.RINKEBY].includes(key)) {
+                  if ([ChainId.MAINNET, ChainId.RINKEBY].includes(key)) {
                     library?.send('wallet_switchEthereumChain', [
                       { chainId: params.chainId },
                       account,

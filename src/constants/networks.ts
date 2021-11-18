@@ -107,6 +107,17 @@ export const SUPPORTED_NETWORKS: {
     rpcUrls: ['https://mainnet.infura.io/v3'],
     blockExplorerUrls: ['https://etherscan.com'],
   },
+  [ChainId.SHIDEN]: {
+    chainId: '0x150',
+    chainName: 'Shiden',
+    nativeCurrency: {
+      name: 'Shiden',
+      symbol: 'SDN',
+      decimals: 18,
+    },
+    rpcUrls: ['https://rpc.shiden.astar.network:8545'],
+    blockExplorerUrls: ['https://blockscout.com/shiden'],
+  },
   // [ChainId.RINKEBY]: {
   //   chainId: '0x4',
   //   chainName: 'Rinkeby',
@@ -129,17 +140,6 @@ export const SUPPORTED_NETWORKS: {
   //   rpcUrls: ['https://rpc.shibuya.astar.network:8545'],
   //   blockExplorerUrls: ['https://shibuya.subscan.io'],
   // },
-  [ChainId.SHIDEN]: {
-    chainId: '0x150',
-    chainName: 'Shiden',
-    nativeCurrency: {
-      name: 'Shiden',
-      symbol: 'SDN',
-      decimals: 18,
-    },
-    rpcUrls: ['https://rpc.shiden.astar.network:8545'],
-    blockExplorerUrls: ['https://blockscout.com/shiden'],
-  },
   // [ChainId.FANTOM]: {
   //   chainId: '0xfa',
   //   chainName: 'Fantom',

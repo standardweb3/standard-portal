@@ -161,10 +161,14 @@ export function useFarmPairAddresses() {
 
 export async function useMasterChefV2Availability(fallbackCb) {
   const { chainId } = useActiveWeb3React();
-  try {
-    const data = await getMasterChefV2Availability(chainId);
-    (data === undefined || data.masterChef === null) && fallbackCb();
-  } catch (err) {
-    fallbackCb();
-  }
+  useSWR(
+    chainId ? ['masterChefAvailability'] : null,
+    () => getMasterChefV2Availability(chainId),
+    {
+      revalidateOnMount: true,
+      revalidateOnReconnect: true,
+      loadingTimeout: 10000,
+      onLoadingSlow: fallbackCb,
+    },
+  );
 }
