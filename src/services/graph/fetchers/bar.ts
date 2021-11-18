@@ -8,7 +8,7 @@ import { GRAPH_HOST } from '../constants';
 import { barHistoriesQuery, barQuery } from '../queries/bar';
 
 const BAR = {
-  [ChainId.MAINNET]: 'billjhlee/xstnd',
+  [ChainId.MAINNET]: 'billjhlee/ethereum-dstnd',
   [ChainId.SHIDEN]: 'digitalnativeinc/shiden-xstnd',
 };
 
