@@ -306,6 +306,7 @@ export const CUSTOM_BASES: {
 
 /**
  * Shows up in the currency select for swap and add liquidity
+ *
  */
 export const COMMON_BASES: ChainTokenList = {
   [ChainId.MAINNET]: [
