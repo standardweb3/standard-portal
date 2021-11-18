@@ -778,7 +778,7 @@ export const SDN = new Token(
   ChainId.MAINNET,
   '0x00E856ee945A49bb73436e719D96910Cd9D116a4',
   18,
-  'SDN',
+  'WSDN',
   'Shiden',
 );
 
