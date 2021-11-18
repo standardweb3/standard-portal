@@ -18,7 +18,7 @@
   "dependencies": {
     "@apollo/client": "^3.4.16",
     "@binance-chain/bsc-connector": "^1.0.0",
-    "@digitalnative/default-token-list": "0.0.23",
+    "@digitalnative/default-token-list": "0.0.24",
     "@digitalnative/standard-protocol-sdk": "^0.0.142",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
