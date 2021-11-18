@@ -1,11 +1,11 @@
 import { Token } from '@digitalnative/standard-protocol-sdk';
 import styled from '@emotion/styled';
 import { useMemo } from 'react';
-import { classNames, formatNumber, formatPercent } from '../../functions';
+import { classNames, formatNumber } from '../../functions';
 import { useXStndInfo } from '../../hooks/stake/useXStndInfo';
 import useCurrentBlockTimestamp from '../../hooks/useCurrentBlockTimestamp';
 import { useDayData, useStandardPrice } from '../../services/graph';
-import { useBar, useBarHistories } from '../../services/graph/hooks/bar';
+import { useBarHistories } from '../../services/graph/hooks/bar';
 import { CurrencyLogo } from '../CurrencyLogo';
 import { ViewportMediumUp } from '../Responsive';
 
