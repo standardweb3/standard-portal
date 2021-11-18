@@ -109,7 +109,6 @@ function CurrencyRow({
 }) {
   const { account } = useActiveWeb3React();
   const key = currencyKey(currency);
-  console.log('currency', currency);
   const balance = useCurrencyBalance(
     account ?? undefined,
     currency?.toCurrency(),
