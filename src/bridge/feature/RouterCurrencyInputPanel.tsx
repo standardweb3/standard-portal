@@ -1,6 +1,6 @@
 import { AnyswapCurrency, Token } from '@digitalnative/standard-protocol-sdk';
 import { useEffect, useMemo, useState } from 'react';
-import { classNames } from '../../functions';
+import { classNames, formatNumber } from '../../functions';
 import { useActiveWeb3React } from '../../hooks';
 import { useTokenBalance } from '../../state/wallet/hooks';
 import { Input as NumericalInput } from '../../components-ui/NumericalInput';
@@ -8,6 +8,7 @@ import { Button } from '../../components-ui/Button';
 import { CurrencyLogo } from '../../components-ui/CurrencyLogo';
 import { NATIVE } from '@sushiswap/sdk';
 import { getAnyswapToken } from '../functions/getAnyswapToken';
+import { ChevronDownIcon } from '@heroicons/react/outline';
 
 export type RouterCurrencyInputPanelTypes = {
   token: any | undefined;
@@ -16,6 +17,7 @@ export type RouterCurrencyInputPanelTypes = {
   className?: string;
   inputClassName?: string;
   maxClassName?: string;
+  onCurrencyClick?: () => void;
 };
 
 export function RouterCurrencyInputPanel({
@@ -25,6 +27,7 @@ export function RouterCurrencyInputPanel({
   className,
   inputClassName,
   maxClassName,
+  onCurrencyClick,
 }: RouterCurrencyInputPanelTypes) {
   const [amount, setAmount] = useState('0');
   const { account, chainId } = useActiveWeb3React();
@@ -49,9 +52,24 @@ export function RouterCurrencyInputPanel({
 
   return (
     <div className={classNames('flex items-center', className)}>
-      <div className="flex items-center space-x-2 font-bold">
-        <CurrencyLogo currency={normalToken} className="rounded-full" />
-        <div>{token?.symbol}</div>
+      <div
+        className="flex items-center space-x-2 cursor-pointer bg-opaque rounded-20 px-2 py-3"
+        onClick={onCurrencyClick}
+      >
+        <CurrencyLogo
+          size="36px"
+          currency={normalToken}
+          className="rounded-full "
+        />
+        <div>
+          <div className="font-bold">{token?.symbol}</div>
+          {balance && (
+            <div className="text-xs text-grey">
+              {formatNumber(balance.toExact())}
+            </div>
+          )}
+        </div>
+        <ChevronDownIcon className="w-4 h-4 text-grey" />
       </div>
       <div className="flex-1 px-4">
         <NumericalInput

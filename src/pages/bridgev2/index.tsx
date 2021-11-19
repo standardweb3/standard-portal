@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { formatDecimal, isAddress, thousandBit } from '../../bridge/core/Tools';
 import { RouterCurrencyInputPanel } from '../../bridge/feature/RouterCurrencyInputPanel';
@@ -37,11 +38,18 @@ import { useTransactionAdder } from '../../state/transactions/hooks';
 import { useCurrencyBalance } from '../../state/wallet/hooks';
 import Image from 'next/image';
 import RouterChainSelectModal from '../../bridge/feature/RouterChainModal';
-import { ArrowRightIcon } from '@heroicons/react/outline';
+import {
+  ArrowDownIcon,
+  ArrowRightIcon,
+  ChevronDownIcon,
+} from '@heroicons/react/outline';
 import { WalletConnector } from '../../components-ui/WalletConnector';
 import { Button, ButtonConfirmed } from '../../components-ui/Button';
 import { RippleSpinner } from '../../components-ui/Spinner/RippleSpinner';
 import { getBaseCoin } from '../../bridge/functions/bridge';
+import { DefinedStyles } from '../../utils/DefinedStyles';
+import { Page } from '../../components-ui/Page';
+import { PageContent } from '../../components-ui/PageContent';
 
 let intervalFN: any = '';
 const unknown =
@@ -127,6 +135,13 @@ export default function Bridge() {
     }
     return false;
   }, [selectCurrency, selectChain]);
+
+  const destChains = useMemo(() => {
+    if (selectCurrency) {
+      console.log('selectCurrency', selectCurrency);
+      return Object.keys(selectCurrency.destChains).map((key) => Number(key));
+    } else return [];
+  }, []);
 
   const initBridgeToken = '';
 
@@ -614,148 +629,202 @@ export default function Bridge() {
 
   const handleModalDismiss = () => setModalOpen(false);
   return (
-    <div className="text-text">
-      <div onClick={() => setModalOpen(true)}>Open</div>
-      <div>Close</div>
-      <RouterCurrencySelectModal
-        currencyList={allTokensArray}
-        isOpen={modalOpen}
-        onDismiss={handleModalDismiss}
-        onCurrencySelect={(inputCurrency) => {
-          setSelectCurrency(inputCurrency);
-        }}
-      />
-      <RouterChainSelectModal
-        isOpen={chainFromModalOpen}
-        onDismiss={closeChainFromModal}
-        chainIds={SUPPORTED_NETWORK_IDS.filter((id) => id != chainFrom.id)}
-      />
-      <RouterChainSelectModal
-        onChainSelect={handleSelectChain}
-        isOpen={chainToModalOpen}
-        onDismiss={closeChainToMoal}
-        chainIds={SUPPORTED_NETWORK_IDS.filter((id) => id != chainFrom.id)}
-      />
-
-      <div>
-        <RouterCurrencyInputPanel
-          token={selectCurrency}
-          onAmountChange={setInputBridgeValue}
+    <>
+      <Head>
+        <title>Bridge | Standard Protocol</title>
+        <meta
+          key="description"
+          name="description"
+          content="Add liquidity to the Standard Protocol AMM to enable gas optimised and low slippage trades across countless networks"
         />
-      </div>
+      </Head>
+      <Page id="bridge-page" className={DefinedStyles.page}>
+        <PageContent>
+          <div className="text-text p-5 bg-opaque rounded-20 min-w-[500px] space-y-4">
+            <div onClick={() => setModalOpen(true)}>Open</div>
+            <div>Close</div>
+            <RouterCurrencySelectModal
+              currencyList={allTokensArray}
+              isOpen={modalOpen}
+              onDismiss={handleModalDismiss}
+              onCurrencySelect={(inputCurrency) => {
+                setSelectCurrency(inputCurrency);
+              }}
+            />
+            <RouterChainSelectModal
+              isOpen={chainFromModalOpen}
+              onDismiss={closeChainFromModal}
+              chainIds={SUPPORTED_NETWORK_IDS.filter(
+                (id) => id != chainFrom.id,
+              )}
+            />
+            <RouterChainSelectModal
+              onChainSelect={handleSelectChain}
+              isOpen={chainToModalOpen}
+              onDismiss={closeChainToMoal}
+              chainIds={destChains}
+            />
 
-      <div className="flex items-center justify-center space-x-4">
-        <div
-          className="
+            <div className="flex items-center justify-center">
+              <div className="flex-1 text-center space-y-2">
+                <div className="text-grey text-sm">From</div>
+                <div
+                  className="
             cursor-pointer
             flex flex-col
             items-center
-            bg-opaque rounded-20 p-8"
-          onClick={openChainFromModal}
-        >
-          <Image
-            src={chainFrom.icon}
-            alt={`${chainFrom.name} Network`}
-            className="rounded-full"
-            width="120px"
-            height="120px"
-          />
-          <div>{chainFrom.name}</div>
-        </div>
-        <div className="bg-opaque rounded-full p-4">
-          <ArrowRightIcon className="w-6 h-6" />
-        </div>
-        <div
-          className="
+            bg-opaque rounded-20 p-8
+            space-y-6"
+                  onClick={openChainFromModal}
+                >
+                  <div className="bg-white rounded-full w-[72px] h-[72px] overflow-hidden">
+                    <Image
+                      src={chainFrom.icon}
+                      alt={`${chainFrom.name} Network`}
+                      width="100%"
+                      height="100%"
+                    />
+                  </div>
+                  <div
+                    className="
+                    text-grey border border-grey 
+                    rounded-20 px-3 py-1 
+                    font-bold
+                    flex items-center space-x-1
+                    "
+                  >
+                    <div>{chainFrom.name}</div>
+                    <ChevronDownIcon className="w-3 h-3" />
+                  </div>
+                </div>
+              </div>
+              <div className="bg-icon-btn-grey rounded-full p-3 mx-3">
+                <ArrowRightIcon className="w-6 h-6" />
+              </div>
+              <div className="flex-1 text-center space-y-2">
+                <div className="text-grey text-sm">To</div>
+                <div
+                  className="
             cursor-pointer
             flex flex-col
             items-center
-            bg-opaque rounded-20 p-8"
-          onClick={openChainToModal}
-        >
-          <Image
-            src={chainTo.icon}
-            alt={`${chainTo.name} Network`}
-            className="rounded-full"
-            width="120px"
-            height="120px"
-          />
-          <div>{chainTo.name}</div>
-        </div>
-      </div>
-      {!account ? (
-        <WalletConnector />
-      ) : !isNativeToken &&
-        selectCurrency &&
-        isUnderlying &&
-        inputBridgeValue &&
-        (approval === ApprovalState.NOT_APPROVED ||
-          approval === ApprovalState.PENDING) ? (
-        <ButtonConfirmed
-          onClick={() => {
-            onDelay();
-            approveCallback().then(() => {
-              onClear(1);
-            });
-          }}
-          disabled={
-            approval !== ApprovalState.NOT_APPROVED ||
-            approvalSubmitted ||
-            delayAction
-          }
-          // confirmed={approval === ApprovalState.APPROVED}
-        >
-          {approval === ApprovalState.PENDING ? (
-            <div className="flex items-center space-x-3">
-              {'Approving'} <RippleSpinner size={16} />
+            bg-opaque rounded-20 p-8
+            space-y-6"
+                  onClick={openChainToModal}
+                >
+                  <div className="bg-white rounded-full w-[72px] h-[72px] overflow-hidden">
+                    <Image
+                      src={chainTo.icon}
+                      alt={`${chainTo.name} Network`}
+                      width="100%"
+                      height="100%"
+                    />
+                  </div>
+                  <div
+                    className="
+                    text-grey border border-grey 
+                    rounded-20 px-3 py-1 
+                    font-bold
+                    flex items-center space-x-1
+                    "
+                  >
+                    <div>{chainTo.name}</div>
+                    <ChevronDownIcon className="w-3 h-3" />
+                  </div>
+                </div>
+              </div>
             </div>
-          ) : approvalSubmitted ? (
-            'Approved'
-          ) : (
-            'Approve' +
-            ' ' +
-            getBaseCoin(
-              selectCurrency?.symbol ?? selectCurrency?.symbol,
-              chainId,
-            )
-          )}
-        </ButtonConfirmed>
-      ) : (
-        <Button
-          disabled={isCrossBridge || delayAction}
-          onClick={() => {
-            // <Button disabled={delayAction} onClick={() => {
-            onDelay();
-            if (isRouter) {
-              if (!selectCurrency || !isUnderlying) {
-                if (onWrap)
-                  onWrap().then(() => {
-                    onClear();
+
+            <div className="space-y-2 text-grey text-sm">
+              <div>Token to bridge</div>
+              <div className="rounded-20 bg-opaque-secondary px-4 py-1">
+                <RouterCurrencyInputPanel
+                  showMax
+                  onCurrencyClick={() => setModalOpen(true)}
+                  token={selectCurrency}
+                  onAmountChange={setInputBridgeValue}
+                />
+              </div>
+            </div>
+
+            {!account ? (
+              <WalletConnector />
+            ) : !isNativeToken &&
+              selectCurrency &&
+              isUnderlying &&
+              inputBridgeValue &&
+              (approval === ApprovalState.NOT_APPROVED ||
+                approval === ApprovalState.PENDING) ? (
+              <ButtonConfirmed
+                onClick={() => {
+                  onDelay();
+                  approveCallback().then(() => {
+                    onClear(1);
                   });
-              } else {
-                // if (onWrapUnderlying) onWrapUnderlying()
-                if (isNativeToken) {
-                  if (onWrapNative)
-                    onWrapNative().then(() => {
-                      onClear();
-                    });
-                } else {
-                  if (onWrapUnderlying) {
-                    console.log('sdf');
-                    onWrapUnderlying().then(() => {
-                      console.log('111');
-                      onClear();
-                    });
-                  }
+                }}
+                disabled={
+                  approval !== ApprovalState.NOT_APPROVED ||
+                  approvalSubmitted ||
+                  delayAction
                 }
-              }
-            }
-          }}
-        >
-          Confirm
-        </Button>
-      )}
-    </div>
+                // confirmed={approval === ApprovalState.APPROVED}
+              >
+                {approval === ApprovalState.PENDING ? (
+                  <div className="flex items-center space-x-3">
+                    {'Approving'} <RippleSpinner size={16} />
+                  </div>
+                ) : approvalSubmitted ? (
+                  'Approved'
+                ) : (
+                  'Approve' +
+                  ' ' +
+                  getBaseCoin(
+                    selectCurrency?.symbol ?? selectCurrency?.symbol,
+                    chainId,
+                  )
+                )}
+              </ButtonConfirmed>
+            ) : (
+              <Button
+                disabled={isCrossBridge || delayAction}
+                onClick={() => {
+                  // <Button disabled={delayAction} onClick={() => {
+                  onDelay();
+                  if (isRouter) {
+                    if (!selectCurrency || !isUnderlying) {
+                      console.log('bridgecallback 1');
+                      if (onWrap)
+                        onWrap().then(() => {
+                          onClear();
+                        });
+                    } else {
+                      // if (onWrapUnderlying) onWrapUnderlying()
+                      if (isNativeToken) {
+                        console.log('bridgecallback 2');
+                        if (onWrapNative)
+                          onWrapNative().then(() => {
+                            onClear();
+                          });
+                      } else {
+                        if (onWrapUnderlying) {
+                          console.log('bridgecallback 3');
+                          onWrapUnderlying().then(() => {
+                            console.log('111');
+                            onClear();
+                          });
+                        }
+                      }
+                    }
+                  }
+                }}
+              >
+                Confirm
+              </Button>
+            )}
+          </div>
+        </PageContent>
+      </Page>
+    </>
   );
 
   // useEffect(() => {
