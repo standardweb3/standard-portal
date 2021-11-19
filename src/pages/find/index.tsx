@@ -85,7 +85,7 @@ export default function PoolFinder() {
   return (
     <>
       <Head>
-        <title>{`Find Pool`} | Sushi</title>
+        <title>{`Find Pool`} | Standard Protocol</title>
         <meta key="description" name="description" content="Find pool" />
       </Head>
       <Page id="find-pool-page">
