@@ -36,8 +36,10 @@ import { useCurrency } from '../../hooks/Tokens';
 import { Token } from '@digitalnative/standard-protocol-sdk';
 import { SearchV2 } from '../../components-ui/Search/SearchV2';
 import { WavySpinner } from '../../components-ui/Spinner/WavySpinner';
+import { NetworkGuardWrapper } from '../../guards/Network';
+import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
 
-export default function Tokens() {
+function Tokens() {
   const { chainId } = useActiveWeb3React();
   const router = useRouter();
   useExchangeAvailability(() => router.push('/trade/buy'));
@@ -461,3 +463,6 @@ export default function Tokens() {
     </>
   );
 }
+
+Tokens.Guard = NetworkGuardWrapper(NORMAL_GUARDED_CHAINS);
+export default Tokens;

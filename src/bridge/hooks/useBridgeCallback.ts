@@ -164,6 +164,13 @@ export function useBridgeUnderlyingCallback(
     inputCurrency,
     typedValue,
   ]);
+
+  console.log('----');
+  console.log('dcuc', inputCurrency?.toCurrency());
+  console.log('bridgeContract', bridgeContract);
+  console.log('balance', balance);
+  console.log('inputAmount', inputAmount);
+  console.log('----');
   const addTransaction = useTransactionAdder();
   return useMemo(() => {
     // console.log(inputCurrency)
@@ -179,6 +186,8 @@ export function useBridgeUnderlyingCallback(
 
     const sufficientBalance =
       inputAmount && balance && !balance.lessThan(inputAmount);
+
+    console.log('sufficient Balance', sufficientBalance);
 
     return {
       wrapType: WrapType.WRAP,

@@ -83,6 +83,8 @@ export const NETWORK_LABEL: { [chainId in ChainId]?: string } = {
   // [ChainId.PALM]: 'Palm',
 };
 
+export const NORMAL_GUARDED_CHAINS = [ChainId.MAINNET, ChainId.SHIDEN];
+
 export const SUPPORTED_NETWORKS: {
   [chainId in ChainId]?: {
     chainId: string;

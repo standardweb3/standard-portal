@@ -84,4 +84,10 @@ export default function NetworkGuard({
   return <Component networks={networks}>{children}</Component>;
 }
 
+export const NetworkGuardWrapper = (networks: ChainId[]) => {
+  return ({ children }) => (
+    <Component networks={networks}>{children}</Component>
+  );
+};
+
 // export default NetworkGuard;

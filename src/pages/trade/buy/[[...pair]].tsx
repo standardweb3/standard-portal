@@ -73,8 +73,10 @@ import { AnalyticsLink } from '../../../components-ui/AnalyticsLink';
 import Chart from '../../../components-ui/Chart';
 
 import switchIcon from '../../../../public/icons/outlined/Switch.svg';
+import { NetworkGuardWrapper } from '../../../guards/Network';
+import { NORMAL_GUARDED_CHAINS } from '../../../constants/networks';
 
-export default function Swap() {
+function Swap() {
   const { account } = useActiveWeb3React();
 
   /** PARSE TOKENS FROM CONTRACT ADDRESSES PROVIDED IN URL */
@@ -814,3 +816,6 @@ export default function Swap() {
     </>
   );
 }
+
+Swap.Guard = NetworkGuardWrapper(NORMAL_GUARDED_CHAINS);
+export default Swap;

@@ -38,8 +38,14 @@ import { useCurrencyBalance } from '../../state/wallet/hooks';
 import Image from 'next/image';
 import RouterChainSelectModal from '../../bridge/feature/RouterChainModal';
 import { ArrowRightIcon } from '@heroicons/react/outline';
+import { WalletConnector } from '../../components-ui/WalletConnector';
+import { Button, ButtonConfirmed } from '../../components-ui/Button';
+import { RippleSpinner } from '../../components-ui/Spinner/RippleSpinner';
+import { getBaseCoin } from '../../bridge/functions/bridge';
 
 let intervalFN: any = '';
+const unknown =
+  'https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/unknown.png';
 
 export default function Bridge() {
   const { account, chainId } = useActiveWeb3React();
@@ -47,9 +53,6 @@ export default function Bridge() {
   const { push } = useRouter();
 
   const allTokensList = useFetchRouterTokenList();
-  const allTokensArray = useMemo(() => Object.values(allTokensList), [
-    allTokensList,
-  ]);
 
   const addTransaction = useTransactionAdder();
 
@@ -72,7 +75,24 @@ export default function Bridge() {
   const [selectCurrency, setSelectCurrency] = useState<any>();
   const [selectChain, setSelectChain] = useState<any>();
 
-  const handleSelectChain = (chainId) => setSelectChain(chainId);
+  const allTokensArray = useMemo(
+    () =>
+      Object.values(allTokensList).filter((token: any) => {
+        console.log('token', token.destChains);
+        return Object.keys(token.destChains).includes(String(selectChain));
+      }),
+    [allTokensList, selectChain],
+  );
+
+  const chainTo = {
+    id: selectChain,
+    icon: selectChain ? NETWORK_ICON[selectChain] : unknown,
+    name: selectChain ? NETWORK_LABEL[selectChain] : 'Select Chain',
+  };
+
+  const handleSelectChain = (chainId) => {
+    setSelectChain(chainId);
+  };
 
   const [selectChainList, setSelectChainList] = useState<Array<any>>([]);
   const [recipient, setRecipient] = useState<any>(account ?? '');
@@ -173,7 +193,7 @@ export default function Bridge() {
       : selectCurrency,
   );
 
-  const formatCurrency = useAnyswapToken(chainId ? undefined : selectCurrency);
+  const formatCurrency = useAnyswapToken(chainId ? selectCurrency : undefined);
   const normalCurrency = toNormalToken(formatCurrency);
   const formatInputBridgeValue = tryParseAmount(
     inputBridgeValue,
@@ -306,6 +326,7 @@ export default function Bridge() {
     selectChain,
     destConfig?.type,
   );
+  console.log('FORMATCURRENCY', formatCurrency);
 
   // const {
   //   wrapType: wrapTypeCrossBridge,
@@ -321,7 +342,7 @@ export default function Bridge() {
   //     ? selectCurrency?.underlying?.address
   //     : selectCurrency?.address,
   //   destConfig?.pairid,
-  // );
+  // );x
 
   const outputBridgeValue = useMemo(() => {
     if (inputBridgeValue && destConfig) {
@@ -394,6 +415,14 @@ export default function Bridge() {
   // console.log(selectCurrency)
   const isCrossBridge = useMemo(() => {
     const isAddr = isAddress(recipient, selectChain);
+    console.log('destConfig', destConfig);
+    console.log('selectCurrency', selectCurrency);
+    console.log('inputBridgeValue', inputBridgeValue);
+    console.log('isWrapInputError', isWrapInputError);
+    console.log('isAddr', isAddr);
+    console.log('isDestUnderlying', isDestUnderlying);
+    console.log('destChain', destChain);
+
     if (
       account &&
       destConfig &&
@@ -408,11 +437,13 @@ export default function Bridge() {
         Number(inputBridgeValue) > Number(destConfig.MaximumSwap) ||
         (isDestUnderlying && Number(inputBridgeValue) > Number(destChain.ts))
       ) {
+        console.log('123');
         return true;
       } else {
         return false;
       }
     } else {
+      console.log('234');
       return true;
     }
   }, [
@@ -607,12 +638,16 @@ export default function Bridge() {
       />
 
       <div>
-        <RouterCurrencyInputPanel token={selectCurrency} />
+        <RouterCurrencyInputPanel
+          token={selectCurrency}
+          onAmountChange={setInputBridgeValue}
+        />
       </div>
 
       <div className="flex items-center justify-center space-x-4">
         <div
           className="
+            cursor-pointer
             flex flex-col
             items-center
             bg-opaque rounded-20 p-8"
@@ -632,21 +667,94 @@ export default function Bridge() {
         </div>
         <div
           className="
+            cursor-pointer
             flex flex-col
             items-center
             bg-opaque rounded-20 p-8"
-          onClick={openChainFromModal}
+          onClick={openChainToModal}
         >
           <Image
-            src={chainFrom.icon}
-            alt={`${chainFrom.name} Network`}
+            src={chainTo.icon}
+            alt={`${chainTo.name} Network`}
             className="rounded-full"
             width="120px"
             height="120px"
           />
-          <div>{chainFrom.name}</div>
+          <div>{chainTo.name}</div>
         </div>
       </div>
+      {!account ? (
+        <WalletConnector />
+      ) : !isNativeToken &&
+        selectCurrency &&
+        isUnderlying &&
+        inputBridgeValue &&
+        (approval === ApprovalState.NOT_APPROVED ||
+          approval === ApprovalState.PENDING) ? (
+        <ButtonConfirmed
+          onClick={() => {
+            onDelay();
+            approveCallback().then(() => {
+              onClear(1);
+            });
+          }}
+          disabled={
+            approval !== ApprovalState.NOT_APPROVED ||
+            approvalSubmitted ||
+            delayAction
+          }
+          // confirmed={approval === ApprovalState.APPROVED}
+        >
+          {approval === ApprovalState.PENDING ? (
+            <div className="flex items-center space-x-3">
+              {'Approving'} <RippleSpinner size={16} />
+            </div>
+          ) : approvalSubmitted ? (
+            'Approved'
+          ) : (
+            'Approve' +
+            ' ' +
+            getBaseCoin(
+              selectCurrency?.symbol ?? selectCurrency?.symbol,
+              chainId,
+            )
+          )}
+        </ButtonConfirmed>
+      ) : (
+        <Button
+          disabled={isCrossBridge || delayAction}
+          onClick={() => {
+            // <Button disabled={delayAction} onClick={() => {
+            onDelay();
+            if (isRouter) {
+              if (!selectCurrency || !isUnderlying) {
+                if (onWrap)
+                  onWrap().then(() => {
+                    onClear();
+                  });
+              } else {
+                // if (onWrapUnderlying) onWrapUnderlying()
+                if (isNativeToken) {
+                  if (onWrapNative)
+                    onWrapNative().then(() => {
+                      onClear();
+                    });
+                } else {
+                  if (onWrapUnderlying) {
+                    console.log('sdf');
+                    onWrapUnderlying().then(() => {
+                      console.log('111');
+                      onClear();
+                    });
+                  }
+                }
+              }
+            }
+          }}
+        >
+          Confirm
+        </Button>
+      )}
     </div>
   );
 

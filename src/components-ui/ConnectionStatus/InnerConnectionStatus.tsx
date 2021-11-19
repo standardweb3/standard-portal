@@ -1,5 +1,7 @@
 import { useWeb3React } from '@web3-react/core';
+import { useRouter } from 'next/router';
 import { useMemo } from 'react';
+import { BridgeContextName } from '../../constants';
 import { classNames, shortenAddress } from '../../functions';
 import { newTransactionsFirst } from '../../functions/transactions';
 import useENSName from '../../hooks/useENSName';
@@ -20,6 +22,8 @@ export function InnerConnectionStatus({
   className,
 }: InnerConnectionStatusType) {
   const { account, connector } = useWeb3React();
+  const { account: bridgeAccount } = useWeb3React(BridgeContextName);
+  const { route } = useRouter();
 
   const { ENSName } = useENSName(account ?? undefined);
 
@@ -46,6 +50,22 @@ export function InnerConnectionStatus({
 
   const toggleWalletModal = useWalletModalToggle();
 
+  // if (bridgeAccount && (route == '/bridgev2' || route == '/bridgev2/history')) {
+  //   return (
+  //     <div
+  //       id="connection-status-connected"
+  //       className="
+  //       flex items-center
+  //       px-3 py-2
+  //       text-sm rounded-xl
+  //       bg-primary bg-opacity-10
+  //       border border-primary
+  //       text-text"
+  //     >
+  //       <div className="mr-2">{shortenAddress(bridgeAccount)}</div>
+  //     </div>
+  //   );
+  // } else
   if (account) {
     return (
       <div
