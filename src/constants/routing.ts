@@ -409,6 +409,7 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
     STND[ChainId.MAINNET],
     SDN,
     JPYC,
+    METIS,
   ],
   [ChainId.RINKEBY]: [
     ...WRAPPED_NATIVE_ONLY[ChainId.RINKEBY],
