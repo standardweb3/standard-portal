@@ -21,20 +21,15 @@ import {
   HBTC,
   HECO,
   IBETH,
-  KOVAN,
   LFBTC,
   LIFT,
   MATIC,
   MIR,
-  NFTX,
   OKEX,
   PLAY,
   PONT,
   PWING,
   RENBTC,
-  RUNE,
-  STETH,
-  SUSHI,
   TRIBE,
   UMA,
   USDC,
@@ -50,6 +45,7 @@ import {
   SHIDEN,
   SDN,
   JPYC,
+  METIS,
 } from './tokens';
 // a list of tokens by chain
 import {
@@ -58,8 +54,6 @@ import {
   Token,
   WNATIVE,
 } from '@digitalnative/standard-protocol-sdk';
-
-import { SupportedChainId } from './chains';
 
 type ChainTokenList = {
   readonly [chainId: number]: Token[];
@@ -318,6 +312,7 @@ export const COMMON_BASES: ChainTokenList = {
     STND[ChainId.MAINNET],
     SDN,
     JPYC,
+    METIS,
   ],
   [ChainId.RINKEBY]: [
     ...WRAPPED_NATIVE_ONLY[ChainId.RINKEBY],
