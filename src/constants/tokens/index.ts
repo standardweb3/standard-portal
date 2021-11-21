@@ -797,6 +797,14 @@ export const JPYC = new Token(
   'JPY Coin',
 );
 
+export const METIS = new Token(
+  ChainId.MAINNET,
+  '0x9E32b13ce7f2E80A01932B42553652E053D6ed8e',
+  18,
+  'METIS',
+  'Metis',
+);
+
 type ChainTokenMap = {
   readonly [chainId in ChainId]?: Token;
 };
