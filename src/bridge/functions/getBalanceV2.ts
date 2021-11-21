@@ -2,7 +2,7 @@ import { isAddress } from '@ethersproject/address';
 import { useBatchWeb3, getContract } from './web3UtilsV2';
 
 import ERC20_INTERFACE from '../../constants/abis/erc20';
-import { fromWei } from 'web3-utils';
+import { fromWei } from './tools';
 
 const contract = getContract();
 
@@ -70,7 +70,6 @@ function getBlandTs(
     }
 
     useBatchWeb3(chainId, arr).then((res: any) => {
-      console.log('batchWeb3', res);
       try {
         for (let i = 0, len = arr.length; i < len; i++) {
           if (res[i].result) {
@@ -78,7 +77,9 @@ function getBlandTs(
               'balanceOf',
               res[i].result,
             )?.toString();
+
             if (!list[arr[i].token]) list[arr[i].token] = {};
+
             list[arr[i].token][arr[i].key] = fromWei(bl, arr[i].dec);
           }
         }
@@ -106,7 +107,6 @@ export function getNodeTotalsupply(
         },
       ];
       getBlandTs(tokenList, chainId, account).then((res: any) => {
-        // console.log(token)
         // console.log(res)
         resolve(res);
       });

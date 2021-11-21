@@ -16,32 +16,24 @@ export const addTransaction = createAction<{
   chainId: ChainId;
   hash: string;
   from: string;
-  approval?: { tokenAddress: string; spender: string };
-  claim?: { recipient: string };
   summary?: string;
-  archer?: {
-    rawTransaction: string;
-    deadline: number;
-    nonce: number;
-    ethTip: string;
-  };
-  anyswap?: {
-    isRouter: boolean;
-    destChainId?: string;
-    pairId?: string;
-    srcChainId?: string;
-  };
-}>('transactions/addTransaction');
+  destChainId?: string;
+  pairId?: string;
+  srcChainId?: string;
+}>('bridgeTransactions/addTransaction');
+
 export const clearAllTransactions = createAction<{ chainId: ChainId }>(
-  'transactions/clearAllTransactions',
+  'bridgeTransactions/clearAllTransactions',
 );
+
 export const finalizeTransaction = createAction<{
   chainId: ChainId;
   hash: string;
   receipt: SerializableTransactionReceipt;
-}>('transactions/finalizeTransaction');
+}>('bridgeTransactions/finalizeTransaction');
+
 export const checkedTransaction = createAction<{
   chainId: ChainId;
   hash: string;
   blockNumber: number;
-}>('transactions/checkedTransaction');
+}>('bridgeTransactions/checkedTransaction');

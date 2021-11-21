@@ -34,6 +34,8 @@ import ApplicationUpdater from '../state/application/updater'
 import ListsUpdater from '../state/lists/updater'
 import MulticallUpdater from '../state/multicall/updater'
 import TransactionUpdater from '../state/transactions/updater'
+import BridgeTransactionUpdater from '../state/bridgeTransactions/updater'
+
 import UserUpdater from '../state/user/updater'
 import NetworkGuard from '../guards/Network';
 
@@ -164,6 +166,7 @@ function MyApp({
                     <UserUpdater />
                     <ApplicationUpdater />
                     <TransactionUpdater />
+                    <BridgeTransactionUpdater/>
                     <MulticallUpdater />
                   <Provider>
                     <Layout>

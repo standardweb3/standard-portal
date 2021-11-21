@@ -1,54 +1,35 @@
-import { AnyswapCurrency, Token } from '@digitalnative/standard-protocol-sdk';
-import { useEffect, useMemo, useState } from 'react';
+import { Currency, CurrencyAmount } from '@digitalnative/standard-protocol-sdk';
 import { classNames, formatNumber } from '../../functions';
 import { useActiveWeb3React } from '../../hooks';
-import { useTokenBalance } from '../../state/wallet/hooks';
 import { Input as NumericalInput } from '../../components-ui/NumericalInput';
 import { Button } from '../../components-ui/Button';
 import { CurrencyLogo } from '../../components-ui/CurrencyLogo';
-import { NATIVE } from '@sushiswap/sdk';
-import { getAnyswapToken } from '../functions/getAnyswapToken';
 import { ChevronDownIcon } from '@heroicons/react/outline';
 
 export type RouterCurrencyInputPanelTypes = {
-  token: any | undefined;
+  currency: Currency | undefined;
   onAmountChange?: (amount: string) => void;
-  showMax?: boolean;
+  max?: CurrencyAmount<Currency>;
   className?: string;
   inputClassName?: string;
   maxClassName?: string;
+  amount?: string;
   onCurrencyClick?: () => void;
 };
 
 export function RouterCurrencyInputPanel({
-  token,
+  currency,
   onAmountChange,
-  showMax,
+  amount,
+  max,
   className,
   inputClassName,
   maxClassName,
   onCurrencyClick,
 }: RouterCurrencyInputPanelTypes) {
-  const [amount, setAmount] = useState('0');
-  const { account, chainId } = useActiveWeb3React();
-
-  const normalToken = useMemo(() => {
-    if (token) {
-      if (token.name === 'BASECURRENCY') return NATIVE[chainId];
-      return getAnyswapToken(token).toCurrency();
-    }
-    return token;
-  }, [token]);
-
-  const balance = useTokenBalance(account, normalToken);
-
   const onMax = () => {
-    balance && setAmount(balance.toFixed(token?.decimals));
+    max && onAmountChange(max.toExact());
   };
-
-  useEffect(() => {
-    onAmountChange && onAmountChange(amount);
-  }, [amount, onAmountChange]);
 
   return (
     <div className={classNames('flex items-center', className)}>
@@ -58,14 +39,14 @@ export function RouterCurrencyInputPanel({
       >
         <CurrencyLogo
           size="36px"
-          currency={normalToken}
+          currency={currency}
           className="rounded-full "
         />
         <div>
-          <div className="font-bold">{token?.symbol}</div>
-          {balance && (
+          <div className="font-bold">{currency?.symbol}</div>
+          {max && (
             <div className="text-xs text-grey">
-              {formatNumber(balance.toExact())}
+              {formatNumber(max.toExact())}
             </div>
           )}
         </div>
@@ -75,10 +56,10 @@ export function RouterCurrencyInputPanel({
         <NumericalInput
           className={classNames('w-full text-right', inputClassName)}
           value={amount}
-          onUserInput={setAmount}
+          onUserInput={onAmountChange}
         />
       </div>
-      {showMax && (
+      {max && (
         <Button
           onClick={onMax}
           type="bordered"

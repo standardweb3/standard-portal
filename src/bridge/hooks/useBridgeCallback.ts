@@ -10,11 +10,13 @@ import { useBridgeContract, useSwapUnderlyingContract } from './useContract';
 // import { MsgSend } from '@terra-money/terra.js';
 
 import { recordsTxns } from '../core/Tools/recordsTxns';
-import { useTransactionAdder } from '../../state/transactions/hooks';
 import { useActiveWeb3React } from '../../hooks';
 import { useCurrencyBalance, useETHBalances } from '../../state/wallet/hooks';
 // import { signSwapinData, signSwapoutData } from '../core/Wallet';
 import { getBaseCoin } from '../functions/bridge';
+import { useTransactionAdder } from '../../state/transactions/hooks';
+import { useTransactionAdder as useBridgeTransactionAdder } from '../../state/bridgeTransactions/hooks';
+import { NETWORK_LABEL } from '../../constants/networks';
 
 export enum WrapType {
   NOT_APPLICABLE,
@@ -50,16 +52,15 @@ export function useBridgeCallback(
     account ?? undefined,
     inputCurrency?.toCurrency(),
   );
-  // console.log(balance?.raw.toString(16))
-  // console.log(inputCurrency)
   // 我们总是可以解析输入货币的金额，因为包装是1:1
   const inputAmount = useMemo(() => tryParseAmount(typedValue, inputCurrency), [
     inputCurrency,
     typedValue,
   ]);
   const addTransaction = useTransactionAdder();
+  const addBridgeTransaction = useBridgeTransactionAdder();
+
   return useMemo(() => {
-    // console.log(inputCurrency)
     if (
       !bridgeContract ||
       !chainId ||
@@ -68,7 +69,6 @@ export function useBridgeCallback(
       !toChainID
     )
       return NOT_APPLICABLE;
-    // console.log(typedValue)
 
     const sufficientBalance =
       inputAmount && balance && !balance.lessThan(inputAmount);
@@ -79,8 +79,6 @@ export function useBridgeCallback(
         sufficientBalance && inputAmount
           ? async () => {
               try {
-                // console.log(bridgeContract)
-                // console.log(inputAmount.raw.toString(16))
                 const txReceipt = await bridgeContract.anySwapOut(
                   inputToken,
                   toAddress,
@@ -88,9 +86,20 @@ export function useBridgeCallback(
                   toChainID,
                 );
                 addTransaction(txReceipt, {
-                  summary: `Cross bridge ${inputAmount.toSignificant(
+                  summary: `Submit - Bridge: ${inputAmount.toSignificant(
                     6,
-                  )} ${getBaseCoin(inputCurrency?.symbol, chainId)}`,
+                  )} ${getBaseCoin(inputCurrency?.symbol, chainId)} to ${
+                    NETWORK_LABEL[toChainID]
+                  }`,
+                });
+                addBridgeTransaction(txReceipt, {
+                  summary: `Bridge: ${inputAmount.toSignificant(
+                    6,
+                  )} ${getBaseCoin(inputCurrency?.symbol, chainId)} to ${
+                    NETWORK_LABEL[toChainID]
+                  }`,
+                  srcChainId: String(chainId),
+                  destChainId: toChainID,
                 });
                 // registerSwap(txReceipt.hash, chainId)
                 if (txReceipt?.hash && account) {
@@ -124,6 +133,7 @@ export function useBridgeCallback(
     inputAmount,
     balance,
     addTransaction,
+    addBridgeTransaction,
     inputToken,
     toAddress,
     toChainID,
@@ -157,23 +167,16 @@ export function useBridgeUnderlyingCallback(
     account ?? undefined,
     inputCurrency?.toCurrency(),
   );
-  // console.log(balance)
-  // console.log(inputCurrency)
   // 我们总是可以解析输入货币的金额，因为包装是1:1
   const inputAmount = useMemo(() => tryParseAmount(typedValue, inputCurrency), [
     inputCurrency,
     typedValue,
   ]);
 
-  console.log('----');
-  console.log('dcuc', inputCurrency?.toCurrency());
-  console.log('bridgeContract', bridgeContract);
-  console.log('balance', balance);
-  console.log('inputAmount', inputAmount);
-  console.log('----');
   const addTransaction = useTransactionAdder();
+  const addBridgeTransaction = useBridgeTransactionAdder();
+
   return useMemo(() => {
-    // console.log(inputCurrency)
     if (
       !bridgeContract ||
       !chainId ||
@@ -182,12 +185,9 @@ export function useBridgeUnderlyingCallback(
       !toChainID
     )
       return NOT_APPLICABLE;
-    // console.log(typedValue)
 
     const sufficientBalance =
       inputAmount && balance && !balance.lessThan(inputAmount);
-
-    console.log('sufficient Balance', sufficientBalance);
 
     return {
       wrapType: WrapType.WRAP,
@@ -207,9 +207,20 @@ export function useBridgeUnderlyingCallback(
                   toChainID,
                 );
                 addTransaction(txReceipt, {
-                  summary: `Cross bridge ${inputAmount.toSignificant(
+                  summary: `Submit - Bridge: ${inputAmount.toSignificant(
                     6,
-                  )} ${getBaseCoin(inputCurrency?.symbol, chainId)}`,
+                  )} ${getBaseCoin(inputCurrency?.symbol, chainId)} to ${
+                    NETWORK_LABEL[toChainID]
+                  }`,
+                });
+                addBridgeTransaction(txReceipt, {
+                  summary: `Bridge: ${inputAmount.toSignificant(
+                    6,
+                  )} ${getBaseCoin(inputCurrency?.symbol, chainId)} to ${
+                    NETWORK_LABEL[toChainID]
+                  }`,
+                  srcChainId: String(chainId),
+                  destChainId: toChainID,
                 });
                 // registerSwap(txReceipt.hash, chainId)
                 if (txReceipt?.hash && account) {
@@ -243,6 +254,7 @@ export function useBridgeUnderlyingCallback(
     inputAmount,
     balance,
     addTransaction,
+    addBridgeTransaction,
     inputToken,
     toAddress,
     toChainID,
@@ -280,7 +292,10 @@ export function useBridgeNativeCallback(
     inputCurrency,
     typedValue,
   ]);
+
   const addTransaction = useTransactionAdder();
+  const addBridgeTransaction = useBridgeTransactionAdder();
+
   return useMemo(() => {
     // console.log(inputCurrency)
     if (
@@ -309,9 +324,20 @@ export function useBridgeNativeCallback(
                   { value: `0x${inputAmount.raw.toString(16)}` },
                 );
                 addTransaction(txReceipt, {
-                  summary: `Cross bridge ${inputAmount.toSignificant(
+                  summary: `Submit - Bridge: ${inputAmount.toSignificant(
                     6,
-                  )} ${getBaseCoin(inputCurrency?.symbol, chainId)}`,
+                  )} ${getBaseCoin(inputCurrency?.symbol, chainId)} to ${
+                    NETWORK_LABEL[toChainID]
+                  }`,
+                });
+                addBridgeTransaction(txReceipt, {
+                  summary: `Bridge: ${inputAmount.toSignificant(
+                    6,
+                  )} ${getBaseCoin(inputCurrency?.symbol, chainId)} to ${
+                    NETWORK_LABEL[toChainID]
+                  }`,
+                  srcChainId: String(chainId),
+                  destChainId: toChainID,
                 });
                 // registerSwap(txReceipt.hash, chainId)
                 if (txReceipt?.hash && account) {
@@ -345,6 +371,7 @@ export function useBridgeNativeCallback(
     inputAmount,
     balance,
     addTransaction,
+    addBridgeTransaction,
     inputToken,
     toAddress,
     toChainID,

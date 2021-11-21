@@ -19,6 +19,8 @@ import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
 // import { TransactionDetails } from '../../state/transactions/reducer';
 // import { finalizeTransaction } from '../../state/transactions/actions';
 import { useAllTransactions } from '../../state/transactions/hooks';
+import { useAllTransactions as useAllBridgeTransactions } from '../../state/bridgeTransactions/hooks';
+
 // explorer
 import { getExplorerLink } from '../../functions/explorer';
 // ui
@@ -44,9 +46,10 @@ import { classNames } from '../../functions';
 const Transaction: FC<{ hash: string }> = ({ hash }) => {
   const { chainId } = useActiveWeb3React();
   const allTransactions = useAllTransactions();
+  const allBridgeTransactions = useAllBridgeTransactions();
   //   const dispatch = useDispatch<AppDispatch>();
 
-  const tx = allTransactions?.[hash];
+  const tx = allTransactions?.[hash] || allBridgeTransactions?.[hash];
   const summary = tx?.summary;
   const pending = !tx?.receipt;
   const success =

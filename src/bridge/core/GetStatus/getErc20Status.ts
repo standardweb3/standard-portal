@@ -42,7 +42,6 @@ function GetTxnStatusAPI({
     const url = `${
       type === 'swapin' ? swapinStatusUrl : swapoutStatusUrl
     }/${account}/${hash}/${destChainID}/${pairid}/${srcChainID}`;
-    // console.log(url)
     getUrlData({
       url: url,
     }).then((res: any) => {

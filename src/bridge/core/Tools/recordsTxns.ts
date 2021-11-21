@@ -29,11 +29,9 @@ export function recordsTxns({
   token,
 }: RecordsTxnsProp) {
   return new Promise((resolve) => {
-    // console.log(hash)
     const url = recordsTxnsUrl;
     const useVersion = version;
-    // console.log(version)
-    // console.log(USE_VERSION)
+
     postUrlData({
       url,
       params: {
@@ -50,7 +48,6 @@ export function recordsTxns({
         pairid: pairid,
       },
     }).then((res) => {
-      console.log('recorded tx', res);
       resolve(res);
     });
   });

@@ -46,7 +46,6 @@ export function useFetchRouterTokenList() {
   //       const url = `${config.bridgeApi}/v3/serverinfoV4?chainId=${chainId}&version=${version}`
   //       return getUrlData(url)
   //         .then((tokenList:any) => {
-  //           // console.log(tokenList)
   //           const list:any = {}
   //           if (tokenList.msg === 'Success' && tokenList.data) {
   //             const tList = tokenList.data

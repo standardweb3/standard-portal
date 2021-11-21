@@ -52,7 +52,6 @@ export const timeout = 1000 * 60 * 30;
 // export const INIT_VERSION = VERSION.V7;
 
 export const USE_VERSION = VERSION.V5;
-// console.log(USE_VERSION)
 // function initVersion(version: any, configVersion: any) {
 //   const VERSION = version + '_VERSION';
 //   const curVersion = localStorage.getItem(VERSION);
@@ -75,7 +74,6 @@ function formatHiddenCoin(list?: Array<any>) {
       arr.push(str);
     }
   }
-  // console.log(arr)
   return arr;
 }
 export const controlConfig: any = {

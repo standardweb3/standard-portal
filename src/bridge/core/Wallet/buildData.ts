@@ -117,7 +117,7 @@ export function signSwapoutSpecData({
     contract
       .Swapout(value, address)
       .then((res: any) => {
-        console.log(res);
+        // console.log(res);
         resolve({
           msg: Status.Success,
           info: res.hash,
@@ -167,7 +167,7 @@ export function signSwapoutErc20Data({ value, address, token }: BuildParams) {
     contract
       .Swapout(value, address)
       .then((res: any) => {
-        console.log(res);
+        // console.log(res);
         resolve({
           msg: Status.Success,
           info: res.hash,
@@ -234,7 +234,7 @@ export function signSwapinData({
   isRecords,
 }: BuildParams) {
   return new Promise(async (resolve) => {
-    console.log(value.toString().indexOf('.') === -1);
+    // console.log(value.toString().indexOf('.') === -1);
     if (
       !value ||
       value.toString().indexOf('.') !== -1 ||
@@ -300,7 +300,7 @@ export function signSwapinData({
           });
         })
         .catch((err: any) => {
-          console.log(err);
+          // console.log(err);
           resolve({
             msg: Status.Error,
             error: err?.data?.message
@@ -331,7 +331,7 @@ export function signSwapinData({
           });
         })
         .catch((err: any) => {
-          console.log(err);
+          // console.log(err);
           resolve({
             msg: Status.Error,
             error: err?.data?.message

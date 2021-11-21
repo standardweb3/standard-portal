@@ -1,6 +1,13 @@
 import { AnyswapCurrency } from '@digitalnative/standard-protocol-sdk';
-import { useCallback, useMemo } from 'react';
+import AutoSizer from 'react-virtualized-auto-sizer';
+
+import { useCallback, useMemo, useState } from 'react';
 import { Modal } from '../../components-ui/Modal';
+import { useSizeSmDown } from '../../components-ui/Responsive';
+import { isAddress } from '../../functions';
+import { useSortedTokensByQuery } from '../../functions/filtering';
+import { useFuse } from '../../hooks';
+import useDebounce from '../../hooks/useDebounce';
 import { getAnyswapToken } from '../functions/getAnyswapToken';
 import AnyswapCurrencyList from './AnyswapCurrencyList';
 
@@ -19,7 +26,17 @@ export default function RouterCurrencySelectModal({
   currencyList,
   onCurrencySelect,
 }: RouterCurrencySelectModalTypes) {
-  const anyswapCurrencies = useMemo(
+  // const [searchQuery, setSearchQuery] = useState<string>('');
+  // const debouncedQuery = useDebounce(searchQuery, 200);
+  // const [invertSearchOrder] = useState<boolean>(false);
+  // const isAddressSearch = isAddress(debouncedQuery);
+
+  const options = {
+    keys: ['symbol', 'address', 'name'],
+    threshold: 0.4,
+  };
+
+  const anyswapCurrencies: AnyswapCurrency[] = useMemo(
     () =>
       currencyList
         .map((currency) => {
@@ -30,10 +47,18 @@ export default function RouterCurrencySelectModal({
     [currencyList],
   );
 
+  const { result, term, search } = useFuse({
+    data: anyswapCurrencies,
+    options,
+  });
+
   const handleSelect = useCallback((inputCurrency) => {
     onCurrencySelect(inputCurrency);
+    search('');
     onDismiss();
   }, []);
+
+  const isViewportSmallDown = useSizeSmDown();
 
   return (
     <>
@@ -41,14 +66,67 @@ export default function RouterCurrencySelectModal({
         isOpen={isOpen}
         onDismiss={onDismiss}
         maxWidth="500px"
+        minHeight="88vh"
         maxHeight="80vh"
-        minWidth={'80vw'}
+        minWidth={isViewportSmallDown ? '90vw' : 'none'}
       >
-        <AnyswapCurrencyList
-          onCurrencySelect={handleSelect}
-          currencies={anyswapCurrencies}
-          height={500}
-        />
+        <div
+          className="
+          flex flex-col justify-center
+          h-full
+        "
+        >
+          {anyswapCurrencies && (
+            <>
+              <div className="text-sm font-bold">Select A Token</div>
+              <div
+                className={`
+          mt-4
+          sm:mt-4 
+          mb-8
+          sm:mb-8
+          `}
+              >
+                <input
+                  tabIndex={-1}
+                  type="text"
+                  id="token-search-input"
+                  placeholder={`Search name or token address`}
+                  autoComplete="off"
+                  value={term}
+                  // ref={inputRef as RefObject<HTMLInputElement>}
+                  onChange={(e) => search(e.target.value)}
+                  // onKeyDown={handleEnter}
+                  className={`
+              w-full 
+              bg-transparent
+              border
+              border-border-text
+              focus:border-primary
+              rounded-20 
+              placeholder-info
+              focus:placeholder-text 
+              font-semibold 
+              text-text 
+              px-6 py-3.5
+            `}
+                />
+              </div>
+            </>
+          )}
+          <div className="text-sm font-bold">All</div>
+          <div className="flex-1 rounded-20 h-full bg-opaque-secondary p-3 mt-4">
+            <AutoSizer disableWidth>
+              {({ height }) => (
+                <AnyswapCurrencyList
+                  onCurrencySelect={handleSelect}
+                  currencies={result}
+                  height={height}
+                />
+              )}
+            </AutoSizer>
+          </div>
+        </div>
       </Modal>
     </>
   );

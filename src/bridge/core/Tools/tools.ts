@@ -46,7 +46,6 @@ export function thousandBit(num: any, dec: any = 8) {
 }
 
 export function formatWeb3Str(str: string, len = 64) {
-  // console.log(str)
   str = str.indexOf('0x') === 0 ? str.substr(2) : str;
   const strLen = str.length / len;
   const arr = [];
@@ -100,19 +99,13 @@ export function getLocalData(
     const localStr = lsDB.getItem(LOCAL_DATA_LABEL + token);
     if (localStr) {
       const localData = JSON.parse(localStr);
-      // console.log(localData)
-      // console.log(LOCAL_DATA_LABEL + token)
       if (!localData[chainId]) {
-        // console.log(1)
         return false;
       } else if (!localData[chainId][account]) {
-        // console.log(2)
         return false;
       } else if (Date.now() - localData[chainId][account].timestamp > timeout) {
-        // console.log(3)
         return false;
       } else {
-        // console.log(4)
         return localData[chainId][account].data;
       }
     } else {
@@ -143,7 +136,6 @@ export function setLocalData(
       };
     } else {
       lObj = JSON.parse(lstr);
-      // console.log(lObj)
       if (!lObj[chainId]) {
         lObj[chainId] = {};
         lObj[chainId][account] = {

@@ -1,7 +1,7 @@
 import { useWeb3React } from '@web3-react/core';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
-import { BridgeContextName } from '../../constants';
+// import { BridgeContextName } from '../../constants';
 import { classNames, shortenAddress } from '../../functions';
 import { newTransactionsFirst } from '../../functions/transactions';
 import useENSName from '../../hooks/useENSName';
@@ -22,7 +22,7 @@ export function InnerConnectionStatus({
   className,
 }: InnerConnectionStatusType) {
   const { account, connector } = useWeb3React();
-  const { account: bridgeAccount } = useWeb3React(BridgeContextName);
+  // const { account: bridgeAccount } = useWeb3React(BridgeContextName);
   const { route } = useRouter();
 
   const { ENSName } = useENSName(account ?? undefined);

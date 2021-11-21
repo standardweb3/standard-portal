@@ -7,7 +7,6 @@ export const MATIC_MAIN_CHAINID = 137;
 export const MATIC_MAINNET = 'https://maticnode1.anyswap.exchange';
 // export const MATIC_MAIN_EXPLORER = 'https://explorer-mainnet.maticvigil.com'
 export const MATIC_MAIN_EXPLORER = 'https://polygonscan.com';
-// console.log(MATIC_MAINNET)
 export const tokenList = [
   {
     address: '0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6',

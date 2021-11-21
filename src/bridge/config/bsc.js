@@ -1,6 +1,5 @@
 import { formatSwapTokenList, getLocalRPC } from './methods';
 import { tokenListUrl, VERSION, USE_VERSION } from '../constant';
-// console.log(process.env)
 // alert(process.env.NODE_ENV)
 
 // const useNode = 'https://bsc-dataseed1.defibit.io/'
@@ -21,7 +20,6 @@ const useNode = 'https://bsc-dataseed3.ninicoin.io/';
 export const BNB_MAIN_CHAINID = 56;
 export const BNB_MAINNET = 'https://bscnode1.anyswap.exchange';
 export const BNB_MAIN_EXPLORER = 'https://bscscan.com';
-// console.log(BNB_MAINNET)
 export const BNB_TEST_CHAINID = 97;
 export const BNB_TESTNET = 'https://data-seed-prebsc-1-s1.binance.org:8545';
 export const BNB_TEST_EXPLORER = 'https://testnet.bscscan.com';

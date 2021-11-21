@@ -12,11 +12,13 @@ import transactions from './transactions/reducer';
 import user from './user/reducer';
 import zap from './zap/reducer';
 import inari from './inari/reducer';
+import bridgeTransactions from './bridgeTransactions/reducer';
 
 const reducer = combineReducers({
   application,
   user,
   transactions,
+  bridgeTransactions,
   swap,
   mint,
   burn,

@@ -30,7 +30,7 @@ import { RippleSpinner } from '../../components-ui/Spinner/RippleSpinner';
 import { DefinedStyles } from '../../utils/DefinedStyles';
 import useAddTokenToMetaMask from '../../hooks/useAddTokenToMetaMask';
 import { PlusCircleIcon } from '@heroicons/react/outline';
-import { MenuItem } from '../../modals/SearchModal/styleds';
+import { MenuItem, MenuItem2 } from '../../modals/SearchModal/styleds';
 
 function currencyKey(currency: AnyswapCurrency): string {
   return currency ? currency.address : 'ETHER';
@@ -64,35 +64,6 @@ const TagContainer = styled.div`
   justify-content: flex-end;
 `;
 
-//   function TokenTags({ currency }: { currency: AnyswapCurrency }) {
-//     if (!(currency instanceof AnyswapToken)) {
-//       return <span />;
-//     }
-
-//     const tags = currency.tags;
-//     if (!tags || tags.length === 0) return <span />;
-
-//     const tag = tags[0];
-
-//     return (
-//       <TagContainer>
-//         <MouseoverTooltip text={tag.description}>
-//           <Tag key={tag.id}>{tag.name}</Tag>
-//         </MouseoverTooltip>
-//         {tags.length > 1 ? (
-//           <MouseoverTooltip
-//             text={tags
-//               .slice(1)
-//               .map(({ name, description }) => `${name}: ${description}`)
-//               .join('; \n')}
-//           >
-//             <Tag>...</Tag>
-//           </MouseoverTooltip>
-//         ) : null}
-//       </TagContainer>
-//     );
-//   }
-
 function CurrencyRow({
   currency,
   onSelect,
@@ -116,9 +87,9 @@ function CurrencyRow({
   const { addToken, success } = useAddTokenToMetaMask(currency?.toCurrency());
   // only show add or remove buttons if not on selected list
   return (
-    <MenuItem
-      className="pl-1 pr-3 sm:pl-4 sm:pr-4 py-1 rounded-20 cursor-pointer"
-      id={`token-item-${key}`}
+    <MenuItem2
+      className="pl-1 pr-3 sm:pl-4 sm:pr-4 py-1 cursor-pointer"
+      id={`anyswap-token-item-${key}`}
       style={style}
       onClick={() => (isSelected ? null : onSelect())}
       disabled={isSelected}
@@ -149,32 +120,7 @@ function CurrencyRow({
           </div>
         )}
       </div>
-    </MenuItem>
-  );
-}
-
-const BREAK_LINE = 'BREAK';
-type BreakLine = typeof BREAK_LINE;
-function isBreakLine(x: unknown): x is BreakLine {
-  return x === BREAK_LINE;
-}
-
-function BreakLineComponent({ style }: { style?: CSSProperties }) {
-  return (
-    <div
-      className="
-        w-full
-        flex items-center 
-        space-x-3 
-        p-3 text-sm"
-      style={style}
-    >
-      <div>{`Expanded results from inactive Token Lists`}</div>
-      <Question
-        text={`Tokens from inactive lists. Import specific tokens below or
-              click Manage to activate more lists.`}
-      />
-    </div>
+    </MenuItem2>
   );
 }
 
@@ -195,21 +141,16 @@ export default function AnyswapCurrencyList({
   otherCurrency?: AnyswapCurrency | null;
   fixedListRef?: MutableRefObject<FixedSizeList | undefined>;
 }) {
-  const itemData: (AnyswapCurrency | BreakLine)[] = useMemo(() => {
+  const itemData: AnyswapCurrency[] = useMemo(() => {
     if (otherListTokens && otherListTokens?.length > 0) {
-      return [...currencies, BREAK_LINE, ...otherListTokens];
+      return [...currencies, ...otherListTokens];
     }
     return currencies;
   }, [currencies, otherListTokens]);
 
   const Row = useCallback(
     function TokenRow({ data, index, style }) {
-      const row: AnyswapCurrency | BreakLine = data[index];
-
-      if (isBreakLine(row)) {
-        return <BreakLineComponent style={style} />;
-      }
-
+      const row: AnyswapCurrency = data[index];
       const currency = row;
 
       const isSelected = Boolean(
@@ -245,7 +186,6 @@ export default function AnyswapCurrencyList({
 
   const itemKey = useCallback((index: number, data: typeof itemData) => {
     const currency = data[index];
-    if (isBreakLine(currency)) return BREAK_LINE;
     return currencyKey(currency);
   }, []);
 

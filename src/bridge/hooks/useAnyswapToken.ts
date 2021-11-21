@@ -1,4 +1,4 @@
-import { AnyswapToken } from '@digitalnative/standard-protocol-sdk';
+import { AnyswapToken, NATIVE } from '@digitalnative/standard-protocol-sdk';
 import { getAddress } from '@ethersproject/address';
 import { useMemo } from 'react';
 import { useActiveWeb3React } from '../../hooks';

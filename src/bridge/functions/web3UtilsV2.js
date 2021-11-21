@@ -109,8 +109,8 @@ async function useBatchWeb3(chainId, list) {
   try {
     results = await getBatchWeb3Result(rpc, list);
   } catch (error) {
-    console.log('error');
-    console.log(error.toString());
+    // console.log('error');
+    // console.log(error.toString());
     if (
       error.toString().indexOf('Invalid JSON RPC response') !== -1 ||
       error.toString().indexOf('Error: Returned error') !== -1
@@ -152,8 +152,8 @@ async function useWeb3(chainId, property, name, params) {
   try {
     results = await getWeb3Result(rpc, property, name, params);
   } catch (error) {
-    console.log('error');
-    console.log(error.toString());
+    // console.log('error');
+    // console.log(error.toString());
     if (
       error.toString().indexOf('Invalid JSON RPC response') !== -1 ||
       error.toString().indexOf('Error: Returned error') !== -1
