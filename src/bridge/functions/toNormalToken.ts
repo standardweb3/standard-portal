@@ -1,4 +1,5 @@
 import {
+  AnyswapCurrency,
   AnyswapToken,
   NATIVE,
   Token,
@@ -18,7 +19,7 @@ export function toNormalToken(token: AnyswapToken | undefined, chainId): Token {
 }
 
 export function toNormalCurrency(
-  token: AnyswapToken | undefined,
+  token: AnyswapCurrency | undefined,
   chainId,
 ): Token {
   if (!token) return undefined;
