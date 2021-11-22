@@ -4,7 +4,7 @@ import { tokenListUrl, VERSION, USE_VERSION } from '../constant';
 export const MATIC_MAIN_CHAINID = 137;
 // export const MATIC_MAINNET = 'https://rpc-mainnet.maticvigil.com'
 // export const MATIC_MAINNET = process.env.NODE_ENV === 'development' ? 'https://rpc-mainnet.maticvigil.com' : 'https://maticnode1.anyswap.exchange'
-export const MATIC_MAINNET = 'https://maticnode1.anyswap.exchange';
+export const MATIC_MAINNET = 'https://matic-mainnet-full-rpc.bwarelabs.com';
 // export const MATIC_MAIN_EXPLORER = 'https://explorer-mainnet.maticvigil.com'
 export const MATIC_MAIN_EXPLORER = 'https://polygonscan.com';
 export const tokenList = [
@@ -76,7 +76,7 @@ export default {
       'https://matic-mainnet.chainstacklabs.com',
       'https://rpc-mainnet.maticvigil.com',
       'https://rpc-mainnet.matic.quiknode.pro',
-      'https://matic-mainnet-full-rpc.bwarelabs.com',
+      'https://maticnode1.anyswap.exchange',
       'https://matic-mainnet-archive-rpc.bwarelabs.com',
     ],
     chainID: MATIC_MAIN_CHAINID,

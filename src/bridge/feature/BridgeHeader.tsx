@@ -24,12 +24,12 @@ export function BridgeHeader(): JSX.Element {
     inline-flex
     items-center justify-between"
     >
-      <NavigationLink href={`/bridgev2`}>
+      <NavigationLink href={`/router`}>
         <a className={classNames(style, !isHistoryActive && activeStyle)}>
           Router
         </a>
       </NavigationLink>
-      <NavigationLink href={`/bridgev2/history`}>
+      <NavigationLink href={`/router/history`}>
         <a className={classNames(style, isHistoryActive && activeStyle)}>
           History
         </a>

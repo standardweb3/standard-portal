@@ -737,6 +737,12 @@ export default function Bridge() {
             ) : (
               ''
             )}
+            {outputBridgeValue && (
+              <div className="flex justify-center items-center space-x-2">
+                <div className="font-bold">Output Amount:</div>
+                <div>{`${outputBridgeValue} ${selectCurrency.symbol}`}</div>
+              </div>
+            )}
             <div className={DefinedStyles.divider} />
             <Reminder
               bridgeConfig={selectCurrency}

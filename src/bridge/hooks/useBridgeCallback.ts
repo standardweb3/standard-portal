@@ -1,6 +1,8 @@
 import { AnyswapCurrency } from '@digitalnative/standard-protocol-sdk';
 import { useMemo } from 'react';
-import { tryParseAmount, tryParseAmount1 } from './useRouterHooks';
+// import { tryParseAmount, tryParseAmount1 } from './useRouterHooks';
+import { tryParseAmount as tryParseNormalCurrencyAmount } from '../../functions';
+
 import { useBridgeContract, useSwapUnderlyingContract } from './useContract';
 // import {
 //   useConnectedWallet,
@@ -12,6 +14,7 @@ import { useBridgeContract, useSwapUnderlyingContract } from './useContract';
 import { recordsTxns } from '../core/Tools/recordsTxns';
 import { useActiveWeb3React } from '../../hooks';
 import { useCurrencyBalance, useETHBalances } from '../../state/wallet/hooks';
+import { toNormalCurrency } from '../../bridge/functions/toNormalToken';
 // import { signSwapinData, signSwapoutData } from '../core/Wallet';
 import { getBaseCoin } from '../functions/bridge';
 import { useTransactionAdder } from '../../state/transactions/hooks';
@@ -48,15 +51,13 @@ export function useBridgeCallback(
 } {
   const { chainId, account } = useActiveWeb3React();
   const bridgeContract = useBridgeContract(routerToken);
-  const balance = useCurrencyBalance(
-    account ?? undefined,
-    inputCurrency?.toCurrency(),
-  );
+  const normalCurrency = toNormalCurrency(inputCurrency, chainId);
+  const balance = useCurrencyBalance(account ?? undefined, normalCurrency);
   // 我们总是可以解析输入货币的金额，因为包装是1:1
-  const inputAmount = useMemo(() => tryParseAmount(typedValue, inputCurrency), [
-    inputCurrency,
-    typedValue,
-  ]);
+  const inputAmount = useMemo(
+    () => tryParseNormalCurrencyAmount(typedValue, normalCurrency),
+    [normalCurrency, typedValue],
+  );
   const addTransaction = useTransactionAdder();
   const addBridgeTransaction = useBridgeTransactionAdder();
 
@@ -82,7 +83,7 @@ export function useBridgeCallback(
                 const txReceipt = await bridgeContract.anySwapOut(
                   inputToken,
                   toAddress,
-                  `0x${inputAmount.raw.toString(16)}`,
+                  `0x${inputAmount.numerator.toString(16)}`,
                   toChainID,
                 );
                 addTransaction(txReceipt, {
@@ -108,7 +109,7 @@ export function useBridgeCallback(
                     chainId: chainId,
                     selectChain: toChainID,
                     account: account?.toLowerCase(),
-                    value: inputAmount.raw.toString(),
+                    value: inputAmount.numerator.toString(),
                     formatvalue: inputAmount?.toSignificant(6),
                     to: toAddress?.toLowerCase(),
                     symbol: inputCurrency?.symbol,
@@ -163,15 +164,13 @@ export function useBridgeUnderlyingCallback(
 } {
   const { chainId, account } = useActiveWeb3React();
   const bridgeContract = useBridgeContract(routerToken);
-  const balance = useCurrencyBalance(
-    account ?? undefined,
-    inputCurrency?.toCurrency(),
-  );
+  const normalCurrency = toNormalCurrency(inputCurrency, chainId);
+  const balance = useCurrencyBalance(account ?? undefined, normalCurrency);
   // 我们总是可以解析输入货币的金额，因为包装是1:1
-  const inputAmount = useMemo(() => tryParseAmount(typedValue, inputCurrency), [
-    inputCurrency,
-    typedValue,
-  ]);
+  const inputAmount = useMemo(
+    () => tryParseNormalCurrencyAmount(typedValue, normalCurrency),
+    [normalCurrency, typedValue],
+  );
 
   const addTransaction = useTransactionAdder();
   const addBridgeTransaction = useBridgeTransactionAdder();
@@ -203,7 +202,7 @@ export function useBridgeUnderlyingCallback(
                 const txReceipt = await bridgeContract.anySwapOutUnderlying(
                   inputToken,
                   toAddress,
-                  `0x${inputAmount.raw.toString(16)}`,
+                  `0x${inputAmount.numerator.toString(16)}`,
                   toChainID,
                 );
                 addTransaction(txReceipt, {
@@ -229,7 +228,7 @@ export function useBridgeUnderlyingCallback(
                     chainId: chainId,
                     selectChain: toChainID,
                     account: account?.toLowerCase(),
-                    value: inputAmount.raw.toString(),
+                    value: inputAmount.numerator.toString(),
                     formatvalue: inputAmount?.toSignificant(6),
                     to: toAddress?.toLowerCase(),
                     symbol: inputCurrency?.symbol,
@@ -285,13 +284,14 @@ export function useBridgeNativeCallback(
   const { chainId, account } = useActiveWeb3React();
   const bridgeContract = useBridgeContract(routerToken);
   const balance = useETHBalances(account ? [account] : [])?.[account ?? ''];
+  const normalCurrency = toNormalCurrency(inputCurrency, chainId);
   // console.log(balance)
   // console.log(inputCurrency)
   // 我们总是可以解析输入货币的金额，因为包装是1:1
-  const inputAmount = useMemo(() => tryParseAmount(typedValue, inputCurrency), [
-    inputCurrency,
-    typedValue,
-  ]);
+  const inputAmount = useMemo(
+    () => tryParseNormalCurrencyAmount(typedValue, normalCurrency),
+    [normalCurrency, typedValue],
+  );
 
   const addTransaction = useTransactionAdder();
   const addBridgeTransaction = useBridgeTransactionAdder();
@@ -321,7 +321,7 @@ export function useBridgeNativeCallback(
                 // console.log(inputAmount.raw.toString(16))
                 const txReceipt = await bridgeContract.anySwapOutNative(
                   ...[inputToken, toAddress, toChainID],
-                  { value: `0x${inputAmount.raw.toString(16)}` },
+                  { value: `0x${inputAmount.numerator.toString(16)}` },
                 );
                 addTransaction(txReceipt, {
                   summary: `Submit - Bridge: ${inputAmount.toSignificant(
@@ -346,7 +346,7 @@ export function useBridgeNativeCallback(
                     chainId: chainId,
                     selectChain: toChainID,
                     account: account?.toLowerCase(),
-                    value: inputAmount.raw.toString(),
+                    value: inputAmount.numerator.toString(),
                     formatvalue: inputAmount?.toSignificant(6),
                     to: toAddress?.toLowerCase(),
                     symbol: inputCurrency?.symbol,
@@ -398,17 +398,15 @@ export function useSwapUnderlyingCallback(
 } {
   const { chainId, account } = useActiveWeb3React();
   const bridgeContract = useSwapUnderlyingContract(inputToken);
-  const balance = useCurrencyBalance(
-    account ?? undefined,
-    inputCurrency?.toCurrency(),
-  );
+  const normalCurrency = toNormalCurrency(inputCurrency, chainId);
+  const balance = useCurrencyBalance(account ?? undefined, normalCurrency);
   // console.log(balance?.raw.toString())
   // console.log(inputCurrency)
   // 我们总是可以解析输入货币的金额，因为包装是1:1
-  const inputAmount = useMemo(() => tryParseAmount(typedValue, inputCurrency), [
-    inputCurrency,
-    typedValue,
-  ]);
+  const inputAmount = useMemo(
+    () => tryParseNormalCurrencyAmount(typedValue, normalCurrency),
+    [normalCurrency, typedValue],
+  );
   const addTransaction = useTransactionAdder();
   return useMemo(() => {
     // console.log(inputCurrency)
@@ -429,10 +427,10 @@ export function useSwapUnderlyingCallback(
                 const txReceipt =
                   swapType === 'deposit'
                     ? await bridgeContract.deposit(
-                        `0x${inputAmount.raw.toString(16)}`,
+                        `0x${inputAmount.numerator.toString(16)}`,
                       )
                     : await bridgeContract.withdraw(
-                        `0x${inputAmount.raw.toString(16)}`,
+                        `0x${inputAmount.numerator.toString(16)}`,
                       );
                 addTransaction(txReceipt, {
                   summary: `${
@@ -483,18 +481,16 @@ export function useSwapNativeCallback(
   const { chainId, account } = useActiveWeb3React();
   const bridgeContract = useBridgeContract(routerToken);
   const ethbalance = useETHBalances(account ? [account] : [])?.[account ?? ''];
-  const anybalance = useCurrencyBalance(
-    account ?? undefined,
-    inputCurrency?.toCurrency(),
-  );
+  const normalCurrency = toNormalCurrency(inputCurrency, chainId);
+  const anybalance = useCurrencyBalance(account ?? undefined, normalCurrency);
   const balance = swapType === 'deposit' ? ethbalance : anybalance;
   // console.log(balance)
   // console.log(inputCurrency)
   // 我们总是可以解析输入货币的金额，因为包装是1:1
-  const inputAmount = useMemo(() => tryParseAmount(typedValue, inputCurrency), [
-    inputCurrency,
-    typedValue,
-  ]);
+  const inputAmount = useMemo(
+    () => tryParseNormalCurrencyAmount(typedValue, normalCurrency),
+    [normalCurrency, typedValue],
+  );
   const addTransaction = useTransactionAdder();
   return useMemo(() => {
     // console.log(inputCurrency)
@@ -512,7 +508,7 @@ export function useSwapNativeCallback(
           ? async () => {
               try {
                 // console.log(`0x${inputAmount.raw.toString(16)}`)
-                const v = { value: `0x${inputAmount.raw.toString(16)}` };
+                const v = { value: `0x${inputAmount.numerator.toString(16)}` };
                 // console.log(v)
                 // console.log([inputToken, account])
                 const txReceipt =
@@ -523,7 +519,7 @@ export function useSwapNativeCallback(
                       )
                     : await bridgeContract.withdrawNative(
                         inputToken,
-                        `0x${inputAmount.raw.toString(16)}`,
+                        `0x${inputAmount.numerator.toString(16)}`,
                         account,
                       );
                 addTransaction(txReceipt, {
@@ -580,17 +576,16 @@ export function useBridgeSwapNativeCallback(
 } {
   const { chainId, account } = useActiveWeb3React();
   const bridgeContract = useBridgeContract(routerToken);
-  const balance = useCurrencyBalance(
-    account ?? undefined,
-    inputCurrency?.toCurrency(),
-  );
+  const normalCurrency = toNormalCurrency(inputCurrency, chainId);
+
+  const balance = useCurrencyBalance(account ?? undefined, normalCurrency);
   // console.log(balance)
   // console.log(inputCurrency)
   // 我们总是可以解析输入货币的金额，因为包装是1:1
-  const inputAmount = useMemo(() => tryParseAmount(typedValue, inputCurrency), [
-    inputCurrency,
-    typedValue,
-  ]);
+  const inputAmount = useMemo(
+    () => tryParseNormalCurrencyAmount(typedValue, normalCurrency),
+    [normalCurrency, typedValue],
+  );
   const addTransaction = useTransactionAdder();
   return useMemo(() => {
     // console.log(inputCurrency)
@@ -630,7 +625,7 @@ export function useBridgeSwapNativeCallback(
                 // console.log(txType)
                 // const txReceipt = await bridgeContract.anySwapOutExactTokensForNative(
                 const txReceipt = await bridgeContract[txType](
-                  `0x${inputAmount.raw.toString(16)}`,
+                  `0x${inputAmount.numerator.toString(16)}`,
                   outputAmount,
                   routerPath,
                   toAddress,
@@ -649,7 +644,7 @@ export function useBridgeSwapNativeCallback(
                     chainId: chainId,
                     selectChain: toChainID,
                     account: account?.toLowerCase(),
-                    value: inputAmount.raw.toString(),
+                    value: inputAmount.numerator.toString(),
                     formatvalue: inputAmount?.toSignificant(6),
                     to: toAddress?.toLowerCase(),
                     symbol: inputCurrency?.symbol,
@@ -707,17 +702,16 @@ export function useBridgeSwapUnderlyingCallback(
 } {
   const { chainId, account } = useActiveWeb3React();
   const bridgeContract = useBridgeContract(routerToken);
-  const balance = useCurrencyBalance(
-    account ?? undefined,
-    inputCurrency?.toCurrency(),
-  );
+  const normalCurrency = toNormalCurrency(inputCurrency, chainId);
+
+  const balance = useCurrencyBalance(account ?? undefined, normalCurrency);
   // console.log(balance)
   // console.log(inputCurrency)
   // 我们总是可以解析输入货币的金额，因为包装是1:1
-  const inputAmount = useMemo(() => tryParseAmount(typedValue, inputCurrency), [
-    inputCurrency,
-    typedValue,
-  ]);
+  const inputAmount = useMemo(
+    () => tryParseNormalCurrencyAmount(typedValue, normalCurrency),
+    [normalCurrency, typedValue],
+  );
   const addTransaction = useTransactionAdder();
   return useMemo(() => {
     // console.log(inputCurrency)
@@ -756,7 +750,7 @@ export function useBridgeSwapUnderlyingCallback(
                   ? 'anySwapOutExactTokensForTokensUnderlying'
                   : 'anySwapOutExactTokensForTokens';
                 const txReceipt = await bridgeContract[txType](
-                  `0x${inputAmount.raw.toString(16)}`,
+                  `0x${inputAmount.numerator.toString(16)}`,
                   outputAmount,
                   routerPath,
                   toAddress,
@@ -775,7 +769,7 @@ export function useBridgeSwapUnderlyingCallback(
                     chainId: chainId,
                     selectChain: toChainID,
                     account: account?.toLowerCase(),
-                    value: inputAmount.raw.toString(),
+                    value: inputAmount.numerator.toString(),
                     formatvalue: inputAmount?.toSignificant(6),
                     to: toAddress?.toLowerCase(),
                     symbol: inputCurrency?.symbol,

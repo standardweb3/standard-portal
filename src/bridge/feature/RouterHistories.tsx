@@ -19,7 +19,6 @@ import {
   isTransactionOneWeek,
   useAllTransactions,
 } from '../../state/bridgeTransactions/hooks';
-import { BridgeHeader } from './BridgeHeader';
 // import { useActiveWeb3React } from '../../hooks';
 
 function RouterTransaction({ tx }) {
@@ -49,7 +48,9 @@ function RouterTransaction({ tx }) {
         .then((data) => {
           if (data && data.msg == 'Success') {
             let resultStatus = data?.info?.status || 8;
-            setStatus(resultStatus);
+            try {
+              setStatus(resultStatus);
+            } catch (err) {}
           }
         }),
   );
@@ -153,7 +154,7 @@ export function RouterHistories() {
 
   function renderTransactions(transactions: string[]) {
     return (
-      <div className="flex flex-col flex-nowrap">
+      <div className="flex flex-col flex-nowrap space-y-2">
         {transactions.map((hash, i) => {
           return <RouterTransaction key={hash} tx={allTransactions[hash]} />;
         })}
