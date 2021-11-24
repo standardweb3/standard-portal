@@ -167,7 +167,7 @@ function MyApp({
                     <MulticallUpdater />
                   <Provider>
                     <Layout>
-                      <NetworkGuard networks={[ChainId.MAINNET, ChainId.SHIDEN]}>
+                      <NetworkGuard networks={[ChainId.MAINNET, ChainId.SHIDEN, ChainId.METIS]}>
                         <Component {...pageProps} />
                       </NetworkGuard>
                     </Layout>
