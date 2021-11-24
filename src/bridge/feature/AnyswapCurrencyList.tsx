@@ -30,7 +30,8 @@ import { RippleSpinner } from '../../components-ui/Spinner/RippleSpinner';
 import { DefinedStyles } from '../../utils/DefinedStyles';
 import useAddTokenToMetaMask from '../../hooks/useAddTokenToMetaMask';
 import { PlusCircleIcon } from '@heroicons/react/outline';
-import { MenuItem, MenuItem2 } from '../../modals/SearchModal/styleds';
+import { MenuItem2 } from '../../modals/SearchModal/styleds';
+import { toNormalCurrency } from '../functions/toNormalToken';
 
 function currencyKey(currency: AnyswapCurrency): string {
   return currency ? currency.address : 'ETHER';
@@ -72,19 +73,17 @@ function CurrencyRow({
   style,
 }: // style,
 {
-  currency: AnyswapCurrency;
+  currency: any;
   onSelect: () => void;
   isSelected: boolean;
   otherSelected: boolean;
   style: CSSProperties;
 }) {
-  const { account } = useActiveWeb3React();
+  const { chainId, account } = useActiveWeb3React();
   const key = currencyKey(currency);
-  const balance = useCurrencyBalance(
-    account ?? undefined,
-    currency?.toCurrency(),
-  );
-  const { addToken, success } = useAddTokenToMetaMask(currency?.toCurrency());
+  const normalCurrency = toNormalCurrency(currency, chainId);
+  const balance = useCurrencyBalance(account ?? undefined, normalCurrency);
+  const { addToken, success } = useAddTokenToMetaMask(normalCurrency);
   // only show add or remove buttons if not on selected list
   return (
     <MenuItem2
@@ -97,7 +96,7 @@ function CurrencyRow({
     >
       <div className="flex items-center">
         <CurrencyLogo
-          currency={currency?.toCurrency()}
+          currency={normalCurrency}
           size={32}
           className="rounded-full"
         />
@@ -134,14 +133,14 @@ export default function AnyswapCurrencyList({
   fixedListRef,
 }: {
   height: number;
-  currencies: AnyswapCurrency[];
-  otherListTokens?: AnyswapCurrency[];
-  selectedCurrency?: AnyswapCurrency | null;
-  onCurrencySelect?: (currency: AnyswapCurrency) => void;
-  otherCurrency?: AnyswapCurrency | null;
+  currencies: any[];
+  otherListTokens?: any[];
+  selectedCurrency?: any | null;
+  onCurrencySelect?: (currency: any) => void;
+  otherCurrency?: any | null;
   fixedListRef?: MutableRefObject<FixedSizeList | undefined>;
 }) {
-  const itemData: AnyswapCurrency[] = useMemo(() => {
+  const itemData: any[] = useMemo(() => {
     if (otherListTokens && otherListTokens?.length > 0) {
       return [...currencies, ...otherListTokens];
     }
@@ -150,7 +149,7 @@ export default function AnyswapCurrencyList({
 
   const Row = useCallback(
     function TokenRow({ data, index, style }) {
-      const row: AnyswapCurrency = data[index];
+      const row = data[index];
       const currency = row;
 
       const isSelected = Boolean(

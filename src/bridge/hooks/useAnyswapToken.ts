@@ -1,5 +1,5 @@
-import { AnyswapToken, NATIVE } from '@digitalnative/standard-protocol-sdk';
-import { getAddress } from '@ethersproject/address';
+import { AnyswapToken } from '@digitalnative/standard-protocol-sdk';
+import { getAddress, isAddress } from '@ethersproject/address';
 import { useMemo } from 'react';
 import { useActiveWeb3React } from '../../hooks';
 
@@ -9,7 +9,8 @@ export function useAnyswapToken(
   const { chainId } = useActiveWeb3React();
 
   // const address = isAddress(currency?.address)
-  const address = currency && getAddress(currency.address);
+  const address =
+    currency && isAddress(currency.address) && getAddress(currency.address);
 
   const symbol = currency?.symbol;
   const name = currency?.name;

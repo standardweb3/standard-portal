@@ -1,5 +1,5 @@
 import { isAddress } from '@ethersproject/address';
-import { useBatchWeb3, getContract } from './web3UtilsV2';
+import { useBatchWeb3, getContract, useWeb3 } from './web3UtilsV2';
 
 import ERC20_INTERFACE from '../../constants/abis/erc20';
 import { fromWei } from './tools';
@@ -90,6 +90,7 @@ function getBlandTs(
     });
   });
 }
+
 export function getNodeTotalsupply(
   token?: string,
   chainId?: any,
@@ -110,6 +111,53 @@ export function getNodeTotalsupply(
         // console.log(res)
         resolve(res);
       });
+    } else {
+      resolve('');
+    }
+  });
+}
+
+export function getNodeBalance(
+  account?: any,
+  token?: string,
+  chainID?: any,
+  dec?: any,
+  isNativeToken?: boolean,
+) {
+  return new Promise((resolve) => {
+    if (account && token && chainID) {
+      if (isNativeToken || !isAddress(token)) {
+        useWeb3(chainID, 'eth', 'getBalance', [account]).then((res: any) => {
+          // console.log(res)
+          if (res && res.toString().indexOf('Error: Returned error') === -1) {
+            const bl = res;
+            resolve(fromWei(bl, dec));
+          } else {
+            resolve('');
+          }
+        });
+      } else {
+        contract.options.address = token;
+        const data = contract.methods.balanceOf(account).encodeABI();
+        useWeb3(chainID, 'eth', 'call', [{ data, to: token }]).then(
+          (res: any) => {
+            // console.log(res)
+            if (res && res.toString().indexOf('Error: Returned error') === -1) {
+              try {
+                const bl = ERC20_INTERFACE?.decodeFunctionResult(
+                  'balanceOf',
+                  res,
+                )?.toString();
+                resolve(fromWei(bl, dec));
+              } catch (error) {
+                resolve('');
+              }
+            } else {
+              resolve('');
+            }
+          },
+        );
+      }
     } else {
       resolve('');
     }

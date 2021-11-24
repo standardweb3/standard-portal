@@ -7,19 +7,12 @@ import {
   getCurChainInfo,
   getCurConfigInfo,
 } from '../../bridge/functions/bridge';
-import { getNodeTotalsupply } from '../../bridge/functions/getBalanceV2';
 import { toNormalCurrency } from '../../bridge/functions/toNormalToken';
-import { useFetchRouterTokenList } from '../../bridge/hooks/fetchLists';
-import { useAnyswapToken } from '../../bridge/hooks/useAnyswapToken';
-import {
-  useBridgeCallback,
-  useBridgeNativeCallback,
-  useBridgeUnderlyingCallback,
-  // useCrossBridgeCallback,
-} from '../../bridge/hooks/useBridgeCallback';
+import { useCrossBridgeCallback } from '../../bridge/hooks/useBridgeCallback';
 import {
   NETWORK_ICON,
   NETWORK_LABEL,
+  SUPPORTED_NETWORKS,
   SUPPORTED_NETWORK_IDS,
 } from '../../constants/networks';
 import { classNames, tryParseAmount } from '../../functions';
@@ -29,7 +22,6 @@ import {
   useApproveCallback,
 } from '../../hooks';
 import { WrapType } from '../../hooks/useWrapCallback';
-import Image from 'next/image';
 import RouterChainSelectModal from '../../bridge/feature/RouterChainModal';
 import { ArrowRightIcon, ChevronDownIcon } from '@heroicons/react/outline';
 import { WalletConnector } from '../../components-ui/WalletConnector';
@@ -42,11 +34,25 @@ import { PageContent } from '../../components-ui/PageContent';
 import { ViewportMediumUp } from '../../components-ui/Responsive';
 import { PageHeader } from '../../components-ui/PageHeader';
 import { useCurrencyBalance } from '../../state/wallet/hooks';
-import RouterLiquidityPool from '../../bridge/feature/RouterLiquidityPool';
 import { BridgeHeader } from '../../bridge/feature/BridgeHeader';
 import Reminder from '../../bridge/feature/Reminder';
+import { GetTokenListByChainID } from '../../bridge/core/getBridgeInfo';
+import { getNodeBalance } from '../../bridge/functions/getBalanceV2';
+import { useAnyswapToken } from '../../bridge/hooks/useAnyswapToken';
+import Image from '../../components-ui/Image';
 
 let intervalFN: any = '';
+
+export enum BridgeType {
+  //   deposit = 'deposit',
+  bridge = 'bridge',
+}
+
+export enum SelectListType {
+  INPUT = 'INPUT',
+  OUTPUT = 'OUTPUT',
+}
+
 const unknown =
   'https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/unknown.png';
 
@@ -70,6 +76,9 @@ export default function Bridge() {
   // bridge amount and currency
   const [inputBridgeValue, setInputBridgeValue] = useState('');
   const [selectCurrency, setSelectCurrency] = useState<any>();
+  const [selectCurrencyType, setSelectCurrencyType] = useState<any>(
+    SelectListType.INPUT,
+  );
 
   // to chain state / handler
   const [selectChain, setSelectChain] = useState<any>();
@@ -103,31 +112,9 @@ export default function Bridge() {
     bl: '',
   });
 
-  // destChain Config from the currency
-  const destConfig = useMemo(() => {
-    if (
-      selectCurrency &&
-      selectCurrency?.destChains &&
-      selectCurrency?.destChains[selectChain]
-    ) {
-      return selectCurrency?.destChains[selectChain];
-    }
-    return false;
-  }, [selectCurrency, selectChain]);
-
-  // destChains for to chain selection modal
-  // const destChains = useMemo(() => {
-  //   if (selectCurrency) {
-  //     return Object.keys(selectCurrency.destChains).map((key) => Number(key));
-  //   } else return [];
-  // }, [selectCurrency]);
-
   // router token list
-  const allTokensList = useFetchRouterTokenList();
-  const allTokensArray = useMemo(() => Object.values(allTokensList), [
-    allTokensList,
-    selectChain,
-  ]);
+  //   const allTokensList = useFetchRouterTokenList();
+  const [allTokens, setAllTokens] = useState<any>({});
 
   const [selectChainList, setSelectChainList] = useState<Array<any>>([]);
 
@@ -135,88 +122,168 @@ export default function Bridge() {
   const [recipient, setRecipient] = useState<any>(account ?? '');
 
   // bridge swap type
-  const [swapType, setSwapType] = useState('swap');
+  const [swapType, setSwapType] = useState(BridgeType.bridge);
+
+  const [count, setCount] = useState<number>(0);
   const [intervalCount, setIntervalCount] = useState<number>(0);
 
   // router currency select modal
   const [modalOpen, setModalOpen] = useState(false);
-  // const [modalTipOpen, setModalTipOpen] = useState(false);
+  const [modalTipOpen, setModalTipOpen] = useState(false);
 
   const [delayAction, setDelayAction] = useState<boolean>(false);
 
   // default bridge token for a network
   const initBridgeToken = '';
 
-  // checks if the bridge is a router -- safeguard
-  const isRouter = useMemo(() => {
-    if (['swapin', 'swapout'].includes(destConfig?.type)) {
-      return false;
-    }
-    return true;
-  }, [destConfig]);
+  const useTokenList = useMemo(() => {
+    if (allTokens && swapType && chainId) {
+      const urlParams =
+        selectCurrency &&
+        selectCurrency.chainId?.toString() === chainId?.toString()
+          ? selectCurrency.address
+          : initBridgeToken
+          ? initBridgeToken
+          : getCurChainInfo(chainId).crossBridgeInitToken?.toLowerCase();
 
-  // destAddress not `` only when router -- safeguard
-  const useDestAddress = useMemo(() => {
-    if (isRouter) {
-      return destConfig?.routerToken;
+      const list: any = {};
+      let isUseToken = 0;
+      let useToken;
+      for (const token in allTokens[swapType]) {
+        const obj = allTokens[swapType];
+        if (
+          !isAddress(token, chainId) &&
+          token !== getCurChainInfo(chainId).symbol
+        )
+          continue;
+        if (
+          SUPPORTED_NETWORK_IDS.find((id) => {
+            return id !== chainId && obj[token].destChains[id] !== undefined;
+          }) === undefined
+        ) {
+          continue;
+        }
+        const tokenObj = {
+          ...obj[token],
+          // address: obj[token].underlying ? obj[token].underlying.address : obj[token].address,
+          // underlying: obj[token].underlying ? {
+          //   ...obj[token].underlying,
+          //   address: obj[token].address
+          // } : false,
+          specChainId: '',
+        };
+        if (selectCurrencyType === SelectListType.OUTPUT) {
+          if (obj[token].destChains[selectChain]) {
+            list[token] = tokenObj;
+          } else {
+            continue;
+          }
+        } else {
+          list[token] = tokenObj;
+        }
+        if (
+          !selectCurrency ||
+          selectCurrency?.chainId?.toString() !== chainId?.toString()
+        ) {
+          if (
+            urlParams &&
+            (urlParams === token.toLowerCase() ||
+              list[token].name.toLowerCase() === urlParams ||
+              list[token].symbol.toLowerCase() === urlParams)
+          ) {
+            useToken = token;
+          } else if (!isUseToken) {
+            isUseToken = 1;
+            useToken = token;
+          }
+        }
+      }
+      if (!useToken) {
+        useToken = getCurChainInfo(chainId).crossBridgeInitToken;
+      }
+      if (!selectCurrency) {
+        setSelectCurrency(list[useToken]);
+      }
+      return list;
     }
-    // return destConfig?.DepositAddress;
-    return undefined;
-  }, [destConfig, isRouter]);
+    return {};
+  }, [allTokens, swapType, chainId, selectCurrencyType, selectChain]);
+  const useTokenArray = useMemo(() => Object.values(useTokenList), [
+    useTokenList,
+  ]);
 
-  // selectedCurrency is native?
-  const isNativeToken = useMemo(() => {
+  const bridgeConfig = useMemo(() => {
     if (
-      selectCurrency &&
-      selectCurrency.address &&
-      chainId &&
-      getCurChainInfo(chainId) &&
-      getCurChainInfo(chainId).nativeToken &&
-      getCurChainInfo(chainId).nativeToken.toLowerCase() ===
-        selectCurrency.address.toLowerCase()
+      selectCurrency?.address &&
+      (useTokenList[selectCurrency?.address.toLowerCase()] ||
+        useTokenList[selectCurrency?.address])
     ) {
+      return (
+        useTokenList[selectCurrency?.address.toLowerCase()] ||
+        useTokenList[selectCurrency?.address]
+      );
+    }
+    return '';
+  }, [selectCurrency, useTokenList]);
+
+  const destConfig = useMemo(() => {
+    if (bridgeConfig && bridgeConfig?.destChains[selectChain]) {
+      return bridgeConfig?.destChains[selectChain];
+    }
+    return false;
+  }, [bridgeConfig, selectChain]);
+
+  useEffect(() => {
+    if (
+      (selectCurrency &&
+        chainId?.toString() !== selectCurrency?.chainId?.toString()) ||
+      (!bridgeConfig && selectCurrency)
+    ) {
+      history.go(0);
+    }
+  }, [chainId, bridgeConfig, swapType]);
+
+  const isUnderlying = useMemo(() => {
+    if (selectCurrency?.underlying) {
       return true;
     }
+    return false;
+  }, [selectCurrency, selectChain, destConfig]);
+
+  const isDestUnderlying = useMemo(() => {
+    if (destConfig?.underlying) {
+      return true;
+    }
+    return false;
+  }, [destConfig]);
+
+  const isNativeToken = useMemo(() => {
     return false;
   }, [selectCurrency, chainId]);
 
-  // selected token has underlying liquidity pool
-  const isUnderlying = useMemo(() => {
-    if (selectCurrency && selectCurrency?.underlying) {
-      return true;
+  const isUsePool = useMemo(() => {
+    if (selectCurrency?.symbol?.toLowerCase() === 'prq') {
+      return false;
     }
-    return false;
-  }, [selectCurrency, selectChain]);
+    return true;
+  }, [selectCurrency]);
 
-  // checks if desitionation has underlying liquidity pool
-  const isDestUnderlying = useMemo(() => {
-    if (
-      selectCurrency &&
-      selectCurrency?.destChains &&
-      selectCurrency?.destChains[selectChain] &&
-      selectCurrency?.destChains[selectChain]?.underlying
-    ) {
-      return true;
-    }
-    return false;
-  }, [selectCurrency, selectChain]);
-
-  // const formatCurrency0 = useAnyswapToken(
-  //   selectCurrency?.underlying
-  //     ? {
-  //         ...selectCurrency,
-  //         address: selectCurrency.underlying.address,
-  //         name: selectCurrency.underlying.name,
-  //         symbol: selectCurrency.underlying?.symbol,
-  //         decimals: selectCurrency.underlying.decimals,
-  //       }
-  //     : selectCurrency,
-  // );
+  const formatCurrency0 = useAnyswapToken(
+    selectCurrency?.underlying
+      ? {
+          ...selectCurrency,
+          address: selectCurrency.underlying.address,
+          name: selectCurrency.underlying.name,
+          symbol: selectCurrency.underlying?.symbol,
+          decimals: selectCurrency.underlying.decimals,
+        }
+      : selectCurrency,
+  );
 
   // formats selected curreny to AnyswapToken Class
   const formatCurrency = useAnyswapToken(chainId ? selectCurrency : undefined);
   // formats AnyswapToken to noraml Token class
-  const normalCurrency = toNormalCurrency(formatCurrency, chainId);
+  const normalCurrency = toNormalCurrency(selectCurrency, chainId);
   const balance = useCurrencyBalance(account, normalCurrency);
   // uses the normal Token class to utilize CurrencyAmount
   const formatInputBridgeValue = tryParseAmount(
@@ -229,7 +296,7 @@ export default function Bridge() {
   // approval callback
   const [approval, approveCallback] = useApproveCallback(
     formatInputBridgeValue ?? undefined,
-    isRouter ? useDestAddress : undefined,
+    formatCurrency0?.address,
   );
 
   // useEffect to track if approval has been submitted
@@ -247,7 +314,7 @@ export default function Bridge() {
   // enables button
   function onClear(type?: any) {
     setDelayAction(false);
-    // setModalTipOpen(false);
+    setModalTipOpen(false);
     if (!type) {
       setInputBridgeValue('');
     }
@@ -259,128 +326,106 @@ export default function Bridge() {
   }, [selectChain, selectCurrency]);
 
   // polls liquidity pool for selected currency
-  const getSelectPool = useCallback(async () => {
-    if (selectCurrency && chainId) {
-      const CC: any = await getNodeTotalsupply(
-        selectCurrency?.underlying?.address,
-        chainId,
-        selectCurrency?.decimals,
-        account,
-        selectCurrency?.address,
-      );
-      if (CC) {
-        setCurChain({
-          chain: chainId,
-          ts: selectCurrency?.underlying
-            ? CC[selectCurrency?.underlying?.address]?.ts
-            : CC[selectCurrency?.address]?.anyts,
-          bl: CC[selectCurrency?.address]?.balance,
-        });
-      }
 
-      const DC: any = await getNodeTotalsupply(
-        selectCurrency?.destChains[selectChain]?.underlying?.address,
-        selectChain,
-        selectCurrency?.destChains[selectChain]?.decimals,
-        account,
-        selectCurrency?.destChains[selectChain]?.address,
+  const getSelectPool = useCallback(async () => {
+    if (
+      selectCurrency &&
+      chainId &&
+      (isUnderlying || isDestUnderlying) &&
+      isUsePool
+    ) {
+      const curChain = isUnderlying ? chainId : selectChain;
+      const destChain = isUnderlying ? selectChain : chainId;
+      const tokenA = isUnderlying
+        ? selectCurrency
+        : selectCurrency?.destChains[selectChain];
+      const dec = selectCurrency?.decimals;
+
+      const CC: any = await getNodeBalance(
+        tokenA?.underlying?.address,
+        tokenA?.address,
+        curChain,
+        dec,
       );
+      let DC: any = '';
+      if (!isNaN(selectChain)) {
+        DC = await getNodeBalance(
+          // tokenA?.underlying?.address,
+          selectCurrency?.destChains[selectChain]?.DepositAddress,
+          selectCurrency.symbol,
+          destChain,
+          dec,
+        );
+      }
+      if (CC) {
+        if (isUnderlying) {
+          setCurChain({
+            chain: chainId,
+            ts: CC,
+          });
+        } else {
+          setDestChain({
+            chain: selectChain,
+            ts: CC,
+          });
+        }
+      }
       if (DC) {
-        setDestChain({
-          chain: selectChain,
-          ts: selectCurrency?.underlying
-            ? DC[selectCurrency?.destChains[selectChain]?.underlying.address]
-                ?.ts
-            : DC[selectCurrency?.destChains[selectChain].token]?.anyts,
-          bl: DC[selectCurrency?.destChains[selectChain].address]?.balance,
-        });
+        if (isUnderlying) {
+          setDestChain({
+            chain: selectChain,
+            ts: DC,
+          });
+        } else {
+          setCurChain({
+            chain: chainId,
+            ts: DC,
+          });
+        }
       }
       if (intervalFN) clearTimeout(intervalFN);
       intervalFN = setTimeout(() => {
         setIntervalCount(intervalCount + 1);
       }, 1000 * 10);
     }
-  }, [selectCurrency, chainId, account, selectChain, intervalCount]);
+  }, [
+    selectCurrency,
+    chainId,
+    account,
+    selectChain,
+    intervalCount,
+    isDestUnderlying,
+    isUnderlying,
+  ]);
 
   // executes getSelectPool on start
   useEffect(() => {
     getSelectPool();
   }, [getSelectPool]);
 
-  // router bridge callbacks
   const {
     wrapType,
     execute: onWrap,
     inputError: wrapInputError,
-  } = useBridgeCallback(
-    isRouter ? useDestAddress : undefined,
+  } = useCrossBridgeCallback(
     formatCurrency ? formatCurrency : undefined,
-    isUnderlying
-      ? selectCurrency?.underlying?.address
-      : selectCurrency?.address,
-    recipient,
+    destConfig?.type === 'swapin' ? destConfig.DepositAddress : recipient,
     inputBridgeValue,
     selectChain,
     destConfig?.type,
-  );
-
-  const {
-    wrapType: wrapTypeNative,
-    execute: onWrapNative,
-    inputError: wrapInputErrorNative,
-  } = useBridgeNativeCallback(
-    isRouter ? useDestAddress : undefined,
-    formatCurrency ? formatCurrency : undefined,
     isUnderlying
       ? selectCurrency?.underlying?.address
       : selectCurrency?.address,
-    recipient,
-    inputBridgeValue,
-    selectChain,
-    destConfig?.type,
+    destConfig?.pairid,
   );
 
-  const {
-    wrapType: wrapTypeUnderlying,
-    execute: onWrapUnderlying,
-    inputError: wrapInputErrorUnderlying,
-  } = useBridgeUnderlyingCallback(
-    isRouter ? useDestAddress : undefined,
-    formatCurrency ? formatCurrency : undefined,
-    isUnderlying
-      ? selectCurrency?.underlying?.address
-      : selectCurrency?.address,
-    recipient,
-    inputBridgeValue,
-    selectChain,
-    destConfig?.type,
-  );
-
-  // const {
-  //   wrapType: wrapTypeCrossBridge,
-  //   execute: onWrapCrossBridge,
-  //   inputError: wrapInputErrorCrossBridge,
-  // } = useCrossBridgeCallback(
-  //   formatCurrency ? formatCurrency : undefined,
-  //   destConfig?.type === 'swapin' ? useDestAddress : recipient,
-  //   inputBridgeValue,
-  //   selectChain,
-  //   destConfig?.type,
-  //   isUnderlying
-  //     ? selectCurrency?.underlying?.address
-  //     : selectCurrency?.address,
-  //   destConfig?.pairid,
-  // );x
-
-  // gets output Value in the select chain after router swap
   const outputBridgeValue = useMemo(() => {
     if (inputBridgeValue && destConfig) {
       const baseFee = destConfig.BaseFeePercent
         ? (destConfig.MinimumSwapFee / (100 + destConfig.BaseFeePercent)) * 100
         : 0;
       const fee =
-        (Number(inputBridgeValue) * Number(destConfig.SwapFeeRatePerMillion)) /
-        100;
+        Number(inputBridgeValue) * Number(destConfig.SwapFeeRatePerMillion);
       let value = Number(inputBridgeValue) - fee;
       if (fee < Number(destConfig.MinimumSwapFee)) {
         value = Number(inputBridgeValue) - Number(destConfig.MinimumSwapFee);
@@ -401,67 +446,24 @@ export default function Bridge() {
     }
   }, [inputBridgeValue, destConfig]);
 
-  // checks if there is a wrapping error
-  const isWrapInputError = useMemo(() => {
-    if (isRouter) {
-      if (!isUnderlying && !isNativeToken) {
-        if (wrapInputError) {
-          return wrapInputError;
-        } else {
-          return false;
-        }
-      } else {
-        if (isUnderlying && !isNativeToken) {
-          if (wrapInputErrorUnderlying) {
-            return wrapInputErrorUnderlying;
-          } else {
-            return false;
-          }
-        } else if (isUnderlying && isNativeToken) {
-          if (wrapInputErrorNative) {
-            return wrapInputErrorNative;
-          } else {
-            return false;
-          }
-        }
-        return false;
-      }
-    } else {
-      return true;
-    }
-  }, [
-    isNativeToken,
-    wrapInputError,
-    wrapInputErrorUnderlying,
-    wrapInputErrorNative,
-    selectCurrency,
-    isRouter,
-    // wrapInputErrorCrossBridge,
-  ]);
-
-  // is error
   const isCrossBridge = useMemo(() => {
-    // console.log('destConfig', destConfig);
-    // console.log('selectCurrency', selectCurrency);
-    // console.log('inputBridgeValue', inputBridgeValue);
-    // console.log('isWrapInputError', isWrapInputError);
-    // console.log('isAddr', isAddr);
-    // console.log('isDestUnderlying', isDestUnderlying);
-    // console.log('destChain', destChain);
-
+    const isAddr = isAddress(recipient, selectChain);
     if (
       account &&
       destConfig &&
       selectCurrency &&
       inputBridgeValue &&
-      !isWrapInputError &&
-      isAddress(recipient) &&
-      ((isDestUnderlying && destChain) || (!isDestUnderlying && !destChain))
+      !wrapInputError &&
+      Boolean(isAddr) &&
+      (!(isUnderlying && isDestUnderlying) ||
+        ((isUnderlying || isDestUnderlying) && destChain))
     ) {
       if (
         Number(inputBridgeValue) < Number(destConfig.MinimumSwap) ||
         Number(inputBridgeValue) > Number(destConfig.MaximumSwap) ||
-        (isDestUnderlying && Number(inputBridgeValue) > Number(destChain.ts))
+        ((isUnderlying || isDestUnderlying) &&
+          isUsePool &&
+          Number(inputBridgeValue) > Number(destChain.ts))
       ) {
         return true;
       } else {
@@ -476,9 +478,13 @@ export default function Bridge() {
     destConfig,
     inputBridgeValue,
     recipient,
+    swapType,
     destChain,
-    isWrapInputError,
+    wrapInputError,
     selectChain,
+    isUnderlying,
+    isDestUnderlying,
+    isUsePool,
   ]);
 
   // // error - looks the same as isInputError = isCrosBridge
@@ -497,9 +503,10 @@ export default function Bridge() {
   // }, [account, destConfig, selectCurrency, inputBridgeValue, isCrossBridge]);
 
   // button text
+
   const btnTxt = useMemo(() => {
-    if (isWrapInputError && inputBridgeValue) {
-      return isWrapInputError;
+    if (wrapInputError && inputBridgeValue) {
+      return wrapInputError;
     } else if (destConfig && inputBridgeValue) {
       if (Number(inputBridgeValue) > Number(destConfig.MaximumSwap)) {
         return 'Over Maximum Limit';
@@ -508,86 +515,77 @@ export default function Bridge() {
         return 'Below Minimum Limit';
       }
     } else if (
-      isDestUnderlying &&
+      (isUnderlying || isDestUnderlying) &&
+      isUsePool &&
       Number(inputBridgeValue) > Number(destChain.ts)
     ) {
       return 'Dest Liquidity Insufficient';
-    } else if (
-      wrapType === WrapType.WRAP ||
-      wrapTypeNative === WrapType.WRAP ||
-      wrapTypeUnderlying === WrapType.WRAP
-      // ||
-      // wrapTypeCrossBridge === WrapType.WRAP
-    ) {
+    } else if (wrapType === WrapType.WRAP) {
       return 'Confirm';
     }
     return 'Confirm';
   }, [
-    isWrapInputError,
+    wrapInputError,
     inputBridgeValue,
-    destConfig,
-    destChain,
-    wrapType,
-    wrapTypeNative,
-    wrapTypeUnderlying,
+    swapType,
+    isUnderlying,
     isDestUnderlying,
-    // wrapTypeCrossBridge,
-    isRouter,
+    isUsePool,
   ]);
 
   useEffect(() => {
-    const t =
-      selectCurrency &&
-      selectCurrency.chainId?.toString() === chainId?.toString()
-        ? selectCurrency.address
-        : initBridgeToken
-        ? initBridgeToken
-        : getCurChainInfo(chainId).bridgeInitToken;
-
-    const list: any = {};
-    if (Object.keys(allTokensList).length > 0) {
-      for (const token in allTokensList) {
-        if (!isAddress(token)) continue;
-        list[token] = {
-          ...allTokensList[token],
-        };
-        if (
-          !selectCurrency ||
-          selectCurrency.chainId?.toString() !== chainId?.toString()
-        ) {
-          if (
-            t === token ||
-            list[token]?.symbol?.toLowerCase() === t ||
-            list[token]?.underlying?.symbol?.toLowerCase() === t
-          ) {
-            setSelectCurrency(list[token]);
-          }
-        }
+    if (account) {
+      if (destConfig?.type === 'swapin' || !isNaN(selectChain)) {
+        setRecipient(account);
+      } else {
+        setRecipient('');
       }
     } else {
-      setSelectCurrency('');
-    }
-  }, [chainId, allTokensList]);
-
-  useEffect(() => {
-    if (swapType == 'swap' && account) {
-      setRecipient(account);
-    } else if (isNaN(selectChain) && destConfig?.type === 'swapout') {
       setRecipient('');
     }
-  }, [account, swapType, destConfig]);
+  }, [account, destConfig, swapType, selectChain]);
+
+  useEffect(() => {
+    if (chainId) {
+      setAllTokens({});
+      GetTokenListByChainID({
+        srcChainID: chainId,
+        chainList: getCurConfigInfo().showChain,
+      }).then((res: any) => {
+        if (res) {
+          setAllTokens(res);
+        } else {
+          setTimeout(() => {
+            setCount(count + 1);
+          }, 1000);
+          // setBridgeConfig('')
+        }
+      });
+    } else {
+      setAllTokens({});
+    }
+    // }, [chainId, swapType, count, selectCurrency])
+  }, [chainId, count]);
 
   useEffect(() => {
     if (selectCurrency) {
-      const arr = [];
+      const arr: any = [];
+
       for (const c in selectCurrency?.destChains) {
-        if (c?.toString() === chainId?.toString() || !getCurChainInfo(chainId))
+        if (c?.toString() === chainId?.toString()) continue;
+        if (
+          (getCurConfigInfo().showChain.length > 0 &&
+            !getCurConfigInfo().showChain.includes(c)) ||
+          !SUPPORTED_NETWORKS[parseInt(c)]
+        )
           continue;
         arr.push(c);
       }
+
       let useChain: any = selectChain
         ? selectChain
         : getCurChainInfo(chainId).bridgeInitChain;
+
       if (arr.length > 0) {
         if (!useChain || (useChain && !arr.includes(useChain))) {
           for (const c of arr) {
@@ -600,9 +598,10 @@ export default function Bridge() {
       setSelectChain(useChain);
       setSelectChainList(arr);
     }
-  }, [selectCurrency]);
+  }, [selectCurrency, swapType, chainId, selectChain]);
 
   const handleModalDismiss = () => setModalOpen(false);
+
   return (
     <>
       <Head>
@@ -620,7 +619,7 @@ export default function Bridge() {
         <PageContent>
           <div className={classNames(DefinedStyles.pageContent, 'space-y-4')}>
             <RouterCurrencySelectModal
-              currencyList={allTokensArray}
+              currencyList={useTokenArray}
               isOpen={modalOpen}
               onDismiss={handleModalDismiss}
               onCurrencySelect={(inputCurrency) => {
@@ -649,17 +648,17 @@ export default function Bridge() {
                 <div className="text-grey text-sm">From</div>
                 <div
                   className="
-            cursor-pointer
-            flex flex-col
-            items-center
-            bg-opaque rounded-20 p-8
-            space-y-6"
+                  cursor-pointer
+                  flex flex-col
+                  items-center
+                  bg-opaque rounded-20 p-8
+                  space-y-6"
                   onClick={openChainFromModal}
                 >
                   <div className="bg-white rounded-full w-[72px] h-[72px] overflow-hidden">
                     <Image
-                      src={chainFrom.icon}
-                      alt={`${chainFrom.name} Network`}
+                      src={chainFrom?.icon ?? unknown}
+                      alt={`${chainFrom?.name} Network`}
                       width="100%"
                       height="100%"
                     />
@@ -672,7 +671,7 @@ export default function Bridge() {
                     flex items-center space-x-1
                     "
                   >
-                    <div>{chainFrom.name}</div>
+                    <div>{chainFrom?.name}</div>
                     <ChevronDownIcon className="w-3 h-3" />
                   </div>
                 </div>
@@ -693,8 +692,8 @@ export default function Bridge() {
                 >
                   <div className="bg-white rounded-full w-[72px] h-[72px] overflow-hidden">
                     <Image
-                      src={chainTo.icon}
-                      alt={`${chainTo.name} Network`}
+                      src={chainTo?.icon ?? unknown}
+                      alt={`${chainTo?.name} Network`}
                       width="100%"
                       height="100%"
                     />
@@ -707,7 +706,7 @@ export default function Bridge() {
                     flex items-center space-x-1
                     "
                   >
-                    <div>{chainTo.name}</div>
+                    <div>{chainTo?.name}</div>
                     <ChevronDownIcon className="w-3 h-3" />
                   </div>
                 </div>
@@ -725,7 +724,7 @@ export default function Bridge() {
                 />
               </div>
             </div>
-            {account && chainId && isUnderlying && isDestUnderlying ? (
+            {/* {account && chainId && isUnderlying && isDestUnderlying ? (
               <RouterLiquidityPool
                 curChainInfo={chainFrom}
                 destChainInfo={chainTo}
@@ -736,22 +735,26 @@ export default function Bridge() {
               />
             ) : (
               ''
-            )}
+            )} */}
+
             {outputBridgeValue && (
-              <div className="flex justify-center items-center space-x-2">
-                <div className="font-bold">Output Amount:</div>
-                <div>{`${outputBridgeValue} ${
-                  destConfig?.symbol
-                    ? destConfig?.symbol.length > 20
-                      ? destConfig?.symbol.slice(0, 4) +
-                        '...' +
-                        destConfig?.symbol.slice(
-                          destConfig?.symbol.length - 5,
-                          destConfig?.symbol.length,
-                        )
-                      : getBaseCoin(destConfig?.symbol, chainId)
-                    : null
-                }`}</div>
+              <div>
+                {/* <Image src={bridgeConfig?.logoUrl} width="24px" height="24px" /> */}
+                <div className="flex justify-center items-center space-x-2">
+                  <div className="font-bold">Output Amount:</div>
+                  <div>{`${outputBridgeValue} ${
+                    destConfig?.symbol
+                      ? destConfig?.symbol.length > 20
+                        ? destConfig?.symbol.slice(0, 4) +
+                          '...' +
+                          destConfig?.symbol.slice(
+                            destConfig?.symbol.length - 5,
+                            destConfig?.symbol.length,
+                          )
+                        : getBaseCoin(destConfig?.symbol, chainId)
+                      : null
+                  }`}</div>
+                </div>
               </div>
             )}
             <div className={DefinedStyles.divider} />
@@ -764,7 +767,8 @@ export default function Bridge() {
               <WalletConnector />
             ) : !isNativeToken &&
               selectCurrency &&
-              isUnderlying &&
+              selectCurrency.underlying &&
+              selectCurrency.underlying.isApprove &&
               inputBridgeValue &&
               (approval === ApprovalState.NOT_APPROVED ||
                 approval === ApprovalState.PENDING) ? (
@@ -809,28 +813,32 @@ export default function Bridge() {
                 onClick={() => {
                   // <Button disabled={delayAction} onClick={() => {
                   onDelay();
-                  if (isRouter) {
-                    if (!selectCurrency || !isUnderlying) {
-                      if (onWrap)
-                        onWrap().then(() => {
-                          onClear();
-                        });
-                    } else {
-                      // if (onWrapUnderlying) onWrapUnderlying()
-                      if (isNativeToken) {
-                        if (onWrapNative)
-                          onWrapNative().then(() => {
-                            onClear();
-                          });
-                      } else {
-                        if (onWrapUnderlying) {
-                          onWrapUnderlying().then(() => {
-                            onClear();
-                          });
-                        }
-                      }
-                    }
-                  }
+                  if (onWrap)
+                    onWrap().then(() => {
+                      onClear();
+                    });
+                  //   if (isRouter) {
+                  //     if (!selectCurrency || !isUnderlying) {
+                  //       if (onWrap)
+                  //         onWrap().then(() => {
+                  //           onClear();
+                  //         });
+                  //     } else {
+                  //       // if (onWrapUnderlying) onWrapUnderlying()
+                  //       if (isNativeToken) {
+                  //         if (onWrapNative)
+                  //           onWrapNative().then(() => {
+                  //             onClear();
+                  //           });
+                  //       } else {
+                  //         if (onWrapUnderlying) {
+                  //           onWrapUnderlying().then(() => {
+                  //             onClear();
+                  //           });
+                  //         }
+                  //       }
+                  //     }
+                  //   }
                 }}
               >
                 {btnTxt}

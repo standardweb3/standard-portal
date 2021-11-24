@@ -13,7 +13,8 @@ export function BridgeHeader(): JSX.Element {
 
   // const { chainId } = useActiveWeb3React();
   const router = useRouter();
-  const isHistoryActive = router.asPath == '/bridgev2/history';
+  const isHistoryActive = router.asPath == '/router/history';
+  const isBridgeActive = router.asPath == '/bridgev2';
   // const isBridgeActive = router.asPath == '/bridgev2'
   // const isPoolActive = router.asPath.startsWith('/pool');
 
@@ -25,13 +26,23 @@ export function BridgeHeader(): JSX.Element {
     items-center justify-between"
     >
       <NavigationLink href={`/router`}>
-        <a className={classNames(style, !isHistoryActive && activeStyle)}>
+        <a
+          className={classNames(
+            style,
+            !isHistoryActive && !isBridgeActive && activeStyle,
+          )}
+        >
           Router
         </a>
       </NavigationLink>
       <NavigationLink href={`/router/history`}>
         <a className={classNames(style, isHistoryActive && activeStyle)}>
           History
+        </a>
+      </NavigationLink>
+      <NavigationLink href={`/bridgev2`}>
+        <a className={classNames(style, isBridgeActive && activeStyle)}>
+          Bridge
         </a>
       </NavigationLink>
     </div>

@@ -1,20 +1,16 @@
-import { AnyswapCurrency } from '@digitalnative/standard-protocol-sdk';
 import AutoSizer from 'react-virtualized-auto-sizer';
-
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import { Modal } from '../../components-ui/Modal';
 import { useSizeSmDown } from '../../components-ui/Responsive';
 import { isAddress } from '../../functions';
-import { useSortedTokensByQuery } from '../../functions/filtering';
 import { useFuse } from '../../hooks';
-import useDebounce from '../../hooks/useDebounce';
 import { getAnyswapToken } from '../functions/getAnyswapToken';
 import AnyswapCurrencyList from './AnyswapCurrencyList';
 
 type RouterCurrencySelectModalTypes = {
   isOpen: boolean;
   onDismiss?: () => void;
-  onCurrencySelect?: (currency: AnyswapCurrency) => void;
+  onCurrencySelect?: (currency: any) => void;
   currencyList?: any[];
   includeNativeCurrency?: boolean;
   allowManageTokenList?: boolean;
@@ -36,11 +32,11 @@ export default function RouterCurrencySelectModal({
     threshold: 0.4,
   };
 
-  const anyswapCurrencies: AnyswapCurrency[] = useMemo(
+  const anyswapCurrencies: any[] = useMemo(
     () =>
       currencyList
         .map((currency) => {
-          if (currency.name === 'BASECURRENCY') return currency;
+          if (!isAddress(currency.address)) return currency;
           return getAnyswapToken(currency);
         })
         .filter((currency) => !!currency),

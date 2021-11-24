@@ -24,7 +24,7 @@ const Component: FC<NetworkGuardProps> = ({ children, networks = [] }) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (chainIdGuardRedirect[chainId])
+    if (!networks.includes(chainId) && chainIdGuardRedirect[chainId])
       router.push(chainIdGuardRedirect[chainId]);
     // if (pathname == '/') {
     // router.push('/hello-nextjs');

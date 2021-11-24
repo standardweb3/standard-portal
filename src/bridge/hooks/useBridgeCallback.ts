@@ -1,4 +1,4 @@
-import { AnyswapCurrency } from '@digitalnative/standard-protocol-sdk';
+import { AnyswapCurrency, NATIVE } from '@digitalnative/standard-protocol-sdk';
 import { useMemo } from 'react';
 // import { tryParseAmount, tryParseAmount1 } from './useRouterHooks';
 import { tryParseAmount as tryParseNormalCurrencyAmount } from '../../functions';
@@ -20,6 +20,7 @@ import { getBaseCoin } from '../functions/bridge';
 import { useTransactionAdder } from '../../state/transactions/hooks';
 import { useTransactionAdder as useBridgeTransactionAdder } from '../../state/bridgeTransactions/hooks';
 import { NETWORK_LABEL } from '../../constants/networks';
+import { signSwapinData, signSwapoutData } from '../core/Wallet';
 
 export enum WrapType {
   NOT_APPLICABLE,
@@ -808,113 +809,127 @@ export function useBridgeSwapUnderlyingCallback(
 //  * @param inputCurrency 选定的输入货币
 //  * @param typedValue 用户输入值
 //  */
-// export function useCrossBridgeCallback(
-//   inputCurrency: AnyswapCurrency | undefined,
-//   toAddress: string | undefined,
-//   typedValue: string | undefined,
-//   toChainID: any,
-//   txnsType: string | undefined,
-//   inputToken: string | undefined,
-//   pairid: string | undefined,
-// ): {
-//   wrapType: WrapType;
-//   execute?: undefined | (() => Promise<void>);
-//   inputError?: string;
-// } {
-//   const { chainId, account } = useActiveWeb3React();
-//   // const balance = inputCurrency ? useCurrencyBalance(account ?? undefined, inputCurrency) : useETHBalances(account ? [account] : [])?.[account ?? '']
-//   const tokenBalance = useCurrencyBalance(
-//     account ?? undefined,
-//     inputCurrency?.toCurrency(),
-//   );
-//   const ethBalance = useETHBalances(account ? [account] : [])?.[account ?? ''];
-//   const balance = inputCurrency ? tokenBalance : ethBalance;
-//   // console.log(balance)
-//   // console.log(inputCurrency)
-//   // 我们总是可以解析输入货币的金额，因为包装是1:1
-//   const inputAmount = useMemo(
-//     () =>
-//       inputCurrency
-//         ? tryParseAmount(typedValue, inputCurrency)
-//         : tryParseAmount1(typedValue, 18),
-//     [inputCurrency, typedValue],
-//   );
-//   const addTransaction = useTransactionAdder();
-//   return useMemo(() => {
-//     if (!chainId || !toAddress || !toChainID) return NOT_APPLICABLE;
-//     // console.log(typedValue)
+export function useCrossBridgeCallback(
+  inputCurrency: AnyswapCurrency | undefined,
+  toAddress: string | undefined,
+  typedValue: string | undefined,
+  toChainID: any,
+  txnsType: string | undefined,
+  inputToken: string | undefined,
+  pairid: string | undefined,
+): {
+  wrapType: WrapType;
+  execute?: undefined | (() => Promise<void>);
+  inputError?: string;
+} {
+  const { chainId, account } = useActiveWeb3React();
+  const normalCurrency = toNormalCurrency(inputCurrency, chainId);
+  // const balance = inputCurrency ? useCurrencyBalance(account ?? undefined, inputCurrency) : useETHBalances(account ? [account] : [])?.[account ?? '']
+  const tokenBalance = useCurrencyBalance(account ?? undefined, normalCurrency);
+  const ethBalance = useETHBalances(account ? [account] : [])?.[account ?? ''];
+  const balance = inputCurrency ? tokenBalance : ethBalance;
+  // console.log(balance)
+  // console.log(inputCurrency)
+  // 我们总是可以解析输入货币的金额，因为包装是1:1
+  const inputAmount = useMemo(
+    () =>
+      tryParseNormalCurrencyAmount(
+        typedValue,
+        inputCurrency ? normalCurrency : NATIVE[chainId],
+      ),
+    [normalCurrency, typedValue],
+  );
+  const addTransaction = useTransactionAdder();
+  const addBridgeTransaction = useBridgeTransactionAdder();
 
-//     const sufficientBalance =
-//       inputAmount && balance && !balance.lessThan(inputAmount);
-//     // console.log(inputAmount?.raw?.toString())
-//     // console.log(balance?.raw?.toString())
-//     return {
-//       wrapType: WrapType.WRAP,
-//       execute:
-//         sufficientBalance && inputAmount
-//           ? async () => {
-//               try {
-//                 console.log(txnsType);
-//                 const txReceipt: any =
-//                   txnsType === 'swapin'
-//                     ? await signSwapinData({
-//                         value: `0x${inputAmount.raw.toString(16)}`,
-//                         address: toAddress,
-//                         token: inputToken,
-//                         destChain: toChainID,
-//                         isRecords: true,
-//                       })
-//                     : await signSwapoutData({
-//                         value: `0x${inputAmount.raw.toString(16)}`,
-//                         address: toAddress,
-//                         token: inputToken,
-//                         destChain: toChainID,
-//                         isRecords: true,
-//                       });
-//                 console.log(txReceipt);
-//                 const txData: any = { hash: txReceipt?.info };
-//                 addTransaction(txData, {
-//                   summary: `Cross bridge ${inputAmount.toSignificant(
-//                     6,
-//                   )} ${getBaseCoin(inputCurrency?.symbol, chainId)}`,
-//                 });
-//                 if (txData.hash && account) {
-//                   const rdata = {
-//                     hash: txData.hash,
-//                     chainId: chainId,
-//                     selectChain: toChainID,
-//                     account: account?.toLowerCase(),
-//                     value: inputAmount.raw.toString(),
-//                     formatvalue: inputAmount?.toSignificant(6),
-//                     to: toAddress,
-//                     symbol: '',
-//                     version: txnsType,
-//                     pairid: pairid,
-//                   };
-//                   recordsTxns(rdata);
-//                 }
-//               } catch (error) {
-//                 console.log('Could not swapout', error);
-//               }
-//             }
-//           : undefined,
-//       inputError: sufficientBalance
-//         ? undefined
-//         : `Insufficient ${inputCurrency?.symbol}`,
-//     };
-//   }, [
-//     chainId,
-//     inputCurrency,
-//     inputAmount,
-//     balance,
-//     addTransaction,
-//     txnsType,
-//     toAddress,
-//     inputToken,
-//     toChainID,
-//     pairid,
-//   ]);
-// }
+  return useMemo(() => {
+    if (!chainId || !toAddress || !toChainID) return NOT_APPLICABLE;
+    // console.log(typedValue)
+
+    const sufficientBalance =
+      inputAmount && balance && !balance.lessThan(inputAmount);
+    // console.log(inputAmount?.raw?.toString())
+    // console.log(balance?.raw?.toString())
+    return {
+      wrapType: WrapType.WRAP,
+      execute:
+        sufficientBalance && inputAmount
+          ? async () => {
+              try {
+                console.log(txnsType);
+                const txReceipt: any =
+                  txnsType === 'swapin'
+                    ? await signSwapinData({
+                        value: `0x${inputAmount.numerator.toString(16)}`,
+                        address: toAddress,
+                        token: inputToken,
+                        destChain: toChainID,
+                        isRecords: true,
+                      })
+                    : await signSwapoutData({
+                        value: `0x${inputAmount.numerator.toString(16)}`,
+                        address: toAddress,
+                        token: inputToken,
+                        destChain: toChainID,
+                        isRecords: true,
+                      });
+                const txData: any = { hash: txReceipt?.info };
+                addTransaction(txData, {
+                  summary: `Submit - Bridge: ${inputAmount.toSignificant(
+                    6,
+                  )} ${getBaseCoin(inputCurrency?.symbol, chainId)} to ${
+                    NETWORK_LABEL[toChainID]
+                  }`,
+                });
+                addBridgeTransaction(txData, {
+                  summary: `Bridge: ${inputAmount.toSignificant(
+                    6,
+                  )} ${getBaseCoin(inputCurrency?.symbol, chainId)} to ${
+                    NETWORK_LABEL[toChainID]
+                  }`,
+                  srcChainId: String(chainId),
+                  destChainId: toChainID,
+                  pairId: pairid,
+                });
+                if (txData.hash && account) {
+                  const rdata = {
+                    hash: txData.hash,
+                    chainId: chainId,
+                    selectChain: toChainID,
+                    account: account?.toLowerCase(),
+                    value: inputAmount.numerator.toString(),
+                    formatvalue: inputAmount?.toSignificant(6),
+                    to: toAddress,
+                    symbol: '',
+                    version: txnsType,
+                    pairid: pairid,
+                  };
+                  recordsTxns(rdata);
+                }
+              } catch (error) {
+                console.log('Could not swapout', error);
+              }
+            }
+          : undefined,
+      inputError: sufficientBalance
+        ? undefined
+        : `Insufficient ${
+            inputCurrency ? inputCurrency?.symbol : NATIVE[chainId].symbol
+          }`,
+    };
+  }, [
+    chainId,
+    inputCurrency,
+    inputAmount,
+    balance,
+    addTransaction,
+    txnsType,
+    toAddress,
+    inputToken,
+    toChainID,
+    pairid,
+  ]);
+}
 
 // /**
 //  * 跨链桥

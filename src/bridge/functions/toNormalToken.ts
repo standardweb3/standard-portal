@@ -5,12 +5,14 @@ import {
   Token,
   WNATIVE,
 } from '@digitalnative/standard-protocol-sdk';
+import { isAddress } from '@ethersproject/address';
 
-export function toNormalToken(token: AnyswapToken | undefined, chainId): Token {
-  if (!token) return undefined;
+export function toNormalToken(token: any | undefined, chainId): Token {
+  if (!token || !token.chainId) return undefined;
+  if (!isAddress(token.address)) return WNATIVE[chainId];
   if (token.name === 'BASECURRENCY') return WNATIVE[chainId];
   return new Token(
-    token.chainId,
+    parseInt(token.chainId),
     token.address,
     token.decimals,
     token.symbol,
@@ -18,14 +20,12 @@ export function toNormalToken(token: AnyswapToken | undefined, chainId): Token {
   );
 }
 
-export function toNormalCurrency(
-  token: AnyswapCurrency | undefined,
-  chainId,
-): Token {
-  if (!token) return undefined;
+export function toNormalCurrency(token: any | undefined, chainId): Token {
+  if (!token || !token.chainId) return undefined;
+  if (!isAddress(token.address)) return NATIVE[chainId];
   if (token.name === 'BASECURRENCY') return NATIVE[chainId];
   return new Token(
-    token.chainId,
+    parseInt(token.chainId),
     token.address,
     token.decimals,
     token.symbol,

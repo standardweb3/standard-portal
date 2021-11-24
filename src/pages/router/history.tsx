@@ -19,7 +19,7 @@ export default function History() {
           content="Bridge assets from one EVM chain to another, powered by Anyswap"
         />
       </Head>
-      <Page>
+      <Page id="router-history-page" className={DefinedStyles.page}>
         <ViewportMediumUp>
           <PageHeader title="Bridge" />
         </ViewportMediumUp>
