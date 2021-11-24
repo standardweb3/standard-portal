@@ -5,19 +5,15 @@ import {
   MASTERCHEF_ADDRESS,
   MASTERCHEF_V2_ADDRESS,
 } from '@digitalnative/standard-protocol-sdk';
-import { Chef, PairType } from './enum';
-import { MINICHEF_ADDRESS, SUSHI } from '../../constants';
+import { Chef } from './enum';
+import { SUSHI } from '../../constants';
 import {
   NEVER_RELOAD,
   useSingleCallResult,
   useSingleContractMultipleData,
 } from '../../state/multicall/hooks';
 import { useCallback, useMemo } from 'react';
-import {
-  useMasterChefContract,
-  useMasterChefV2Contract,
-  useMiniChefContract,
-} from '../../hooks';
+import { useMasterChefContract, useMasterChefV2Contract } from '../../hooks';
 
 import { Contract } from '@ethersproject/contracts';
 import { Zero } from '@ethersproject/constants';
@@ -26,14 +22,10 @@ import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
 import zip from 'lodash/zip';
 
 export function useChefContract(chef: Chef) {
-  // const masterChefContract = useMasterChefContract();
   const masterChefV2Contract = useMasterChefV2Contract();
-  // const miniChefContract = useMiniChefContract();
   const contracts = useMemo(
     () => ({
-      // [Chef.MASTERCHEF]: masterChefContract,
       [Chef.MASTERCHEF_V2]: masterChefV2Contract,
-      // [Chef.MINICHEF]: miniChefContract,
     }),
     [masterChefV2Contract],
   );
@@ -43,21 +35,16 @@ export function useChefContract(chef: Chef) {
 }
 
 const CHEFS = {
-  [ChainId.MAINNET]: [Chef.MASTERCHEF, Chef.MASTERCHEF_V2],
-  [ChainId.MATIC]: [Chef.MINICHEF],
+  [ChainId.MAINNET]: [Chef.MASTERCHEF_V2],
 };
 
 export function useChefContracts(chefs: Chef[]) {
-  const masterChefContract = useMasterChefContract();
   const masterChefV2Contract = useMasterChefV2Contract();
-  const miniChefContract = useMiniChefContract();
   const contracts = useMemo(
     () => ({
-      [Chef.MASTERCHEF]: masterChefContract,
       [Chef.MASTERCHEF_V2]: masterChefV2Contract,
-      [Chef.MINICHEF]: miniChefContract,
     }),
-    [masterChefContract, masterChefV2Contract, miniChefContract],
+    [masterChefV2Contract],
   );
   return chefs.map((chef) => contracts[chef]);
 }
@@ -111,25 +98,6 @@ export function usePendingSushi(farm) {
     : undefined;
 }
 
-// export function usePendingToken(farm, contract) {
-//   const { account } = useActiveWeb3React();
-
-//   const args = useMemo(() => {
-//     if (!account || !farm) {
-//       return;
-//     }
-//     return [String(farm.pid), String(account)];
-//   }, [farm, account]);
-
-//   const pendingTokens = useSingleContractMultipleData(
-//     args ? contract : null,
-//     'pendingTokens',
-//     args.map((arg) => [...arg, '0']),
-//   );
-
-//   return useMemo(() => pendingTokens, [pendingTokens]);
-// }
-
 export function useChefPositions(
   contract?: Contract | null,
   rewarder?: Contract | null,
@@ -165,19 +133,9 @@ export function useChefPositions(
     args,
   );
 
-  // const pendingTokens = useSingleContractMultipleData(
-  //     rewarder,
-  //     'pendingTokens',
-  //     args.map((arg) => [...arg, '0'])
-  // )
-
   const getChef = useCallback(() => {
-    if (MASTERCHEF_ADDRESS[chainId] === contract.address) {
-      return Chef.MASTERCHEF;
-    } else if (MASTERCHEF_V2_ADDRESS[chainId] === contract.address) {
+    if (MASTERCHEF_V2_ADDRESS[chainId] === contract.address) {
       return Chef.MASTERCHEF_V2;
-    } else if (MINICHEF_ADDRESS[chainId] === contract.address) {
-      return Chef.MINICHEF;
     }
   }, [chainId, contract]);
 
@@ -203,10 +161,6 @@ export function useChefPositions(
 }
 
 export function usePositions() {
-  const [masterChefV2Positions] = [
-    // useChefPositions(useMasterChefContract()),
-    useChefPositions(useMasterChefV2Contract()),
-    // useChefPositions(useMiniChefContract()),
-  ];
+  const [masterChefV2Positions] = [useChefPositions(useMasterChefV2Contract())];
   return concat(masterChefV2Positions);
 }

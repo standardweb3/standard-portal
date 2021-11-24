@@ -6,7 +6,6 @@ import {
 } from '../../functions';
 
 import { Disclosure } from '@headlessui/react';
-import FarmListItemDetails from './FarmListItemDetails';
 import { Image } from '../../components-ui/Image';
 import React from 'react';
 import { useCurrency } from '../../hooks/Tokens';
@@ -17,6 +16,11 @@ import {
   ViewportSmallUp,
   ViewportXSmall,
 } from '../../components-ui/Responsive';
+import dynamic from 'next/dynamic';
+
+const FarmListItemDetails = dynamic(() => import('./FarmListItemDetails'), {
+  ssr: false,
+});
 
 const FarmListItem = ({ farm, ...rest }) => {
   const token0 = useCurrency(farm.pair.token0.id);

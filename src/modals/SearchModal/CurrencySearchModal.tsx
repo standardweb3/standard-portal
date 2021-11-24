@@ -1,8 +1,8 @@
 import { Currency, Token } from '@digitalnative/standard-protocol-sdk';
+import dynamic from 'next/dynamic';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import CurrencyModalView from './CurrencyModalView';
-import { CurrencySearch } from './CurrencySearch';
 // import ImportList from './ImportList';
 import { ImportToken } from './ImportToken';
 // import Manage from './Manage';
@@ -14,6 +14,10 @@ import usePrevious from '../../hooks/usePrevious';
 import ImportList from './ImportList';
 import Manage from './Manage';
 import { useSizeSmDown } from '../../components-ui/Responsive';
+const CurrencySearch = dynamic(() => import('./CurrencySearch'), {
+  ssr: false,
+});
+// import CurrencySearch from './CurrencySearch';
 
 interface CurrencySearchModalProps {
   isOpen: boolean;

@@ -6,7 +6,6 @@ import {
 } from '@digitalnative/standard-protocol-sdk';
 import React, {
   KeyboardEvent,
-  RefObject,
   useCallback,
   useEffect,
   useMemo,
@@ -26,7 +25,6 @@ import {
 
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { Button } from '../../components-ui/Button';
-import CHAINLINK_TOKENS from '@sushiswap/chainlink-whitelist/dist/sushiswap-chainlink.whitelist.json';
 import CommonBases from './CommonBases';
 import CurrencyList from './CurrencyList';
 // import { ExtendedEther } from '../../constants'
@@ -41,7 +39,6 @@ import { useOnClickOutside } from '../../hooks/useOnClickOutside';
 import { useRouter } from 'next/router';
 import useToggle from '../../hooks/useToggle';
 import { useTokenComparator } from './sorting';
-import { isMobile } from 'react-device-detect';
 
 interface CurrencySearchProps {
   isOpen: boolean;
@@ -58,7 +55,7 @@ interface CurrencySearchProps {
   allowManageTokenList?: boolean;
 }
 
-export function CurrencySearch({
+export default function CurrencySearch({
   selectedCurrency,
   onCurrencySelect,
   otherSelectedCurrency,
@@ -84,14 +81,6 @@ export function CurrencySearch({
 
   let allTokens = useAllTokens();
   const router = useRouter();
-
-  if (router.asPath.startsWith('/kashi/create')) {
-    allTokens = Object.keys(allTokens).reduce((obj, key) => {
-      if (CHAINLINK_TOKENS[chainId].find((address) => address === key))
-        obj[key] = allTokens[key];
-      return obj;
-    }, {});
-  }
 
   if (currencyList) {
     allTokens = Object.keys(allTokens).reduce((obj, key) => {

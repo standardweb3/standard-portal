@@ -5,7 +5,6 @@ import {
   WNATIVE,
 } from '@digitalnative/standard-protocol-sdk';
 
-import { WETH9_EXTENDED } from '../constants/tokens';
 import { tryParseAmount } from '../functions/parse';
 import { useActiveWeb3React } from './useActiveWeb3React';
 import { useCurrencyBalance } from '../state/wallet/hooks';

@@ -2,7 +2,6 @@ import {
   getUnixTime,
   startOfHour,
   startOfMinute,
-  startOfSecond,
   subDays,
   subHours,
 } from 'date-fns';

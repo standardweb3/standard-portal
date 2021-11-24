@@ -104,8 +104,12 @@ const CeloLogo =
   'https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/celo.jpg';
 const PalmLogo =
   'https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/palm.jpg';
-const ShibuyaLogo = 'https://i.imgur.com/offavOc.png';
-const ShidenLogo = 'https://i.imgur.com/9Q7jzvX.jpg';
+const ShibuyaLogo =
+  'https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/sdn.jpg';
+const ShidenLogo =
+  'https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/sdn.jpg';
+const MetisLogo =
+  'https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/metis.jpg';
 
 const LOGO: { readonly [chainId in ChainId]?: string } = {
   [ChainId.MAINNET]: EthereumLogo,
@@ -132,6 +136,7 @@ const LOGO: { readonly [chainId in ChainId]?: string } = {
   [ChainId.CELO]: CeloLogo,
   [ChainId.PALM]: PalmLogo,
   [ChainId.PALM_TESTNET]: PalmLogo,
+  [ChainId.METIS]: MetisLogo,
 };
 
 interface CurrencyLogoProps {

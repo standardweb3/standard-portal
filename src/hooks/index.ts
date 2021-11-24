@@ -4,8 +4,6 @@ export {
   useApproveCallbackFromTrade,
   ApprovalState,
 } from './useApproveCallback';
-export { default as useBentoBox } from './useBentoBox';
-export { default as useBentoBoxAllowance } from './useBentoBoxAllowance';
 export { useColor, useListColor } from './useColor';
 export * from './useContract';
 export { default as useFuse } from './useFuse';

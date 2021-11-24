@@ -445,7 +445,7 @@ export default function Swap() {
 
   useEffect(() => {
     if (!isExpertMode) onChangeRecipient(null);
-  }, [isExpertMode]);
+  }, [isExpertMode, onChangeRecipient]);
 
   const handleBack = () => router.push('/trade');
 

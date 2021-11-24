@@ -59,11 +59,6 @@ type ChainTokenList = {
   readonly [chainId: number]: Token[];
 };
 
-// // a list of tokens by chain
-// type ChainTokenList = {
-//     readonly [chainId in ChainId]: Token[]
-// }
-
 type ChainCurrencyList = {
   readonly [chainId: number]: Currency[];
 };
@@ -117,6 +112,7 @@ const WRAPPED_NATIVE_ONLY: ChainTokenList = {
   [ChainId.OKEX]: [WNATIVE[ChainId.OKEX]],
   [ChainId.OKEX_TESTNET]: [WNATIVE[ChainId.OKEX_TESTNET]],
   [ChainId.CELO]: [WNATIVE[ChainId.CELO]],
+  [ChainId.METIS]: [WNATIVE[ChainId.METIS]],
 };
 
 // used to construct intermediary pairs for trading
@@ -223,6 +219,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
     CELO.cEURO,
     CELO.cBTC,
   ],
+  [ChainId.METIS]: [...WRAPPED_NATIVE_ONLY[ChainId.METIS]],
 };
 
 export const ADDITIONAL_BASES: {
@@ -395,6 +392,7 @@ export const COMMON_BASES: ChainTokenList = {
   //   CELO.mcEURO,
   //   CELO.cEUR,
   // ],
+  [ChainId.METIS]: [...WRAPPED_NATIVE_ONLY[ChainId.METIS]],
 };
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -490,6 +488,7 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
     OKEX.WBTC,
     OKEX.WETH,
   ],
+  [ChainId.METIS]: [...WRAPPED_NATIVE_ONLY[ChainId.METIS]],
   // [ChainId.CELO]: [
   //   ...WRAPPED_NATIVE_ONLY[ChainId.CELO],
   //   CELO.mCUSD,

@@ -1,6 +1,5 @@
 import { Logo } from '../Logo';
 import { useActiveWeb3React } from '../../hooks';
-import { useETHBalances } from '../../state/wallet/hooks';
 import { sidebarRoutes } from '../../routes';
 import { TopBarNavigation } from '../TopBarNavigation/TopBarNavigation';
 import { useCallback, useState } from 'react';
@@ -11,10 +10,7 @@ import NetworkDropDown from '../Dropdown/NetworkDropDown';
 import { Listings } from '../Listings';
 
 export function TopBar() {
-  const { account, chainId, library } = useActiveWeb3React();
-  const userEthBalance = useETHBalances(account ? [account] : [])?.[
-    account ?? ''
-  ];
+  const { chainId, library } = useActiveWeb3React();
 
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const handleMenuOpen = useCallback(() => setMenuOpen(true), []);

@@ -53,8 +53,6 @@ import {
 } from '../../services/graph/hooks/dividend';
 import { ExternalLink } from '../../components-ui/ExternalLink';
 import Countdown from 'react-countdown';
-// import { useBondedStrategy } from '../../services/graph/hooks/dividend';
-// import { useBundle, useStandardPrice } from '../../services/graph';
 
 export const BondWrapper = styled.div`
   @media only screen and (min-width: 640px) {
@@ -93,7 +91,7 @@ export default function Dividend() {
       );
     }
     return null;
-  }, [bonded, bondedTotal]);
+  }, [bonded, bondedTotal, stnd.decimals]);
 
   const [pendingTx, setPendingTx] = useState(false);
   const [depositValue, setDepositValue] = useState('');
@@ -151,7 +149,7 @@ export default function Dividend() {
             };
           })
       : [];
-  }, [pairsWithDividends, swapPairs]);
+  }, [pairsWithDividends, swapPairs, ethPrice, share]);
 
   const { tokensWithDividends } = useDividendPoolWhitelistTokenBalances(10);
   const exchangeTokens = useTokens({
@@ -189,7 +187,7 @@ export default function Dividend() {
             };
           })
       : [];
-  }, [tokensWithDividends]);
+  }, [tokensWithDividends, ethPrice, exchangeTokens, share]);
 
   const addTransaction = useTransactionAdder();
 

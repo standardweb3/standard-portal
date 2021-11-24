@@ -13,15 +13,11 @@ import React, {
 import { CurrencyLogo } from '../../components-ui/CurrencyLogo';
 import { FixedSizeList } from 'react-window';
 import ImportRow from './ImportRow';
-// import Loader from '../../components/Loader';
 import { MenuItem } from './styleds';
 import { MouseoverTooltip } from '../../components-ui/Tooltip';
-// import div from '../../components/div'
 import { WrappedTokenInfo } from '../../state/lists/wrappedTokenInfo';
-import { isTokenOnList } from '../../functions/validate';
 import styled from '@emotion/styled';
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
-import { useCombinedActiveList } from '../../state/lists/hooks';
 import { useCurrencyBalance } from '../../state/wallet/hooks';
 import { useIsUserAddedToken } from '../../hooks/Tokens';
 import { Question } from '../../components-ui/Question';
@@ -107,11 +103,11 @@ function CurrencyRow({
 }) {
   const { account } = useActiveWeb3React();
   const key = currencyKey(currency);
-  const selectedTokenList = useCombinedActiveList();
-  const isOnSelectedList = isTokenOnList(
-    selectedTokenList,
-    currency.isToken ? currency : undefined,
-  );
+  // const selectedTokenList = useCombinedActiveList();
+  // const isOnSelectedList = isTokenOnList(
+  //   selectedTokenList,
+  //   currency.isToken ? currency : undefined,
+  // );
   const customAdded = useIsUserAddedToken(currency);
   const balance = useCurrencyBalance(account ?? undefined, currency);
   const { addToken, success } = useAddTokenToMetaMask(currency);
@@ -133,8 +129,7 @@ function CurrencyRow({
           {currency.symbol}
         </div>
         <div className="text-sm font-thin">
-          {currency.name}{' '}
-          {!isOnSelectedList && customAdded && '• Added by user'}
+          {currency.name} {customAdded && '• Added by user'}
         </div>
       </div>
       <TokenTags currency={currency} />

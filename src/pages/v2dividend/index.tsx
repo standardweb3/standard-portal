@@ -137,7 +137,7 @@ export default function Dividend() {
       );
     }
     return null;
-  }, [bonded, bondedTotal]);
+  }, [bonded, bondedTotal, stnd.decimals]);
 
   const stndBalance = useTokenBalance(account, stnd);
   const onBondMax = () => setDepositValue(stndBalance?.toExact());

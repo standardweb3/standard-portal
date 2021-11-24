@@ -1,8 +1,4 @@
-import {
-  MINICHEF_ADDRESS,
-  MULTICALL2_ADDRESS,
-  ZAPPER_ADDRESS,
-} from '../constants/addresses';
+import { MULTICALL2_ADDRESS } from '../constants/addresses';
 import {
   ARGENT_WALLET_DETECTOR_ABI,
   ARGENT_WALLET_DETECTOR_MAINNET_ADDRESS,
@@ -19,25 +15,13 @@ import {
   TIMELOCK_ADDRESS,
   WNATIVE,
 } from '@digitalnative/standard-protocol-sdk';
-import {
-  BENTOBOX_ADDRESS,
-  BORING_HELPER_ADDRESS,
-  CHAINLINK_ORACLE_ADDRESS,
-  KASHI_ADDRESS,
-  SUSHISWAP_SWAPPER_ADDRESS,
-  SUSHISWAP_TWAP_0_ORACLE_ADDRESS,
-  SUSHISWAP_TWAP_1_ORACLE_ADDRESS,
-} from '../constants/kashi';
-import { MERKLE_DISTRIBUTOR_ADDRESS, STND, SUSHI } from '../constants';
+import { MERKLE_DISTRIBUTOR_ADDRESS } from '../constants';
 
 import ALCX_REWARDER_ABI from '../constants/abis/alcx-rewarder.json';
 import ARCHER_ROUTER_ABI from '../constants/abis/archer-router.json';
 import BAR_ABI from '../constants/abis/bar.json';
 import XSTND_ABI from '../constants/abis/xstnd.json';
-import BASE_SWAPPER_ABI from '../constants/abis/swapper.json';
-import BENTOBOX_ABI from '../constants/abis/bentobox.json';
 import BORING_HELPER_ABI from '../constants/abis/boring-helper.json';
-import CHAINLINK_ORACLE_ABI from '../constants/abis/chainlink-oracle.json';
 import CLONE_REWARDER_ABI from '../constants/abis/clone-rewarder.json';
 import COMPLEX_REWARDER_ABI from '../constants/abis/complex-rewarder.json';
 import { Contract } from '@ethersproject/contracts';
@@ -49,33 +33,23 @@ import ENS_PUBLIC_RESOLVER_ABI from '../constants/abis/ens-public-resolver.json'
 import ERC20_ABI from '../constants/abis/erc20.json';
 import { ERC20_BYTES32_ABI } from '../constants/abis/erc20';
 import FACTORY_ABI from '../constants/abis/factory.json';
-import INARI_ABI from '../constants/abis/inari.json';
 import IUniswapV2PairABI from '../constants/abis/uniswap-v2-pair.json';
-import KASHIPAIR_ABI from '../constants/abis/kashipair.json';
 // import LIMIT_ORDER_ABI from '../constants/abis/limit-order.json';
-import LIMIT_ORDER_HELPER_ABI from '../constants/abis/limit-order-helper.json';
 import MAKER_ABI from '../constants/abis/maker.json';
 import MASTERCHEF_ABI from '../constants/abis/masterchef.json';
 import MASTERCHEF_V2_ABI from '../constants/abis/masterpool.json';
 import ANYSWAP_ERC20_ABI from '../constants/abis/anyswap_erc20.json';
 
 // import MASTERPOOL_ABI from '../constants/abis/masterpool.json';
-import MEOWSHI_ABI from '../constants/abis/meowshi.json';
 import MERKLE_DISTRIBUTOR_ABI from '../constants/abis/merkle-distributor.json';
-import MINICHEF_ABI from '../constants/abis/minichef-v2.json';
 import MULTICALL2_ABI from '../constants/abis/multicall2.json';
 import PENDING_ABI from '../constants/abis/pending.json';
 import ROUTER_ABI from '../constants/abis/router.json';
-import SAAVE_ABI from '../constants/abis/saave.json';
 import SUSHIROLL_ABI from '@sushiswap/core/abi/SushiRoll.json';
-import SUSHISWAP_TWAP_ORACLE_ABI from '../constants/abis/sushiswap-slp-oracle.json';
 import SUSHI_ABI from '../constants/abis/sushi.json';
 import STND_ABI from '../constants/abis/stnd.json';
 import TIMELOCK_ABI from '../constants/abis/timelock.json';
-import UNI_FACTORY_ABI from '../constants/abis/uniswap-v2-factory.json';
 import WETH9_ABI from '../constants/abis/weth.json';
-import ZAPPER_ABI from '../constants/abis/zapper.json';
-import ZENKO_ABI from '../constants/abis/zenko.json';
 import { getContract } from '../functions/contract';
 import { useActiveWeb3React } from './useActiveWeb3React';
 import { useMemo } from 'react';
@@ -86,7 +60,32 @@ import {
 } from '.';
 import { useProtocol } from '../state/protocol/hooks';
 
-const UNI_FACTORY_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f';
+export const BORING_HELPER_ADDRESS = {
+  [ChainId.MAINNET]: '0x11Ca5375AdAfd6205E41131A4409f182677996E6',
+  [ChainId.ROPSTEN]: '',
+  [ChainId.RINKEBY]: '',
+  [ChainId.GÖRLI]: '',
+  [ChainId.KOVAN]: '0x11Ca5375AdAfd6205E41131A4409f182677996E6',
+  [ChainId.FANTOM]: '',
+  [ChainId.FANTOM_TESTNET]: '',
+  [ChainId.MATIC]: '0xA77a7fD5a16237B85E0FAd02C51f459D18AE93Cd',
+  [ChainId.MATIC_TESTNET]: '',
+  [ChainId.XDAI]: '0x97e4a0fb71243A83A6FbaEF7Cf73617594e4cF2F',
+  [ChainId.BSC]: '0x11Ca5375AdAfd6205E41131A4409f182677996E6',
+  [ChainId.BSC_TESTNET]: '',
+  [ChainId.ARBITRUM]: '',
+  [ChainId.ARBITRUM_TESTNET]: '',
+  [ChainId.MOONBEAM_TESTNET]: '',
+  [ChainId.AVALANCHE]: '',
+  [ChainId.AVALANCHE_TESTNET]: '',
+  [ChainId.HECO]: '0x11Ca5375AdAfd6205E41131A4409f182677996E6',
+  [ChainId.HECO_TESTNET]: '',
+  [ChainId.HARMONY]: '',
+  [ChainId.HARMONY_TESTNET]: '',
+  [ChainId.OKEX]: '',
+  [ChainId.OKEX_TESTNET]: '',
+  [ChainId.CELO]: '',
+};
 
 export function useEIP2612Contract(tokenAddress?: string): Contract | null {
   return useContract(tokenAddress, EIP_2612_ABI, false);
@@ -270,17 +269,6 @@ export function useMasterChefV2Contract(
   );
 }
 
-export function useMiniChefContract(
-  withSignerIfPossible?: boolean,
-): Contract | null {
-  const { chainId } = useActiveWeb3React();
-  return useContract(
-    chainId && MINICHEF_ADDRESS[chainId],
-    MINICHEF_ABI,
-    withSignerIfPossible,
-  );
-}
-
 export function useFactoryContract(): Contract | null {
   const factoryAddress = useFactoryAddress();
   return useContract(factoryAddress, FACTORY_ABI, false);
@@ -349,230 +337,6 @@ export function useTimelockContract(): Contract | null {
   return useContract(chainId && TIMELOCK_ADDRESS[chainId], TIMELOCK_ABI, false);
 }
 
-export function useBentoBoxContract(
-  withSignerIfPossible?: boolean,
-): Contract | null {
-  const { chainId } = useActiveWeb3React();
-  return useContract(
-    chainId && BENTOBOX_ADDRESS[chainId],
-    BENTOBOX_ABI,
-    withSignerIfPossible,
-  );
-}
-
-export function useKashiPairContract(
-  withSignerIfPossible?: boolean,
-): Contract | null {
-  const { chainId } = useActiveWeb3React();
-  return useContract(
-    chainId && KASHI_ADDRESS[chainId],
-    KASHIPAIR_ABI,
-    withSignerIfPossible,
-  );
-}
-
-export function useKashiPairCloneContract(
-  address: string,
-  withSignerIfPossible?: boolean,
-): Contract | null {
-  return useContract(address, KASHIPAIR_ABI, withSignerIfPossible);
-}
-
-export function useSushiSwapSwapper(): Contract | null {
-  const { chainId } = useActiveWeb3React();
-  return useContract(
-    chainId && SUSHISWAP_SWAPPER_ADDRESS[chainId],
-    BASE_SWAPPER_ABI,
-    false,
-  );
-}
-
-export function useChainlinkOracle(): Contract | null {
-  return useContract(CHAINLINK_ORACLE_ADDRESS, CHAINLINK_ORACLE_ABI, false);
-}
-
-// experimental:
-export function useSaaveContract(
-  withSignerIfPossible?: boolean,
-): Contract | null {
-  return useContract(
-    '0x364762C00b32c4b448f39efaA9CeFC67a25603ff',
-    SAAVE_ABI,
-    withSignerIfPossible,
-  );
-}
-
-export function useSwaave(withSignerIfPossible?: boolean): Contract | null {
-  return useContract(
-    '0xA70e346Ca3825b46EB4c8d0d94Ff204DB76BC289',
-    SAAVE_ABI,
-    withSignerIfPossible,
-  );
-}
-
-export function useUniV2FactoryContract(): Contract | null {
-  return useContract(UNI_FACTORY_ADDRESS, UNI_FACTORY_ABI, false);
-}
-
-export function usePancakeV1FactoryContract(): Contract | null {
-  return useContract(
-    '0xBCfCcbde45cE874adCB698cC183deBcF17952812',
-    [
-      {
-        inputs: [
-          {
-            internalType: 'address',
-            name: '_feeToSetter',
-            type: 'address',
-          },
-        ],
-        payable: false,
-        stateMutability: 'nonpayable',
-        type: 'constructor',
-      },
-      {
-        anonymous: false,
-        inputs: [
-          {
-            indexed: true,
-            internalType: 'address',
-            name: 'token0',
-            type: 'address',
-          },
-          {
-            indexed: true,
-            internalType: 'address',
-            name: 'token1',
-            type: 'address',
-          },
-          {
-            indexed: false,
-            internalType: 'address',
-            name: 'pair',
-            type: 'address',
-          },
-          {
-            indexed: false,
-            internalType: 'uint256',
-            name: '',
-            type: 'uint256',
-          },
-        ],
-        name: 'PairCreated',
-        type: 'event',
-      },
-      {
-        constant: true,
-        inputs: [],
-        name: 'INIT_CODE_PAIR_HASH',
-        outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
-        payable: false,
-        stateMutability: 'view',
-        type: 'function',
-      },
-      {
-        constant: true,
-        inputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-        name: 'allPairs',
-        outputs: [{ internalType: 'address', name: '', type: 'address' }],
-        payable: false,
-        stateMutability: 'view',
-        type: 'function',
-      },
-      {
-        constant: true,
-        inputs: [],
-        name: 'allPairsLength',
-        outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-        payable: false,
-        stateMutability: 'view',
-        type: 'function',
-      },
-      {
-        constant: false,
-        inputs: [
-          {
-            internalType: 'address',
-            name: 'tokenA',
-            type: 'address',
-          },
-          {
-            internalType: 'address',
-            name: 'tokenB',
-            type: 'address',
-          },
-        ],
-        name: 'createPair',
-        outputs: [{ internalType: 'address', name: 'pair', type: 'address' }],
-        payable: false,
-        stateMutability: 'nonpayable',
-        type: 'function',
-      },
-      {
-        constant: true,
-        inputs: [],
-        name: 'feeTo',
-        outputs: [{ internalType: 'address', name: '', type: 'address' }],
-        payable: false,
-        stateMutability: 'view',
-        type: 'function',
-      },
-      {
-        constant: true,
-        inputs: [],
-        name: 'feeToSetter',
-        outputs: [{ internalType: 'address', name: '', type: 'address' }],
-        payable: false,
-        stateMutability: 'view',
-        type: 'function',
-      },
-      {
-        constant: true,
-        inputs: [
-          { internalType: 'address', name: '', type: 'address' },
-          { internalType: 'address', name: '', type: 'address' },
-        ],
-        name: 'getPair',
-        outputs: [{ internalType: 'address', name: '', type: 'address' }],
-        payable: false,
-        stateMutability: 'view',
-        type: 'function',
-      },
-      {
-        constant: false,
-        inputs: [
-          {
-            internalType: 'address',
-            name: '_feeTo',
-            type: 'address',
-          },
-        ],
-        name: 'setFeeTo',
-        outputs: [],
-        payable: false,
-        stateMutability: 'nonpayable',
-        type: 'function',
-      },
-      {
-        constant: false,
-        inputs: [
-          {
-            internalType: 'address',
-            name: '_feeToSetter',
-            type: 'address',
-          },
-        ],
-        name: 'setFeeToSetter',
-        outputs: [],
-        payable: false,
-        stateMutability: 'nonpayable',
-        type: 'function',
-      },
-    ],
-    false,
-  );
-}
-
 export function useSushiRollContract(
   version: 'v1' | 'v2' = 'v2',
 ): Contract | null {
@@ -626,45 +390,6 @@ export function useDashboardContract(): Contract | null {
     }
   }
   return useContract(address, DASHBOARD_ABI, false);
-}
-
-export function useSushiSwapTWAP0Oracle(): Contract | null {
-  return useContract(
-    SUSHISWAP_TWAP_0_ORACLE_ADDRESS,
-    SUSHISWAP_TWAP_ORACLE_ABI,
-  );
-}
-
-export function useSushiSwapTWAP1Oracle(): Contract | null {
-  return useContract(
-    SUSHISWAP_TWAP_1_ORACLE_ADDRESS,
-    SUSHISWAP_TWAP_ORACLE_ABI,
-  );
-}
-
-export function useSushiSwapTWAPContract(address?: string): Contract | null {
-  const TWAP_0 = useContract(
-    SUSHISWAP_TWAP_0_ORACLE_ADDRESS,
-    SUSHISWAP_TWAP_ORACLE_ABI,
-  );
-  const TWAP_1 = useContract(
-    SUSHISWAP_TWAP_1_ORACLE_ADDRESS,
-    SUSHISWAP_TWAP_ORACLE_ABI,
-  );
-  if (address === SUSHISWAP_TWAP_0_ORACLE_ADDRESS) {
-    return TWAP_0;
-  } else if (address === SUSHISWAP_TWAP_1_ORACLE_ADDRESS) {
-    return TWAP_1;
-  }
-  return undefined;
-}
-
-export function useZapperContract(
-  withSignerIfPossible?: boolean,
-): Contract | null {
-  const { chainId } = useActiveWeb3React();
-  const address = ZAPPER_ADDRESS[chainId];
-  return useContract(address, ZAPPER_ABI, withSignerIfPossible);
 }
 
 export function useQuickSwapFactoryContract(): Contract | null {
@@ -839,55 +564,4 @@ export function useCloneRewarderContract(
   withSignerIfPossibe?: boolean,
 ): Contract | null {
   return useContract(address, CLONE_REWARDER_ABI, withSignerIfPossibe);
-}
-
-export function useMeowshiContract(
-  withSignerIfPossible?: boolean,
-): Contract | null {
-  return useContract(
-    '0x650F44eD6F1FE0E1417cb4b3115d52494B4D9b6D',
-    MEOWSHI_ABI,
-    withSignerIfPossible,
-  );
-}
-
-// export function useLimitOrderContract(
-//   withSignerIfPossibe?: boolean,
-// ): Contract | null {
-//   const { chainId } = useActiveWeb3React();
-//   return useContract(
-//     getVerifyingContract(chainId),
-//     LIMIT_ORDER_ABI,
-//     withSignerIfPossibe,
-//   );
-// }
-
-export function useLimitOrderHelperContract(
-  withSignerIfPossible?: boolean,
-): Contract | null {
-  return useContract(
-    '0xe2f736B7d1f6071124CBb5FC23E93d141CD24E12',
-    LIMIT_ORDER_HELPER_ABI,
-    withSignerIfPossible,
-  );
-}
-
-export function useInariContract(
-  withSignerIfPossible?: boolean,
-): Contract | null {
-  return useContract(
-    '0x195E8262AA81Ba560478EC6Ca4dA73745547073f',
-    INARI_ABI,
-    withSignerIfPossible,
-  );
-}
-
-export function useZenkoContract(
-  withSignerIfPossible?: boolean,
-): Contract | null {
-  return useContract(
-    '0xa8f676c49f91655ab3b7c3ea2b73bb3088b2bc1f',
-    ZENKO_ABI,
-    withSignerIfPossible,
-  );
 }

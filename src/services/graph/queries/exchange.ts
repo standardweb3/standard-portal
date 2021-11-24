@@ -386,7 +386,13 @@ export const tokensQuery = gql`
       block: $block
       skip: $skip
     ) {
-      ...tokenFields
+      id
+      symbol
+      name
+      volume
+      volumeUSD
+      liquidity
+      derivedETH
       dayData(first: 7, skip: 0, orderBy: date, order: asc) {
         id
         priceUSD
@@ -397,7 +403,6 @@ export const tokensQuery = gql`
       # }
     }
   }
-  ${tokenFieldsQuery}
 `;
 
 export const tokenSubsetQuery = gql`

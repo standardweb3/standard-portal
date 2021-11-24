@@ -2,7 +2,6 @@ import {
   Currency,
   CurrencyAmount,
   Percent,
-  ROUTER_ADDRESS,
   TradeType,
   Trade as V2Trade,
 } from '@digitalnative/standard-protocol-sdk';
@@ -12,7 +11,6 @@ import {
   useTransactionAdder,
 } from '../state/transactions/hooks';
 
-import { ARCHER_ROUTER_ADDRESS } from '../constants';
 import { MaxUint256 } from '@ethersproject/constants';
 import { TransactionResponse } from '@ethersproject/providers';
 import { calculateGasMargin } from '../functions/trade';

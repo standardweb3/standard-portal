@@ -17,9 +17,10 @@ import { computePairAddress } from '@digitalnative/standard-protocol-sdk';
 import { useProtocol } from '../../state/protocol/hooks';
 import { useActiveWeb3React } from '../../hooks';
 import { ANALYTICS_URL } from '../../constants';
-import { usePrices } from '../../services/graph/hooks/prices';
 import { useArbitrage } from '../../hooks/useArbitrage';
-import { Arbitrage } from '../Arbitrage';
+const Arbitrage = dynamic(() => import('../Arbitrage'), {
+  ssr: false,
+});
 const KChart = dynamic(() => import('kaktana-react-lightweight-charts'), {
   ssr: false,
 });

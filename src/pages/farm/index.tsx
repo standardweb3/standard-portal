@@ -137,10 +137,7 @@ export default function Farm() {
       share: farmShare,
       pair: {
         ...pair,
-        decimals:
-          pair.type === PairType.KASHI
-            ? Number(pair.asset.tokenInfo.decimals)
-            : 18,
+        decimals: 18,
         type,
         symbol: `${pair.token0.symbol}/${pair.token1.symbol}`,
         name: 'Standard LTR Token',
@@ -159,8 +156,6 @@ export default function Farm() {
   const FILTER = {
     all: (farm) => farm.allocPoint !== '0',
     portfolio: (farm) => farm?.amount && !farm.amount.isZero(),
-    // sushi: (farm) => farm.pair.type === PairType.SWAP && farm.allocPoint !== '0',
-    // 'standaard': (farm) => (farm.chef === Chef.MASTERCHEF_V2 || farm.chef === Chef.MINICHEF) && farm.allocPoint !== '0',
   };
 
   const data = farms
