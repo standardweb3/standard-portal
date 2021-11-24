@@ -34,6 +34,7 @@ export const EXCHANGE = {
   [ChainId.OKEX]: 'sushiswap/okex-exchange',
   [ChainId.AVALANCHE]: 'sushiswap/avalanche-exchange',
   [ChainId.CELO]: 'sushiswap/celo-exchange',
+  [ChainId.METIS]: '',
 };
 
 export const exchangeUri = (chainId = ChainId.MAINNET) =>

@@ -15,4 +15,5 @@ export const GRAPH_HOST = {
   [ChainId.CELO]: THE_GRAPH,
   [ChainId.HARMONY]: 'https://sushi.graph.t.hmny.io',
   [ChainId.OKEX]: 'https://graph.kkt.one/node',
+  [ChainId.METIS]: '',
 };

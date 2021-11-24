@@ -23,6 +23,7 @@ export const BLOCKS = {
   [ChainId.HARMONY]: 'sushiswap/harmony-blocks',
   [ChainId.AVALANCHE]: 'matthewlilley/avalanche-blocks',
   [ChainId.CELO]: 'sushiswap/celo-blocks',
+  [ChainId.METIS]: '',
 };
 
 export const fetcher = async (chainId = ChainId.MAINNET, query, variables) =>

@@ -43,7 +43,7 @@ const RPC = {
   [ChainId.ARBITRUM]: 'https://arb1.arbitrum.io/rpc',
   [ChainId.PALM]:
     'https://palm-mainnet.infura.io/v3/da5fbfafcca14b109e2665290681e267',
-  [ChainId.METIS]: "https://andromeda.metis.io/?owner=1088"
+  [ChainId.METIS]: 'https://andromeda.metis.io/?owner=1088',
 };
 
 export const network = new NetworkConnector({
@@ -87,6 +87,7 @@ export const injected = new InjectedConnector({
     42220, // celo
     11297108109, // palm,
     1285, // moonriver
+    1088,
   ],
 });
 

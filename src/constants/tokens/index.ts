@@ -838,6 +838,13 @@ export const STND: ChainTokenMap = {
     'STND',
     'Standard',
   ),
+  [ChainId.METIS]: new Token(
+    ChainId.SHIDEN,
+    STND_ADDRESS[ChainId.METIS],
+    18,
+    'STND',
+    'Standard',
+  ),
 };
 
 // SUSHI

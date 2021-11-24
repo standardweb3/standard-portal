@@ -20,6 +20,7 @@ export const MASTERCHEF_V2 = {
   [ChainId.RINKEBY]: 'billjhlee/rinkeby-master-pool',
   [ChainId.SHIBUYA]: 'digitalnativeinc/shibuya-master-pool',
   [ChainId.SHIDEN]: 'digitalnativeinc/shiden-master-pool',
+  [ChainId.METIS]: '',
 };
 
 export const masterChefV2 = async (query, chainId = ChainId.MAINNET) =>
