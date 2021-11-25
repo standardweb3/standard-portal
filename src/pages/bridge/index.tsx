@@ -1,38 +1,610 @@
-import { Page } from '../../components-ui/Page';
 import Head from 'next/head';
-import { PageHeader } from '../../components-ui/PageHeader';
-import { ExternalLink } from '../../components-ui/ExternalLink';
-import Image from 'next/image';
-import { useCallback, useState } from 'react';
-import ImageViewer from 'react-simple-image-viewer';
-import { PageContent } from '../../components-ui/PageContent';
-import { Button } from '../../components-ui/Button';
-import { Alert } from '../../components-ui/Alert';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { formatDecimal, isAddress, thousandBit } from '../../bridge/core/Tools';
+import { RouterCurrencyInputPanel } from '../../bridge/feature/RouterCurrencyInputPanel';
+import RouterCurrencySelectModal from '../../bridge/feature/RouterCurrencySelectModal';
+import {
+  getCurChainInfo,
+  getCurConfigInfo,
+} from '../../bridge/functions/bridge';
+import { toNormalCurrency } from '../../bridge/functions/toNormalToken';
+import { useCrossBridgeCallback } from '../../bridge/hooks/useBridgeCallback';
+import {
+  NETWORK_ICON,
+  NETWORK_LABEL,
+  NORMAL_GUARDED_CHAINS,
+  SUPPORTED_NETWORK_IDS,
+} from '../../constants/networks';
+import { classNames, tryParseAmount } from '../../functions';
+import {
+  ApprovalState,
+  useActiveWeb3React,
+  useApproveCallback,
+} from '../../hooks';
+import { WrapType } from '../../hooks/useWrapCallback';
+import RouterChainSelectModal from '../../bridge/feature/RouterChainModal';
+import { ArrowRightIcon, ChevronDownIcon } from '@heroicons/react/outline';
+import { WalletConnector } from '../../components-ui/WalletConnector';
+import { Button, ButtonConfirmed } from '../../components-ui/Button';
+import { RippleSpinner } from '../../components-ui/Spinner/RippleSpinner';
+import { getBaseCoin } from '../../bridge/functions/bridge';
 import { DefinedStyles } from '../../utils/DefinedStyles';
+import { Page } from '../../components-ui/Page';
+import { PageContent } from '../../components-ui/PageContent';
+import { useSizeXs, ViewportMediumUp } from '../../components-ui/Responsive';
+import { PageHeader } from '../../components-ui/PageHeader';
+import { useCurrencyBalance } from '../../state/wallet/hooks';
+import { BridgeHeader } from '../../bridge/feature/BridgeHeader';
+import Reminder from '../../bridge/feature/Reminder';
+import { GetTokenListByChainID } from '../../bridge/core/getBridgeInfo';
+import { getNodeBalance } from '../../bridge/functions/getBalanceV2';
+import { useAnyswapToken } from '../../bridge/hooks/useAnyswapToken';
+import Image from '../../components-ui/Image';
+import { NetworkGuardWrapper } from '../../guards/Network';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
+import { ExternalLink } from '../../components-ui/ExternalLink';
 
-export default function Bridge() {
-  const [currentImage, setCurrentImage] = useState(0);
-  const [isViewerOpen, setIsViewerOpen] = useState(false);
+let intervalFN: any = '';
 
-  const images = [
-    '/img/bridge/bridge0.png',
-    '/img/bridge/bridge1.png',
-    '/img/bridge/bridge2.png',
-    '/img/bridge/bridge3.png',
-    '/img/bridge/bridge4.png',
-    '/img/bridge/bridge5.png',
-    '/img/bridge/bridge6.png',
-  ];
+export enum BridgeType {
+  //   deposit = 'deposit',
+  bridge = 'bridge',
+}
 
-  const openImageViewer = useCallback((index) => {
-    setCurrentImage(index);
-    setIsViewerOpen(true);
-  }, []);
+export enum SelectListType {
+  INPUT = 'INPUT',
+  OUTPUT = 'OUTPUT',
+}
 
-  const closeImageViewer = () => {
-    setCurrentImage(0);
-    setIsViewerOpen(false);
+const unknown =
+  'https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/unknown.png';
+
+export function Bridge() {
+  const { account, chainId } = useActiveWeb3React();
+  // const { push } = useRouter();
+
+  // tx adder
+  // const addTransaction = useTransactionAdder();
+
+  // chain selection modals
+  const [chainFromModalOpen, setChainFromModal] = useState(false);
+  const [chainToModalOpen, setChainToModal] = useState(false);
+
+  // chain selection modal handlers
+  const openChainFromModal = () => setChainFromModal(true);
+  const closeChainFromModal = () => setChainFromModal(false);
+  const openChainToModal = () => setChainToModal(true);
+  const closeChainToMoal = () => setChainToModal(false);
+
+  // bridge amount and currency
+  const [inputBridgeValue, setInputBridgeValue] = useState('');
+  const [selectCurrency, setSelectCurrency] = useState<any>();
+  const [selectCurrencyType, setSelectCurrencyType] = useState<any>(
+    SelectListType.INPUT,
+  );
+
+  // to chain state / handler
+  const [selectChain, setSelectChain] = useState<any>();
+  const handleSelectChain = (chainId) => {
+    setSelectChain(chainId);
   };
+
+  // current chain Info
+  const chainFrom = {
+    id: chainId,
+    icon: NETWORK_ICON[chainId],
+    name: NETWORK_LABEL[chainId],
+  };
+
+  // to chain info
+  const chainTo = {
+    id: selectChain,
+    icon: selectChain ? NETWORK_ICON[selectChain] : unknown,
+    name: selectChain ? NETWORK_LABEL[selectChain] : 'Select Chain',
+  };
+
+  // curChain / destChain info balance + ts tracker
+  const [curChain, setCurChain] = useState<any>({
+    chain: chainId,
+    ts: '',
+    bl: '',
+  });
+  const [destChain, setDestChain] = useState<any>({
+    chain: '',
+    ts: '',
+    bl: '',
+  });
+
+  // router token list
+  //   const allTokensList = useFetchRouterTokenList();
+  const [allTokens, setAllTokens] = useState<any>({});
+
+  const [selectChainList, setSelectChainList] = useState<Array<any>>([]);
+
+  // custom recipient
+  const [recipient, setRecipient] = useState<any>(account ?? '');
+
+  // bridge swap type
+  const [swapType, setSwapType] = useState(BridgeType.bridge);
+
+  const allTokensList = useMemo(() => allTokens?.[swapType] ?? {}, [
+    allTokens,
+    swapType,
+  ]);
+
+  const allTokensArray = useMemo(
+    () =>
+      Object.values(allTokensList).filter((token: any) => {
+        if (token.destChains[selectChain] === undefined) {
+          return false;
+        }
+        return true;
+      }),
+    [allTokensList, selectChain],
+  );
+
+  const [count, setCount] = useState<number>(0);
+  const [intervalCount, setIntervalCount] = useState<number>(0);
+
+  // router currency select modal
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalTipOpen, setModalTipOpen] = useState(false);
+
+  const [delayAction, setDelayAction] = useState<boolean>(false);
+
+  // default bridge token for a network
+  const initBridgeToken = '';
+
+  useEffect(() => {
+    setSelectChain(getCurChainInfo(chainId).crossBridgeInitChain);
+  }, [chainId]);
+
+  useEffect(() => {
+    const urlParams =
+      selectCurrency &&
+      selectCurrency.chainId?.toString() === chainId?.toString() &&
+      selectChain &&
+      selectCurrency.destChains[selectChain] !== undefined
+        ? selectCurrency.address
+        : initBridgeToken
+        ? initBridgeToken
+        : getCurChainInfo(chainId).crossBridgeInitTokens[
+            parseInt(selectChain)
+          ]?.toLowerCase();
+
+    const list: any = {};
+    if (allTokensArray.length > 0) {
+      for (const token in allTokensList) {
+        const obj = allTokensList;
+        if (
+          !isAddress(token, chainId) &&
+          token !== getCurChainInfo(chainId).symbol
+        )
+          continue;
+        if (obj[token].destChains[selectChain] === undefined) {
+          continue;
+        }
+        list[token] = {
+          ...obj[token],
+        };
+        if (
+          !selectCurrency ||
+          selectCurrency?.chainId?.toString() !== chainId?.toString() ||
+          selectCurrency.destChains[selectChain] === undefined
+        ) {
+          if (
+            urlParams &&
+            (urlParams === token.toLowerCase() ||
+              list[token]?.name?.toLowerCase() === urlParams ||
+              list[token]?.symbol?.toLowerCase() === urlParams)
+          ) {
+            setSelectCurrency(list[token]);
+          }
+        }
+      }
+    } else {
+      setSelectCurrency('');
+    }
+  }, [allTokensArray, swapType, chainId, selectCurrencyType, selectChain]);
+
+  const bridgeConfig = useMemo(() => {
+    if (
+      selectCurrency?.address &&
+      (allTokensList[selectCurrency?.address.toLowerCase()] !== undefined ||
+        allTokensList[selectCurrency?.address] !== undefined)
+    ) {
+      return (
+        allTokensList[selectCurrency?.address.toLowerCase()] ||
+        allTokensList[selectCurrency?.address]
+      );
+    }
+    return '';
+  }, [selectCurrency, allTokensList]);
+
+  const destConfig = useMemo(() => {
+    if (bridgeConfig && bridgeConfig?.destChains[selectChain]) {
+      return bridgeConfig?.destChains[selectChain];
+    }
+    return false;
+  }, [bridgeConfig, selectChain]);
+
+  // useEffect(() => {
+  //   if (
+  //     (selectCurrency &&
+  //       chainId?.toString() !== selectCurrency?.chainId?.toString()) ||
+  //     (!bridgeConfig && selectCurrency)
+  //   ) {
+  //     // history.go(0);
+  //   }
+  // }, [chainId, bridgeConfig, swapType]);
+
+  const isUnderlying = useMemo(() => {
+    if (selectCurrency?.underlying) {
+      return true;
+    }
+    return false;
+  }, [selectCurrency, selectChain, destConfig]);
+
+  const isDestUnderlying = useMemo(() => {
+    if (destConfig?.underlying) {
+      return true;
+    }
+    return false;
+  }, [destConfig]);
+
+  const isNativeToken = useMemo(() => {
+    return false;
+  }, [selectCurrency, chainId]);
+
+  const isUsePool = useMemo(() => {
+    if (selectCurrency?.symbol?.toLowerCase() === 'prq') {
+      return false;
+    }
+    return true;
+  }, [selectCurrency]);
+
+  const formatCurrency0 = useAnyswapToken(
+    selectCurrency?.underlying
+      ? {
+          ...selectCurrency,
+          address: selectCurrency.underlying.address,
+          name: selectCurrency.underlying.name,
+          symbol: selectCurrency.underlying?.symbol,
+          decimals: selectCurrency.underlying.decimals,
+        }
+      : selectCurrency,
+  );
+
+  // formats selected curreny to AnyswapToken Class
+  const formatCurrency = useAnyswapToken(chainId ? selectCurrency : undefined);
+  // formats AnyswapToken to noraml Token class
+  const normalCurrency = toNormalCurrency(selectCurrency, chainId);
+  const balance = useCurrencyBalance(account, normalCurrency);
+  // uses the normal Token class to utilize CurrencyAmount
+  const formatInputBridgeValue = tryParseAmount(
+    inputBridgeValue,
+    normalCurrency,
+  );
+
+  // track pending approval
+  const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false);
+  // approval callback
+  const [approval, approveCallback] = useApproveCallback(
+    formatInputBridgeValue ?? undefined,
+    formatCurrency0?.address,
+  );
+
+  // useEffect to track if approval has been submitted
+  useEffect(() => {
+    if (approval === ApprovalState.PENDING) {
+      setApprovalSubmitted(true);
+    }
+  }, [approval, approvalSubmitted]);
+
+  // delay button enabling
+  function onDelay() {
+    setDelayAction(true);
+  }
+
+  // enables button
+  function onClear(type?: any) {
+    setDelayAction(false);
+    setModalTipOpen(false);
+    if (!type) {
+      setInputBridgeValue('');
+    }
+  }
+
+  // if selectCurrency is changed, reset destChain to none
+  useEffect(() => {
+    setDestChain('');
+  }, [selectChain, selectCurrency]);
+
+  // polls liquidity pool for selected currency
+
+  const getSelectPool = useCallback(async () => {
+    if (
+      selectCurrency &&
+      chainId &&
+      (isUnderlying || isDestUnderlying) &&
+      isUsePool
+    ) {
+      const curChain = isUnderlying ? chainId : selectChain;
+      const destChain = isUnderlying ? selectChain : chainId;
+      const tokenA = isUnderlying
+        ? selectCurrency
+        : selectCurrency?.destChains[selectChain];
+      const dec = selectCurrency?.decimals;
+
+      const CC: any = await getNodeBalance(
+        tokenA?.underlying?.address,
+        tokenA?.address,
+        curChain,
+        dec,
+      );
+      let DC: any = '';
+      if (!isNaN(selectChain)) {
+        DC = await getNodeBalance(
+          // tokenA?.underlying?.address,
+          selectCurrency?.destChains[selectChain]?.DepositAddress,
+          selectCurrency.symbol,
+          destChain,
+          dec,
+        );
+      }
+      if (CC) {
+        if (isUnderlying) {
+          setCurChain({
+            chain: chainId,
+            ts: CC,
+          });
+        } else {
+          setDestChain({
+            chain: selectChain,
+            ts: CC,
+          });
+        }
+      }
+      if (DC) {
+        if (isUnderlying) {
+          setDestChain({
+            chain: selectChain,
+            ts: DC,
+          });
+        } else {
+          setCurChain({
+            chain: chainId,
+            ts: DC,
+          });
+        }
+      }
+      if (intervalFN) clearTimeout(intervalFN);
+      intervalFN = setTimeout(() => {
+        setIntervalCount(intervalCount + 1);
+      }, 1000 * 10);
+    }
+  }, [
+    selectCurrency,
+    chainId,
+    account,
+    selectChain,
+    intervalCount,
+    isDestUnderlying,
+    isUnderlying,
+  ]);
+
+  // executes getSelectPool on start
+  useEffect(() => {
+    getSelectPool();
+  }, [getSelectPool]);
+
+  const {
+    wrapType,
+    execute: onWrap,
+    inputError: wrapInputError,
+  } = useCrossBridgeCallback(
+    formatCurrency ? formatCurrency : undefined,
+    destConfig?.type === 'swapin' ? destConfig.DepositAddress : recipient,
+    inputBridgeValue,
+    selectChain,
+    destConfig?.type,
+    isUnderlying
+      ? selectCurrency?.underlying?.address
+      : selectCurrency?.address,
+    destConfig?.pairid,
+  );
+
+  const outputBridgeValue = useMemo(() => {
+    if (inputBridgeValue && destConfig) {
+      const baseFee = destConfig.BaseFeePercent
+        ? (destConfig.MinimumSwapFee / (100 + destConfig.BaseFeePercent)) * 100
+        : 0;
+      const fee =
+        Number(inputBridgeValue) * Number(destConfig.SwapFeeRatePerMillion);
+      let value = Number(inputBridgeValue) - fee;
+      if (fee < Number(destConfig.MinimumSwapFee)) {
+        value = Number(inputBridgeValue) - Number(destConfig.MinimumSwapFee);
+      } else if (fee > destConfig.MaximumSwapFee) {
+        value = Number(inputBridgeValue) - Number(destConfig.MaximumSwapFee);
+      } else {
+        value = Number(inputBridgeValue) - fee - baseFee;
+      }
+      if (value && Number(value) && Number(value) > 0) {
+        return thousandBit(
+          formatDecimal(value, Math.min(6, selectCurrency.decimals)),
+          'no',
+        );
+      }
+      return '';
+    } else {
+      return '';
+    }
+  }, [inputBridgeValue, destConfig]);
+
+  const isCrossBridge = useMemo(() => {
+    const isAddr = isAddress(recipient, selectChain);
+    if (
+      account &&
+      destConfig &&
+      selectCurrency &&
+      inputBridgeValue &&
+      !wrapInputError &&
+      Boolean(isAddr) &&
+      (!(isUnderlying && isDestUnderlying) ||
+        ((isUnderlying || isDestUnderlying) && destChain))
+    ) {
+      if (
+        Number(inputBridgeValue) < Number(destConfig.MinimumSwap) ||
+        Number(inputBridgeValue) > Number(destConfig.MaximumSwap) ||
+        ((isUnderlying || isDestUnderlying) &&
+          isUsePool &&
+          Number(inputBridgeValue) > Number(destChain.ts))
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return true;
+    }
+  }, [
+    selectCurrency,
+    account,
+    destConfig,
+    inputBridgeValue,
+    recipient,
+    swapType,
+    destChain,
+    wrapInputError,
+    selectChain,
+    isUnderlying,
+    isDestUnderlying,
+    isUsePool,
+  ]);
+
+  // // error - looks the same as isInputError = isCrosBridge
+  // const isInputError = useMemo(() => {
+  //   if (
+  //     account &&
+  //     destConfig &&
+  //     selectCurrency &&
+  //     inputBridgeValue &&
+  //     isCrossBridge
+  //   ) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }, [account, destConfig, selectCurrency, inputBridgeValue, isCrossBridge]);
+
+  // button text
+
+  const btnTxt = useMemo(() => {
+    if (wrapInputError && inputBridgeValue) {
+      return wrapInputError;
+    } else if (destConfig && inputBridgeValue) {
+      if (Number(inputBridgeValue) > Number(destConfig.MaximumSwap)) {
+        return 'Over Maximum Limit';
+      }
+      if (Number(inputBridgeValue) < Number(destConfig.MinimumSwap)) {
+        return 'Below Minimum Limit';
+      }
+    } else if (
+      (isUnderlying || isDestUnderlying) &&
+      isUsePool &&
+      Number(inputBridgeValue) > Number(destChain.ts)
+    ) {
+      return 'Dest Liquidity Insufficient';
+    } else if (wrapType === WrapType.WRAP) {
+      return 'Confirm';
+    }
+    return 'Confirm';
+  }, [
+    wrapInputError,
+    inputBridgeValue,
+    swapType,
+    isUnderlying,
+    isDestUnderlying,
+    isUsePool,
+  ]);
+
+  useEffect(() => {
+    if (account) {
+      if (destConfig?.type === 'swapin' || !isNaN(selectChain)) {
+        setRecipient(account);
+      } else {
+        setRecipient('');
+      }
+    } else {
+      setRecipient('');
+    }
+  }, [account, destConfig, swapType, selectChain]);
+
+  useEffect(() => {
+    if (chainId) {
+      setAllTokens({});
+      GetTokenListByChainID({
+        srcChainID: chainId,
+        chainList: getCurConfigInfo().showChain,
+      }).then((res: any) => {
+        if (res) {
+          setAllTokens(res);
+        } else {
+          setTimeout(() => {
+            setCount(count + 1);
+          }, 1000);
+          // setBridgeConfig('')
+        }
+      });
+    } else {
+      setAllTokens({});
+    }
+    // }, [chainId, swapType, count, selectCurrency])
+  }, [chainId, count]);
+  // useEffect(() => {
+  //   if (selectCurrency) {
+  //     console.log('url iii', selectCurrency);
+  //     const arr: any = [];
+
+  //     for (const c in selectCurrency?.destChains) {
+  //       if (c?.toString() === chainId?.toString()) continue;
+  //       console.log('url', c?.toString(), chainId?.toString());
+  //       if (
+  //         (getCurConfigInfo().showChain.length > 0 &&
+  //           !getCurConfigInfo().showChain.includes(c)) ||
+  //         c?.toString() === chainId?.toString() ||
+  //         !getCurChainInfo(chainId) ||
+  //         !SUPPORTED_NETWORKS[parseInt(c)]
+  //       )
+  //         continue;
+  //       arr.push(c);
+  //     }
+  //     console.log('url arr', arr);
+
+  //     let useChain: any = selectChain
+  //       ? selectChain
+  //       : getCurChainInfo(chainId).bridgeInitChain;
+
+  //     if (arr.length > 0) {
+  //       if (!useChain || (useChain && !arr.includes(useChain))) {
+  //         for (const c of arr) {
+  //           if (getCurConfigInfo()?.hiddenChain?.includes(c)) continue;
+  //           useChain = c;
+  //           break;
+  //         }
+  //       }
+  //     }
+  //     console.log('url bgg');
+  //     setSelectChain(useChain);
+  //     setSelectChainList(arr);
+  //   } else {
+  //     let initChain = getCurChainInfo(chainId).bridgeInitChain;
+  //     setSelectChain(initChain);
+  //   }
+  // }, [selectCurrency, swapType, chainId]);
+
+  const handleModalDismiss = () => setModalOpen(false);
+  const isViewportXs = useSizeXs();
   return (
     <>
       <Head>
@@ -40,305 +612,294 @@ export default function Bridge() {
         <meta
           key="description"
           name="description"
-          content="Bridge your assets to SHIDEN network using anyswap"
+          content="Bridge assets from one EVM chain to another, powered by Anyswap"
         />
       </Head>
-      <Page id="bridge-page" className={DefinedStyles.page}>
-        {isViewerOpen && (
-          <ImageViewer
-            backgroundStyle={{ zIndex: 10 }}
-            src={images}
-            currentIndex={currentImage}
-            disableScroll={false}
-            closeOnClickOutside={true}
-            onClose={closeImageViewer}
-          />
-        )}
-        <PageHeader title="Bridge" />
-
+      <Page id="router-page" className={DefinedStyles.page}>
+        <ViewportMediumUp>
+          <PageHeader title="Bridge" />
+        </ViewportMediumUp>
         <PageContent>
-          <div className="space-y-8 pb-[60px] w-full max-w-[1000px]">
-            <Alert
-              className={DefinedStyles.pageAlertFull}
-              message={
-                <div>
-                  STND can be bridged between Ethereum and Shiden Network using{' '}
-                  <ExternalLink
-                    href="https://anyswap.exchange/#/router"
-                    className="!whitespace-normal"
-                  >
-                    Anyswap Router.
-                  </ExternalLink>
-                  <br />
-                  Other ERC-20 assets can be bridged using{' '}
-                  <ExternalLink
-                    href="https://anyswap.exchange/#/bridge"
-                    className="!whitespace-normal"
-                  >
-                    Anyswap Bridge.
-                  </ExternalLink>
-                  <br />
-                  <br />
-                  For more details, please read the guide below on how to
-                  transfer STND from Ethereum to Shiden Network
-                </div>
-              }
-              type="warning"
+          <div className="space-y-4 w-full md:max-w-[600px] bg-transparent sm:bg-opaque rounded-20 p-0 sm:p-5 text-text">
+            <RouterCurrencySelectModal
+              currencyList={allTokensArray}
+              isOpen={modalOpen}
+              onDismiss={handleModalDismiss}
+              onCurrencySelect={(inputCurrency) => {
+                setSelectCurrency(inputCurrency);
+              }}
             />
-            <div className="flex space-x-4">
-              <ExternalLink
-                href="https://anyswap.exchange/#/router"
-                className="!whitespace-normal"
-              >
-                <Button>
-                  <div className="flex items-center font-bold text-lg">
-                    <div className="mr-2">Router</div>
+            <RouterChainSelectModal
+              isOpen={chainFromModalOpen}
+              onDismiss={closeChainFromModal}
+              chainIds={SUPPORTED_NETWORK_IDS.filter(
+                (id) => id != chainFrom.id,
+              )}
+              isFrom
+            />
+            <RouterChainSelectModal
+              onChainSelect={handleSelectChain}
+              isOpen={chainToModalOpen}
+              onDismiss={closeChainToMoal}
+              chainIds={SUPPORTED_NETWORK_IDS.filter(
+                (id) =>
+                  id != chainFrom.id &&
+                  getCurChainInfo(chainId).crossBridgeInitTokens[id],
+              )}
+            />
+            <div className="flex justify-center w-full">
+              <BridgeHeader />
+            </div>
+            <div className="flex flex-col sm:flex-row items-center justify-center space-y-2">
+              <div className="flex-1 w-full space-y-2 flex flex-col items-end sm:items-stretch">
+                <div className="text-grey text-sm text-right sm:text-center pr-4 sm:pr-0">
+                  From
+                </div>
+                <div
+                  className="
+                  cursor-pointer
+                  inline-flex sm:flex 
+                  flex-row sm:flex-col
+                  justify-end
+                  items-center
+                  bg-opaque rounded-20 
+                  px-4 py-4
+                  sm:px-8 sm:py-8
+                  space-y-0
+                  space-x-3
+                  sm:space-y-6
+                  sm:space-x-0"
+                  onClick={openChainFromModal}
+                >
+                  <div
+                    className={classNames(
+                      'bg-white rounded-full overflow-hidden',
+                      isViewportXs ? 'w-[42px] h-[42px]' : 'w-[72px] h-[72px]',
+                    )}
+                  >
                     <Image
-                      src="/img/bridge/anyswap.svg"
-                      width="100px"
-                      height="50px"
+                      src={chainFrom?.icon ?? unknown}
+                      alt={`${chainFrom?.name} Network`}
+                      width="100%"
+                      height="100%"
                     />
                   </div>
-                </Button>
-              </ExternalLink>
+                  <div
+                    className="
+                    text-grey sm:border border-grey 
+                    rounded-20 px-3 py-1 
+                    font-bold
+                    flex items-center space-x-1
+                    "
+                  >
+                    <div>{chainFrom?.name}</div>
+                    <ChevronDownIcon className="w-3 h-3" />
+                  </div>
+                </div>
+              </div>
+              {!isViewportXs && (
+                <div className="bg-icon-btn-grey rounded-full p-3 mx-3">
+                  <ArrowRightIcon className="w-6 h-6" />
+                </div>
+              )}
+              <div className="flex-1 w-full space-y-2 flex flex-col items-end sm:items-stretch">
+                <div className="text-grey text-sm text-right sm:text-center pr-4 sm:pr-0">
+                  To
+                </div>
+                <div
+                  className="
+               cursor-pointer
+               inline-flex sm:flex 
+               flex-row sm:flex-col
+               justify-end
+               items-center
+               bg-opaque rounded-20
+               px-4 py-4
+               sm:px-8 sm:py-8
+               space-y-0
+               space-x-3
+               sm:space-y-6
+               sm:space-x-0"
+                  onClick={openChainToModal}
+                >
+                  <div
+                    className={classNames(
+                      'bg-white rounded-full overflow-hidden',
+                      isViewportXs ? 'w-[42px] h-[42px]' : 'w-[72px] h-[72px]',
+                    )}
+                  >
+                    <Image
+                      src={chainTo?.icon ?? unknown}
+                      alt={`${chainTo?.name} Network`}
+                      width="100%"
+                      height="100%"
+                    />
+                  </div>
+                  <div
+                    className="
+                    text-grey sm:border border-grey 
+                    rounded-20 px-3 py-1 
+                    font-bold
+                    flex items-center space-x-1
+                    "
+                  >
+                    <div>{chainTo?.name}</div>
+                    <ChevronDownIcon className="w-3 h-3" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="space-y-2 text-sm mt-4">
+              <div className="text-grey text-right px-4">Token to bridge</div>
+              <div className="rounded-20 sm:bg-opaque-secondary sm:px-4 py-1">
+                <RouterCurrencyInputPanel
+                  currency={normalCurrency}
+                  amount={inputBridgeValue}
+                  max={balance}
+                  onCurrencyClick={() => setModalOpen(true)}
+                  onAmountChange={setInputBridgeValue}
+                />
+              </div>
+            </div>
+            {/* {account && chainId && isUnderlying && isDestUnderlying ? (
+              <RouterLiquidityPool
+                curChainInfo={chainFrom}
+                destChainInfo={chainTo}
+                curChain={curChain}
+                destChain={destChain}
+                isUnderlying={isUnderlying}
+                isDestUnderlying={isDestUnderlying}
+              />
+            ) : (
+              ''
+            )} */}
+
+            {outputBridgeValue && (
+              <div>
+                {/* <Image src={bridgeConfig?.logoUrl} width="24px" height="24px" /> */}
+                <div className="flex justify-center items-center space-x-2">
+                  <div className="font-bold">Output Amount:</div>
+
+                  <div>{`${outputBridgeValue} ${
+                    destConfig?.symbol
+                      ? destConfig?.symbol.length > 20
+                        ? destConfig?.symbol.slice(0, 4) +
+                          '...' +
+                          destConfig?.symbol.slice(
+                            destConfig?.symbol.length - 5,
+                            destConfig?.symbol.length,
+                          )
+                        : getBaseCoin(destConfig?.symbol, chainId)
+                      : null
+                  }`}</div>
+                </div>
+              </div>
+            )}
+            <div className={DefinedStyles.divider} />
+            <Reminder
+              bridgeConfig={selectCurrency}
+              currency={selectCurrency}
+              selectChain={selectChain}
+            />
+            {!account ? (
+              <WalletConnector />
+            ) : !isNativeToken &&
+              selectCurrency &&
+              selectCurrency.underlying &&
+              selectCurrency.underlying.isApprove &&
+              inputBridgeValue &&
+              (approval === ApprovalState.NOT_APPROVED ||
+                approval === ApprovalState.PENDING) ? (
+              <ButtonConfirmed
+                className={DefinedStyles.fullButton}
+                onClick={() => {
+                  onDelay();
+                  approveCallback()
+                    .then(() => {
+                      onClear(1);
+                    })
+                    .catch(() => {
+                      setDelayAction(false);
+                    });
+                }}
+                disabled={
+                  approval !== ApprovalState.NOT_APPROVED ||
+                  approvalSubmitted ||
+                  delayAction
+                }
+                // confirmed={approval === ApprovalState.APPROVED}
+              >
+                {approval === ApprovalState.PENDING ? (
+                  <div className="flex items-center space-x-2">
+                    {'Approving'} <RippleSpinner size={16} />
+                  </div>
+                ) : approvalSubmitted ? (
+                  'Approved'
+                ) : (
+                  'Approve' +
+                  ' ' +
+                  getBaseCoin(
+                    selectCurrency?.symbol ?? selectCurrency?.symbol,
+                    chainId,
+                  )
+                )}
+              </ButtonConfirmed>
+            ) : (
+              <Button
+                className={DefinedStyles.fullButton}
+                disabled={isCrossBridge || delayAction}
+                onClick={() => {
+                  // <Button disabled={delayAction} onClick={() => {
+                  onDelay();
+                  if (onWrap)
+                    onWrap()
+                      .then(() => {
+                        onClear();
+                      })
+                      .catch(() => {
+                        setDelayAction(false);
+                      });
+                  //   if (isRouter) {
+                  //     if (!selectCurrency || !isUnderlying) {
+                  //       if (onWrap)
+                  //         onWrap().then(() => {
+                  //           onClear();
+                  //         });
+                  //     } else {
+                  //       // if (onWrapUnderlying) onWrapUnderlying()
+                  //       if (isNativeToken) {
+                  //         if (onWrapNative)
+                  //           onWrapNative().then(() => {
+                  //             onClear();
+                  //           });
+                  //       } else {
+                  //         if (onWrapUnderlying) {
+                  //           onWrapUnderlying().then(() => {
+                  //             onClear();
+                  //           });
+                  //         }
+                  //       }
+                  //     }
+                  //   }
+                }}
+              >
+                {btnTxt}
+              </Button>
+            )}
+            <div>
               <ExternalLink
                 href="https://anyswap.exchange/#/bridge"
                 className="!whitespace-normal"
               >
-                <Button>
-                  <div className="flex items-center font-bold text-lg">
-                    <div className="mr-2">Bridge</div>
-                    <Image
-                      src="/img/bridge/anyswap.svg"
-                      width="100px"
-                      height="50px"
-                    />
-                  </div>
-                </Button>
+                <div className="flex flex-col justify-center items-center">
+                  <div className="text-xs text-text">Powered by</div>
+                  <Image
+                    src="/img/bridge/anyswap.svg"
+                    width="100px"
+                    height="50px"
+                  />
+                </div>
               </ExternalLink>
-            </div>
-
-            <div
-              className="
-              p-0 md:p-8 
-              rounded-20  
-              md:bg-opaque"
-            >
-              <div className="space-y-4">
-                <div className="">
-                  <ExternalLink
-                    href="https://medium.com/@stakenode/standard-protocol-experience-the-dex-7f5134eb28e6"
-                    className="font-bold text-2xl break-normal !whitespace-normal"
-                  >
-                    Crossing STND between Ethereum and Shiden Network
-                  </ExternalLink>
-                  <div className="text-xs">by Jimmy Tudesky</div>
-                </div>
-                <div>
-                  To cross-chain #STND from ethereum erc20 to Shiden #STND, You
-                  need to use the router provided by Anyswap and have STND
-                  tokens on the Metamask wallet.
-                </div>
-                <div>
-                  Go to the Anyswap router page —
-                  <ExternalLink href="https://anyswap.exchange/#/router">
-                    https://anyswap.exchange/#/router
-                  </ExternalLink>{' '}
-                  and connect the Metamask wallet on the ethereum network.
-                </div>
-                <div
-                  className="cursor-pointer"
-                  onClick={() => openImageViewer(0)}
-                >
-                  <Image
-                    src={images[0]}
-                    width={6}
-                    height={3}
-                    layout="responsive"
-                  />
-                </div>
-                <div>
-                  Click on the token selection drop-down menu on the ethereum
-                  network section, and select STND from the list, or simply type
-                  STND in the search name section.
-                </div>
-                <div
-                  className="cursor-pointer"
-                  onClick={() => openImageViewer(1)}
-                >
-                  <Image
-                    src={images[1]}
-                    width={6}
-                    height={3}
-                    layout="responsive"
-                  />
-                </div>
-                <div>
-                  Enter the #STND amount You want to send via the router.
-                </div>
-                <div className="font-bold italic">
-                  *If You are using the router for the first time, You will have
-                  to hit the “Approve” button first and confirm the transaction
-                  in Metamask. Please keep in mind that each transaction needs
-                  some eth for fees. *Please read carefully all Infos at the
-                  bottom about minimum and maximum transfer amounts and tx fees.
-                </div>
-                <div
-                  className="cursor-pointer"
-                  onClick={() => openImageViewer(2)}
-                >
-                  <Image
-                    src={images[2]}
-                    width={6}
-                    height={3}
-                    layout="responsive"
-                  />
-                </div>
-                <div>
-                  After You approve the #STND token spend in Metamask You are
-                  able to do Swap with the router. Click “swap” and confirm tx
-                  in Metamask.
-                </div>
-                <div
-                  className="cursor-pointer"
-                  onClick={() => openImageViewer(3)}
-                >
-                  <Image
-                    src={images[3]}
-                    width={6}
-                    height={3}
-                    layout="responsive"
-                  />
-                </div>
-                <div>
-                  After the transaction is completed — (You can check with
-                  Metamask or explorer — <br />
-                  <span className="font-bold">
-                    *Please keep in mind that the estimated Time of cross-chain
-                    Arrival is around 10–30 min.)
-                  </span>
-                </div>
-                <div
-                  className="max-w-[400px] cursor-pointer"
-                  onClick={() => openImageViewer(4)}
-                >
-                  <Image
-                    src={images[4]}
-                    width={6}
-                    height={3}
-                    layout="responsive"
-                  />
-                </div>
-                <div>
-                  Your STND will be available on Shiden Network Metamask wallet
-                  account. Just switch networks from ethereum to Shiden. Now You
-                  are ready to use <span className="font-bold">#STND</span> on
-                  Standard DEX on Shiden Network.
-                </div>
-
-                <div className="font-bold italic">
-                  To cross other assets like #USDC, #USDT, #WBTC, etc. which You
-                  will eventually use on Standard DEX for liquidity provision
-                  and LP farming, You need to use Anyswap bridge —
-                  https://anyswap.exchange/#/bridge
-                </div>
-                <div>
-                  To use the Anyswap bridge, connect with Metamask on the
-                  ethereum network. Select token You want to bridge on the
-                  ethereum side, select Shiden Network in the lower section as
-                  destination network and confirm the transaction with Metamask.
-                </div>
-                <div
-                  className="cursor-pointer"
-                  onClick={() => openImageViewer(5)}
-                >
-                  <Image
-                    src={images[5]}
-                    width={6}
-                    height={3}
-                    layout="responsive"
-                  />
-                </div>
-                <div>
-                  After confirmation in Metamask, You can track Your bridge
-                  progress with the provided link in the pop-up.
-                </div>
-                <div
-                  className="max-w-[400px] cursor-pointer"
-                  onClick={() => openImageViewer(6)}
-                >
-                  <Image
-                    src={images[6]}
-                    width={6}
-                    height={3}
-                    layout="responsive"
-                  />
-                </div>
-                <div className="font-bold italic">
-                  After the transaction is confirmed on Anyswap bridge, change
-                  the network in Metamask to Shiden and Your assets are ready to
-                  use on Standard DEX
-                </div>
-                <Button>
-                  <div className="flex items-center font-bold text-lg">
-                    <div className="mr-2">Go to</div>
-                    <Image
-                      src="/img/bridge/anyswap.svg"
-                      width="100px"
-                      height="50px"
-                    />
-                  </div>
-                </Button>
-              </div>
-            </div>
-
-            <div
-              className="
-              p-0 md:p-8 
-              rounded-20  
-              md:bg-opaque"
-            >
-              <div className="space-y-4">
-                <div className="">
-                  <ExternalLink
-                    href="https://medium.com/@stakenode/standard-protocol-experience-the-dex-7f5134eb28e6"
-                    className="font-bold text-2xl !whitespace-normal"
-                  >
-                    Transferring Shiden #SDN token from polkadot.js or CEX to
-                    Metamask account{' '}
-                  </ExternalLink>
-                  <div className="text-xs">by Jimmy Tudesky</div>
-                </div>
-                <div>
-                  To use the <span className="font-bold">#SDN</span> token on
-                  Standard Protocol DEX, to provide liquidity and enter farming,
-                  You need to have <span className="font-bold">#SDN</span>{' '}
-                  tokens on Metamask on Shiden Network.
-                </div>
-                <div>
-                  To get #SDN tokens to Metamask simply follow those tutorials
-                  below. One is to send tokens directly from CEX, another is in
-                  regards to the polkadot.js interface.
-                </div>
-                <div>
-                  👉 Kucoin:{' '}
-                  <ExternalLink
-                    href="https://stakenode.medium.com/?p=de1bba4e92a2"
-                    className="!whitespace-normal"
-                  >
-                    https://stakenode.medium.com/?p=de1bba4e92a2
-                  </ExternalLink>
-                </div>
-                <div>
-                  👉 Polkadot.js:{' '}
-                  <ExternalLink
-                    href="https://stakenode.medium.com/?p=819da3798f45"
-                    className="!whitespace-normal"
-                  >
-                    https://stakenode.medium.com/?p=819da3798f45
-                  </ExternalLink>
-                </div>
-              </div>
             </div>
           </div>
         </PageContent>
@@ -370,3 +931,8 @@ export default function Bridge() {
   //   setCurrencyAmount('')
   // }, [chainFrom, anyswapInfo, chainTo.id])
 }
+
+Bridge.Guard = NetworkGuardWrapper(
+  NORMAL_GUARDED_CHAINS.concat(ChainId.BSC, ChainId.MATIC),
+);
+export default Bridge;

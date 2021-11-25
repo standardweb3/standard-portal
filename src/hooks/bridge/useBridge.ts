@@ -98,3 +98,18 @@ export function useAnyswapInfo() {
 
   return { anyswapInfo, anyswapError: error };
 }
+
+export function useAnyswapBridgeInfo() {
+  const { chainId } = useActiveWeb3React();
+
+  const {
+    data,
+    error,
+  }: SWRResponse<
+    AnyswapTokensMap,
+    Error
+  > = useSWR(
+    `https://bridgeapi.anyswap.exchange/v3/serverInfo?chainId=${chainId}`,
+    (url) => fetch(url).then((result) => result.json()),
+  );
+}

@@ -39,8 +39,10 @@ import { WavySpinner } from '../../components-ui/Spinner/WavySpinner';
 const WeekChart = dynamic(() => import('../../features/trade/WeekChart'), {
   ssr: false,
 });
+import { NetworkGuardWrapper } from '../../guards/Network';
+import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
 
-export default function Tokens() {
+function Tokens() {
   const { chainId } = useActiveWeb3React();
   const router = useRouter();
   useExchangeAvailability(() => router.push('/trade/buy'));
@@ -454,3 +456,6 @@ export default function Tokens() {
     </>
   );
 }
+
+Tokens.Guard = NetworkGuardWrapper(NORMAL_GUARDED_CHAINS);
+export default Tokens;

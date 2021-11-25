@@ -53,6 +53,10 @@ import {
 } from '../../services/graph/hooks/dividend';
 import { ExternalLink } from '../../components-ui/ExternalLink';
 import Countdown from 'react-countdown';
+import { NetworkGuardWrapper } from '../../guards/Network';
+import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
+// import { useBondedStrategy } from '../../services/graph/hooks/dividend';
+// import { useBundle, useStandardPrice } from '../../services/graph';
 
 export const BondWrapper = styled.div`
   @media only screen and (min-width: 640px) {
@@ -62,7 +66,7 @@ export const BondWrapper = styled.div`
   }
 `;
 
-export default function Dividend() {
+function Dividend() {
   const router = useRouter();
   useExchangeAvailability(() => router.push('/v2dividend'));
   const { account, chainId } = useActiveWeb3React();
@@ -515,3 +519,6 @@ export default function Dividend() {
     </>
   );
 }
+
+Dividend.Guard = NetworkGuardWrapper(NORMAL_GUARDED_CHAINS);
+export default Dividend;

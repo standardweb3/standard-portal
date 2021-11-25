@@ -67,8 +67,10 @@ import { TransactionSettingsWithGas } from '../../components-ui/Exchange/Transac
 import { ExchangeNavigation } from '../../components-ui/Exchange/ExchangeNavigation';
 import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
 import { DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE } from '../../constants/liquidity';
+import { NetworkGuardWrapper } from '../../guards/Network';
+import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
 
-export default function Liquidity() {
+function Liquidity() {
   const { account, chainId, library } = useActiveWeb3React();
   const router = useRouter();
   const queryPair = router.query.pair;
@@ -707,3 +709,7 @@ export default function Liquidity() {
     </>
   );
 }
+
+Liquidity.Guard = NetworkGuardWrapper(NORMAL_GUARDED_CHAINS);
+
+export default Liquidity;

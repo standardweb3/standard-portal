@@ -1,12 +1,16 @@
-import { CurrencyAmount, Token } from '@digitalnative/standard-protocol-sdk';
+import {
+  Currency,
+  CurrencyAmount,
+  Token,
+} from '@digitalnative/standard-protocol-sdk';
 import { useEffect, useState } from 'react';
-import { classNames, formatNumber } from '../../functions';
+import { classNames } from '../../functions';
 import { Button } from '../Button';
 import { CurrencyLogo } from '../CurrencyLogo';
 import { Input as NumericalInput } from '../NumericalInput';
 
 export type TokenInputPanelV2Types = {
-  token: Token;
+  token: Currency;
   onAmountChange?: (amount: string) => void;
   balance?: CurrencyAmount<Token>;
   max?: CurrencyAmount<Token>;
@@ -19,7 +23,7 @@ export type TokenInputPanelV2Types = {
 export function TokenInputPanelV2({
   token,
   onAmountChange,
-  balance,
+  // balance,
   max,
   className,
   inputClassName,

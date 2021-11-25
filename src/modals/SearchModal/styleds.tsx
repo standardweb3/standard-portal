@@ -67,6 +67,20 @@ export const MenuItem = styled.div<{ disabled: boolean; selected: boolean }>`
   opacity: ${({ disabled, selected }) => (disabled || selected ? 0.5 : 1)};
 `;
 
+export const MenuItem2 = styled.div<{ disabled: boolean; selected: boolean }>`
+  display: flex;
+  align-items: center;
+  height: 56px;
+  display: grid;
+  grid-template-columns: auto minmax(auto, 1fr) minmax(0, 72px);
+  grid-gap: 16px;
+  cursor: ${({ disabled }) => !disabled && 'pointer'};
+  // pointer-events: ${({ disabled }) => disabled && 'none'};
+  :hover {
+  }
+  opacity: ${({ disabled, selected }) => (disabled || selected ? 0.5 : 1)};
+`;
+
 export const SearchInput = styled.input`
   position: relative;
   display: flex;

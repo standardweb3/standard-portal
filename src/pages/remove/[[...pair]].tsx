@@ -65,8 +65,10 @@ import { ExchangeNavigation } from '../../components-ui/Exchange/ExchangeNavigat
 import { TransactionSettingsWithGas } from '../../components-ui/Exchange/TransactionSettingsWithGas';
 import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
 import { DEFAULT_REMOVE_LIQUIDITY_SLIPPAGE_TOLERANCE } from '../../constants/liquidity';
+import { NetworkGuardWrapper } from '../../guards/Network';
+import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
 
-export default function Remove() {
+function Remove() {
   const router = useRouter();
   const queryPair = router.query.pair;
   const [currencyIdA, currencyIdB] = (queryPair as string[]) || [
@@ -1034,3 +1036,6 @@ export default function Remove() {
     </>
   );
 }
+
+Remove.Guard = NetworkGuardWrapper(NORMAL_GUARDED_CHAINS);
+export default Remove;

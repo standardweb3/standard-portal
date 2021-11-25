@@ -59,6 +59,7 @@ function getCurrencyLogoUrls(currency) {
     )}.jpg`,
   );
   if (
+    STND_ADDRESS[currency.chainId] &&
     getAddress(STND_ADDRESS[currency.chainId]) === getAddress(currency.address)
   )
     urls.push(

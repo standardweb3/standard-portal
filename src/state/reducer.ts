@@ -9,11 +9,13 @@ import protocol from './protocol/reducer';
 import swap from './swap/reducer';
 import transactions from './transactions/reducer';
 import user from './user/reducer';
+import bridgeTransactions from './bridgeTransactions/reducer';
 
 const reducer = combineReducers({
   application,
   user,
   transactions,
+  bridgeTransactions,
   swap,
   mint,
   burn,

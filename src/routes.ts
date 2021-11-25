@@ -7,18 +7,27 @@ import bridgeIcon from '../public/icons/bridge.svg';
 import migrateIcon from '../public/icons/migrate.svg';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
+export const chainIdGuardRedirect = {
+  [ChainId.MAINNET]: '/trade',
+  [ChainId.SHIDEN]: '/trade',
+  [ChainId.BSC]: '/router',
+  [ChainId.MATIC]: '/router',
+};
+
 export const sidebarRoutes = [
   {
     name: 'Trade',
     urls: ['/trade', '/add', 'liquidity'],
     icon: swapIcon,
     iconActive: swapIcon,
+    hidden: [ChainId.MATIC, ChainId.BSC],
   },
   {
     name: 'Pool',
     urls: ['/pool'],
     icon: poolIcon,
     iconActive: poolIcon,
+    hidden: [ChainId.MATIC, ChainId.BSC],
   },
 
   {
@@ -26,7 +35,7 @@ export const sidebarRoutes = [
     urls: ['/farm'],
     icon: farmIcon,
     iconActive: farmIcon,
-    // hidden: [ChainId.SHIBUYA],
+    hidden: [ChainId.MATIC, ChainId.BSC],
   },
   {
     name: 'Dividend',
@@ -34,17 +43,26 @@ export const sidebarRoutes = [
     icon: dividendIcon,
     iconActive: dividendIcon,
     // hidden: [ChainId.SHIDEN],
+    hidden: [ChainId.MATIC, ChainId.BSC],
   },
   {
     name: 'Dividend V1',
     urls: ['/v1dividend'],
     icon: dividendv1Icon,
     iconActive: dividendv1Icon,
-    hidden: [ChainId.MAINNET],
+    hidden: [ChainId.MAINNET, ChainId.MATIC, ChainId.BSC],
   },
   {
     name: 'Bridge',
     urls: ['/bridge'],
+    icon: bridgeIcon,
+    iconActive: bridgeIcon,
+    // hidden: [ChainId.SHIDEN],
+    hidden: [ChainId.MATIC, ChainId.BSC],
+  },
+  {
+    name: 'Router',
+    urls: ['/router'],
     icon: bridgeIcon,
     iconActive: bridgeIcon,
     // hidden: [ChainId.SHIDEN],
@@ -54,6 +72,7 @@ export const sidebarRoutes = [
     urls: ['/migrate'],
     icon: migrateIcon,
     iconActive: migrateIcon,
+    hidden: [ChainId.MATIC, ChainId.BSC],
     // hidden: [ChainId.SHIDEN],
   },
 ];

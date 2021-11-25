@@ -6,7 +6,6 @@ import {
   isTransactionRecent,
   useAllTransactions,
 } from '../../state/transactions/hooks';
-import useENSName from '../../hooks/useENSName';
 import { newTransactionsFirst } from '../../functions/transactions';
 import { InnerConnectionStatus } from './InnerConnectionStatus';
 

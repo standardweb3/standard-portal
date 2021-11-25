@@ -22,13 +22,15 @@ import { PageContent } from '../../components-ui/PageContent';
 import { Page } from '../../components-ui/Page';
 import { PlusIcon } from '@heroicons/react/outline';
 import { PageHeader } from '../../components-ui/PageHeader';
+import { NetworkGuardWrapper } from '../../guards/Network';
+import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
 
 enum Fields {
   TOKEN0 = 0,
   TOKEN1 = 1,
 }
 
-export default function PoolFinder() {
+function PoolFinder() {
   const { account, chainId } = useActiveWeb3React();
 
   const [activeField, setActiveField] = useState<number>(Fields.TOKEN1);
@@ -207,3 +209,6 @@ export default function PoolFinder() {
     </>
   );
 }
+
+PoolFinder.Guard = NetworkGuardWrapper(NORMAL_GUARDED_CHAINS);
+export default PoolFinder;

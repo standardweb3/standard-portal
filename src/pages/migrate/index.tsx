@@ -25,6 +25,8 @@ import { PageHeader } from '../../components-ui/PageHeader';
 import { ViewportMediumUp } from '../../components-ui/Responsive';
 import { RippleSpinner } from '../../components-ui/Spinner/RippleSpinner';
 import { Alert } from '../../components-ui/Alert';
+import { NetworkGuardWrapper } from '../../guards/Network';
+import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
 
 const ZERO = JSBI.BigInt(0);
 
@@ -358,7 +360,7 @@ const ExchangeLiquidityPairs = ({
   );
 };
 
-export default function Migrate() {
+function Migrate() {
   const { account, chainId } = useActiveWeb3React();
 
   const state = useMigrateState();
@@ -444,3 +446,6 @@ export default function Migrate() {
     </>
   );
 }
+
+Migrate.Guard = NetworkGuardWrapper(NORMAL_GUARDED_CHAINS);
+export default Migrate;
