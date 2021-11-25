@@ -27,7 +27,6 @@ import {
   useApproveCallback,
 } from '../../hooks';
 import { WrapType } from '../../hooks/useWrapCallback';
-import Image from 'next/image';
 import RouterChainSelectModal from '../../bridge/feature/RouterChainModal';
 import { ArrowRightIcon, ChevronDownIcon } from '@heroicons/react/outline';
 import { WalletConnector } from '../../components-ui/WalletConnector';
@@ -45,6 +44,8 @@ import { BridgeHeader } from '../../bridge/feature/BridgeHeader';
 import Reminder from '../../bridge/feature/Reminder';
 import { NetworkGuardWrapper } from '../../guards/Network';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
+import Image from '../../components-ui/Image';
+import { ExternalLink } from '../../components-ui/ExternalLink';
 
 let intervalFN: any = '';
 const unknown =
@@ -903,6 +904,22 @@ export function Router() {
                 {btnTxt}
               </Button>
             )}
+
+            <div>
+              <ExternalLink
+                href="https://anyswap.exchange/#/router"
+                className="!whitespace-normal"
+              >
+                <div className="flex flex-col justify-center items-center">
+                  <div className="text-xs text-text">Powered by</div>
+                  <Image
+                    src="/img/bridge/anyswap.svg"
+                    width="100px"
+                    height="50px"
+                  />
+                </div>
+              </ExternalLink>
+            </div>
           </div>
         </PageContent>
       </Page>

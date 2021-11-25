@@ -4,6 +4,7 @@ import React from 'react';
 import { NavigationLink } from '../../components-ui/NavigationLink';
 import { useRouter } from 'next/router';
 import { classNames } from '../../functions';
+import Image from '../../components-ui/Image';
 
 export function BridgeHeader(): JSX.Element {
   const style =
@@ -14,7 +15,7 @@ export function BridgeHeader(): JSX.Element {
   // const { chainId } = useActiveWeb3React();
   const router = useRouter();
   const isHistoryActive = router.asPath == '/router/history';
-  const isBridgeActive = router.asPath == '/bridgev2';
+  const isBridgeActive = router.asPath == '/bridge';
   // const isBridgeActive = router.asPath == '/bridgev2'
   // const isPoolActive = router.asPath.startsWith('/pool');
 
@@ -40,7 +41,7 @@ export function BridgeHeader(): JSX.Element {
           History
         </a>
       </NavigationLink>
-      <NavigationLink href={`/bridgev2`}>
+      <NavigationLink href={`/bridge`}>
         <a className={classNames(style, isBridgeActive && activeStyle)}>
           Bridge
         </a>

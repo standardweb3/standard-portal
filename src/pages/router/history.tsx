@@ -9,6 +9,8 @@ import { BridgeHeader } from '../../bridge/feature/BridgeHeader';
 import { NetworkGuardWrapper } from '../../guards/Network';
 import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
+import Image from '../../components-ui/Image';
+import { ExternalLink } from '../../components-ui/ExternalLink';
 
 export function History() {
   return (
@@ -32,6 +34,21 @@ export function History() {
               <BridgeHeader />
             </div>
             <RouterHistories />
+            <div>
+              <ExternalLink
+                href="https://anyswap.exchange/#/router"
+                className="!whitespace-normal"
+              >
+                <div className="flex flex-col justify-center items-center">
+                  <div className="text-xs text-text">Powered by</div>
+                  <Image
+                    src="/img/bridge/anyswap.svg"
+                    width="100px"
+                    height="50px"
+                  />
+                </div>
+              </ExternalLink>
+            </div>
           </div>
         </PageContent>
       </Page>
