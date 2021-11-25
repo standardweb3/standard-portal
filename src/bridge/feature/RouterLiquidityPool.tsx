@@ -24,7 +24,18 @@ export default function RouterLiquidityPool({
   // console.log(destChain)
   return (
     <>
-      <div className="flex justify-center items-center space-x-3 bg-opaque rounded-20 px-3 py-2">
+      <div
+        className="
+        flex flex-col sm:flex-row 
+
+        justify-center items-center 
+        space-x-0
+        sm:space-x-3 
+        space-y-2
+        sm:space-y-0
+        bg-trasparent
+        sm:bg-opaque rounded-20 px-4 sm:px-3 py-2"
+      >
         <div className="font-bold">Pool: </div>
         {curChain && (isUnderlying || isViewAll) ? (
           <div className="flex items-center space-x-2">

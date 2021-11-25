@@ -26,7 +26,6 @@ import {
 
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { Button } from '../../components-ui/Button';
-import CHAINLINK_TOKENS from '@sushiswap/chainlink-whitelist/dist/sushiswap-chainlink.whitelist.json';
 import CommonBases from './CommonBases';
 import CurrencyList from './CurrencyList';
 // import { ExtendedEther } from '../../constants'
@@ -84,14 +83,6 @@ export function CurrencySearch({
 
   let allTokens = useAllTokens();
   const router = useRouter();
-
-  if (router.asPath.startsWith('/kashi/create')) {
-    allTokens = Object.keys(allTokens).reduce((obj, key) => {
-      if (CHAINLINK_TOKENS[chainId].find((address) => address === key))
-        obj[key] = allTokens[key];
-      return obj;
-    }, {});
-  }
 
   if (currencyList) {
     allTokens = Object.keys(allTokens).reduce((obj, key) => {

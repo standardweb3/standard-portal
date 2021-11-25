@@ -195,11 +195,6 @@ export function useBridgeUnderlyingCallback(
         sufficientBalance && inputAmount
           ? async () => {
               try {
-                // console.log(bridgeContract)
-                // console.log(inputAmount.raw.toString(16))
-                // console.log(inputAmount.raw.toString())
-                // console.log(inputAmount?.toSignificant(6))
-
                 const txReceipt = await bridgeContract.anySwapOutUnderlying(
                   inputToken,
                   toAddress,
@@ -856,7 +851,6 @@ export function useCrossBridgeCallback(
         sufficientBalance && inputAmount
           ? async () => {
               try {
-                console.log(txnsType);
                 const txReceipt: any =
                   txnsType === 'swapin'
                     ? await signSwapinData({

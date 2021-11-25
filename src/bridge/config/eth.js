@@ -1,5 +1,6 @@
 import { formatSwapTokenList, getLocalRPC } from './methods';
 import { tokenListUrl, VERSION, USE_VERSION } from '../constant';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
 export const ETH_MAIN_CHAINID = 1;
 export const ETH_MAINNET = 'https://ethmainnet.anyswap.exchange';
@@ -131,9 +132,20 @@ const bridgeToken = {
   },
   [VERSION.V5]: {
     bridgeInitToken: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-    bridgeInitChain: '56',
+    bridgeInitChain: '336',
+    bridgeInitTokens: {
+      [ChainId.BSC]: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+      [ChainId.SHIDEN]: '0x9040e237c3bf18347bb00957dc22167d0f2b999d',
+      [ChainId.MATIC]: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+    },
     nativeToken: '',
+    crossBridgeInitChain: '336',
     crossBridgeInitToken: 'ETH',
+    crossBridgeInitTokens: {
+      [ChainId.BSC]: 'ETH',
+      [ChainId.SHIDEN]: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+      [ChainId.MATIC]: '0xff20817765cb7f73d4bde2e66e067e58d11095c2',
+    },
   },
   [VERSION.V6_1]: {
     bridgeInitToken: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',

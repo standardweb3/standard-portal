@@ -3,10 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { formatDecimal, isAddress, thousandBit } from '../../bridge/core/Tools';
 import { RouterCurrencyInputPanel } from '../../bridge/feature/RouterCurrencyInputPanel';
 import RouterCurrencySelectModal from '../../bridge/feature/RouterCurrencySelectModal';
-import {
-  getCurChainInfo,
-  getCurConfigInfo,
-} from '../../bridge/functions/bridge';
+import { getCurChainInfo } from '../../bridge/functions/bridge';
 import { getNodeTotalsupply } from '../../bridge/functions/getBalanceV2';
 import { toNormalCurrency } from '../../bridge/functions/toNormalToken';
 import { useFetchRouterTokenList } from '../../bridge/hooks/fetchLists';
@@ -20,6 +17,7 @@ import {
 import {
   NETWORK_ICON,
   NETWORK_LABEL,
+  NORMAL_GUARDED_CHAINS,
   SUPPORTED_NETWORK_IDS,
 } from '../../constants/networks';
 import { classNames, tryParseAmount } from '../../functions';
@@ -39,18 +37,20 @@ import { getBaseCoin } from '../../bridge/functions/bridge';
 import { DefinedStyles } from '../../utils/DefinedStyles';
 import { Page } from '../../components-ui/Page';
 import { PageContent } from '../../components-ui/PageContent';
-import { ViewportMediumUp } from '../../components-ui/Responsive';
+import { useSizeXs, ViewportMediumUp } from '../../components-ui/Responsive';
 import { PageHeader } from '../../components-ui/PageHeader';
 import { useCurrencyBalance } from '../../state/wallet/hooks';
 import RouterLiquidityPool from '../../bridge/feature/RouterLiquidityPool';
 import { BridgeHeader } from '../../bridge/feature/BridgeHeader';
 import Reminder from '../../bridge/feature/Reminder';
+import { NetworkGuardWrapper } from '../../guards/Network';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
 let intervalFN: any = '';
 const unknown =
   'https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/unknown.png';
 
-export default function Bridge() {
+export function Router() {
   const { account, chainId } = useActiveWeb3React();
   // const { push } = useRouter();
 
@@ -124,10 +124,16 @@ export default function Bridge() {
 
   // router token list
   const allTokensList = useFetchRouterTokenList();
-  const allTokensArray = useMemo(() => Object.values(allTokensList), [
-    allTokensList,
-    selectChain,
-  ]);
+  const allTokensArray = useMemo(
+    () =>
+      Object.values(allTokensList).filter((token: any) => {
+        if (token.destChains[selectChain] === undefined) {
+          return false;
+        }
+        return true;
+      }),
+    [allTokensList, selectChain],
+  );
 
   const [selectChainList, setSelectChainList] = useState<Array<any>>([]);
 
@@ -441,14 +447,6 @@ export default function Bridge() {
 
   // is error
   const isCrossBridge = useMemo(() => {
-    // console.log('destConfig', destConfig);
-    // console.log('selectCurrency', selectCurrency);
-    // console.log('inputBridgeValue', inputBridgeValue);
-    // console.log('isWrapInputError', isWrapInputError);
-    // console.log('isAddr', isAddr);
-    // console.log('isDestUnderlying', isDestUnderlying);
-    // console.log('destChain', destChain);
-
     if (
       account &&
       destConfig &&
@@ -536,24 +534,34 @@ export default function Bridge() {
   ]);
 
   useEffect(() => {
+    setSelectChain(getCurChainInfo(chainId).bridgeInitChain);
+  }, [chainId]);
+
+  useEffect(() => {
     const t =
       selectCurrency &&
-      selectCurrency.chainId?.toString() === chainId?.toString()
+      selectCurrency.chainId?.toString() === chainId?.toString() &&
+      selectChain &&
+      selectCurrency.destChains[selectChain] !== undefined
         ? selectCurrency.address
         : initBridgeToken
         ? initBridgeToken
-        : getCurChainInfo(chainId).bridgeInitToken;
+        : getCurChainInfo(chainId).bridgeInitTokens[parseInt(selectChain)];
 
     const list: any = {};
-    if (Object.keys(allTokensList).length > 0) {
+    if (allTokensArray.length > 0) {
       for (const token in allTokensList) {
         if (!isAddress(token)) continue;
+        if (allTokensList[token].destChains[selectChain] === undefined) {
+          continue;
+        }
         list[token] = {
           ...allTokensList[token],
         };
         if (
           !selectCurrency ||
-          selectCurrency.chainId?.toString() !== chainId?.toString()
+          selectCurrency.chainId?.toString() !== chainId?.toString() ||
+          selectCurrency.destChains[selectChain] === undefined
         ) {
           if (
             t === token ||
@@ -567,7 +575,7 @@ export default function Bridge() {
     } else {
       setSelectCurrency('');
     }
-  }, [chainId, allTokensList]);
+  }, [chainId, allTokensArray, selectChain]);
 
   useEffect(() => {
     if (swapType == 'swap' && account) {
@@ -577,32 +585,43 @@ export default function Bridge() {
     }
   }, [account, swapType, destConfig]);
 
-  useEffect(() => {
-    if (selectCurrency) {
-      const arr = [];
-      for (const c in selectCurrency?.destChains) {
-        if (c?.toString() === chainId?.toString() || !getCurChainInfo(chainId))
-          continue;
-        arr.push(c);
-      }
-      let useChain: any = selectChain
-        ? selectChain
-        : getCurChainInfo(chainId).bridgeInitChain;
-      if (arr.length > 0) {
-        if (!useChain || (useChain && !arr.includes(useChain))) {
-          for (const c of arr) {
-            if (getCurConfigInfo()?.hiddenChain?.includes(c)) continue;
-            useChain = c;
-            break;
-          }
-        }
-      }
-      setSelectChain(useChain);
-      setSelectChainList(arr);
-    }
-  }, [selectCurrency]);
+  // useEffect(() => {
+  //   // leave out selectChain from deps
+  //   if (selectCurrency) {
+  //     const arr = [];
+  //     for (const c in selectCurrency?.destChains) {
+  //       if (
+  //         c?.toString() === chainId?.toString() ||
+  //         !getCurChainInfo(chainId) ||
+  //         !SUPPORTED_NETWORKS[parseInt(c)]
+  //       )
+  //         continue;
+  //       arr.push(c);
+  //     }
+  //     console.log('selectChain', selectChain);
+  //     let useChain: any = selectChain
+  //       ? selectChain
+  //       : getCurChainInfo(chainId).bridgeInitChain;
+  //     if (arr.length > 0) {
+  //       if (!useChain || (useChain && !arr.includes(useChain))) {
+  //         for (const c of arr) {
+  //           if (getCurConfigInfo()?.hiddenChain?.includes(c)) continue;
+  //           useChain = c;
+  //           break;
+  //         }
+  //       }
+  //     }
+  //     setSelectChain(useChain);
+  //     setSelectChainList(arr);
+  //   } else {
+  //     let initChain = getCurChainInfo(chainId).bridgeInitChain;
+  //     setSelectChain(initChain);
+  //   }
+  // }, [selectCurrency, chainId]);
 
   const handleModalDismiss = () => setModalOpen(false);
+  const isViewportXs = useSizeXs();
+
   return (
     <>
       <Head>
@@ -618,7 +637,7 @@ export default function Bridge() {
           <PageHeader title="Bridge" />
         </ViewportMediumUp>
         <PageContent>
-          <div className={classNames(DefinedStyles.pageContent, 'space-y-4')}>
+          <div className="space-y-4 w-full md:max-w-[600px] bg-transparent sm:bg-opaque rounded-20 p-0 sm:p-5 text-text">
             <RouterCurrencySelectModal
               currencyList={allTokensArray}
               isOpen={modalOpen}
@@ -639,24 +658,43 @@ export default function Bridge() {
               onChainSelect={handleSelectChain}
               isOpen={chainToModalOpen}
               onDismiss={closeChainToMoal}
-              chainIds={selectChainList}
+              chainIds={SUPPORTED_NETWORK_IDS.filter(
+                (id) =>
+                  id != chainFrom.id &&
+                  getCurChainInfo(chainId).bridgeInitTokens[id],
+              )}
             />
             <div className="flex justify-center w-full">
               <BridgeHeader />
             </div>
-            <div className="flex items-center justify-center">
-              <div className="flex-1 text-center space-y-2">
-                <div className="text-grey text-sm">From</div>
+            <div className="flex flex-col sm:flex-row items-center justify-center space-y-2">
+              <div className="flex-1 w-full space-y-2 flex flex-col items-end sm:items-stretch">
+                <div className="text-grey text-sm text-right sm:text-center pr-4 sm:pr-0">
+                  From
+                </div>
                 <div
                   className="
-            cursor-pointer
-            flex flex-col
-            items-center
-            bg-opaque rounded-20 p-8
-            space-y-6"
+                  cursor-pointer
+                  inline-flex sm:flex 
+                  flex-row sm:flex-col
+                  justify-end
+                  items-center
+                  bg-opaque rounded-20
+                  px-4 py-4
+                  sm:px-8 sm:py-8
+                  space-y-0
+                  space-x-3
+                  sm:space-y-6
+                  sm:space-x-0"
                   onClick={openChainFromModal}
                 >
-                  <div className="bg-white rounded-full w-[72px] h-[72px] overflow-hidden">
+                  <div
+                    className={classNames(
+                      'bg-white rounded-full overflow-hidden',
+                      isViewportXs ? 'w-[42px] h-[42px]' : 'w-[72px] h-[72px]',
+                    )}
+                  >
+                    {' '}
                     <Image
                       src={chainFrom.icon}
                       alt={`${chainFrom.name} Network`}
@@ -666,7 +704,7 @@ export default function Bridge() {
                   </div>
                   <div
                     className="
-                    text-grey border border-grey 
+                    text-grey sm:border border-grey 
                     rounded-20 px-3 py-1 
                     font-bold
                     flex items-center space-x-1
@@ -677,21 +715,38 @@ export default function Bridge() {
                   </div>
                 </div>
               </div>
-              <div className="bg-icon-btn-grey rounded-full p-3 mx-3">
-                <ArrowRightIcon className="w-6 h-6" />
-              </div>
-              <div className="flex-1 text-center space-y-2">
-                <div className="text-grey text-sm">To</div>
+              {!isViewportXs && (
+                <div className="bg-icon-btn-grey rounded-full p-3 mx-3">
+                  <ArrowRightIcon className="w-6 h-6" />
+                </div>
+              )}
+              <div className="flex-1 w-full space-y-2 flex flex-col items-end sm:items-stretch">
+                <div className="text-grey text-sm text-right sm:text-center pr-4 sm:pr-0">
+                  To
+                </div>
                 <div
                   className="
-            cursor-pointer
-            flex flex-col
-            items-center
-            bg-opaque rounded-20 p-8
-            space-y-6"
+                  cursor-pointer
+                  inline-flex sm:flex 
+                  flex-row sm:flex-col
+                  justify-end
+                  items-center
+                  bg-opaque rounded-20
+                  px-4 py-4
+                  sm:px-8 sm:py-8
+                  space-y-0
+                  space-x-3
+                  sm:space-y-6
+                  sm:space-x-0"
                   onClick={openChainToModal}
                 >
-                  <div className="bg-white rounded-full w-[72px] h-[72px] overflow-hidden">
+                  <div
+                    className={classNames(
+                      'bg-white rounded-full overflow-hidden',
+                      isViewportXs ? 'w-[42px] h-[42px]' : 'w-[72px] h-[72px]',
+                    )}
+                  >
+                    {' '}
                     <Image
                       src={chainTo.icon}
                       alt={`${chainTo.name} Network`}
@@ -701,7 +756,7 @@ export default function Bridge() {
                   </div>
                   <div
                     className="
-                    text-grey border border-grey 
+                    text-grey sm:border border-grey 
                     rounded-20 px-3 py-1 
                     font-bold
                     flex items-center space-x-1
@@ -714,8 +769,8 @@ export default function Bridge() {
               </div>
             </div>
             <div className="space-y-2 text-sm">
-              <div className="text-grey">Token to bridge</div>
-              <div className="rounded-20 bg-opaque-secondary px-4 py-1">
+              <div className="text-grey text-right px-4">Token to bridge</div>
+              <div className="rounded-20 sm:bg-opaque-secondary sm:px-4 py-1">
                 <RouterCurrencyInputPanel
                   currency={normalCurrency}
                   amount={inputBridgeValue}
@@ -812,21 +867,33 @@ export default function Bridge() {
                   if (isRouter) {
                     if (!selectCurrency || !isUnderlying) {
                       if (onWrap)
-                        onWrap().then(() => {
-                          onClear();
-                        });
+                        onWrap()
+                          .then(() => {
+                            onClear();
+                          })
+                          .catch(() => {
+                            setDelayAction(false);
+                          });
                     } else {
                       // if (onWrapUnderlying) onWrapUnderlying()
                       if (isNativeToken) {
                         if (onWrapNative)
-                          onWrapNative().then(() => {
-                            onClear();
-                          });
+                          onWrapNative()
+                            .then(() => {
+                              onClear();
+                            })
+                            .catch(() => {
+                              setDelayAction(false);
+                            });
                       } else {
                         if (onWrapUnderlying) {
-                          onWrapUnderlying().then(() => {
-                            onClear();
-                          });
+                          onWrapUnderlying()
+                            .then(() => {
+                              onClear();
+                            })
+                            .catch(() => {
+                              setDelayAction(false);
+                            });
                         }
                       }
                     }
@@ -866,3 +933,8 @@ export default function Bridge() {
   //   setCurrencyAmount('')
   // }, [chainFrom, anyswapInfo, chainTo.id])
 }
+
+Router.Guard = NetworkGuardWrapper(
+  NORMAL_GUARDED_CHAINS.concat(ChainId.BSC, ChainId.MATIC),
+);
+export default Router;

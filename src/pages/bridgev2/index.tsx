@@ -12,7 +12,7 @@ import { useCrossBridgeCallback } from '../../bridge/hooks/useBridgeCallback';
 import {
   NETWORK_ICON,
   NETWORK_LABEL,
-  SUPPORTED_NETWORKS,
+  NORMAL_GUARDED_CHAINS,
   SUPPORTED_NETWORK_IDS,
 } from '../../constants/networks';
 import { classNames, tryParseAmount } from '../../functions';
@@ -31,7 +31,7 @@ import { getBaseCoin } from '../../bridge/functions/bridge';
 import { DefinedStyles } from '../../utils/DefinedStyles';
 import { Page } from '../../components-ui/Page';
 import { PageContent } from '../../components-ui/PageContent';
-import { ViewportMediumUp } from '../../components-ui/Responsive';
+import { useSizeXs, ViewportMediumUp } from '../../components-ui/Responsive';
 import { PageHeader } from '../../components-ui/PageHeader';
 import { useCurrencyBalance } from '../../state/wallet/hooks';
 import { BridgeHeader } from '../../bridge/feature/BridgeHeader';
@@ -40,6 +40,8 @@ import { GetTokenListByChainID } from '../../bridge/core/getBridgeInfo';
 import { getNodeBalance } from '../../bridge/functions/getBalanceV2';
 import { useAnyswapToken } from '../../bridge/hooks/useAnyswapToken';
 import Image from '../../components-ui/Image';
+import { NetworkGuardWrapper } from '../../guards/Network';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
 let intervalFN: any = '';
 
@@ -56,7 +58,7 @@ export enum SelectListType {
 const unknown =
   'https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/unknown.png';
 
-export default function Bridge() {
+export function Bridge() {
   const { account, chainId } = useActiveWeb3React();
   // const { push } = useRouter();
 
@@ -124,6 +126,22 @@ export default function Bridge() {
   // bridge swap type
   const [swapType, setSwapType] = useState(BridgeType.bridge);
 
+  const allTokensList = useMemo(() => allTokens?.[swapType] ?? {}, [
+    allTokens,
+    swapType,
+  ]);
+
+  const allTokensArray = useMemo(
+    () =>
+      Object.values(allTokensList).filter((token: any) => {
+        if (token.destChains[selectChain] === undefined) {
+          return false;
+        }
+        return true;
+      }),
+    [allTokensList, selectChain],
+  );
+
   const [count, setCount] = useState<number>(0);
   const [intervalCount, setIntervalCount] = useState<number>(0);
 
@@ -136,95 +154,71 @@ export default function Bridge() {
   // default bridge token for a network
   const initBridgeToken = '';
 
-  const useTokenList = useMemo(() => {
-    if (allTokens && swapType && chainId) {
-      const urlParams =
-        selectCurrency &&
-        selectCurrency.chainId?.toString() === chainId?.toString()
-          ? selectCurrency.address
-          : initBridgeToken
-          ? initBridgeToken
-          : getCurChainInfo(chainId).crossBridgeInitToken?.toLowerCase();
+  useEffect(() => {
+    setSelectChain(getCurChainInfo(chainId).crossBridgeInitChain);
+  }, [chainId]);
 
-      const list: any = {};
-      let isUseToken = 0;
-      let useToken;
-      for (const token in allTokens[swapType]) {
-        const obj = allTokens[swapType];
+  useEffect(() => {
+    const urlParams =
+      selectCurrency &&
+      selectCurrency.chainId?.toString() === chainId?.toString() &&
+      selectChain &&
+      selectCurrency.destChains[selectChain] !== undefined
+        ? selectCurrency.address
+        : initBridgeToken
+        ? initBridgeToken
+        : getCurChainInfo(chainId).crossBridgeInitTokens[
+            parseInt(selectChain)
+          ]?.toLowerCase();
+
+    const list: any = {};
+    if (allTokensArray.length > 0) {
+      for (const token in allTokensList) {
+        const obj = allTokensList;
         if (
           !isAddress(token, chainId) &&
           token !== getCurChainInfo(chainId).symbol
         )
           continue;
-        if (
-          SUPPORTED_NETWORK_IDS.find((id) => {
-            return id !== chainId && obj[token].destChains[id] !== undefined;
-          }) === undefined
-        ) {
+        if (obj[token].destChains[selectChain] === undefined) {
           continue;
         }
-        const tokenObj = {
+        list[token] = {
           ...obj[token],
-          // address: obj[token].underlying ? obj[token].underlying.address : obj[token].address,
-          // underlying: obj[token].underlying ? {
-          //   ...obj[token].underlying,
-          //   address: obj[token].address
-          // } : false,
-          specChainId: '',
         };
-        if (selectCurrencyType === SelectListType.OUTPUT) {
-          if (obj[token].destChains[selectChain]) {
-            list[token] = tokenObj;
-          } else {
-            continue;
-          }
-        } else {
-          list[token] = tokenObj;
-        }
         if (
           !selectCurrency ||
-          selectCurrency?.chainId?.toString() !== chainId?.toString()
+          selectCurrency?.chainId?.toString() !== chainId?.toString() ||
+          selectCurrency.destChains[selectChain] === undefined
         ) {
           if (
             urlParams &&
             (urlParams === token.toLowerCase() ||
-              list[token].name.toLowerCase() === urlParams ||
-              list[token].symbol.toLowerCase() === urlParams)
+              list[token]?.name?.toLowerCase() === urlParams ||
+              list[token]?.symbol?.toLowerCase() === urlParams)
           ) {
-            useToken = token;
-          } else if (!isUseToken) {
-            isUseToken = 1;
-            useToken = token;
+            setSelectCurrency(list[token]);
           }
         }
       }
-      if (!useToken) {
-        useToken = getCurChainInfo(chainId).crossBridgeInitToken;
-      }
-      if (!selectCurrency) {
-        setSelectCurrency(list[useToken]);
-      }
-      return list;
+    } else {
+      setSelectCurrency('');
     }
-    return {};
-  }, [allTokens, swapType, chainId, selectCurrencyType, selectChain]);
-  const useTokenArray = useMemo(() => Object.values(useTokenList), [
-    useTokenList,
-  ]);
+  }, [allTokensArray, swapType, chainId, selectCurrencyType, selectChain]);
 
   const bridgeConfig = useMemo(() => {
     if (
       selectCurrency?.address &&
-      (useTokenList[selectCurrency?.address.toLowerCase()] ||
-        useTokenList[selectCurrency?.address])
+      (allTokensList[selectCurrency?.address.toLowerCase()] !== undefined ||
+        allTokensList[selectCurrency?.address] !== undefined)
     ) {
       return (
-        useTokenList[selectCurrency?.address.toLowerCase()] ||
-        useTokenList[selectCurrency?.address]
+        allTokensList[selectCurrency?.address.toLowerCase()] ||
+        allTokensList[selectCurrency?.address]
       );
     }
     return '';
-  }, [selectCurrency, useTokenList]);
+  }, [selectCurrency, allTokensList]);
 
   const destConfig = useMemo(() => {
     if (bridgeConfig && bridgeConfig?.destChains[selectChain]) {
@@ -233,15 +227,15 @@ export default function Bridge() {
     return false;
   }, [bridgeConfig, selectChain]);
 
-  useEffect(() => {
-    if (
-      (selectCurrency &&
-        chainId?.toString() !== selectCurrency?.chainId?.toString()) ||
-      (!bridgeConfig && selectCurrency)
-    ) {
-      history.go(0);
-    }
-  }, [chainId, bridgeConfig, swapType]);
+  // useEffect(() => {
+  //   if (
+  //     (selectCurrency &&
+  //       chainId?.toString() !== selectCurrency?.chainId?.toString()) ||
+  //     (!bridgeConfig && selectCurrency)
+  //   ) {
+  //     // history.go(0);
+  //   }
+  // }, [chainId, bridgeConfig, swapType]);
 
   const isUnderlying = useMemo(() => {
     if (selectCurrency?.underlying) {
@@ -566,42 +560,50 @@ export default function Bridge() {
     }
     // }, [chainId, swapType, count, selectCurrency])
   }, [chainId, count]);
+  // useEffect(() => {
+  //   if (selectCurrency) {
+  //     console.log('url iii', selectCurrency);
+  //     const arr: any = [];
 
-  useEffect(() => {
-    if (selectCurrency) {
-      const arr: any = [];
+  //     for (const c in selectCurrency?.destChains) {
+  //       if (c?.toString() === chainId?.toString()) continue;
+  //       console.log('url', c?.toString(), chainId?.toString());
+  //       if (
+  //         (getCurConfigInfo().showChain.length > 0 &&
+  //           !getCurConfigInfo().showChain.includes(c)) ||
+  //         c?.toString() === chainId?.toString() ||
+  //         !getCurChainInfo(chainId) ||
+  //         !SUPPORTED_NETWORKS[parseInt(c)]
+  //       )
+  //         continue;
+  //       arr.push(c);
+  //     }
+  //     console.log('url arr', arr);
 
-      for (const c in selectCurrency?.destChains) {
-        if (c?.toString() === chainId?.toString()) continue;
-        if (
-          (getCurConfigInfo().showChain.length > 0 &&
-            !getCurConfigInfo().showChain.includes(c)) ||
-          !SUPPORTED_NETWORKS[parseInt(c)]
-        )
-          continue;
-        arr.push(c);
-      }
+  //     let useChain: any = selectChain
+  //       ? selectChain
+  //       : getCurChainInfo(chainId).bridgeInitChain;
 
-      let useChain: any = selectChain
-        ? selectChain
-        : getCurChainInfo(chainId).bridgeInitChain;
-
-      if (arr.length > 0) {
-        if (!useChain || (useChain && !arr.includes(useChain))) {
-          for (const c of arr) {
-            if (getCurConfigInfo()?.hiddenChain?.includes(c)) continue;
-            useChain = c;
-            break;
-          }
-        }
-      }
-      setSelectChain(useChain);
-      setSelectChainList(arr);
-    }
-  }, [selectCurrency, swapType, chainId, selectChain]);
+  //     if (arr.length > 0) {
+  //       if (!useChain || (useChain && !arr.includes(useChain))) {
+  //         for (const c of arr) {
+  //           if (getCurConfigInfo()?.hiddenChain?.includes(c)) continue;
+  //           useChain = c;
+  //           break;
+  //         }
+  //       }
+  //     }
+  //     console.log('url bgg');
+  //     setSelectChain(useChain);
+  //     setSelectChainList(arr);
+  //   } else {
+  //     let initChain = getCurChainInfo(chainId).bridgeInitChain;
+  //     setSelectChain(initChain);
+  //   }
+  // }, [selectCurrency, swapType, chainId]);
 
   const handleModalDismiss = () => setModalOpen(false);
-
+  const isViewportXs = useSizeXs();
   return (
     <>
       <Head>
@@ -617,9 +619,9 @@ export default function Bridge() {
           <PageHeader title="Bridge" />
         </ViewportMediumUp>
         <PageContent>
-          <div className={classNames(DefinedStyles.pageContent, 'space-y-4')}>
+          <div className="space-y-4 w-full md:max-w-[600px] bg-transparent sm:bg-opaque rounded-20 p-0 sm:p-5 text-text">
             <RouterCurrencySelectModal
-              currencyList={useTokenArray}
+              currencyList={allTokensArray}
               isOpen={modalOpen}
               onDismiss={handleModalDismiss}
               onCurrencySelect={(inputCurrency) => {
@@ -638,24 +640,42 @@ export default function Bridge() {
               onChainSelect={handleSelectChain}
               isOpen={chainToModalOpen}
               onDismiss={closeChainToMoal}
-              chainIds={selectChainList}
+              chainIds={SUPPORTED_NETWORK_IDS.filter(
+                (id) =>
+                  id != chainFrom.id &&
+                  getCurChainInfo(chainId).crossBridgeInitTokens[id],
+              )}
             />
             <div className="flex justify-center w-full">
               <BridgeHeader />
             </div>
-            <div className="flex items-center justify-center">
-              <div className="flex-1 text-center space-y-2">
-                <div className="text-grey text-sm">From</div>
+            <div className="flex flex-col sm:flex-row items-center justify-center space-y-2">
+              <div className="flex-1 w-full space-y-2 flex flex-col items-end sm:items-stretch">
+                <div className="text-grey text-sm text-right sm:text-center pr-4 sm:pr-0">
+                  From
+                </div>
                 <div
                   className="
                   cursor-pointer
-                  flex flex-col
+                  inline-flex sm:flex 
+                  flex-row sm:flex-col
+                  justify-end
                   items-center
-                  bg-opaque rounded-20 p-8
-                  space-y-6"
+                  bg-opaque rounded-20 
+                  px-4 py-4
+                  sm:px-8 sm:py-8
+                  space-y-0
+                  space-x-3
+                  sm:space-y-6
+                  sm:space-x-0"
                   onClick={openChainFromModal}
                 >
-                  <div className="bg-white rounded-full w-[72px] h-[72px] overflow-hidden">
+                  <div
+                    className={classNames(
+                      'bg-white rounded-full overflow-hidden',
+                      isViewportXs ? 'w-[42px] h-[42px]' : 'w-[72px] h-[72px]',
+                    )}
+                  >
                     <Image
                       src={chainFrom?.icon ?? unknown}
                       alt={`${chainFrom?.name} Network`}
@@ -665,7 +685,7 @@ export default function Bridge() {
                   </div>
                   <div
                     className="
-                    text-grey border border-grey 
+                    text-grey sm:border border-grey 
                     rounded-20 px-3 py-1 
                     font-bold
                     flex items-center space-x-1
@@ -676,21 +696,37 @@ export default function Bridge() {
                   </div>
                 </div>
               </div>
-              <div className="bg-icon-btn-grey rounded-full p-3 mx-3">
-                <ArrowRightIcon className="w-6 h-6" />
-              </div>
-              <div className="flex-1 text-center space-y-2">
-                <div className="text-grey text-sm">To</div>
+              {!isViewportXs && (
+                <div className="bg-icon-btn-grey rounded-full p-3 mx-3">
+                  <ArrowRightIcon className="w-6 h-6" />
+                </div>
+              )}
+              <div className="flex-1 w-full space-y-2 flex flex-col items-end sm:items-stretch">
+                <div className="text-grey text-sm text-right sm:text-center pr-4 sm:pr-0">
+                  To
+                </div>
                 <div
                   className="
-            cursor-pointer
-            flex flex-col
-            items-center
-            bg-opaque rounded-20 p-8
-            space-y-6"
+               cursor-pointer
+               inline-flex sm:flex 
+               flex-row sm:flex-col
+               justify-end
+               items-center
+               bg-opaque rounded-20
+               px-4 py-4
+               sm:px-8 sm:py-8
+               space-y-0
+               space-x-3
+               sm:space-y-6
+               sm:space-x-0"
                   onClick={openChainToModal}
                 >
-                  <div className="bg-white rounded-full w-[72px] h-[72px] overflow-hidden">
+                  <div
+                    className={classNames(
+                      'bg-white rounded-full overflow-hidden',
+                      isViewportXs ? 'w-[42px] h-[42px]' : 'w-[72px] h-[72px]',
+                    )}
+                  >
                     <Image
                       src={chainTo?.icon ?? unknown}
                       alt={`${chainTo?.name} Network`}
@@ -700,7 +736,7 @@ export default function Bridge() {
                   </div>
                   <div
                     className="
-                    text-grey border border-grey 
+                    text-grey sm:border border-grey 
                     rounded-20 px-3 py-1 
                     font-bold
                     flex items-center space-x-1
@@ -712,9 +748,9 @@ export default function Bridge() {
                 </div>
               </div>
             </div>
-            <div className="space-y-2 text-sm">
-              <div className="text-grey">Token to bridge</div>
-              <div className="rounded-20 bg-opaque-secondary px-4 py-1">
+            <div className="space-y-2 text-sm mt-4">
+              <div className="text-grey text-right px-4">Token to bridge</div>
+              <div className="rounded-20 sm:bg-opaque-secondary sm:px-4 py-1">
                 <RouterCurrencyInputPanel
                   currency={normalCurrency}
                   amount={inputBridgeValue}
@@ -742,6 +778,7 @@ export default function Bridge() {
                 {/* <Image src={bridgeConfig?.logoUrl} width="24px" height="24px" /> */}
                 <div className="flex justify-center items-center space-x-2">
                   <div className="font-bold">Output Amount:</div>
+
                   <div>{`${outputBridgeValue} ${
                     destConfig?.symbol
                       ? destConfig?.symbol.length > 20
@@ -814,9 +851,13 @@ export default function Bridge() {
                   // <Button disabled={delayAction} onClick={() => {
                   onDelay();
                   if (onWrap)
-                    onWrap().then(() => {
-                      onClear();
-                    });
+                    onWrap()
+                      .then(() => {
+                        onClear();
+                      })
+                      .catch(() => {
+                        setDelayAction(false);
+                      });
                   //   if (isRouter) {
                   //     if (!selectCurrency || !isUnderlying) {
                   //       if (onWrap)
@@ -874,3 +915,8 @@ export default function Bridge() {
   //   setCurrencyAmount('')
   // }, [chainFrom, anyswapInfo, chainTo.id])
 }
+
+Bridge.Guard = NetworkGuardWrapper(
+  NORMAL_GUARDED_CHAINS.concat(ChainId.BSC, ChainId.MATIC),
+);
+export default Bridge;

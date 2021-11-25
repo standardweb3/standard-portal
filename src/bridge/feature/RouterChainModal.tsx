@@ -27,7 +27,7 @@ export default function RouterChainSelectModal({
   onChainSelect,
   isFrom,
 }: RouterChainSelectModalTypes) {
-  const { chainId, library, account } = useActiveWeb3React();
+  const { library, account } = useActiveWeb3React();
   const isViewportSmallDown = useSizeSmDown();
 
   const onSelectNetwork = (_chainId) => {

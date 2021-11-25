@@ -1,5 +1,6 @@
-import { formatSwapTokenList, getLocalRPC } from './methods';
+import { formatSwapTokenList } from './methods';
 import { tokenListUrl, VERSION, USE_VERSION } from '../constant';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
 export const SDN_MAIN_CHAINID = 336;
 export const SDN_MAINNET = 'https://rpc.shiden.astar.network:8545';
@@ -18,8 +19,19 @@ const bridgeToken = {
   [VERSION.V5]: {
     bridgeInitToken: '0x722377a047e89ca735f09eb7cccab780943c4cb4',
     bridgeInitChain: '1',
+    bridgeInitTokens: {
+      [ChainId.BSC]: '',
+      [ChainId.MAINNET]: '0x722377a047e89ca735f09eb7cccab780943c4cb4',
+      [ChainId.MATIC]: '',
+    },
     nativeToken: '',
     crossBridgeInitToken: '',
+    crossBridgeInitChain: '56',
+    crossBridgeInitTokens: {
+      [ChainId.BSC]: 'BNB',
+      [ChainId.MAINNET]: 'SDN',
+      [ChainId.MATIC]: '',
+    },
   },
 };
 

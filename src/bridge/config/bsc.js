@@ -1,5 +1,6 @@
 import { formatSwapTokenList, getLocalRPC } from './methods';
 import { tokenListUrl, VERSION, USE_VERSION } from '../constant';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 // alert(process.env.NODE_ENV)
 
 // const useNode = 'https://bsc-dataseed1.defibit.io/'
@@ -89,7 +90,18 @@ const bridgeToken = {
   [VERSION.V5]: {
     bridgeInitToken: '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',
     bridgeInitChain: '137',
+    bridgeInitTokens: {
+      [ChainId.MAINNET]: '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',
+      [ChainId.SHIDEN]: '',
+      [ChainId.MATIC]: '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',
+    },
+    crossBridgeInitChain: '336',
     crossBridgeInitToken: 'BNB',
+    crossBridgeInitTokens: {
+      [ChainId.MAINNET]: '0x6f817a0ce8f7640add3bc0c1c2298635043c2423',
+      [ChainId.SHIDEN]: 'BNB',
+      [ChainId.MATIC]: 'BNB',
+    },
   },
 };
 

@@ -3,12 +3,14 @@ import { PageHeader } from '../../components-ui/PageHeader';
 import { ViewportMediumUp } from '../../components-ui/Responsive';
 import { Page } from '../../components-ui/Page';
 import { PageContent } from '../../components-ui/PageContent';
-import { classNames } from '../../functions';
 import { DefinedStyles } from '../../utils/DefinedStyles';
 import { RouterHistories } from '../../bridge/feature/RouterHistories';
 import { BridgeHeader } from '../../bridge/feature/BridgeHeader';
+import { NetworkGuardWrapper } from '../../guards/Network';
+import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
-export default function History() {
+export function History() {
   return (
     <>
       <Head>
@@ -25,7 +27,7 @@ export default function History() {
         </ViewportMediumUp>
 
         <PageContent>
-          <div className={classNames(DefinedStyles.pageContent, 'space-y-4')}>
+          <div className="space-y-4 w-full md:max-w-[600px] bg-transparent sm:bg-opaque rounded-20 p-0 sm:p-5 text-text">
             <div className="flex justify-center w-full">
               <BridgeHeader />
             </div>
@@ -36,3 +38,8 @@ export default function History() {
     </>
   );
 }
+
+History.Guard = NetworkGuardWrapper(
+  NORMAL_GUARDED_CHAINS.concat(ChainId.BSC, ChainId.MATIC),
+);
+export default History;
