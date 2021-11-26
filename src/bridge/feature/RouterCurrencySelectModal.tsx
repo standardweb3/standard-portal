@@ -63,6 +63,7 @@ export default function RouterCurrencySelectModal({
         isOpen={isOpen}
         onDismiss={onDismiss}
         maxWidth="500px"
+        minHeight="80vh"
         maxHeight="80vh"
         minWidth={isViewportSmallDown ? '90vw' : 'none'}
       >
