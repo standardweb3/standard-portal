@@ -48,7 +48,7 @@ import Image from '../../components-ui/Image';
 import { ExternalLink } from '../../components-ui/ExternalLink';
 
 let intervalFN: any = '';
-const unknown =
+export const unknown =
   'https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/unknown.png';
 
 export function Router() {

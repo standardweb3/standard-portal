@@ -7,6 +7,7 @@ import { NETWORK_ICON, NETWORK_LABEL } from '../../constants/networks';
 import { useActiveWeb3React } from '../../hooks';
 // network modal
 import NetworkModal from '../../modals/NetworkModal';
+import { unknown } from '../../pages/router';
 import { useNetworkModalToggle } from '../../state/application/hooks';
 
 export function NetworkStatus() {
@@ -34,7 +35,7 @@ export function NetworkStatus() {
         `}
       >
         <Image
-          src={NETWORK_ICON[chainId]}
+          src={NETWORK_ICON[chainId] ?? unknown}
           alt="Switch Network"
           className="rounded-lg bg-white"
           width={20}
