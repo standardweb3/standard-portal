@@ -5,6 +5,8 @@ import dividendIcon from '../public/icons/dividend.svg';
 import dividendv1Icon from '../public/icons/dividendv1.svg';
 import bridgeIcon from '../public/icons/bridge.svg';
 import migrateIcon from '../public/icons/migrate.svg';
+import routerIcon from '../public/icons/router.svg';
+
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
 export const chainIdGuardRedirect = {
@@ -58,13 +60,13 @@ export const sidebarRoutes = [
     icon: bridgeIcon,
     iconActive: bridgeIcon,
     // hidden: [ChainId.SHIDEN],
-    hidden: [ChainId.MATIC, ChainId.BSC],
+    // hidden: [],
   },
   {
     name: 'Router',
     urls: ['/router'],
-    icon: bridgeIcon,
-    iconActive: bridgeIcon,
+    icon: routerIcon,
+    iconActive: routerIcon,
     // hidden: [ChainId.SHIDEN],
   },
   {
