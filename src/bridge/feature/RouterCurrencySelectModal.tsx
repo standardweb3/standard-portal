@@ -6,6 +6,7 @@ import { isAddress } from '../../functions';
 import { useFuse } from '../../hooks';
 import { getAnyswapToken } from '../functions/getAnyswapToken';
 import AnyswapCurrencyList from './AnyswapCurrencyList';
+import { ModalHeader } from '../../components-ui/Modal/ModalHeader';
 
 type RouterCurrencySelectModalTypes = {
   isOpen: boolean;
@@ -74,7 +75,7 @@ export default function RouterCurrencySelectModal({
         >
           {anyswapCurrencies && (
             <>
-              <div className="text-sm font-bold">Select A Token</div>
+              <ModalHeader onClose={onDismiss} title="Select A Token" />
               <div
                 className={`
           mt-4

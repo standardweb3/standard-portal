@@ -9,6 +9,7 @@ import {
 import Image from 'next/image';
 import { useSizeSmDown } from '../../components-ui/Responsive';
 import { useActiveWeb3React } from '../../hooks';
+import { ModalHeader } from '../../components-ui/Modal/ModalHeader';
 
 type RouterChainSelectModalTypes = {
   isOpen: boolean;
@@ -54,7 +55,7 @@ export default function RouterChainSelectModal({
         minWidth={isViewportSmallDown ? '90vw' : 'none'}
       >
         <div className="space-y-4">
-          <div className="text-sm font-bold">Networks</div>
+          <ModalHeader onClose={onDismiss} title="Networks" />
           <div className="space-y-2">
             {chainIds.map((chainId) => {
               return (
