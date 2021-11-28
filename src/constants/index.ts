@@ -265,5 +265,7 @@ export const MASTERPOOL_BLACKLIST = [
 ];
 
 export const AVERAGE_BLOCK_TIME_IN_SECS = {
+  [ChainId.MAINNET]: 13.54,
   [ChainId.SHIDEN]: 13,
+  [ChainId.METIS]: 240,
 };
