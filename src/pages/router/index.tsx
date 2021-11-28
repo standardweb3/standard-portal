@@ -951,7 +951,10 @@ export function Router() {
   // }, [chainFrom, anyswapInfo, chainTo.id])
 }
 
-Router.Guard = NetworkGuardWrapper(
-  NORMAL_GUARDED_CHAINS.concat(ChainId.BSC, ChainId.MATIC),
-);
+Router.Guard = NetworkGuardWrapper([
+  ChainId.MAINNET,
+  ChainId.SHIDEN,
+  ChainId.BSC,
+  ChainId.MATIC,
+]);
 export default Router;

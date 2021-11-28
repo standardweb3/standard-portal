@@ -7,7 +7,6 @@ import { DefinedStyles } from '../../utils/DefinedStyles';
 import { RouterHistories } from '../../bridge/feature/RouterHistories';
 import { BridgeHeader } from '../../bridge/feature/BridgeHeader';
 import { NetworkGuardWrapper } from '../../guards/Network';
-import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import Image from '../../components-ui/Image';
 import { ExternalLink } from '../../components-ui/ExternalLink';
@@ -56,7 +55,10 @@ export function History() {
   );
 }
 
-History.Guard = NetworkGuardWrapper(
-  NORMAL_GUARDED_CHAINS.concat(ChainId.BSC, ChainId.MATIC),
-);
+History.Guard = NetworkGuardWrapper([
+  ChainId.MAINNET,
+  ChainId.SHIDEN,
+  ChainId.BSC,
+  ChainId.MATIC,
+]);
 export default History;

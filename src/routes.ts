@@ -14,6 +14,7 @@ export const chainIdGuardRedirect = {
   [ChainId.SHIDEN]: '/trade',
   [ChainId.BSC]: '/router',
   [ChainId.MATIC]: '/router',
+  [ChainId.METIS]: '/trade',
 };
 
 export const sidebarRoutes = [

@@ -41,7 +41,7 @@ export function useMasterChefV2Farms(swrConfig: SWRConfiguration = undefined) {
   const { chainId } = useActiveWeb3React();
   const shouldFetch = chainId;
   const { data } = useSWR(
-    shouldFetch ? 'masterChefV2Farms' : null,
+    shouldFetch ? ['masterChefV2Farms', chainId] : null,
     () => getMasterChefV2Farms(chainId),
     swrConfig,
   );

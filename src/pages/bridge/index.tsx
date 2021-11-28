@@ -932,7 +932,10 @@ export function Bridge() {
   // }, [chainFrom, anyswapInfo, chainTo.id])
 }
 
-Bridge.Guard = NetworkGuardWrapper(
-  NORMAL_GUARDED_CHAINS.concat(ChainId.BSC, ChainId.MATIC),
-);
+Bridge.Guard = NetworkGuardWrapper([
+  ChainId.MAINNET,
+  ChainId.SHIDEN,
+  ChainId.BSC,
+  ChainId.MATIC,
+]);
 export default Bridge;

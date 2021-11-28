@@ -29,7 +29,7 @@ import { DefinedStyles } from '../../utils/DefinedStyles';
 import { getSymbol, getTradeAddress } from '../../functions/native';
 import { useRouter } from 'next/router';
 import { useCurrency } from '../../hooks/Tokens';
-import { Token } from '@digitalnative/standard-protocol-sdk';
+import { ChainId, Token } from '@digitalnative/standard-protocol-sdk';
 import { SearchV2 } from '../../components-ui/Search/SearchV2';
 import { WavySpinner } from '../../components-ui/Spinner/WavySpinner';
 const WeekChart = dynamic(() => import('../../features/trade/WeekChart'), {
@@ -232,29 +232,39 @@ function Tokens() {
         Header: '24h',
         accessor: 'oneDayPriceChange',
         className: 'col-span-2 justify-center items-center flex',
-        Cell: ({ value }) => (
-          <div
-            className={`text-xs lg:text-sm ${
-              value > 0 ? 'text-green' : value < 0 && 'text-red'
-            }`}
-          >
-            {value !== null ? formatPercent(value) : '-'}
-          </div>
-        ),
+        Cell: ({ row, value }) => {
+          const { chainId } = useActiveWeb3React();
+          if (chainId === ChainId.METIS && row.values.info.symbol === 'WMETIS')
+            return '-';
+          return (
+            <div
+              className={`text-xs lg:text-sm ${
+                value > 0 ? 'text-green' : value < 0 && 'text-red'
+              }`}
+            >
+              {value !== null ? formatPercent(value) : '-'}
+            </div>
+          );
+        },
       },
       {
         Header: '7d',
         accessor: 'sevenDayPriceChange',
         className: 'col-span-2 hidden lg:flex justify-center items-center',
-        Cell: ({ value }) => (
-          <div
-            className={`text-xs lg:text-sm ${
-              value > 0 ? 'text-green' : value < 0 && 'text-red'
-            }`}
-          >
-            {value !== null ? formatPercent(value) : '-'}
-          </div>
-        ),
+        Cell: ({ value, row }) => {
+          const { chainId } = useActiveWeb3React();
+          if (chainId === ChainId.METIS && row.values.info.symbol === 'WMETIS')
+            return '-';
+          return (
+            <div
+              className={`text-xs lg:text-sm ${
+                value > 0 ? 'text-green' : value < 0 && 'text-red'
+              }`}
+            >
+              {value !== null ? formatPercent(value) : '-'}
+            </div>
+          );
+        },
       },
       {
         Header: 'Chart (7d)',
@@ -262,7 +272,11 @@ function Tokens() {
         className:
           'col-span-2 sm:col-span-4 lg:col-span-4 flex justify-center items-center',
         Cell: (cell) => {
-          const { value } = cell;
+          const { value, row } = cell;
+
+          const { chainId } = useActiveWeb3React();
+          if (chainId === ChainId.METIS && row.values.info.symbol === 'WMETIS')
+            return '-';
           return (
             <div
               className={`${

@@ -130,10 +130,16 @@ export const getTokenPrice = async (
 ) => {
   // console.log('getTokenPrice')
   // const ethPrice = await getEthPrice(chainId);
-  const ethPrice = await getPrices({ aliases: ['METIS'] });
+  if (chainId === ChainId.METIS) {
+    const ethPrice = await getPrices({ aliases: ['METIS'] });
+
+    const { token } = await exchange(chainId, query, variables);
+    return token && ethPrice?.[0] && token?.derivedETH * ethPrice?.[0]?.price;
+  }
+  const ethPrice = await getEthPrice(chainId);
 
   const { token } = await exchange(chainId, query, variables);
-  return token && ethPrice?.[0] && token?.derivedETH * ethPrice?.[0]?.price;
+  return token?.derivedETH * ethPrice;
 };
 
 export const getOneDayEthPrice = async (chainId = ChainId.MAINNET) => {
