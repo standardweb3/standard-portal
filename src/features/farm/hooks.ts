@@ -20,6 +20,7 @@ import { Zero } from '@ethersproject/constants';
 import concat from 'lodash/concat';
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
 import zip from 'lodash/zip';
+import { useStnd } from '../../hooks/Tokens';
 
 export function useChefContract(chef: Chef) {
   const masterChefV2Contract = useMasterChefV2Contract();
@@ -75,6 +76,7 @@ export function usePendingSushi(farm) {
   const { account, chainId } = useActiveWeb3React();
 
   const contract = useChefContract(farm.chef ?? Chef.MASTERCHEF_V2);
+  const stnd = useStnd();
 
   const args = useMemo(() => {
     if (!account) {
@@ -93,9 +95,7 @@ export function usePendingSushi(farm) {
 
   const amount = value ? JSBI.BigInt(value.toString()) : undefined;
 
-  return amount
-    ? CurrencyAmount.fromRawAmount(SUSHI[chainId], amount)
-    : undefined;
+  return amount ? CurrencyAmount.fromRawAmount(stnd, amount) : undefined;
 }
 
 export function useChefPositions(
