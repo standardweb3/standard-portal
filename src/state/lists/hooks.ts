@@ -60,7 +60,7 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
 // };
 
 const TRANSFORMED_DEFAULT_TOKEN_LIST = listToTokenMap(DEFAULT_TOKEN_LIST);
-// bjhl
+
 // const TRANSFORMED_DEFAULT_TOKEN_LIST = listToTokenMap(_DEFAULT_TOKEN_LIST);
 export function useAllLists(): AppState['lists']['byUrl'] {
   return useAppSelector((state) => state.lists.byUrl);
