@@ -20,11 +20,7 @@ import {
   formatNumberScale,
   formatPercent,
 } from '../../functions';
-import {
-  useSizeMdDown,
-  useSizeXs,
-  ViewportMediumUp,
-} from '../../components-ui/Responsive';
+import { ViewportMediumUp } from '../../components-ui/Responsive';
 import { Page } from '../../components-ui/Page';
 import { PageHeader } from '../../components-ui/PageHeader';
 import { PageContent } from '../../components-ui/PageContent';
@@ -265,9 +261,8 @@ function Tokens() {
         accessor: 'sparklines',
         className:
           'col-span-2 sm:col-span-4 lg:col-span-4 flex justify-center items-center',
-        Cell: ({ value }) => {
-          const isViewportXs = useSizeXs();
-          const isViewportMdDown = useSizeMdDown();
+        Cell: (cell) => {
+          const { value } = cell;
           return (
             <div
               className={`${

@@ -19,6 +19,7 @@ import { ChainId, STND_ADDRESS } from '@digitalnative/standard-protocol-sdk';
 import { GRAPH_HOST } from '../constants';
 import { request } from 'graphql-request';
 import { getOneDayBlock, getOneWeekBlock } from '.';
+import { getPrices } from './prices';
 
 export const EXCHANGE = {
   [ChainId.MAINNET]: 'billjhlee/ethereum-exchange',
@@ -34,7 +35,7 @@ export const EXCHANGE = {
   [ChainId.OKEX]: 'sushiswap/okex-exchange',
   [ChainId.AVALANCHE]: 'sushiswap/avalanche-exchange',
   [ChainId.CELO]: 'sushiswap/celo-exchange',
-  [ChainId.METIS]: '',
+  [ChainId.METIS]: 'digitalnativeinc/metis-exchange',
 };
 
 export const exchangeUri = (chainId = ChainId.MAINNET) =>
@@ -128,10 +129,11 @@ export const getTokenPrice = async (
   variables,
 ) => {
   // console.log('getTokenPrice')
-  const ethPrice = await getEthPrice(chainId);
+  // const ethPrice = await getEthPrice(chainId);
+  const ethPrice = await getPrices({ aliases: ['METIS'] });
 
   const { token } = await exchange(chainId, query, variables);
-  return token?.derivedETH * ethPrice;
+  return token && ethPrice?.[0] && token?.derivedETH * ethPrice?.[0]?.price;
 };
 
 export const getOneDayEthPrice = async (chainId = ChainId.MAINNET) => {
