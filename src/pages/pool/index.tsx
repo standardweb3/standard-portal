@@ -24,8 +24,10 @@ import { LogoSpinner } from '../../components-ui/Spinner/LogoSpinner';
 import { DefinedStyles } from '../../utils/DefinedStyles';
 import { ViewportMediumUp } from '../../components-ui/Responsive';
 import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
+import { NetworkGuardWrapper } from '../../guards/Network';
+import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
 
-export default function Pool() {
+function Pool() {
   const router = useRouter();
   const { account, chainId } = useActiveWeb3React();
   const protocol = useProtocol();
@@ -181,3 +183,6 @@ export default function Pool() {
     </>
   );
 }
+
+Pool.Guard = NetworkGuardWrapper(NORMAL_GUARDED_CHAINS);
+export default Pool;

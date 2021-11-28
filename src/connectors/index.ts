@@ -9,7 +9,7 @@ import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { Web3Provider } from '@ethersproject/providers';
 
-const RPC = {
+export const RPC = {
   [ChainId.MAINNET]:
     'https://eth-mainnet.alchemyapi.io/v2/EA7UDrnRTL_aXxyoPoasAMx9ey2vQzky',
   [ChainId.ROPSTEN]:

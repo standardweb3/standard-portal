@@ -12,8 +12,10 @@ import { useStandardPrice } from '../../services/graph';
 import { useTokenBalance } from '../../state/wallet/hooks';
 import { useActiveWeb3React } from '../../hooks';
 import { Alert } from '../../components-ui/Alert';
+import { NetworkGuardWrapper } from '../../guards/Network';
+import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
 
-export default function Stake() {
+function Stake() {
   const { account } = useActiveWeb3React();
 
   const stnd = useStnd();
@@ -83,3 +85,7 @@ export default function Stake() {
     </>
   );
 }
+
+Stake.Guard = NetworkGuardWrapper(NORMAL_GUARDED_CHAINS);
+
+export default Stake;

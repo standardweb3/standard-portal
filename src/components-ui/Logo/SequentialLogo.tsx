@@ -26,7 +26,7 @@ export const SequentialLogo: FC<SequentialLogoProps> = ({
   ...rest
 }) => {
   const [, refresh] = useState<number>(0);
-  const src = srcs.find((src) => !BAD_SRCS[src]);
+  const src = srcs?.find((src) => !BAD_SRCS[src]);
   return (
     <div style={{ width, height }}>
       <Image

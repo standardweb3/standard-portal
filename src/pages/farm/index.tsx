@@ -29,8 +29,10 @@ import {
 } from '../../components-ui/Responsive';
 import { AVERAGE_BLOCK_TIME_IN_SECS } from '../../constants';
 import { WavySpinner } from '../../components-ui/Spinner/WavySpinner';
+import { NetworkGuardWrapper } from '../../guards/Network';
+import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
 
-export default function Farm() {
+function Farm() {
   const router = useRouter();
   useExchangeAvailability(() => router.push('/farmv2'));
   useMasterChefV2Availability(() => router.push('/farmv2'));
@@ -254,3 +256,5 @@ export default function Farm() {
     </>
   );
 }
+Farm.Guard = NetworkGuardWrapper(NORMAL_GUARDED_CHAINS);
+export default Farm;

@@ -1,5 +1,9 @@
 import { useRouter } from 'next/router';
-import { STND_ADDRESS, Token } from '@digitalnative/standard-protocol-sdk';
+import {
+  ChainId,
+  STND_ADDRESS,
+  Token,
+} from '@digitalnative/standard-protocol-sdk';
 import ReactGA from 'react-ga';
 import React, { useMemo, useState } from 'react';
 import { formatNumber, tryParseAmount } from '../../functions';
@@ -53,6 +57,10 @@ import {
 } from '../../services/graph/hooks/dividend';
 import { ExternalLink } from '../../components-ui/ExternalLink';
 import Countdown from 'react-countdown';
+import { NetworkGuardWrapper } from '../../guards/Network';
+import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
+// import { useBondedStrategy } from '../../services/graph/hooks/dividend';
+// import { useBundle, useStandardPrice } from '../../services/graph';
 
 export const BondWrapper = styled.div`
   @media only screen and (min-width: 640px) {
@@ -62,7 +70,7 @@ export const BondWrapper = styled.div`
   }
 `;
 
-export default function Dividend() {
+function Dividend() {
   const router = useRouter();
   useExchangeAvailability(() => router.push('/v2dividend'));
   const { account, chainId } = useActiveWeb3React();
@@ -515,3 +523,6 @@ export default function Dividend() {
     </>
   );
 }
+
+Dividend.Guard = NetworkGuardWrapper([ChainId.SHIDEN]);
+export default Dividend;

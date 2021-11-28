@@ -83,6 +83,13 @@ export const SHIDEN: { [key: string]: Token } = {
     'STND',
     'STandard',
   ),
+  JPY: new Token(
+    ChainId.SHIDEN,
+    '0x735abe48e8782948a37c7765ecb76b98cde97b0f',
+    18,
+    'JPY',
+    'JPY COin',
+  ),
 };
 
 export const SHIBUYA: { [key: string]: Token } = {
@@ -839,7 +846,7 @@ export const STND: ChainTokenMap = {
     'Standard',
   ),
   [ChainId.METIS]: new Token(
-    ChainId.SHIDEN,
+    ChainId.METIS,
     STND_ADDRESS[ChainId.METIS],
     18,
     'STND',

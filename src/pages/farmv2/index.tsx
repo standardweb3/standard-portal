@@ -14,8 +14,10 @@ import { classNames } from '../../functions';
 import FarmListV2 from '../../features/farm/FarmListV2';
 import { useMasterChefInfo } from '../../features/farm/useMasterChef';
 import { BigNumber } from 'ethers';
+import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
+import { NetworkGuardWrapper } from '../../guards/Network';
 
-export default function Farmbare() {
+function Farmbare() {
   const router = useRouter();
 
   const { totalAllocPoint, sushiPerBlock } = useMasterChefInfo();
@@ -115,3 +117,6 @@ export default function Farmbare() {
     </>
   );
 }
+
+Farmbare.Guard = NetworkGuardWrapper(NORMAL_GUARDED_CHAINS);
+export default Farmbare;

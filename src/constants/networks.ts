@@ -65,7 +65,7 @@ export const NETWORK_LABEL: { [chainId in ChainId]?: string } = {
   [ChainId.SHIDEN]: 'Shiden',
   [ChainId.FANTOM]: 'Fantom',
   [ChainId.FANTOM_TESTNET]: 'Fantom Testnet',
-  [ChainId.MATIC]: 'Polygon (Matic)',
+  [ChainId.MATIC]: 'Polygon',
   [ChainId.MATIC_TESTNET]: 'Matic Testnet',
   [ChainId.XDAI]: 'xDai',
   [ChainId.ARBITRUM]: 'Arbitrum',
@@ -85,6 +85,12 @@ export const NETWORK_LABEL: { [chainId in ChainId]?: string } = {
   // [ChainId.PALM]: 'Palm',
   [ChainId.METIS]: 'Metis',
 };
+
+export const NORMAL_GUARDED_CHAINS = [
+  ChainId.MAINNET,
+  ChainId.SHIDEN,
+  ChainId.METIS,
+];
 
 export const SUPPORTED_NETWORKS: {
   [chainId in ChainId]?: {
@@ -165,28 +171,28 @@ export const SUPPORTED_NETWORKS: {
   //   rpcUrls: ['https://rpcapi.fantom.network'],
   //   blockExplorerUrls: ['https://ftmscan.com'],
   // },
-  // [ChainId.BSC]: {
-  //   chainId: '0x38',
-  //   chainName: 'Binance Smart Chain',
-  //   nativeCurrency: {
-  //     name: 'Binance Coin',
-  //     symbol: 'BNB',
-  //     decimals: 18,
-  //   },
-  //   rpcUrls: ['https://bsc-dataseed.binance.org'],
-  //   blockExplorerUrls: ['https://bscscan.com'],
-  // },
-  // [ChainId.MATIC]: {
-  //   chainId: '0x89',
-  //   chainName: 'Matic',
-  //   nativeCurrency: {
-  //     name: 'Matic',
-  //     symbol: 'MATIC',
-  //     decimals: 18,
-  //   },
-  //   rpcUrls: ['https://rpc-mainnet.maticvigil.com'], // ['https://matic-mainnet.chainstacklabs.com/'],
-  //   blockExplorerUrls: ['https://explorer-mainnet.maticvigil.com'],
-  // },
+  [ChainId.BSC]: {
+    chainId: '0x38',
+    chainName: 'Binance Smart Chain',
+    nativeCurrency: {
+      name: 'Binance Coin',
+      symbol: 'BNB',
+      decimals: 18,
+    },
+    rpcUrls: ['https://bsc-dataseed.binance.org'],
+    blockExplorerUrls: ['https://bscscan.com'],
+  },
+  [ChainId.MATIC]: {
+    chainId: '0x89',
+    chainName: 'Matic',
+    nativeCurrency: {
+      name: 'Matic',
+      symbol: 'MATIC',
+      decimals: 18,
+    },
+    rpcUrls: ['https://rpc-mainnet.maticvigil.com'], // ['https://matic-mainnet.chainstacklabs.com/'],
+    blockExplorerUrls: ['https://explorer-mainnet.maticvigil.com'],
+  },
   // [ChainId.HECO]: {
   //   chainId: '0x80',
   //   chainName: 'Heco',

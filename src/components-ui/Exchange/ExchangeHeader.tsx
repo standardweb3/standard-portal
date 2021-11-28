@@ -1,9 +1,5 @@
-import {
-  ChainId,
-  Currency,
-  Percent,
-} from '@digitalnative/standard-protocol-sdk';
-import React, { FC, useState } from 'react';
+import { Currency, Percent } from '@digitalnative/standard-protocol-sdk';
+import React, { FC } from 'react';
 import { useRouter } from 'next/router';
 // import MyOrders from '../features/limit-order/MyOrders';
 import { ExchangeNavigation } from './ExchangeNavigation';
@@ -11,15 +7,15 @@ import { TransactionSettingsWithGas } from './TransactionSettingsWithGas';
 
 import { AnalyticsLink } from '../AnalyticsLink';
 
-const getQuery = (input, output) => {
-  if (!input && !output) return;
+// const getQuery = (input, output) => {
+//   if (!input && !output) return;
 
-  if (input && !output) {
-    return { inputCurrency: input.address || 'ETH' };
-  } else if (input && output) {
-    return { inputCurrency: input.address, outputCurrency: output.address };
-  }
-};
+//   if (input && !output) {
+//     return { inputCurrency: input.address || 'ETH' };
+//   } else if (input && output) {
+//     return { inputCurrency: input.address, outputCurrency: output.address };
+//   }
+// };
 
 interface ExchangeHeaderProps {
   input?: Currency;

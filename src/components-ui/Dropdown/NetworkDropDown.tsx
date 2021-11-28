@@ -78,7 +78,7 @@ export default function NetworkDropDown(): JSX.Element | null {
             absolute
             z-40
             overflow-auto 
-            text-base bg-opaque-secondary
+            text-base bg-background-modal
             rounded-20
             focus:outline-none
             "

@@ -22,7 +22,12 @@ import { useMemo } from 'react';
 
 let store;
 
-const PERSISTED_KEYS: string[] = ['user', 'transactions', 'protocol'];
+const PERSISTED_KEYS: string[] = [
+  'user',
+  'transactions',
+  'protocol',
+  'bridgeTransactions',
+];
 
 const persistConfig = {
   key: 'root',

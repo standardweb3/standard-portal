@@ -76,6 +76,7 @@ module.exports = {
         'background-currency-input-xs': 'rgba(77, 36, 96, 0.2)',
         opaque: 'rgba(255,255,255,0.04)',
         'opaque-secondary': 'rgba(222, 199, 239, 0.13)',
+        'opaque-tertiary': 'rgba(100, 70, 100, 0.43)',
         'opaque-slider': 'rgba(24,1,1,0.35)',
         'opaque-farm-list': 'rgba(222, 199, 239, 0.05)',
         'opaque-alert': 'rgba(97, 67, 188, 0.07)',
