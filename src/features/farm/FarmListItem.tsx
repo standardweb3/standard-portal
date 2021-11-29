@@ -17,12 +17,15 @@ import {
   ViewportXSmall,
 } from '../../components-ui/Responsive';
 import dynamic from 'next/dynamic';
+import { useActiveWeb3React } from '../../hooks';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
 const FarmListItemDetails = dynamic(() => import('./FarmListItemDetails'), {
   ssr: false,
 });
 
 const FarmListItem = ({ farm, ...rest }) => {
+  const { chainId } = useActiveWeb3React();
   const token0 = useCurrency(farm.pair.token0.id);
   const token1 = useCurrency(farm.pair.token1.id);
   const amountDecimals = farm.amount ? farm.amount / 1e18 : undefined;
@@ -160,14 +163,20 @@ const FarmListItem = ({ farm, ...rest }) => {
                 space-y-1
                 lg:flex-col 
                 items-center
+                justify-center
                 lg:items-start
                 "
               >
-                <div className="text-primary font-bold text-sm sm:text-lg lg:text-xl">
-                  {isViewportMediumDown
-                    ? formatNumberScale(userShare * farm.pair.reserveUSD, true)
-                    : formatNumber(userShare * farm.pair.reserveUSD, true)}
-                </div>
+                {chainId !== ChainId.METIS && (
+                  <div className="text-primary font-bold text-sm sm:text-lg lg:text-xl">
+                    {isViewportMediumDown
+                      ? formatNumberScale(
+                          userShare * farm.pair.reserveUSD,
+                          true,
+                        )
+                      : formatNumber(userShare * farm.pair.reserveUSD, true)}
+                  </div>
+                )}
                 <ViewportLargeUp>
                   <div className="flex items-center space-x-1 text-xs">
                     <div>
@@ -192,6 +201,7 @@ const FarmListItem = ({ farm, ...rest }) => {
                 space-y-1
                 flex lg:flex-col 
                 items-center
+                justify-center
                 lg:items-start
                 "
               >
@@ -200,23 +210,25 @@ const FarmListItem = ({ farm, ...rest }) => {
                     ? formatNumberScale(farm.tvl, true)
                     : formatNumber(farm.tvl, true)}
                 </div>
-                <ViewportLargeUp>
-                  <div className="flex items-center space-x-1 text-xs">
-                    <div>
+                {chainId !== ChainId.METIS && (
+                  <ViewportLargeUp>
+                    <div className="flex items-center space-x-1 text-xs">
                       <div>
-                        {Number(farm.pair.reserve0 * farm.share).toFixed(4)}
+                        <div>
+                          {Number(farm.pair.reserve0 * farm.share).toFixed(4)}
+                        </div>
+                        <div>
+                          {' '}
+                          {Number(farm.pair.reserve1 * farm.share).toFixed(4)}
+                        </div>
                       </div>
-                      <div>
-                        {' '}
-                        {Number(farm.pair.reserve1 * farm.share).toFixed(4)}
+                      <div className="text-grey">
+                        <div>{farm.pair.token0.symbol}</div>
+                        <div> {farm.pair.token1.symbol}</div>
                       </div>
                     </div>
-                    <div className="text-grey">
-                      <div>{farm.pair.token0.symbol}</div>
-                      <div> {farm.pair.token1.symbol}</div>
-                    </div>
-                  </div>
-                </ViewportLargeUp>
+                  </ViewportLargeUp>
+                )}
               </div>
             </div>
           </Disclosure.Button>
