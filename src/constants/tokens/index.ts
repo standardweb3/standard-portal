@@ -503,6 +503,25 @@ export const AVALANCHE: { [key: string]: Token } = {
   ),
 };
 
+
+export const METISDAO: { [key: string]: Token } = {
+  MDOGE: new Token(
+    ChainId.METIS,
+    '0x31021E0B1CC6F89E04586A0e3cF5C46D5498A5E9',
+    18,
+    'MDOGE',
+    'MetisDoge',
+  ),
+  STND: new Token(
+    ChainId.METIS,
+    STND_ADDRESS[ChainId.METIS],
+    18,
+    'STND',
+    'STandard',
+  )
+};
+
+
 // Default Ethereum chain tokens
 export const ALPHA = new Token(
   ChainId.MAINNET,
