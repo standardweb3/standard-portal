@@ -86,7 +86,7 @@ const FarmListItem = ({ farm, ...rest }) => {
     token0Amount && parseFloat(token0Amount.toExact()) * token0price;
 
   const token1decimals =
-    token0Amount && parseFloat(token1Amount.toExact()) * token1price;
+    token1Amount && parseFloat(token1Amount.toExact()) * token1price;
 
   const altTVL =
     token0decimals && token1decimals && token0decimals + token1decimals;
@@ -363,7 +363,7 @@ const FarmListItem = ({ farm, ...rest }) => {
                       : formatNumber(altTVL, true)}
                   </div>
                 ) : null}
-                {chainId !== ChainId.METIS && (
+                {chainId !== ChainId.METIS ? (
                   <ViewportLargeUp>
                     <div className="flex items-center space-x-1 text-xs">
                       <div>
@@ -381,7 +381,25 @@ const FarmListItem = ({ farm, ...rest }) => {
                       </div>
                     </div>
                   </ViewportLargeUp>
-                )}
+                ) : token0Amount && token1Amount ? (
+                  <ViewportLargeUp>
+                    <div className="flex items-center space-x-1 text-xs">
+                      <div>
+                        <div>
+                          {parseFloat(token0Amount.toExact()).toFixed(4)}
+                        </div>
+                        <div>
+                          {' '}
+                          {parseFloat(token1Amount.toExact()).toFixed(4)}
+                        </div>
+                      </div>
+                      <div className="text-grey">
+                        <div>{farm.pair.token0.symbol}</div>
+                        <div> {farm.pair.token1.symbol}</div>
+                      </div>
+                    </div>
+                  </ViewportLargeUp>
+                ) : null}
               </div>
             </div>
           </Disclosure.Button>
