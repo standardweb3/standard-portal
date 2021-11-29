@@ -73,6 +73,7 @@ function Farm() {
   const blocksPerDay = 86400 / _averageBlockTime;
 
   const map = (pool) => {
+    console.log(pool);
     // TODO: Account for fees generated in case of swap pairs, and use standard compounding
     // algorithm with the same intervals acrosss chains to account for consistency.
     // For lending pairs, what should the equivilent for fees generated? Interest gained?
@@ -117,7 +118,7 @@ function Farm() {
     const farmShare = balance / Number(swapPair.totalSupply);
     const tvl =
       chainId === ChainId.METIS
-        ? 0.2 * Number(swapPair.reserveETH) * Number(ethPrice)
+        ? 0.4 * Number(swapPair.reserveETH) * Number(ethPrice)
         : farmShare * Number(swapPair.reserveETH) * Number(ethPrice);
 
     const roiPerBlock =
