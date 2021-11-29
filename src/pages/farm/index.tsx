@@ -131,7 +131,7 @@ function Farm() {
     const farmShare = balance / Number(swapPair.totalSupply);
     const tvl =
       chainId === ChainId.METIS
-        ? 0.33 * Number(swapPair.reserveETH) * Number(ethPrice)
+        ? farmShare * Number(swapPair.reserveETH) * Number(ethPrice)
         : farmShare * Number(swapPair.reserveETH) * Number(ethPrice);
 
     const roiPerBlock =
@@ -173,6 +173,7 @@ function Farm() {
       rewards,
       tvl,
       farmAlt,
+      averageBlockTime,
     };
   };
 

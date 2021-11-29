@@ -18,8 +18,13 @@ import {
 } from '../../components-ui/Responsive';
 import dynamic from 'next/dynamic';
 import { useActiveWeb3React } from '../../hooks';
-import { ChainId, CurrencyAmount } from '@digitalnative/standard-protocol-sdk';
+import {
+  ChainId,
+  CurrencyAmount,
+  JSBI,
+} from '@digitalnative/standard-protocol-sdk';
 import { useEthPrice } from '../../services/graph';
+import { useTotalSupply } from '../../hooks/useTotalSupply';
 
 const FarmListItemDetails = dynamic(() => import('./FarmListItemDetails'), {
   ssr: false,
@@ -39,23 +44,91 @@ const FarmListItem = ({ farm, ...rest }) => {
   const token1price =
     farm.pair && parseFloat(farm.pair.token1.derivedETH) * parseFloat(ethPrice);
 
-  // console.log('114', farm.farmAlt);
+  const totalPoolTokens = useTotalSupply(
+    chainId === ChainId.METIS ? farm.farmAlt?.amount?.currency : undefined,
+  );
 
-  // const _reserve0alt =
-  //   farm.farmAlt &&
-  //   !!token0 &&
-  //   CurrencyAmount.fromRawAmount(token0, farm.farmAlt.reserve0.toString());
-  // const _reserve1alt =
-  //   farm.farmAlt &&
-  //   !!token1 &&
-  //   CurrencyAmount.fromRawAmount(token1, farm.farmAlt.reserve1.toString());
+  const _reserve0alt =
+    farm.farmAlt &&
+    !!token0 &&
+    CurrencyAmount.fromRawAmount(token0, farm.farmAlt.reserve0?.toString());
+  const _reserve1alt =
+    farm.farmAlt &&
+    !!token1 &&
+    CurrencyAmount.fromRawAmount(token1, farm.farmAlt.reserve1?.toString());
+  const [token0Amount, token1Amount] =
+    farm.farmAlt && _reserve0alt && _reserve1alt && totalPoolTokens
+      ? [
+          CurrencyAmount.fromRawAmount(
+            token0,
+            JSBI.divide(
+              JSBI.multiply(
+                farm.farmAlt.amount.quotient,
+                _reserve0alt.quotient,
+              ),
+              totalPoolTokens.quotient,
+            ),
+          ),
+          CurrencyAmount.fromRawAmount(
+            token1,
+            JSBI.divide(
+              JSBI.multiply(
+                farm.farmAlt.amount.quotient,
+                _reserve1alt.quotient,
+              ),
+              totalPoolTokens.quotient,
+            ),
+          ),
+        ]
+      : [undefined, undefined];
 
+  const token0decimals =
+    token0Amount && parseFloat(token0Amount.toExact()) * token0price;
+
+  const token1decimals =
+    token0Amount && parseFloat(token1Amount.toExact()) * token1price;
+
+  const altTVL =
+    token0decimals && token1decimals && token0decimals + token1decimals;
+
+  let altRoiB =
+    chainId === ChainId.METIS &&
+    altTVL &&
+    farm.rewards.reduce((previousValue, currentValue) => {
+      return (
+        previousValue + currentValue.rewardPerBlock * currentValue.rewardPrice
+      );
+    }, 0) / (altTVL > 0 ? altTVL : 1);
+  let altRoiH = altRoiB && altRoiB * farm.averageBlockTime;
+  let altRoiD = altRoiB && altRoiH * 24;
+  let altRoiM = altRoiB && altRoiD * 30;
+  let altRoiY = altRoiB && altRoiM * 12;
+
+  // const [token0Amount, token1Amount] =
+  // !!_reserve0alt && !!_reserve1alt &&
+  //   ? [
+  //       CurrencyAmount.fromRawAmount(
+  //         token0,
+  //         JSBI.divide(
+  //           JSBI.multiply(amount.quotient, _reserve0.quotient),
+  //           totalPoolTokens.quotient,
+  //         ),
+  //       ),
+  //       CurrencyAmount.fromRawAmount(
+  //         token1,
+  //         JSBI.divide(
+  //           JSBI.multiply(amount.quotient, _reserve1.quotient),
+  //           totalPoolTokens.quotient,
+  //         ),
+  //       ),
+  //     ]
+  //   : [undefined, undefined];
   // const _reserve0altDec =
   //   _reserve0alt && parseFloat(_reserve0alt.toExact()) * token0price;
 
   // const _reserve1altDec =
   //   _reserve1alt && parseFloat(_reserve1alt.toExact()) * token1price;
-  // console.log(_reserve0altDec, _reserve1altDec);
+
   const isViewportMediumDown = useSizeMdDown();
   return (
     <Disclosure {...rest}>
@@ -149,34 +222,65 @@ const FarmListItem = ({ farm, ...rest }) => {
                 </div>
               </div>
               <div className="flex items-center col-span-3 lg:col-span-3">
-                <div className="flex items-end justify-center space-x-2">
-                  <ViewportXSmall>
-                    <div className="font-bold text-right text-sm lg:text-base">
-                      {formatPercent(farm?.roiPerYear * 100)}
-                    </div>
-                  </ViewportXSmall>
-                  <ViewportSmallUp>
-                    <div className="space-y-1">
-                      <div className="font-bold text-right text-base">
+                {chainId !== ChainId.METIS ? (
+                  <div className="flex items-end justify-center space-x-2">
+                    <ViewportXSmall>
+                      <div className="font-bold text-right text-sm lg:text-base">
                         {formatPercent(farm?.roiPerYear * 100)}
                       </div>
-                      <div className="text-xs">
-                        {formatPercent(farm?.roiPerMonth * 100)}
-                      </div>
-                      <div className="text-xs">
-                        {formatPercent(farm?.roiPerDay * 100)}
-                      </div>
+                    </ViewportXSmall>
+                    <ViewportSmallUp>
+                      <div className="space-y-1">
+                        <div className="font-bold text-right text-base">
+                          {formatPercent(farm?.roiPerYear * 100)}
+                        </div>
+                        <div className="text-xs">
+                          {formatPercent(farm?.roiPerMonth * 100)}
+                        </div>
+                        <div className="text-xs">
+                          {formatPercent(farm?.roiPerDay * 100)}
+                        </div>
 
-                      {/* {farm?.roiPerYear > 100 ? '10000%+' : formatPercent(farm?.roiPerYear * 100)} */}
-                    </div>
-                    <div className="text-xs text-left space-y-1">
-                      <div className="ml-1 text-grey">/year</div>
-                      <div className="ml-1 text-grey">/month</div>
-                      <div className="ml-1 text-grey">/day</div>
-                      {/* {farm?.roiPerYear > 100 ? '10000%+' : formatPercent(farm?.roiPerYear * 100)} */}
-                    </div>
-                  </ViewportSmallUp>
-                </div>
+                        {/* {farm?.roiPerYear > 100 ? '10000%+' : formatPercent(farm?.roiPerYear * 100)} */}
+                      </div>
+                      <div className="text-xs text-left space-y-1">
+                        <div className="ml-1 text-grey">/year</div>
+                        <div className="ml-1 text-grey">/month</div>
+                        <div className="ml-1 text-grey">/day</div>
+                        {/* {farm?.roiPerYear > 100 ? '10000%+' : formatPercent(farm?.roiPerYear * 100)} */}
+                      </div>
+                    </ViewportSmallUp>
+                  </div>
+                ) : altRoiB ? (
+                  <div className="flex items-end justify-center space-x-2">
+                    <ViewportXSmall>
+                      <div className="font-bold text-right text-sm lg:text-base">
+                        {formatPercent(altRoiY * 100)}
+                      </div>
+                    </ViewportXSmall>
+                    <ViewportSmallUp>
+                      <div className="space-y-1">
+                        <div className="font-bold text-right text-base">
+                          {formatPercent(altRoiY * 100)}
+                        </div>
+                        <div className="text-xs">
+                          {formatPercent(altRoiM * 100)}
+                        </div>
+                        <div className="text-xs">
+                          {formatPercent(altRoiD * 100)}
+                        </div>
+
+                        {/* {farm?.roiPerYear > 100 ? '10000%+' : formatPercent(farm?.roiPerYear * 100)} */}
+                      </div>
+                      <div className="text-xs text-left space-y-1">
+                        <div className="ml-1 text-grey">/year</div>
+                        <div className="ml-1 text-grey">/month</div>
+                        <div className="ml-1 text-grey">/day</div>
+                        {/* {farm?.roiPerYear > 100 ? '10000%+' : formatPercent(farm?.roiPerYear * 100)} */}
+                      </div>
+                    </ViewportSmallUp>
+                  </div>
+                ) : null}
               </div>
               <div
                 className="
@@ -246,11 +350,19 @@ const FarmListItem = ({ farm, ...rest }) => {
                 lg:items-start
                 "
               >
-                <div className="text-primary font-bold text-sm sm:text-lg lg:text-xl">
-                  {isViewportMediumDown
-                    ? formatNumberScale(farm.tvl, true)
-                    : formatNumber(farm.tvl, true)}
-                </div>
+                {chainId !== ChainId.METIS ? (
+                  <div className="text-primary font-bold text-sm sm:text-lg lg:text-xl">
+                    {isViewportMediumDown
+                      ? formatNumberScale(farm.tvl, true)
+                      : formatNumber(farm.tvl, true)}
+                  </div>
+                ) : altTVL ? (
+                  <div className="text-primary font-bold text-sm sm:text-lg lg:text-xl">
+                    {isViewportMediumDown
+                      ? formatNumberScale(altTVL, true)
+                      : formatNumber(altTVL, true)}
+                  </div>
+                ) : null}
                 {chainId !== ChainId.METIS && (
                   <ViewportLargeUp>
                     <div className="flex items-center space-x-1 text-xs">
