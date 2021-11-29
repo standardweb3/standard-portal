@@ -133,7 +133,6 @@ function Tokens() {
           //   parseFloat(token.volumeUSD) - token.dayData && token.dayData.length > 0
           //     ? token.dayData[token.dayData.length - 1].volumeUSD
           //     : 0;
-
           return {
             name: token.name,
             info: { symbol: token.symbol, id: token.id },
@@ -210,11 +209,15 @@ function Tokens() {
         Header: 'Volume (24h)',
         accessor: 'volume',
         className: 'col-span-2 hidden sm:flex justify-center items-center',
-        Cell: ({ value }) => (
-          <div className="text-xs lg:text-sm">
-            {value !== null ? formatNumberScale(value, true) : '-'}
-          </div>
-        ),
+        Cell: ({ value }) => {
+          const { chainId } = useActiveWeb3React();
+          if (chainId === ChainId.METIS) return '-';
+          return (
+            <div className="text-xs lg:text-sm">
+              {value !== null ? formatNumberScale(value, true) : '-'}
+            </div>
+          );
+        },
       },
       {
         Header: 'Price',
@@ -232,10 +235,9 @@ function Tokens() {
         Header: '24h',
         accessor: 'oneDayPriceChange',
         className: 'col-span-2 justify-center items-center flex',
-        Cell: ({ row, value }) => {
+        Cell: ({ value }) => {
           const { chainId } = useActiveWeb3React();
-          if (chainId === ChainId.METIS && row.values.info.symbol === 'WMETIS')
-            return '-';
+          if (chainId === ChainId.METIS) return '-';
           return (
             <div
               className={`text-xs lg:text-sm ${
@@ -251,10 +253,9 @@ function Tokens() {
         Header: '7d',
         accessor: 'sevenDayPriceChange',
         className: 'col-span-2 hidden lg:flex justify-center items-center',
-        Cell: ({ value, row }) => {
+        Cell: ({ value }) => {
           const { chainId } = useActiveWeb3React();
-          if (chainId === ChainId.METIS && row.values.info.symbol === 'WMETIS')
-            return '-';
+          if (chainId === ChainId.METIS) return '-';
           return (
             <div
               className={`text-xs lg:text-sm ${
@@ -272,11 +273,10 @@ function Tokens() {
         className:
           'col-span-2 sm:col-span-4 lg:col-span-4 flex justify-center items-center',
         Cell: (cell) => {
-          const { value, row } = cell;
+          const { value } = cell;
 
           const { chainId } = useActiveWeb3React();
-          if (chainId === ChainId.METIS && row.values.info.symbol === 'WMETIS')
-            return '-';
+          if (chainId === ChainId.METIS) return '-';
           return (
             <div
               className={`${
