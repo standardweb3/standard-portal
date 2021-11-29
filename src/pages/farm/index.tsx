@@ -46,13 +46,13 @@ function Farm() {
     router.query.filter == null ? 'all' : (router.query.filter as string);
 
   const pairAddresses = useFarmPairAddresses();
-  const {
-    poolsWithReserves,
-    // next,
-    // current,
-    // loading,
-    // last,
-  } = useMasterPoolPairsWithReserves(10);
+  // const {
+  //   poolsWithReserves,
+  //   // next,
+  //   // current,
+  //   // loading,
+  //   // last,
+  // } = useMasterPoolPairsWithReserves(10);
 
   const swapPairs = useSushiPairs({
     where: {
@@ -122,10 +122,17 @@ function Farm() {
     const rewards = getRewards();
 
     const balance = Number(pool.balance / 1e10 / 1e8);
+    let farmAltShare;
+    // if (chainId === ChainId.METIS) {
+    //   let farmfound = poolsWithReserves.find((poolwr) => {
+    //     return Number(pool.id) == Number(poolwr.id);
+    //   });
+    //   console.log(pool, farmfound);
+    // }
     const farmShare = balance / Number(swapPair.totalSupply);
     const tvl =
       chainId === ChainId.METIS
-        ? 0.4 * Number(swapPair.reserveETH) * Number(ethPrice)
+        ? 0.33 * Number(swapPair.reserveETH) * Number(ethPrice)
         : farmShare * Number(swapPair.reserveETH) * Number(ethPrice);
 
     const roiPerBlock =
