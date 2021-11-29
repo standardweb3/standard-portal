@@ -32,6 +32,7 @@ import { AVERAGE_BLOCK_TIME_IN_SECS } from '../../constants';
 import { WavySpinner } from '../../components-ui/Spinner/WavySpinner';
 import { NetworkGuardWrapper } from '../../guards/Network';
 import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
 function Farm() {
   const router = useRouter();
@@ -114,7 +115,10 @@ function Farm() {
 
     const balance = Number(pool.balance / 1e10 / 1e8);
     const farmShare = balance / Number(swapPair.totalSupply);
-    const tvl = 0.2 * Number(swapPair.reserveETH) * Number(ethPrice);
+    const tvl =
+      chainId === ChainId.METIS
+        ? 0.2 * Number(swapPair.reserveETH) * Number(ethPrice)
+        : farmShare * Number(swapPair.reserveETH) * Number(ethPrice);
 
     const roiPerBlock =
       rewards.reduce((previousValue, currentValue) => {
