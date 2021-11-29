@@ -7,6 +7,7 @@ import { useActiveWeb3React, useFuse } from '../../hooks';
 
 import {
   useAverageBlockTime,
+  useEthPrice,
   useExchangeAvailability,
   useFarmPairAddresses,
   useFarms,
@@ -53,6 +54,7 @@ function Farm() {
   const farms = useFarms();
 
   const positions = usePositions();
+  const ethPrice = useEthPrice();
 
   const [stndPrice] = [useStandardPrice()];
   const averageBlockTime = useAverageBlockTime();
@@ -112,7 +114,7 @@ function Farm() {
 
     const balance = Number(pool.balance / 1e10 / 1e8);
     const farmShare = balance / Number(swapPair.totalSupply);
-    const tvl = farmShare * Number(swapPair.reserveUSD);
+    const tvl = 0.25 * Number(swapPair.reserveETH) * Number(ethPrice);
 
     const roiPerBlock =
       rewards.reduce((previousValue, currentValue) => {
