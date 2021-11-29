@@ -19,6 +19,7 @@ import {
 import dynamic from 'next/dynamic';
 import { useActiveWeb3React } from '../../hooks';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
+import { useEthPrice } from '../../services/graph';
 
 const FarmListItemDetails = dynamic(() => import('./FarmListItemDetails'), {
   ssr: false,
@@ -32,7 +33,14 @@ const FarmListItem = ({ farm, ...rest }) => {
 
   const totalSupply = farm.pair.totalSupply;
   const userShare = amountDecimals ? amountDecimals / totalSupply : 0;
+  const ethPrice = useEthPrice();
+  const token0price =
+    farm.pair && parseFloat(farm.pair.token0.derivedETH) * parseFloat(ethPrice);
+  const token1price =
+    farm.pair && parseFloat(farm.pair.token1.derivedETH) * parseFloat(ethPrice);
 
+  console.log(token0price);
+  console.log(token1price);
   const isViewportMediumDown = useSizeMdDown();
   return (
     <Disclosure {...rest}>
@@ -167,7 +175,7 @@ const FarmListItem = ({ farm, ...rest }) => {
                 lg:items-start
                 "
               >
-                {chainId !== ChainId.METIS && (
+                {chainId !== ChainId.METIS ? (
                   <div className="text-primary font-bold text-sm sm:text-lg lg:text-xl">
                     {isViewportMediumDown
                       ? formatNumberScale(
@@ -175,6 +183,24 @@ const FarmListItem = ({ farm, ...rest }) => {
                           true,
                         )
                       : formatNumber(userShare * farm.pair.reserveUSD, true)}
+                  </div>
+                ) : (
+                  <div className="text-primary font-bold text-sm sm:text-lg lg:text-xl">
+                    {isViewportMediumDown
+                      ? formatNumberScale(
+                          Number(farm.pair.reserve0) * userShare * token0price +
+                            Number(farm.pair.reserve1) *
+                              userShare *
+                              token1price,
+                          true,
+                        )
+                      : formatNumberScale(
+                          Number(farm.pair.reserve0) * userShare * token0price +
+                            Number(farm.pair.reserve1) *
+                              userShare *
+                              token1price,
+                          true,
+                        )}
                   </div>
                 )}
                 <ViewportLargeUp>
