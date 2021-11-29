@@ -33,6 +33,7 @@ import { WavySpinner } from '../../components-ui/Spinner/WavySpinner';
 import { NetworkGuardWrapper } from '../../guards/Network';
 import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
+import { useMasterPoolPairsWithReserves } from '../../state/user/hooks';
 
 function Farm() {
   const router = useRouter();
@@ -45,6 +46,13 @@ function Farm() {
     router.query.filter == null ? 'all' : (router.query.filter as string);
 
   const pairAddresses = useFarmPairAddresses();
+  const {
+    poolsWithReserves,
+    // next,
+    // current,
+    // loading,
+    // last,
+  } = useMasterPoolPairsWithReserves(10);
 
   const swapPairs = useSushiPairs({
     where: {
@@ -73,7 +81,6 @@ function Farm() {
   const blocksPerDay = 86400 / _averageBlockTime;
 
   const map = (pool) => {
-    console.log(pool);
     // TODO: Account for fees generated in case of swap pairs, and use standard compounding
     // algorithm with the same intervals acrosss chains to account for consistency.
     // For lending pairs, what should the equivilent for fees generated? Interest gained?

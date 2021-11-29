@@ -39,8 +39,6 @@ const FarmListItem = ({ farm, ...rest }) => {
   const token1price =
     farm.pair && parseFloat(farm.pair.token1.derivedETH) * parseFloat(ethPrice);
 
-  console.log(token0price);
-  console.log(token1price);
   const isViewportMediumDown = useSizeMdDown();
   return (
     <Disclosure {...rest}>
