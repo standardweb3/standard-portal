@@ -90,19 +90,39 @@ const FarmListItem = ({ farm, ...rest }) => {
 
   const altTVL =
     token0decimals && token1decimals && token0decimals + token1decimals;
+  // console.log('alttvl', altTVL);
+  // console.log(
+  //   '123123',
+  //   chainId === ChainId.METIS &&
+  //     altTVL &&
+  //     farm.rewards.reduce((previousValue, currentValue) => {
+  //       console.log(currentValue);
+  //       return (
+  //         previousValue + currentValue.rewardPerBlock * currentValue.rewardPrice
+  //       );
+  //     }, 0),
+  // );
 
-  let altRoiB =
+  // let altRoiD =
+  //   chainId === ChainId.METIS &&
+  //   altTVL &&
+  //   farm.rewards.reduce((previousValue, currentValue) => {
+  //     return (
+  //       previousValue + currentValue.rewardPerBlock * currentValue.rewardPrice
+  //     );
+  //   }, 0) / (altTVL > 0 ? altTVL : 1);
+  let altRoiD =
     chainId === ChainId.METIS &&
     altTVL &&
     farm.rewards.reduce((previousValue, currentValue) => {
       return (
-        previousValue + currentValue.rewardPerBlock * currentValue.rewardPrice
+        previousValue + currentValue.rewardPerDay * currentValue.rewardPrice
       );
     }, 0) / (altTVL > 0 ? altTVL : 1);
-  let altRoiH = altRoiB && altRoiB * farm.averageBlockTime;
-  let altRoiD = altRoiB && altRoiH * 24;
-  let altRoiM = altRoiB && altRoiD * 30;
-  let altRoiY = altRoiB && altRoiM * 12;
+  // let altRoiH = altRoiB && altRoiB * farm.averageBlockTime;
+  // let altRoiD = altRoiB && altRoiH * 24;
+  let altRoiM = altRoiD && altRoiD * 30;
+  let altRoiY = altRoiD && altRoiM * 12;
 
   // const [token0Amount, token1Amount] =
   // !!_reserve0alt && !!_reserve1alt &&
@@ -251,7 +271,7 @@ const FarmListItem = ({ farm, ...rest }) => {
                       </div>
                     </ViewportSmallUp>
                   </div>
-                ) : altRoiB ? (
+                ) : altRoiD ? (
                   <div className="flex items-end justify-center space-x-2">
                     <ViewportXSmall>
                       <div className="font-bold text-right text-sm lg:text-base">
