@@ -18,7 +18,7 @@ import {
 } from '../../components-ui/Responsive';
 import dynamic from 'next/dynamic';
 import { useActiveWeb3React } from '../../hooks';
-import { ChainId } from '@digitalnative/standard-protocol-sdk';
+import { ChainId, CurrencyAmount } from '@digitalnative/standard-protocol-sdk';
 import { useEthPrice } from '../../services/graph';
 
 const FarmListItemDetails = dynamic(() => import('./FarmListItemDetails'), {
@@ -39,6 +39,23 @@ const FarmListItem = ({ farm, ...rest }) => {
   const token1price =
     farm.pair && parseFloat(farm.pair.token1.derivedETH) * parseFloat(ethPrice);
 
+  // console.log('114', farm.farmAlt);
+
+  // const _reserve0alt =
+  //   farm.farmAlt &&
+  //   !!token0 &&
+  //   CurrencyAmount.fromRawAmount(token0, farm.farmAlt.reserve0.toString());
+  // const _reserve1alt =
+  //   farm.farmAlt &&
+  //   !!token1 &&
+  //   CurrencyAmount.fromRawAmount(token1, farm.farmAlt.reserve1.toString());
+
+  // const _reserve0altDec =
+  //   _reserve0alt && parseFloat(_reserve0alt.toExact()) * token0price;
+
+  // const _reserve1altDec =
+  //   _reserve1alt && parseFloat(_reserve1alt.toExact()) * token1price;
+  // console.log(_reserve0altDec, _reserve1altDec);
   const isViewportMediumDown = useSizeMdDown();
   return (
     <Disclosure {...rest}>
