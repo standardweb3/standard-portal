@@ -30,7 +30,7 @@ export function useMasterChefV2SushiPerBlock(swrConfig = undefined) {
   const { chainId } = useActiveWeb3React();
   const shouldFetch = chainId && SUPPORTED_NETWORK_IDS.includes(chainId);
   const { data } = useSWR(
-    shouldFetch ? 'masterChefV2SushiPerBlock' : null,
+    shouldFetch ? ['masterChefV2SushiPerBlock', chainId] : null,
     () => getMasterChefV2SushiPerBlock(chainId),
     swrConfig,
   );
