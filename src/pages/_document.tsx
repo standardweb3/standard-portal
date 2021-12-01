@@ -5,8 +5,6 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en" dir="ltr">
         <Head>
-          <script src="/static/datafeeds/udf/dist/polyfills.js" />
-          <script src="/static/datafeeds/udf/dist/bundle.js" />
           <link
             rel="apple-touch-icon"
             sizes="180x180"

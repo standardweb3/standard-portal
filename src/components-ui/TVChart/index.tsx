@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './index.css';
+import DataFeed from '../../features/tvchart/datafeed';
 import {
   widget,
   ChartingLibraryWidgetOptions,
@@ -11,7 +11,6 @@ import {
 export interface ChartContainerProps {
   symbol: ChartingLibraryWidgetOptions['symbol'];
   interval: ChartingLibraryWidgetOptions['interval'];
-
   // BEWARE: no trailing slash is expected in feed URL
   datafeedUrl: string;
   libraryPath: ChartingLibraryWidgetOptions['library_path'];
@@ -61,9 +60,7 @@ export class TVChartContainer extends React.PureComponent<
       symbol: this.props.symbol as string,
       // BEWARE: no trailing slash is expected in feed URL
       // tslint:disable-next-line:no-any
-      datafeed: new (window as any).Datafeeds.UDFCompatibleDatafeed(
-        this.props.datafeedUrl,
-      ),
+      datafeed: DataFeed,
       interval: this.props.interval as ChartingLibraryWidgetOptions['interval'],
       container: this.props
         .container as ChartingLibraryWidgetOptions['container'],

@@ -5,75 +5,23 @@ import {
   WNATIVE,
 } from '@digitalnative/standard-protocol-sdk';
 import { dexCandlesGraphClient } from '../../services/graph/clients/candles';
-import { dexCandlesQuery } from '../../services/graph/queries/candles';
+import { CandlePeriod } from '../../types/Candle';
+import { fetchBars } from './getBars';
 
 export const configurationData = {
-  supported_resolutions: ['5', '15', '60', '240', 'D'],
+  supported_resolutions: ['5', '15', '60', '240', '1D', '1W'],
   exchanges: [],
   symbols_types: [],
 };
 
-async function asynfetchDexCandles(
-  chainId,
-  pairAddress,
-  addr1,
-  addr2,
-  resolution,
-  period,
-) {
-  const dexCandles = dexCandlesGraphClient(chainId);
-  let resultArray = [];
-
-  let skip = 0;
-  let results = await dexCandles.query({
-    query: dexCandlesQuery,
-    variables: { pair: pairAddress, period, skip },
-  });
-
-  while (results.data.candles.length === 1000) {
-    skip += 1000;
-    resultArray = resultArray.concat(results.data.candles);
-    results = await dexCandles.query({
-      query: dexCandlesQuery,
-      variables: {
-        pair: pairAddress,
-        period,
-        skip,
-      },
-    });
-  }
-
-  resultArray = resultArray.concat(results.data.candles);
-  const token0 = resultArray[0]?.token0;
-
-  let parsedData = resultArray.map(
-    ({ time, open, high, low, close }: RawCandlestickDatum) => {
-      return {
-        time: Number(time),
-        open: Number(open),
-        high: Number(high),
-        low: Number(low),
-        close: Number(close),
-      };
-    },
-  );
-  // Query takes the tokens in sorted lexicographical order.
-  // But if sortedToken0 is actually the output currency and vice versa,
-  // then we must invert the prices
-  if (token0 == token0Address) {
-    parsedData = parsedData.map(
-      ({ time, open, high, low, close }: NumericalCandlestickDatum) => {
-        return {
-          time: time,
-          open: 1 / open,
-          high: 1 / high,
-          low: 1 / low,
-          close: 1 / close,
-        };
-      },
-    );
-  }
-}
+export const resolutionMapping = {
+  5: CandlePeriod.FiveMinutes,
+  15: CandlePeriod.FifteenMinutes,
+  60: CandlePeriod.OneHour,
+  240: CandlePeriod.FourHours,
+  '1D': CandlePeriod.OneDay,
+  '1W': CandlePeriod.OneWeek,
+};
 
 export const getPairInfo = (symbolName) => {
   const split = symbolName.split('/');
@@ -164,47 +112,25 @@ export default {
     onHistoryCallback,
     onErrorCallback,
   ) => {
-    const { from, to, firstDataRequest } = periodParams;
+    const { from, to, countBack, firstDataRequest } = periodParams;
     console.log('[getBars]: Method call', symbolInfo, resolution, from, to);
     const dexCandles = dexCandlesGraphClient(symbolInfo.exchange);
 
-    const query = Object.keys(urlParameters)
-      .map((name) => `${name}=${encodeURIComponent(urlParameters[name])}`)
-      .join('&');
     try {
-      const data = await makeApiRequest(`data/histoday?${query}`);
-      if (
-        (data.Response && data.Response === 'Error') ||
-        data.Data.length === 0
-      ) {
+      const data = await fetchBars(
+        symbolInfo,
+        resolutionMapping[resolution],
+        dexCandles,
+      );
+      if (data.length === 0) {
         // "noData" should be set if there is no data in the requested period.
         onHistoryCallback([], {
           noData: true,
         });
         return;
       }
-      let bars = [];
-      data.Data.forEach((bar) => {
-        if (bar.time >= from && bar.time < to) {
-          bars = [
-            ...bars,
-            {
-              time: bar.time * 1000,
-              low: bar.low,
-              high: bar.high,
-              open: bar.open,
-              close: bar.close,
-            },
-          ];
-        }
-      });
-      if (firstDataRequest) {
-        lastBarsCache.set(symbolInfo.full_name, {
-          ...bars[bars.length - 1],
-        });
-      }
-      console.log(`[getBars]: returned ${bars.length} bar(s)`);
-      onHistoryCallback(bars, {
+      console.log(`[getBars]: returned ${data.length} bar(s)`);
+      onHistoryCallback(data, {
         noData: false,
       });
     } catch (error) {
@@ -212,4 +138,12 @@ export default {
       onErrorCallback(error);
     }
   },
+  subscribeBars: async (
+    symbolInfo,
+    resolution,
+    onTick,
+    listenerGuid,
+    onResetCacheNeededCallback,
+  ) => {},
+  unsubscribeBars: (listenerGuid: string) => {},
 };

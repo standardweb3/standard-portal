@@ -18,12 +18,20 @@ import { useProtocol } from '../../state/protocol/hooks';
 import { useActiveWeb3React } from '../../hooks';
 import { ANALYTICS_URL } from '../../constants';
 import { useArbitrage } from '../../hooks/useArbitrage';
+// import { TVChartContainer } from '../TVChart';
 const Arbitrage = dynamic(() => import('../Arbitrage'), {
   ssr: false,
 });
 const KChart = dynamic(() => import('kaktana-react-lightweight-charts'), {
   ssr: false,
 });
+
+const TVChartContainer = dynamic(
+  () => import('../TVChart').then((mod) => mod.TVChartContainer),
+  {
+    ssr: false,
+  },
+);
 
 interface PeriodChooserProps {
   period: CandlePeriod | undefined;
@@ -437,6 +445,7 @@ export default function Chart({
           onChoose={(period) => setCandlePeriod(period)}
         />
       </div>
+      <TVChartContainer />
     </>
   );
 }
