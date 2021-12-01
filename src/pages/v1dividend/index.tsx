@@ -489,7 +489,7 @@ function Dividend() {
                 />
               </div>
             </div>
-            <div className="mt-6">
+            {/* <div className="mt-6">
               <DividendKPIInfo
                 apr={apr}
                 apy={apy}
@@ -497,7 +497,7 @@ function Dividend() {
                 claimedRewardUSD={claimedRewardUSD}
                 remainingRewardUSD={remainingRewardUSD}
               />
-            </div>
+            </div> */}
 
             <div className="mt-6 text-grey text-xs">
               * Reward from each pair has a claiming period of 30 days
