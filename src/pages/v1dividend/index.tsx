@@ -59,6 +59,7 @@ import { ExternalLink } from '../../components-ui/ExternalLink';
 import Countdown from 'react-countdown';
 import { NetworkGuardWrapper } from '../../guards/Network';
 import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
+import { NavigationLink } from '../../components-ui/NavigationLink';
 // import { useBondedStrategy } from '../../services/graph/hooks/dividend';
 // import { useBundle, useStandardPrice } from '../../services/graph';
 
@@ -364,13 +365,13 @@ function Dividend() {
 
           <Alert
             className={DefinedStyles.pageAlertFull}
-            title={`Dividend is migrating to V2`}
+            title={`Please migrate to Dividend V2`}
             message={
               <div>
-                <ExternalLink href="https://snapshot.org/#/stndgov.eth/proposal/0x73ba6565c31073f9092b3a62447a787da65eb5fea19c7477a02fe12be9ea9f11">
-                  dSTND
-                </ExternalLink>{' '}
-                is coming! In the meanwhile, bonding will be disabled
+                <NavigationLink href="/dividend">
+                  <a className="text-primary">dSTND</a>
+                </NavigationLink>{' '}
+                is here. Please claim your rewards and stake on Dividend V2
               </div>
             }
             type="warning"
@@ -462,8 +463,9 @@ function Dividend() {
                       buttonClassName="!py-2"
                       bondButtonBody={
                         <div className="text-sm min-h-[14px]">
-                          Migrating to V2 in <br />
-                          <Countdown date={migrationDate * 1000} />
+                          use V2
+                          {/* Migrating to V2 in <br />
+                          <Countdown date={migrationDate * 1000} /> */}
                         </div>
                       }
                     />
