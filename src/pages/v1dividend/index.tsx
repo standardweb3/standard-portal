@@ -368,10 +368,10 @@ function Dividend() {
             title={`Please migrate to Dividend V2`}
             message={
               <div>
+                dSTND is here. Please claim your rewards and stake on{' '}
                 <NavigationLink href="/dividend">
-                  <a className="text-primary">dSTND</a>
+                  <a className="text-primary">Dividend V2</a>
                 </NavigationLink>{' '}
-                is here. Please claim your rewards and stake on Dividend V2
               </div>
             }
             type="warning"
@@ -462,8 +462,8 @@ function Dividend() {
                       balance={stndBalance?.toExact()}
                       buttonClassName="!py-2"
                       bondButtonBody={
-                        <div className="text-sm min-h-[14px]">
-                          use V2
+                        <div className="text-sm min-h-[40px] flex justify-center items-center">
+                          Please use Dividend V2
                           {/* Migrating to V2 in <br />
                           <Countdown date={migrationDate * 1000} /> */}
                         </div>
