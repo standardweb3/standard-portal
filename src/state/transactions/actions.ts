@@ -25,6 +25,12 @@ export const addTransaction = createAction<{
     nonce: number;
     ethTip: string;
   };
+  anyswap?: {
+    isRouter: boolean;
+    destChainId?: string;
+    pairId?: string;
+    srcChainId?: string;
+  };
 }>('transactions/addTransaction');
 export const clearAllTransactions = createAction<{ chainId: ChainId }>(
   'transactions/clearAllTransactions',

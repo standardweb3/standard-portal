@@ -38,6 +38,8 @@ import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
 import { DividendTokens } from '../../components-ui/DividendV2/DividendTokens';
 import { ExternalLink } from '../../components-ui/ExternalLink';
 import Countdown from 'react-countdown';
+import { NetworkGuardWrapper } from '../../guards/Network';
+import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
 
 export const BondWrapper = styled.div`
   @media only screen and (min-width: 640px) {
@@ -47,7 +49,7 @@ export const BondWrapper = styled.div`
   }
 `;
 
-export default function Dividend() {
+function Dividend() {
   const { account, chainId } = useActiveWeb3React();
   const [pendingTx, setPendingTx] = useState(false);
   const [depositValue, setDepositValue] = useState('');
@@ -137,7 +139,7 @@ export default function Dividend() {
       );
     }
     return null;
-  }, [bonded, bondedTotal]);
+  }, [bonded, bondedTotal, stnd.decimals]);
 
   const stndBalance = useTokenBalance(account, stnd);
   const onBondMax = () => setDepositValue(stndBalance?.toExact());
@@ -392,3 +394,6 @@ export default function Dividend() {
     </>
   );
 }
+
+Dividend.Guard = NetworkGuardWrapper(NORMAL_GUARDED_CHAINS);
+export default Dividend;

@@ -60,7 +60,7 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
 // };
 
 const TRANSFORMED_DEFAULT_TOKEN_LIST = listToTokenMap(DEFAULT_TOKEN_LIST);
-// bjhl
+
 // const TRANSFORMED_DEFAULT_TOKEN_LIST = listToTokenMap(_DEFAULT_TOKEN_LIST);
 export function useAllLists(): AppState['lists']['byUrl'] {
   return useAppSelector((state) => state.lists.byUrl);
@@ -99,6 +99,7 @@ function combineMaps(
     42220: { ...map1[42220], ...map2[42220] }, // celo
     11297108109: { ...map1[11297108109], ...map2[11297108109] }, // palm
     11297108099: { ...map1[11297108099], ...map2[11297108099] }, // palm testnet
+    1088: { ...map1[1088], ...map2[1088] }, // metis
   };
 }
 

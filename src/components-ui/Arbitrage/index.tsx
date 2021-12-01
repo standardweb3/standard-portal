@@ -16,7 +16,7 @@ const ngmi =
 const wgmi =
   'https://raw.githubusercontent.com/digitalnativeinc/icons/master/trade/wgmi.png';
 
-export function Arbitrage({
+export default function Arbitrage({
   outbound,
   setOutbound,
   ctod,

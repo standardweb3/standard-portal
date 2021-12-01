@@ -10,6 +10,7 @@ import { barHistoriesQuery, barQuery } from '../queries/bar';
 const BAR = {
   [ChainId.MAINNET]: 'billjhlee/ethereum-dstnd',
   [ChainId.SHIDEN]: 'digitalnativeinc/shiden-xstnd',
+  [ChainId.METIS]: '',
 };
 
 export const bar = async (query, chainId = ChainId.MAINNET, variables) =>

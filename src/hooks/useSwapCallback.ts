@@ -1,14 +1,9 @@
-import {
-  ARCHER_RELAY_URI,
-  BIPS_BASE,
-  EIP_1559_ACTIVATION_BLOCK,
-} from '../constants';
+import { ARCHER_RELAY_URI, EIP_1559_ACTIVATION_BLOCK } from '../constants';
 import {
   ChainId,
   Currency,
   CurrencyAmount,
   Ether,
-  JSBI,
   Percent,
   Router,
   TradeType,

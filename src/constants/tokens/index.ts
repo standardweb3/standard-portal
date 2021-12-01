@@ -83,6 +83,13 @@ export const SHIDEN: { [key: string]: Token } = {
     'STND',
     'STandard',
   ),
+  JPY: new Token(
+    ChainId.SHIDEN,
+    '0x735abe48e8782948a37c7765ecb76b98cde97b0f',
+    18,
+    'JPY',
+    'JPY COin',
+  ),
 };
 
 export const SHIBUYA: { [key: string]: Token } = {
@@ -496,6 +503,25 @@ export const AVALANCHE: { [key: string]: Token } = {
   ),
 };
 
+
+export const METISDAO: { [key: string]: Token } = {
+  MDOGE: new Token(
+    ChainId.METIS,
+    '0x31021E0B1CC6F89E04586A0e3cF5C46D5498A5E9',
+    18,
+    'MDOGE',
+    'MetisDoge',
+  ),
+  STND: new Token(
+    ChainId.METIS,
+    STND_ADDRESS[ChainId.METIS],
+    18,
+    'STND',
+    'STandard',
+  )
+};
+
+
 // Default Ethereum chain tokens
 export const ALPHA = new Token(
   ChainId.MAINNET,
@@ -778,7 +804,7 @@ export const SDN = new Token(
   ChainId.MAINNET,
   '0x00E856ee945A49bb73436e719D96910Cd9D116a4',
   18,
-  'SDN',
+  'WSDN',
   'Shiden',
 );
 
@@ -788,6 +814,14 @@ export const JPYC = new Token(
   18,
   'JPYC',
   'JPY Coin',
+);
+
+export const METIS = new Token(
+  ChainId.MAINNET,
+  '0x9E32b13ce7f2E80A01932B42553652E053D6ed8e',
+  18,
+  'METIS',
+  'Metis',
 );
 
 type ChainTokenMap = {
@@ -826,6 +860,13 @@ export const STND: ChainTokenMap = {
   [ChainId.MATIC]: new Token(
     ChainId.MATIC,
     STND_ADDRESS[ChainId.MATIC],
+    18,
+    'STND',
+    'Standard',
+  ),
+  [ChainId.METIS]: new Token(
+    ChainId.METIS,
+    STND_ADDRESS[ChainId.METIS],
     18,
     'STND',
     'Standard',

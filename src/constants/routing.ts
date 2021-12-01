@@ -21,20 +21,15 @@ import {
   HBTC,
   HECO,
   IBETH,
-  KOVAN,
   LFBTC,
   LIFT,
   MATIC,
   MIR,
-  NFTX,
   OKEX,
   PLAY,
   PONT,
   PWING,
   RENBTC,
-  RUNE,
-  STETH,
-  SUSHI,
   TRIBE,
   UMA,
   USDC,
@@ -50,6 +45,8 @@ import {
   SHIDEN,
   SDN,
   JPYC,
+  METIS,
+  METISDAO,
 } from './tokens';
 // a list of tokens by chain
 import {
@@ -59,16 +56,9 @@ import {
   WNATIVE,
 } from '@digitalnative/standard-protocol-sdk';
 
-import { SupportedChainId } from './chains';
-
 type ChainTokenList = {
   readonly [chainId: number]: Token[];
 };
-
-// // a list of tokens by chain
-// type ChainTokenList = {
-//     readonly [chainId in ChainId]: Token[]
-// }
 
 type ChainCurrencyList = {
   readonly [chainId: number]: Currency[];
@@ -123,6 +113,7 @@ const WRAPPED_NATIVE_ONLY: ChainTokenList = {
   [ChainId.OKEX]: [WNATIVE[ChainId.OKEX]],
   [ChainId.OKEX_TESTNET]: [WNATIVE[ChainId.OKEX_TESTNET]],
   [ChainId.CELO]: [WNATIVE[ChainId.CELO]],
+  [ChainId.METIS]: [WNATIVE[ChainId.METIS]],
 };
 
 // used to construct intermediary pairs for trading
@@ -229,6 +220,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
     CELO.cEURO,
     CELO.cBTC,
   ],
+  [ChainId.METIS]: [...WRAPPED_NATIVE_ONLY[ChainId.METIS], METISDAO.STND],
 };
 
 export const ADDITIONAL_BASES: {
@@ -306,6 +298,7 @@ export const CUSTOM_BASES: {
 
 /**
  * Shows up in the currency select for swap and add liquidity
+ *
  */
 export const COMMON_BASES: ChainTokenList = {
   [ChainId.MAINNET]: [
@@ -315,8 +308,9 @@ export const COMMON_BASES: ChainTokenList = {
     USDT,
     WBTC,
     STND[ChainId.MAINNET],
-    // SDN,
+    SDN,
     JPYC,
+    METIS,
   ],
   [ChainId.RINKEBY]: [
     ...WRAPPED_NATIVE_ONLY[ChainId.RINKEBY],
@@ -399,6 +393,7 @@ export const COMMON_BASES: ChainTokenList = {
   //   CELO.mcEURO,
   //   CELO.cEUR,
   // ],
+  [ChainId.METIS]: [...WRAPPED_NATIVE_ONLY[ChainId.METIS], METISDAO.STND],
 };
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -413,6 +408,7 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
     STND[ChainId.MAINNET],
     SDN,
     JPYC,
+    METIS,
   ],
   [ChainId.RINKEBY]: [
     ...WRAPPED_NATIVE_ONLY[ChainId.RINKEBY],
@@ -493,6 +489,7 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
     OKEX.WBTC,
     OKEX.WETH,
   ],
+  [ChainId.METIS]: [...WRAPPED_NATIVE_ONLY[ChainId.METIS], METISDAO.STND],
   // [ChainId.CELO]: [
   //   ...WRAPPED_NATIVE_ONLY[ChainId.CELO],
   //   CELO.mCUSD,

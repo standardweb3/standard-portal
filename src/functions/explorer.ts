@@ -15,6 +15,19 @@ const builders = {
         return `${prefix}/${type}/${data}`;
     }
   },
+  metis: (
+    chainName: string,
+    data: string,
+    type: 'transaction' | 'token' | 'address' | 'block',
+  ) => {
+    const prefix = 'https://andromeda-explorer.metis.io/';
+    switch (type) {
+      case 'transaction':
+        return `${prefix}/tx/${data}`;
+      default:
+        return `${prefix}/${type}/${data}`;
+    }
+  },
   shiden: (
     chainName: string,
     data: string,
@@ -389,6 +402,10 @@ const chains: ChainObject = {
   [ChainId.PALM]: {
     chainName: '',
     builder: builders.palm,
+  },
+  [ChainId.METIS]: {
+    chainName: 'metis',
+    builder: builders.metis,
   },
 };
 

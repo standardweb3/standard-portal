@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import dynamic from 'next/dynamic';
 import ReactGA from 'react-ga';
 import Head from 'next/head';
-import { Sparklines, SparklinesLine } from 'react-sparklines';
 import { useActiveWeb3React, useFuse } from '../../hooks';
 import { usePagination } from '../../hooks/usePagination';
 import {
@@ -20,11 +20,7 @@ import {
   formatNumberScale,
   formatPercent,
 } from '../../functions';
-import {
-  useSizeMdDown,
-  useSizeXs,
-  ViewportMediumUp,
-} from '../../components-ui/Responsive';
+import { ViewportMediumUp } from '../../components-ui/Responsive';
 import { Page } from '../../components-ui/Page';
 import { PageHeader } from '../../components-ui/PageHeader';
 import { PageContent } from '../../components-ui/PageContent';
@@ -33,27 +29,34 @@ import { DefinedStyles } from '../../utils/DefinedStyles';
 import { getSymbol, getTradeAddress } from '../../functions/native';
 import { useRouter } from 'next/router';
 import { useCurrency } from '../../hooks/Tokens';
-import { Token } from '@digitalnative/standard-protocol-sdk';
+import { ChainId, Token } from '@digitalnative/standard-protocol-sdk';
 import { SearchV2 } from '../../components-ui/Search/SearchV2';
 import { WavySpinner } from '../../components-ui/Spinner/WavySpinner';
+const WeekChart = dynamic(() => import('../../features/trade/WeekChart'), {
+  ssr: false,
+});
+import { NetworkGuardWrapper } from '../../guards/Network';
+import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
 
-export default function Tokens() {
+function Tokens() {
   const { chainId } = useActiveWeb3React();
   const router = useRouter();
   useExchangeAvailability(() => router.push('/trade/buy'));
   const [sortBy, setSortBy] = useState('top trading');
 
-  const sortOptions = {
-    'top trading': (a, b) => {
-      return b.volume - a.volume;
-    },
-    'top gainers': (a, b) => {
-      return b.oneDayPriceChange - a.oneDayPriceChange;
-    },
-    'top losers': (a, b) => {
-      return a.oneDayPriceChange - b.oneDayPriceChange;
-    },
-  };
+  const sortOptions = useMemo(() => {
+    return {
+      'top trading': (a, b) => {
+        return b.volume - a.volume;
+      },
+      'top gainers': (a, b) => {
+        return b.oneDayPriceChange - a.oneDayPriceChange;
+      },
+      'top losers': (a, b) => {
+        return a.oneDayPriceChange - b.oneDayPriceChange;
+      },
+    };
+  }, []);
 
   const handleRowClick = useCallback(
     (row: any) => {
@@ -68,7 +71,7 @@ export default function Tokens() {
         )}`,
       );
     },
-    [chainId],
+    [chainId, router],
   );
 
   // const emptyTokens = useEmptyTokens();
@@ -77,13 +80,16 @@ export default function Tokens() {
   // const [searchKeyword, setSearchKeyword] = useState('');
   // const deboundedKeyword = useDebounce(searchKeyword, 200)
 
-  const ethPrice = parseFloat(useEthPrice() ?? 0);
+  const _ethPrice = useEthPrice();
+  const ethPrice = parseFloat(_ethPrice ?? '0');
   // change to text search when graph is ready (?)
 
   const oneDayTokens = useOneDayTokens({});
-  const oneDayEthPrice = parseFloat(useOneDayEthPrice() ?? 0);
+  const _oneDayEthPrice = useOneDayEthPrice();
+  const oneDayEthPrice = parseFloat(_oneDayEthPrice ?? '0');
   const sevenDayTokens = useSevenDayTokens({});
-  const sevenDayEthPrice = parseFloat(useSevenDayEthPrice() ?? 0);
+  const _sevenDayEthPrice = useSevenDayEthPrice();
+  const sevenDayEthPrice = parseFloat(_sevenDayEthPrice ?? '0');
 
   const tokens = useTokens({});
   // console.log('tokens', tokens);
@@ -91,7 +97,7 @@ export default function Tokens() {
     if (tokens !== undefined && tokens.length === 0) {
       router.push('/trade/buy');
     }
-  }, [tokens]);
+  }, [tokens, router]);
 
   const sortedTokens = useMemo(() => {
     return (
@@ -127,7 +133,6 @@ export default function Tokens() {
           //   parseFloat(token.volumeUSD) - token.dayData && token.dayData.length > 0
           //     ? token.dayData[token.dayData.length - 1].volumeUSD
           //     : 0;
-
           return {
             name: token.name,
             info: { symbol: token.symbol, id: token.id },
@@ -204,19 +209,21 @@ export default function Tokens() {
         Header: 'Volume (24h)',
         accessor: 'volume',
         className: 'col-span-2 hidden sm:flex justify-center items-center',
-        Cell: ({ value }) => (
-          <div className="text-xs lg:text-sm">
-            {value !== null ? formatNumberScale(value, true) : '-'}
-          </div>
-        ),
+        Cell: ({ value }) => {
+          const { chainId } = useActiveWeb3React();
+          if (chainId === ChainId.METIS) return '-';
+          return (
+            <div className="text-xs lg:text-sm">
+              {value !== null ? formatNumberScale(value, true) : '-'}
+            </div>
+          );
+        },
       },
       {
         Header: 'Price',
         accessor: 'price',
         className: 'col-span-2 flex justify-center items-center',
         Cell: ({ row, value }) => {
-          const isViewportXs = useSizeXs();
-
           return (
             <div className="text-xs lg:text-sm text-primary font-bold">
               <div>{value !== null ? formatNumber(value, true) : '-'}</div>
@@ -228,38 +235,48 @@ export default function Tokens() {
         Header: '24h',
         accessor: 'oneDayPriceChange',
         className: 'col-span-2 justify-center items-center flex',
-        Cell: ({ value }) => (
-          <div
-            className={`text-xs lg:text-sm ${
-              value > 0 ? 'text-green' : value < 0 && 'text-red'
-            }`}
-          >
-            {value !== null ? formatPercent(value) : '-'}
-          </div>
-        ),
+        Cell: ({ value }) => {
+          const { chainId } = useActiveWeb3React();
+          if (chainId === ChainId.METIS) return '-';
+          return (
+            <div
+              className={`text-xs lg:text-sm ${
+                value > 0 ? 'text-green' : value < 0 && 'text-red'
+              }`}
+            >
+              {value !== null ? formatPercent(value) : '-'}
+            </div>
+          );
+        },
       },
       {
         Header: '7d',
         accessor: 'sevenDayPriceChange',
         className: 'col-span-2 hidden lg:flex justify-center items-center',
-        Cell: ({ value }) => (
-          <div
-            className={`text-xs lg:text-sm ${
-              value > 0 ? 'text-green' : value < 0 && 'text-red'
-            }`}
-          >
-            {value !== null ? formatPercent(value) : '-'}
-          </div>
-        ),
+        Cell: ({ value }) => {
+          const { chainId } = useActiveWeb3React();
+          if (chainId === ChainId.METIS) return '-';
+          return (
+            <div
+              className={`text-xs lg:text-sm ${
+                value > 0 ? 'text-green' : value < 0 && 'text-red'
+              }`}
+            >
+              {value !== null ? formatPercent(value) : '-'}
+            </div>
+          );
+        },
       },
       {
         Header: 'Chart (7d)',
         accessor: 'sparklines',
         className:
           'col-span-2 sm:col-span-4 lg:col-span-4 flex justify-center items-center',
-        Cell: ({ value }) => {
-          const isViewportXs = useSizeXs();
-          const isViewportMdDown = useSizeMdDown();
+        Cell: (cell) => {
+          const { value } = cell;
+
+          const { chainId } = useActiveWeb3React();
+          if (chainId === ChainId.METIS) return '-';
           return (
             <div
               className={`${
@@ -271,26 +288,13 @@ export default function Tokens() {
               }
               flex justify-center align-center`}
             >
-              <Sparklines
-                data={value.data?.map((d) => d.priceUSD) ?? []}
-                limit={7}
-                svgWidth={isViewportMdDown ? (isViewportXs ? 70 : 130) : 160}
-                svgHeight={30}
-              >
-                <SparklinesLine
-                  style={{
-                    strokeWidth: 3,
-                    stroke: 'currentColor',
-                    fill: 'none',
-                  }}
-                />
-              </Sparklines>
+              <WeekChart value={value} />
             </div>
           );
         },
       },
     ],
-    [],
+    [chainId],
   );
 
   const tableClassName = `
@@ -461,3 +465,6 @@ export default function Tokens() {
     </>
   );
 }
+
+Tokens.Guard = NetworkGuardWrapper(NORMAL_GUARDED_CHAINS);
+export default Tokens;

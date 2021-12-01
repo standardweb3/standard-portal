@@ -67,6 +67,8 @@ const FarmList = ({ farms, term }) => {
           sm:text-base
           col-span-3
           lg:col-span-3 
+          sm:justify-center
+          lg:justify-start
           cursor-pointer"
           onClick={() => requestSort('staked')}
         >
@@ -82,11 +84,12 @@ const FarmList = ({ farms, term }) => {
         </div>
         <div
           className="
-          flex items-center justify-start 
+          flex items-center justify-center 
           text-xs
           sm:text-base
           col-span-2
           lg:col-span-3 
+          lg:justify-start
           cursor-pointer"
           onClick={() => requestSort('tvl')}
         >

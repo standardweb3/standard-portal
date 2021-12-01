@@ -1,5 +1,3 @@
-import { keyframes } from '@emotion/react';
-import { useState } from 'react';
 import { classNames } from '../../functions';
 
 export function Slider({ children, isOpen }) {
@@ -13,10 +11,10 @@ export function Slider({ children, isOpen }) {
         bg-opaque-slider
         transition-all
         !duration-200
-        right-full
+        bottom-full
         opacity-0
         `,
-        isOpen && '!right-0 !opacity-100',
+        isOpen && '!bottom-0 !opacity-100',
       )}
     >
       {children}

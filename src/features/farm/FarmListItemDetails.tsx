@@ -8,7 +8,7 @@ import {
   Token,
   ZERO,
 } from '@digitalnative/standard-protocol-sdk';
-import { Chef, PairType } from './enum';
+import { Chef } from './enum';
 import { Disclosure, Transition } from '@headlessui/react';
 import React, { useState } from 'react';
 import { usePendingSushi, useUserInfo } from './hooks';
@@ -41,7 +41,7 @@ const FarmListItem = ({ farm }) => {
   const liquidityToken = new Token(
     chainId,
     getAddress(farm.pair.id),
-    farm.pair.type === PairType.KASHI ? Number(farm.pair.asset.decimals) : 18,
+    18,
     farm.pair.symbol,
     farm.pair.name,
   );
@@ -61,6 +61,7 @@ const FarmListItem = ({ farm }) => {
       [ChainId.RINKEBY]: MASTERCHEF_V2_ADDRESS[ChainId.RINKEBY],
       [ChainId.SHIBUYA]: MASTERCHEF_V2_ADDRESS[ChainId.SHIBUYA],
       [ChainId.SHIDEN]: MASTERCHEF_V2_ADDRESS[ChainId.SHIDEN],
+      [ChainId.METIS]: MASTERCHEF_V2_ADDRESS[ChainId.METIS],
     },
   };
 
@@ -321,13 +322,15 @@ const FarmListItem = ({ farm }) => {
                   </Button>
                 </div>
               )}
-              <div className="col-span-2 text-center">
-                <AnalyticsLink
-                  text
-                  path={`pools/${farm.id}`}
-                  className="!text-sm"
-                />
-              </div>
+              {chainId !== ChainId.METIS && (
+                <div className="col-span-2 text-center">
+                  <AnalyticsLink
+                    text
+                    path={`pools/${farm.id}`}
+                    className="!text-sm"
+                  />
+                </div>
+              )}
             </div>
           )}
         </div>

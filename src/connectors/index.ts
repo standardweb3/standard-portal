@@ -9,7 +9,7 @@ import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { Web3Provider } from '@ethersproject/providers';
 
-const RPC = {
+export const RPC = {
   [ChainId.MAINNET]:
     'https://eth-mainnet.alchemyapi.io/v2/EA7UDrnRTL_aXxyoPoasAMx9ey2vQzky',
   [ChainId.ROPSTEN]:
@@ -43,6 +43,7 @@ const RPC = {
   [ChainId.ARBITRUM]: 'https://arb1.arbitrum.io/rpc',
   [ChainId.PALM]:
     'https://palm-mainnet.infura.io/v3/da5fbfafcca14b109e2665290681e267',
+  [ChainId.METIS]: 'https://andromeda.metis.io/?owner=1088',
 };
 
 export const network = new NetworkConnector({
@@ -86,6 +87,7 @@ export const injected = new InjectedConnector({
     42220, // celo
     11297108109, // palm,
     1285, // moonriver
+    1088,
   ],
 });
 
@@ -95,8 +97,10 @@ export type CONNECTOR_PARAMS = {
 
 export const getWalletConnectConnector = async (params?: CONNECTOR_PARAMS) => {
   return new WalletConnectConnector({
-    supportedChainIds: params?.chainId ? [params?.chainId] : [4, 81, 336],
-    chainId: params?.chainId ?? 4,
+    supportedChainIds: params?.chainId
+      ? [params?.chainId]
+      : [1, 4, 81, 336, 1088],
+    chainId: params?.chainId ?? 1,
     rpc: RPC,
     bridge: 'https://bridge.walletconnect.org',
     qrcode: true,
@@ -106,8 +110,8 @@ export const getWalletConnectConnector = async (params?: CONNECTOR_PARAMS) => {
 
 // mainnet only
 export const walletconnect = new WalletConnectConnector({
-  supportedChainIds: [4, 81, 336],
-  chainId: 4,
+  supportedChainIds: [1, 4, 81, 336, 1088],
+  chainId: 1,
   rpc: RPC,
   bridge: 'https://bridge.walletconnect.org',
   qrcode: true,

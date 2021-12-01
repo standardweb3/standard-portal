@@ -33,6 +33,7 @@ import useSWR, { SWRConfiguration } from 'swr';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import { ethPriceQuery } from '../queries';
 import { useActiveWeb3React } from '../../../hooks';
+import { getPrices } from '../fetchers/prices';
 
 export function useExchange(
   variables = undefined,
@@ -64,7 +65,7 @@ export function useFactory(
 export function useOneDayEthPrice(swrConfig: SWRConfiguration = undefined) {
   const { chainId } = useActiveWeb3React();
   const { data } = useSWR(
-    chainId ? ['oneDayEthPrice'] : null,
+    chainId ? ['oneDayEthPrice', chainId] : null,
     () => getOneDayEthPrice(chainId),
     swrConfig,
   );
@@ -74,7 +75,7 @@ export function useOneDayEthPrice(swrConfig: SWRConfiguration = undefined) {
 export function useSevenDayEthPrice(swrConfig: SWRConfiguration = undefined) {
   const { chainId } = useActiveWeb3React();
   const { data } = useSWR(
-    chainId ? ['sevenDayEthPrice'] : null,
+    chainId ? ['sevenDayEthPrice', chainId] : null,
     () => getSevenDayEthPrice(chainId),
     swrConfig,
   );
@@ -104,11 +105,14 @@ export function useEthPrice(
 ) {
   const { chainId } = useActiveWeb3React();
   const { data } = useSWR(
-    chainId ? ['ethPrice', JSON.stringify(variables)] : null,
-    () => getEthPrice(chainId, variables),
+    chainId ? ['ethPrice', chainId, JSON.stringify(variables)] : null,
+    () => {
+      if (chainId === ChainId.METIS) return getPrices({ aliases: ['METIS'] });
+      return getEthPrice(chainId, variables);
+    },
     swrConfig,
   );
-  return data;
+  return chainId === ChainId.METIS ? data?.[0]?.price : data;
 }
 
 export function useStakePrice(swrConfig: SWRConfiguration = undefined) {
@@ -221,7 +225,7 @@ export function useSushiPrice(swrConfig: SWRConfiguration = undefined) {
 export function useStandardPrice(swrConfig: SWRConfiguration = undefined) {
   const { chainId } = useActiveWeb3React();
   const { data } = useSWR(
-    'standardPrice',
+    ['standardPrice', chainId],
     () => getStandardPrice(chainId),
     swrConfig,
   );

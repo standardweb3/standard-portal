@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useActiveWeb3React } from '../../hooks';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import Image from 'next/image';
@@ -9,8 +9,10 @@ import {
 } from '../../constants/networks';
 import cookie from 'cookie-cutter';
 import HeadlessUIModal from '../../components-ui/Modal/HeadlessUIModal';
-import { NavigationLink } from '../../components-ui/NavigationLink';
+// import { NavigationLink } from '../../components-ui/NavigationLink';
 import { Blank } from '../../components-ui/Blank';
+import { useRouter } from 'next/router';
+import { chainIdGuardRedirect } from '../../routes';
 
 interface NetworkGuardProps {
   networks: ChainId[];
@@ -19,12 +21,20 @@ interface NetworkGuardProps {
 
 const Component: FC<NetworkGuardProps> = ({ children, networks = [] }) => {
   const { chainId, library, account } = useActiveWeb3React();
+  const router = useRouter();
 
-  const link = (
-    <NavigationLink href="/swap">
-      <a className="text-blue focus:outline-none">{`home page`}</a>
-    </NavigationLink>
-  );
+  useEffect(() => {
+    if (!networks.includes(chainId) && chainIdGuardRedirect[chainId])
+      router.push(chainIdGuardRedirect[chainId]);
+    // if (pathname == '/') {
+    // router.push('/hello-nextjs');
+    // }
+  }, [chainId]);
+  // const link = (
+  //   <NavigationLink href="/swap">
+  //     <a className="text-blue focus:outline-none">{`home page`}</a>
+  //   </NavigationLink>
+  // );
 
   return (
     <>
@@ -34,7 +44,7 @@ const Component: FC<NetworkGuardProps> = ({ children, networks = [] }) => {
       >
         <div className="flex flex-col gap-7 p-8 rounded-20 bg-opaque items-center justify-center">
           <div className="max-w-2xl text-white text-center">
-            {`The App is not yet supported on ${NETWORK_LABEL[chainId]}`}
+            {`The feature is not yet supported on ${NETWORK_LABEL[chainId]}`}
           </div>
           <div className="uppercase text-white text-center text-xl tracking-[.2rem]">
             Available Networks
@@ -83,5 +93,11 @@ export default function NetworkGuard({
 }: NetworkGuardProps) {
   return <Component networks={networks}>{children}</Component>;
 }
+
+export const NetworkGuardWrapper = (networks: ChainId[]) => {
+  return ({ children }) => (
+    <Component networks={networks}>{children}</Component>
+  );
+};
 
 // export default NetworkGuard;

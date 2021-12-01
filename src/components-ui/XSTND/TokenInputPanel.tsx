@@ -1,14 +1,14 @@
-import { Token } from '@digitalnative/standard-protocol-sdk';
+import { Currency } from '@digitalnative/standard-protocol-sdk';
 import { useEffect, useState } from 'react';
 import { classNames } from '../../functions';
 import { useActiveWeb3React } from '../../hooks';
-import { useTokenBalance } from '../../state/wallet/hooks';
+import { useCurrencyBalance } from '../../state/wallet/hooks';
 import { Button } from '../Button';
 import { CurrencyLogo } from '../CurrencyLogo';
 import { Input as NumericalInput } from '../NumericalInput';
 
 export type TokenInputPanelTypes = {
-  token: Token;
+  token: Currency;
   onAmountChange?: (amount: string) => void;
   showMax?: boolean;
   className?: string;
@@ -27,7 +27,7 @@ export function TokenInputPanel({
   const [amount, setAmount] = useState('0');
   const { account } = useActiveWeb3React();
 
-  const balance = useTokenBalance(account, token);
+  const balance = useCurrencyBalance(account, token);
 
   const onMax = () => {
     setAmount(balance.toFixed(token.decimals));

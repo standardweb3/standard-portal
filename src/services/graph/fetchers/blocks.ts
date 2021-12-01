@@ -2,7 +2,6 @@ import {
   getUnixTime,
   startOfHour,
   startOfMinute,
-  startOfSecond,
   subDays,
   subHours,
 } from 'date-fns';
@@ -24,6 +23,7 @@ export const BLOCKS = {
   [ChainId.HARMONY]: 'sushiswap/harmony-blocks',
   [ChainId.AVALANCHE]: 'matthewlilley/avalanche-blocks',
   [ChainId.CELO]: 'sushiswap/celo-blocks',
+  [ChainId.METIS]: 'digitalnativeinc/metis-blocks',
 };
 
 export const fetcher = async (chainId = ChainId.MAINNET, query, variables) =>

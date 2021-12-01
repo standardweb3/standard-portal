@@ -1,7 +1,6 @@
 export enum Chef {
   MASTERCHEF,
   MASTERCHEF_V2,
-  MINICHEF,
 }
 
 export enum Rewarder {
@@ -12,5 +11,4 @@ export enum Rewarder {
 
 export enum PairType {
   SWAP,
-  KASHI,
 }

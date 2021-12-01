@@ -34,6 +34,8 @@ import ApplicationUpdater from '../state/application/updater'
 import ListsUpdater from '../state/lists/updater'
 import MulticallUpdater from '../state/multicall/updater'
 import TransactionUpdater from '../state/transactions/updater'
+import BridgeTransactionUpdater from '../state/bridgeTransactions/updater'
+
 import UserUpdater from '../state/user/updater'
 import NetworkGuard from '../guards/Network';
 
@@ -44,7 +46,7 @@ import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import { useActiveWeb3React } from '../hooks';
 
 const Web3ProviderNetwork = dynamic(() => import('../components-ui/Web3ProviderNetwork'), { ssr: false })
-// const Web3ProviderNetworkBridge = dynamic(() => import('../components-ui/Web3ProviderBridge'), { ssr: false })
+const Web3ProviderNetworkBridge = dynamic(() => import('../components-ui/Web3ProviderBridge'), { ssr: false })
 
 function MyApp({
   Component,
@@ -92,7 +94,7 @@ function MyApp({
 
   const Layout = Component.Layout || DefaultLayout
   const Provider = Component.Provider || Fragment
-  // const Guard = Component.Guard || Fragment
+  const Guard = Component.Guard || Fragment
 
   return (
     <>
@@ -153,7 +155,7 @@ function MyApp({
       <ThemeProvider theme={darkTheme}>
         <Web3ReactProvider getLibrary={getLibrary}>
           <Web3ProviderNetwork getLibrary={getLibrary}>
-
+            <Web3ProviderNetworkBridge getLibrary={getLibrary}>
               <ReduxProvider store={store}>
               <PersistGate loading='loading' persistor={persistor}>
               <Web3ReactManager>
@@ -164,12 +166,13 @@ function MyApp({
                     <UserUpdater />
                     <ApplicationUpdater />
                     <TransactionUpdater />
+                    <BridgeTransactionUpdater/>
                     <MulticallUpdater />
                   <Provider>
                     <Layout>
-                      <NetworkGuard networks={[ChainId.MAINNET, ChainId.SHIDEN]}>
+                      <Guard>
                         <Component {...pageProps} />
-                      </NetworkGuard>
+                      </Guard>
                     </Layout>
                   </Provider>
                   </>
@@ -178,6 +181,7 @@ function MyApp({
 
                 </PersistGate>
               </ReduxProvider>
+              </Web3ProviderNetworkBridge>
           </Web3ProviderNetwork>
         </Web3ReactProvider>
       </ThemeProvider>

@@ -19,6 +19,7 @@ const xDai = '/img/networks/xdai-network.jpg';
 const Celo = '/img/networks/celo-network.jpg';
 const Shibuya = '/img/networks/shibuya-network.jpg';
 const Shiden = '/img/networks/shiden-network.jpg';
+const Metis = '/img/networks/metis-network.jpg';
 
 // const Palm =
 // 'https://raw.githubusercontent.com/sushiswap/icons/master/network/palm.jpg';
@@ -50,6 +51,7 @@ export const NETWORK_ICON = {
   [ChainId.OKEX]: OKEx,
   [ChainId.OKEX_TESTNET]: OKEx,
   [ChainId.CELO]: Celo,
+  [ChainId.METIS]: Metis,
   // [ChainId.PALM]: Palm,
 };
 
@@ -63,7 +65,7 @@ export const NETWORK_LABEL: { [chainId in ChainId]?: string } = {
   [ChainId.SHIDEN]: 'Shiden',
   [ChainId.FANTOM]: 'Fantom',
   [ChainId.FANTOM_TESTNET]: 'Fantom Testnet',
-  [ChainId.MATIC]: 'Polygon (Matic)',
+  [ChainId.MATIC]: 'Polygon',
   [ChainId.MATIC_TESTNET]: 'Matic Testnet',
   [ChainId.XDAI]: 'xDai',
   [ChainId.ARBITRUM]: 'Arbitrum',
@@ -81,7 +83,14 @@ export const NETWORK_LABEL: { [chainId in ChainId]?: string } = {
   [ChainId.OKEX_TESTNET]: 'OKEx',
   [ChainId.CELO]: 'Celo',
   // [ChainId.PALM]: 'Palm',
+  [ChainId.METIS]: 'Metis',
 };
+
+export const NORMAL_GUARDED_CHAINS = [
+  ChainId.MAINNET,
+  ChainId.SHIDEN,
+  ChainId.METIS,
+];
 
 export const SUPPORTED_NETWORKS: {
   [chainId in ChainId]?: {
@@ -118,6 +127,17 @@ export const SUPPORTED_NETWORKS: {
     rpcUrls: ['https://rpc.shiden.astar.network:8545'],
     blockExplorerUrls: ['https://blockscout.com/shiden'],
   },
+  [ChainId.METIS]: {
+    chainId: '0x440',
+    chainName: 'Metis',
+    nativeCurrency: {
+      name: 'Meits',
+      symbol: 'METIS',
+      decimals: 18,
+    },
+    rpcUrls: ['https://andromeda.metis.io/?owner=1088'],
+    blockExplorerUrls: ['https://andromeda-explorer.metis.io/'],
+  },
   // [ChainId.RINKEBY]: {
   //   chainId: '0x4',
   //   chainName: 'Rinkeby',
@@ -151,28 +171,28 @@ export const SUPPORTED_NETWORKS: {
   //   rpcUrls: ['https://rpcapi.fantom.network'],
   //   blockExplorerUrls: ['https://ftmscan.com'],
   // },
-  // [ChainId.BSC]: {
-  //   chainId: '0x38',
-  //   chainName: 'Binance Smart Chain',
-  //   nativeCurrency: {
-  //     name: 'Binance Coin',
-  //     symbol: 'BNB',
-  //     decimals: 18,
-  //   },
-  //   rpcUrls: ['https://bsc-dataseed.binance.org'],
-  //   blockExplorerUrls: ['https://bscscan.com'],
-  // },
-  // [ChainId.MATIC]: {
-  //   chainId: '0x89',
-  //   chainName: 'Matic',
-  //   nativeCurrency: {
-  //     name: 'Matic',
-  //     symbol: 'MATIC',
-  //     decimals: 18,
-  //   },
-  //   rpcUrls: ['https://rpc-mainnet.maticvigil.com'], // ['https://matic-mainnet.chainstacklabs.com/'],
-  //   blockExplorerUrls: ['https://explorer-mainnet.maticvigil.com'],
-  // },
+  [ChainId.BSC]: {
+    chainId: '0x38',
+    chainName: 'Binance Smart Chain',
+    nativeCurrency: {
+      name: 'Binance Coin',
+      symbol: 'BNB',
+      decimals: 18,
+    },
+    rpcUrls: ['https://bsc-dataseed.binance.org'],
+    blockExplorerUrls: ['https://bscscan.com'],
+  },
+  [ChainId.MATIC]: {
+    chainId: '0x89',
+    chainName: 'Matic',
+    nativeCurrency: {
+      name: 'Matic',
+      symbol: 'MATIC',
+      decimals: 18,
+    },
+    rpcUrls: ['https://rpc-mainnet.maticvigil.com'], // ['https://matic-mainnet.chainstacklabs.com/'],
+    blockExplorerUrls: ['https://explorer-mainnet.maticvigil.com'],
+  },
   // [ChainId.HECO]: {
   //   chainId: '0x80',
   //   chainName: 'Heco',

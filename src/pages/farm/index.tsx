@@ -7,6 +7,7 @@ import { useActiveWeb3React, useFuse } from '../../hooks';
 
 import {
   useAverageBlockTime,
+  useEthPrice,
   useExchangeAvailability,
   useFarmPairAddresses,
   useFarms,
@@ -29,8 +30,12 @@ import {
 } from '../../components-ui/Responsive';
 import { AVERAGE_BLOCK_TIME_IN_SECS } from '../../constants';
 import { WavySpinner } from '../../components-ui/Spinner/WavySpinner';
+import { NetworkGuardWrapper } from '../../guards/Network';
+import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
+import { useMasterPoolPairsWithReserves } from '../../state/user/hooks';
 
-export default function Farm() {
+function Farm() {
   const router = useRouter();
   useExchangeAvailability(() => router.push('/farmv2'));
   useMasterChefV2Availability(() => router.push('/farmv2'));
@@ -41,6 +46,13 @@ export default function Farm() {
     router.query.filter == null ? 'all' : (router.query.filter as string);
 
   const pairAddresses = useFarmPairAddresses();
+  const {
+    poolsWithReserves,
+    // next,
+    // current,
+    // loading,
+    // last,
+  } = useMasterPoolPairsWithReserves(10);
 
   const swapPairs = useSushiPairs({
     where: {
@@ -51,6 +63,7 @@ export default function Farm() {
   const farms = useFarms();
 
   const positions = usePositions();
+  const ethPrice = useEthPrice();
 
   const [stndPrice] = [useStandardPrice()];
   const averageBlockTime = useAverageBlockTime();
@@ -109,8 +122,17 @@ export default function Farm() {
     const rewards = getRewards();
 
     const balance = Number(pool.balance / 1e10 / 1e8);
+    let farmAlt;
+    if (chainId === ChainId.METIS) {
+      farmAlt = poolsWithReserves.find((poolwr) => {
+        return Number(pool.id) == Number(poolwr.id);
+      });
+    }
     const farmShare = balance / Number(swapPair.totalSupply);
-    const tvl = farmShare * Number(swapPair.reserveUSD);
+    const tvl =
+      chainId === ChainId.METIS
+        ? farmShare * Number(swapPair.reserveETH) * Number(ethPrice)
+        : farmShare * Number(swapPair.reserveETH) * Number(ethPrice);
 
     const roiPerBlock =
       rewards.reduce((previousValue, currentValue) => {
@@ -137,10 +159,7 @@ export default function Farm() {
       share: farmShare,
       pair: {
         ...pair,
-        decimals:
-          pair.type === PairType.KASHI
-            ? Number(pair.asset.tokenInfo.decimals)
-            : 18,
+        decimals: 18,
         type,
         symbol: `${pair.token0.symbol}/${pair.token1.symbol}`,
         name: 'Standard LTR Token',
@@ -153,14 +172,14 @@ export default function Farm() {
       roiPerYear,
       rewards,
       tvl,
+      farmAlt,
+      averageBlockTime,
     };
   };
 
   const FILTER = {
     all: (farm) => farm.allocPoint !== '0',
     portfolio: (farm) => farm?.amount && !farm.amount.isZero(),
-    // sushi: (farm) => farm.pair.type === PairType.SWAP && farm.allocPoint !== '0',
-    // 'standaard': (farm) => (farm.chef === Chef.MASTERCHEF_V2 || farm.chef === Chef.MINICHEF) && farm.allocPoint !== '0',
   };
 
   const data = farms
@@ -259,3 +278,5 @@ export default function Farm() {
     </>
   );
 }
+Farm.Guard = NetworkGuardWrapper(NORMAL_GUARDED_CHAINS);
+export default Farm;
