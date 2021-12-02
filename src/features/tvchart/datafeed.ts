@@ -1,10 +1,9 @@
 import {
-  computePairAddress,
-  getFactoryAddress,
+  computePairAddress2,
   Protocol,
   WNATIVE,
 } from '@digitalnative/standard-protocol-sdk';
-import { dexCandlesGraphClient } from '../../services/graph/clients/candles';
+import { getAddress } from '@ethersproject/address';
 import { CandlePeriod } from '../../types/Candle';
 import { fetchBars } from './getBars';
 
@@ -26,27 +25,24 @@ export const resolutionMapping = {
 export const getPairInfo = (symbolName) => {
   const split = symbolName.split('/');
   const [chainId, addr1, addr2, sym1, sym2] = split;
-  const wethAddr = WNATIVE[chainId].address;
+  const wethAddr = WNATIVE[parseInt(chainId)]?.address;
   const isWrapped =
     (addr1 === 'ETH' && addr2 === wethAddr) ||
     (addr2 === 'ETH' && addr1 === wethAddr);
 
   const pairAddress =
-    addr1 && addr2 && !isWrapped
-      ? computePairAddress({
-          factoryAddress: getFactoryAddress(
-            Protocol.STANDARD_PROTOCOL,
-            chainId,
-          ),
-          tokenA: addr1 === 'ETH' ? wethAddr : addr1,
-          tokenB: addr2 === 'ETH' ? wethAddr : addr2,
+    wethAddr && addr1 && addr2 && !isWrapped
+      ? computePairAddress2({
+          chainId: parseInt(chainId),
+          tokenA: addr1 === 'ETH' ? wethAddr : getAddress(addr1),
+          tokenB: addr2 === 'ETH' ? wethAddr : getAddress(addr2),
           protocol: Protocol.STANDARD_PROTOCOL,
         }).toLowerCase()
       : '';
 
   return {
     pairAddress,
-    ticker: `${sym1}/${sym2}`,
+    ticker: symbolName,
     name: `${addr1}/${addr2}`,
     chainId,
   };
@@ -79,7 +75,8 @@ export default {
     onSymbolResolvedCallback,
     onResolveErrorCallback,
   ) => {
-    const { pairAddress, ticker, name, chainId } = symbolName(symbolName);
+    console.log('symbolName', symbolName);
+    const { pairAddress, ticker, name, chainId } = getPairInfo(symbolName);
     if (pairAddress === '') {
       return onResolveErrorCallback();
     }
@@ -99,6 +96,7 @@ export default {
       has_weekly_and_monthly: false,
       supported_resolutions: configurationData.supported_resolutions,
       volume_precision: 2,
+      has_empty_bars: true,
       data_status: 'streaming',
     };
 
@@ -114,15 +112,11 @@ export default {
   ) => {
     const { from, to, countBack, firstDataRequest } = periodParams;
     console.log('[getBars]: Method call', symbolInfo, resolution, from, to);
-    const dexCandles = dexCandlesGraphClient(symbolInfo.exchange);
 
     try {
-      const data = await fetchBars(
-        symbolInfo,
-        resolutionMapping[resolution],
-        dexCandles,
-      );
-      if (data.length === 0) {
+      const data = await fetchBars(symbolInfo, resolutionMapping[resolution]);
+
+      if ((data && data.length === 0) || !firstDataRequest) {
         // "noData" should be set if there is no data in the requested period.
         onHistoryCallback([], {
           noData: true,

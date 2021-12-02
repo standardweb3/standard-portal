@@ -26,12 +26,9 @@ const KChart = dynamic(() => import('kaktana-react-lightweight-charts'), {
   ssr: false,
 });
 
-const TVChartContainer = dynamic(
-  () => import('../TVChart').then((mod) => mod.TVChartContainer),
-  {
-    ssr: false,
-  },
-);
+const TVChartContainer = dynamic(() => import('../TVChart/new'), {
+  ssr: false,
+});
 
 interface PeriodChooserProps {
   period: CandlePeriod | undefined;
@@ -445,7 +442,11 @@ export default function Chart({
           onChoose={(period) => setCandlePeriod(period)}
         />
       </div>
-      <TVChartContainer />
+      <TVChartContainer
+        allBars={candlestickSeries}
+        resolution="5"
+        symbol="SDN/STND"
+      />
     </>
   );
 }

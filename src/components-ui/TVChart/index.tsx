@@ -7,12 +7,17 @@ import {
   IChartingLibraryWidget,
   ResolutionString,
 } from '../../../public/static/charting_library';
+import styled from '@emotion/styled';
+
+const TVChartContainerDiv = styled.div`
+  height: calc(100vh - 80px);
+`;
 
 export interface ChartContainerProps {
   symbol: ChartingLibraryWidgetOptions['symbol'];
   interval: ChartingLibraryWidgetOptions['interval'];
   // BEWARE: no trailing slash is expected in feed URL
-  datafeedUrl: string;
+  // datafeedUrl: string;
   libraryPath: ChartingLibraryWidgetOptions['library_path'];
   chartsStorageUrl: ChartingLibraryWidgetOptions['charts_storage_url'];
   chartsStorageApiVersion: ChartingLibraryWidgetOptions['charts_storage_api_version'];
@@ -39,11 +44,12 @@ export class TVChartContainer extends React.PureComponent<
   ChartContainerState
 > {
   public static defaultProps: ChartContainerProps = {
-    symbol: 'AAPL',
-    interval: 'D' as ResolutionString,
+    symbol:
+      '336/0x0f933dc137d21ca519ae4c7e93f87a4c8ef365ef/0x722377a047e89ca735f09eb7cccab780943c4cb4/WSDN/STND',
+    interval: '5' as ResolutionString,
     container: 'tv_chart_container',
-    datafeedUrl: 'https://demo_feed.tradingview.com',
-    libraryPath: '/charting_library/',
+    // datafeedUrl: 'https://demo_feed.tradingview.com',
+    libraryPath: '/static/charting_library/',
     chartsStorageUrl: 'https://saveload.tradingview.com',
     chartsStorageApiVersion: '1.1',
     clientId: 'tradingview.com',
@@ -78,24 +84,28 @@ export class TVChartContainer extends React.PureComponent<
       studies_overrides: this.props.studiesOverrides,
     };
 
-    const tvWidget = new widget(widgetOptions);
-    this.tvWidget = tvWidget;
+    DataFeed.onReady(() => {
+      const tvWidget = new widget(widgetOptions);
+      this.tvWidget = tvWidget;
 
-    tvWidget.onChartReady(() => {
-      tvWidget.headerReady().then(() => {
-        const button = tvWidget.createButton();
-        button.setAttribute('title', 'Click to show a notification popup');
-        button.classList.add('apply-common-tooltip');
-        button.addEventListener('click', () =>
-          tvWidget.showNoticeDialog({
-            title: 'Notification',
-            body: 'TradingView Charting Library API works correctly',
-            callback: () => {
-              console.log('Noticed!');
-            },
-          }),
-        );
-        button.innerHTML = 'Check API';
+      tvWidget.onChartReady(() => {
+        console.log('Chart has loaded');
+        //   tvWidget.headerReady().then(() => {
+        //     const button = tvWidget.createButton();
+        //     button.setAttribute('title', 'Click to show a notification popup');
+        //     button.classList.add('apply-common-tooltip');
+        //     button.addEventListener('click', () =>
+        //       tvWidget.showNoticeDialog({
+        //         title: 'Notification',
+        //         body: 'TradingView Charting Library API works correctly',
+        //         callback: () => {
+        //           console.log('Noticed!');
+        //         },
+        //       }),
+        //     );
+        //     button.innerHTML = 'Check API';
+        //   });
+        // });
       });
     });
   }
@@ -108,6 +118,11 @@ export class TVChartContainer extends React.PureComponent<
   }
 
   public render(): JSX.Element {
-    return <div id={'tv_chart_container'} className={'TVChartContainer'} />;
+    return (
+      <TVChartContainerDiv
+        id={'tv_chart_container'}
+        className={'min-h-[1000px]'}
+      />
+    );
   }
 }
