@@ -15,12 +15,14 @@ import {
 import { useProtocol } from '../../state/protocol/hooks';
 import { DefinedStyles } from '../../utils/DefinedStyles';
 import { Button } from '../Button';
+import { CurrencyLogo } from '../CurrencyLogo';
 import { RippleSpinner } from '../Spinner/RippleSpinner';
 import { TokenInputPanelV2 } from './TokenInputPanelV2';
 
 export type UnstakeStndTypes = {
   xStnd: Token;
   stnd: Token;
+  ratio: number;
   stndBalance: CurrencyAmount<Token> | undefined;
   xStndBalance: CurrencyAmount<Token> | undefined;
   stndPrice: CurrencyAmount<Token> | undefined;
@@ -28,6 +30,8 @@ export type UnstakeStndTypes = {
 };
 
 export function UnstakeStnd({
+  stnd,
+  ratio,
   xStnd,
   xStndBalance,
   onUnstake,
@@ -98,6 +102,8 @@ export function UnstakeStnd({
     'Enter amount'
   );
 
+  const xStndAmount = unstakeAmount ? parseFloat(unstakeAmount) * ratio : 0;
+
   return (
     <div className="text-text">
       {/* <div className="my-4">
@@ -136,6 +142,16 @@ export function UnstakeStnd({
         "
           />
         </div>
+        <div className="flex align-center justify-center mb-6 mt-2 col-span-2">
+          <div className="flex justify-center items-center space-x-4">
+            <CurrencyLogo currency={stnd} className="rounded-full" size={48} />
+            <div>
+              <div className="text-grey text-sm">You will Receive:</div>
+              <div>{xStndAmount.toFixed(4)} STND</div>
+            </div>
+          </div>
+        </div>
+
         <Button
           disabled={disabled}
           className={classNames(DefinedStyles.fullButton, 'col-span-2')}

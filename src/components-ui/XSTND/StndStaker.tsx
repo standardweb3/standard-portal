@@ -83,6 +83,7 @@ export default function StndStaker({
       </ViewportSmallDown>
       {stake ? (
         <StakeStnd
+          ratio={ratio}
           onStake={enter}
           xStnd={xStnd}
           stnd={stnd}
@@ -92,6 +93,7 @@ export default function StndStaker({
         />
       ) : (
         <UnstakeStnd
+          ratio={ratio}
           onUnstake={leave}
           xStnd={xStnd}
           stnd={stnd}
