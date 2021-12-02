@@ -2,6 +2,7 @@ import ReactGA from 'react-ga';
 import Link from 'next/link';
 import {
   ChainId,
+  currencyEquals,
   NATIVE,
   Percent,
   WNATIVE,
@@ -51,14 +52,40 @@ import { WalletConnector } from '../../../components-ui/WalletConnector';
 import { MinimalPositionCard } from '../../../components-ui/PositionCard';
 
 export default function Remove({ tokenAId, tokenBId, liquidityToken }) {
-  const [currencyIdA, currencyIdB] = [tokenAId, tokenBId];
+  const { account, chainId, library } = useActiveWeb3React();
+
+  const [currencyIdA, setCurrencyIdA] = useState(tokenAId || undefined);
+  const [currencyIdB, setcurrencyIdB] = useState(tokenBId || undefined);
 
   const [currencyA, currencyB] = [
     useCurrency(currencyIdA) ?? undefined,
     useCurrency(currencyIdB) ?? undefined,
   ];
 
-  const { account, chainId, library } = useActiveWeb3React();
+  const currencyAIsWeth =
+    chainId && currencyA && currencyEquals(currencyA, WNATIVE[chainId]);
+  const currencyBIsWeth =
+    chainId && currencyB && currencyEquals(currencyB, WNATIVE[chainId]);
+  const oneCurrencyIsWETH = currencyAIsWeth || currencyBIsWeth;
+
+  const currencyAIsETH = currencyIdA === 'ETH';
+  const currencyBIsETH = currencyIdB === 'ETH';
+
+  const handleWrapUnwrap = useCallback(() => {
+    if (currencyAIsETH) {
+      setCurrencyIdA(WNATIVE[chainId].address);
+    }
+    if (currencyBIsETH) {
+      setcurrencyIdB(WNATIVE[chainId].address);
+    }
+    if (currencyAIsWeth) {
+      setCurrencyIdA('ETH');
+    }
+    if (currencyBIsWeth) {
+      setcurrencyIdB('ETH');
+    }
+  }, [currencyAIsWeth, currencyAIsETH, currencyBIsETH, currencyBIsWeth]);
+
   const [tokenA, tokenB] = useMemo(
     () => [currencyA?.wrapped, currencyB?.wrapped],
     [currencyA, currencyB],
@@ -429,12 +456,12 @@ export default function Remove({ tokenAId, tokenBId, liquidityToken }) {
 
   const oneCurrencyIsETH = currencyA?.isNative || currencyB?.isNative;
 
-  const oneCurrencyIsWETH = Boolean(
-    chainId &&
-      WNATIVE[chainId] &&
-      (currencyA?.equals(WNATIVE[chainId]) ||
-        currencyB?.equals(WNATIVE[chainId])),
-  );
+  // const oneCurrencyIsWETH = Boolean(
+  //   chainId &&
+  //     WNATIVE[chainId] &&
+  //     (currencyA?.equals(WNATIVE[chainId]) ||
+  //       currencyB?.equals(WNATIVE[chainId])),
+  // );
 
   const handleDismissConfirmation = useCallback(() => {
     setShowConfirm(false);
@@ -550,39 +577,17 @@ export default function Remove({ tokenAId, tokenBId, liquidityToken }) {
                 </div>
                 {chainId && (oneCurrencyIsWETH || oneCurrencyIsETH) ? (
                   <div className="flex items-center text-sm">
-                    {oneCurrencyIsETH ? (
-                      <Link
-                        href={`/remove/${
-                          currencyA?.isNative
-                            ? WNATIVE[chainId].address
-                            : currencyIdA
-                        }/${
-                          currencyB?.isNative
-                            ? WNATIVE[chainId].address
-                            : currencyIdB
-                        }`}
+                    {(oneCurrencyIsWETH || oneCurrencyIsETH) && (
+                      <div
+                        className="text-blue cursor-pointer pl-3"
+                        onClick={handleWrapUnwrap}
                       >
-                        <a className="text-baseline text-blue opacity-80 hover:opacity-100 focus:opacity-100 whitespace-nowrap">
-                          Receive W{NATIVE[chainId].symbol}
-                        </a>
-                      </Link>
-                    ) : oneCurrencyIsWETH ? (
-                      <Link
-                        href={`/remove/${
-                          currencyA?.equals(WNATIVE[chainId])
-                            ? 'ETH'
-                            : currencyIdA
-                        }/${
-                          currencyB?.equals(WNATIVE[chainId])
-                            ? 'ETH'
-                            : currencyIdB
-                        }`}
-                      >
-                        <a className="text-baseline text-blue opacity-80 hover:opacity-100 whitespace-nowrap">
-                          Receive {NATIVE[chainId].symbol}
-                        </a>
-                      </Link>
-                    ) : null}
+                        use{' '}
+                        {oneCurrencyIsWETH
+                          ? NATIVE[chainId].symbol
+                          : WNATIVE[chainId].symbol}
+                      </div>
+                    )}
                   </div>
                 ) : null}
               </div>

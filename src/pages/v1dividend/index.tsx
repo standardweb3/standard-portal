@@ -59,6 +59,7 @@ import { ExternalLink } from '../../components-ui/ExternalLink';
 import Countdown from 'react-countdown';
 import { NetworkGuardWrapper } from '../../guards/Network';
 import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
+import { NavigationLink } from '../../components-ui/NavigationLink';
 // import { useBondedStrategy } from '../../services/graph/hooks/dividend';
 // import { useBundle, useStandardPrice } from '../../services/graph';
 
@@ -364,13 +365,13 @@ function Dividend() {
 
           <Alert
             className={DefinedStyles.pageAlertFull}
-            title={`Dividend is migrating to V2`}
+            title={`Please migrate to Dividend V2`}
             message={
               <div>
-                <ExternalLink href="https://snapshot.org/#/stndgov.eth/proposal/0x73ba6565c31073f9092b3a62447a787da65eb5fea19c7477a02fe12be9ea9f11">
-                  dSTND
-                </ExternalLink>{' '}
-                is coming! In the meanwhile, bonding will be disabled
+                dSTND is here. Please claim your rewards and stake on{' '}
+                <NavigationLink href="/dividend">
+                  <a className="text-primary">Dividend V2</a>
+                </NavigationLink>{' '}
               </div>
             }
             type="warning"
@@ -461,9 +462,10 @@ function Dividend() {
                       balance={stndBalance?.toExact()}
                       buttonClassName="!py-2"
                       bondButtonBody={
-                        <div className="text-sm min-h-[14px]">
-                          Migrating to V2 in <br />
-                          <Countdown date={migrationDate * 1000} />
+                        <div className="text-sm min-h-[40px] flex justify-center items-center">
+                          Please use Dividend V2
+                          {/* Migrating to V2 in <br />
+                          <Countdown date={migrationDate * 1000} /> */}
                         </div>
                       }
                     />
@@ -487,7 +489,7 @@ function Dividend() {
                 />
               </div>
             </div>
-            <div className="mt-6">
+            {/* <div className="mt-6">
               <DividendKPIInfo
                 apr={apr}
                 apy={apy}
@@ -495,7 +497,7 @@ function Dividend() {
                 claimedRewardUSD={claimedRewardUSD}
                 remainingRewardUSD={remainingRewardUSD}
               />
-            </div>
+            </div> */}
 
             <div className="mt-6 text-grey text-xs">
               * Reward from each pair has a claiming period of 30 days

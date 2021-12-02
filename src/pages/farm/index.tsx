@@ -7,6 +7,7 @@ import { useActiveWeb3React, useFuse } from '../../hooks';
 
 import {
   useAverageBlockTime,
+  useEthPrice,
   useExchangeAvailability,
   useFarmPairAddresses,
   useFarms,
@@ -31,6 +32,8 @@ import { AVERAGE_BLOCK_TIME_IN_SECS } from '../../constants';
 import { WavySpinner } from '../../components-ui/Spinner/WavySpinner';
 import { NetworkGuardWrapper } from '../../guards/Network';
 import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
+import { useMasterPoolPairsWithReserves } from '../../state/user/hooks';
 
 function Farm() {
   const router = useRouter();
@@ -43,6 +46,13 @@ function Farm() {
     router.query.filter == null ? 'all' : (router.query.filter as string);
 
   const pairAddresses = useFarmPairAddresses();
+  const {
+    poolsWithReserves,
+    // next,
+    // current,
+    // loading,
+    // last,
+  } = useMasterPoolPairsWithReserves(10);
 
   const swapPairs = useSushiPairs({
     where: {
@@ -53,6 +63,7 @@ function Farm() {
   const farms = useFarms();
 
   const positions = usePositions();
+  const ethPrice = useEthPrice();
 
   const [stndPrice] = [useStandardPrice()];
   const averageBlockTime = useAverageBlockTime();
@@ -111,8 +122,17 @@ function Farm() {
     const rewards = getRewards();
 
     const balance = Number(pool.balance / 1e10 / 1e8);
+    let farmAlt;
+    if (chainId === ChainId.METIS) {
+      farmAlt = poolsWithReserves.find((poolwr) => {
+        return Number(pool.id) == Number(poolwr.id);
+      });
+    }
     const farmShare = balance / Number(swapPair.totalSupply);
-    const tvl = farmShare * Number(swapPair.reserveUSD);
+    const tvl =
+      chainId === ChainId.METIS
+        ? farmShare * Number(swapPair.reserveETH) * Number(ethPrice)
+        : farmShare * Number(swapPair.reserveETH) * Number(ethPrice);
 
     const roiPerBlock =
       rewards.reduce((previousValue, currentValue) => {
@@ -152,6 +172,8 @@ function Farm() {
       roiPerYear,
       rewards,
       tvl,
+      farmAlt,
+      averageBlockTime,
     };
   };
 

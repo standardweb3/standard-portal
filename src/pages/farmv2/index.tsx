@@ -16,9 +16,12 @@ import { useMasterChefInfo } from '../../features/farm/useMasterChef';
 import { BigNumber } from 'ethers';
 import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
 import { NetworkGuardWrapper } from '../../guards/Network';
+import { AVERAGE_BLOCK_TIME_IN_SECS } from '../../constants';
+import { useActiveWeb3React } from '../../hooks';
 
 function Farmbare() {
   const router = useRouter();
+  const { chainId } = useActiveWeb3React();
 
   const { totalAllocPoint, sushiPerBlock } = useMasterChefInfo();
   // const type =
@@ -99,11 +102,16 @@ function Farmbare() {
           </div>
           <FarmList farms={filtered} term={term} /> */}
                 <div>
-                  <div className="text-grey">Average Blocks per day: 7200</div>
+                  <div className="text-grey">
+                    Average Blocks per day:{' '}
+                    {Math.floor(86400 / AVERAGE_BLOCK_TIME_IN_SECS[chainId])}{' '}
+                  </div>
                   <div className="text-grey">
                     Estimated STND farmed in a day:{' '}
                     {sushiPerBlockDecimals
-                      ? 7200 * sushiPerBlockDecimals
+                      ? Math.floor(
+                          86400 / AVERAGE_BLOCK_TIME_IN_SECS[chainId],
+                        ) * sushiPerBlockDecimals
                       : 'Calculating...'}
                   </div>
                 </div>

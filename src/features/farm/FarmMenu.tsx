@@ -2,6 +2,7 @@ import { NavigationLink } from '../../components-ui/NavigationLink';
 import React from 'react';
 import { useActiveWeb3React } from '../../hooks';
 import { AnalyticsLink } from '../../components-ui/AnalyticsLink';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
 const Menu = ({ positionsLength }) => {
   const { account, chainId } = useActiveWeb3React();
@@ -58,7 +59,7 @@ const Menu = ({ positionsLength }) => {
           </a>
         </NavigationLink>
       </div>
-      <AnalyticsLink path="pools" />
+      {chainId !== ChainId.METIS && <AnalyticsLink path="pools" />}
     </div>
   );
 };

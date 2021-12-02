@@ -86,7 +86,11 @@ export const NETWORK_LABEL: { [chainId in ChainId]?: string } = {
   [ChainId.METIS]: 'Metis',
 };
 
-export const NORMAL_GUARDED_CHAINS = [ChainId.MAINNET, ChainId.SHIDEN];
+export const NORMAL_GUARDED_CHAINS = [
+  ChainId.MAINNET,
+  ChainId.SHIDEN,
+  ChainId.METIS,
+];
 
 export const SUPPORTED_NETWORKS: {
   [chainId in ChainId]?: {
@@ -123,17 +127,17 @@ export const SUPPORTED_NETWORKS: {
     rpcUrls: ['https://rpc.shiden.astar.network:8545'],
     blockExplorerUrls: ['https://blockscout.com/shiden'],
   },
-  // [ChainId.METIS]: {
-  //   chainId: '0x440',
-  //   chainName: 'Metis',
-  //   nativeCurrency: {
-  //     name: 'Meits',
-  //     symbol: 'METIS',
-  //     decimals: 18,
-  //   },
-  //   rpcUrls: ['https://andromeda.metis.io/?owner=1088'],
-  //   blockExplorerUrls: ['https://andromeda-explorer.metis.io/'],
-  // },
+  [ChainId.METIS]: {
+    chainId: '0x440',
+    chainName: 'Metis',
+    nativeCurrency: {
+      name: 'Meits',
+      symbol: 'METIS',
+      decimals: 18,
+    },
+    rpcUrls: ['https://andromeda.metis.io/?owner=1088'],
+    blockExplorerUrls: ['https://andromeda-explorer.metis.io/'],
+  },
   // [ChainId.RINKEBY]: {
   //   chainId: '0x4',
   //   chainName: 'Rinkeby',

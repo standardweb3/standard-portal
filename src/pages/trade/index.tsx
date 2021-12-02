@@ -20,11 +20,7 @@ import {
   formatNumberScale,
   formatPercent,
 } from '../../functions';
-import {
-  useSizeMdDown,
-  useSizeXs,
-  ViewportMediumUp,
-} from '../../components-ui/Responsive';
+import { ViewportMediumUp } from '../../components-ui/Responsive';
 import { Page } from '../../components-ui/Page';
 import { PageHeader } from '../../components-ui/PageHeader';
 import { PageContent } from '../../components-ui/PageContent';
@@ -33,7 +29,7 @@ import { DefinedStyles } from '../../utils/DefinedStyles';
 import { getSymbol, getTradeAddress } from '../../functions/native';
 import { useRouter } from 'next/router';
 import { useCurrency } from '../../hooks/Tokens';
-import { Token } from '@digitalnative/standard-protocol-sdk';
+import { ChainId, Token } from '@digitalnative/standard-protocol-sdk';
 import { SearchV2 } from '../../components-ui/Search/SearchV2';
 import { WavySpinner } from '../../components-ui/Spinner/WavySpinner';
 const WeekChart = dynamic(() => import('../../features/trade/WeekChart'), {
@@ -137,7 +133,6 @@ function Tokens() {
           //   parseFloat(token.volumeUSD) - token.dayData && token.dayData.length > 0
           //     ? token.dayData[token.dayData.length - 1].volumeUSD
           //     : 0;
-
           return {
             name: token.name,
             info: { symbol: token.symbol, id: token.id },
@@ -214,11 +209,15 @@ function Tokens() {
         Header: 'Volume (24h)',
         accessor: 'volume',
         className: 'col-span-2 hidden sm:flex justify-center items-center',
-        Cell: ({ value }) => (
-          <div className="text-xs lg:text-sm">
-            {value !== null ? formatNumberScale(value, true) : '-'}
-          </div>
-        ),
+        Cell: ({ value }) => {
+          const { chainId } = useActiveWeb3React();
+          if (chainId === ChainId.METIS) return '-';
+          return (
+            <div className="text-xs lg:text-sm">
+              {value !== null ? formatNumberScale(value, true) : '-'}
+            </div>
+          );
+        },
       },
       {
         Header: 'Price',
@@ -236,38 +235,48 @@ function Tokens() {
         Header: '24h',
         accessor: 'oneDayPriceChange',
         className: 'col-span-2 justify-center items-center flex',
-        Cell: ({ value }) => (
-          <div
-            className={`text-xs lg:text-sm ${
-              value > 0 ? 'text-green' : value < 0 && 'text-red'
-            }`}
-          >
-            {value !== null ? formatPercent(value) : '-'}
-          </div>
-        ),
+        Cell: ({ value }) => {
+          const { chainId } = useActiveWeb3React();
+          if (chainId === ChainId.METIS) return '-';
+          return (
+            <div
+              className={`text-xs lg:text-sm ${
+                value > 0 ? 'text-green' : value < 0 && 'text-red'
+              }`}
+            >
+              {value !== null ? formatPercent(value) : '-'}
+            </div>
+          );
+        },
       },
       {
         Header: '7d',
         accessor: 'sevenDayPriceChange',
         className: 'col-span-2 hidden lg:flex justify-center items-center',
-        Cell: ({ value }) => (
-          <div
-            className={`text-xs lg:text-sm ${
-              value > 0 ? 'text-green' : value < 0 && 'text-red'
-            }`}
-          >
-            {value !== null ? formatPercent(value) : '-'}
-          </div>
-        ),
+        Cell: ({ value }) => {
+          const { chainId } = useActiveWeb3React();
+          if (chainId === ChainId.METIS) return '-';
+          return (
+            <div
+              className={`text-xs lg:text-sm ${
+                value > 0 ? 'text-green' : value < 0 && 'text-red'
+              }`}
+            >
+              {value !== null ? formatPercent(value) : '-'}
+            </div>
+          );
+        },
       },
       {
         Header: 'Chart (7d)',
         accessor: 'sparklines',
         className:
           'col-span-2 sm:col-span-4 lg:col-span-4 flex justify-center items-center',
-        Cell: ({ value }) => {
-          const isViewportXs = useSizeXs();
-          const isViewportMdDown = useSizeMdDown();
+        Cell: (cell) => {
+          const { value } = cell;
+
+          const { chainId } = useActiveWeb3React();
+          if (chainId === ChainId.METIS) return '-';
           return (
             <div
               className={`${

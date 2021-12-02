@@ -15,18 +15,26 @@ import {
 import { useProtocol } from '../../state/protocol/hooks';
 import { DefinedStyles } from '../../utils/DefinedStyles';
 import { Button } from '../Button';
+import { CurrencyLogo } from '../CurrencyLogo';
 import { RippleSpinner } from '../Spinner/RippleSpinner';
 import { TokenInputPanelV2 } from './TokenInputPanelV2';
 
 export type StakeStndTypes = {
   xStnd: Token;
   stnd: Token;
+  ratio: number;
   stndBalance: CurrencyAmount<Token> | undefined;
   xStndBalance: CurrencyAmount<Token> | undefined;
   stndPrice: CurrencyAmount<Token> | undefined;
   onStake: (amount: CurrencyAmount<Token> | undefined) => Promise<any>;
 };
-export function StakeStnd({ stnd, stndBalance, onStake }: StakeStndTypes) {
+export function StakeStnd({
+  stnd,
+  xStnd,
+  stndBalance,
+  onStake,
+  ratio,
+}: StakeStndTypes) {
   const protocol = useProtocol();
   const { chainId } = useActiveWeb3React();
   const [stakeAmount, setStakeAmount] = useState('');
@@ -75,6 +83,8 @@ export function StakeStnd({ stnd, stndBalance, onStake }: StakeStndTypes) {
     setStakeAmount('');
     setPendingTx(false);
   }, [stakeCurrencyAmount, approvalState, setPendingTx, onStake]);
+
+  const xStndAmount = stakeAmount ? parseFloat(stakeAmount) / ratio : 0;
 
   // const stakeAmountDecimals = !!stakeAmount ? parseFloat(stakeAmount) : 0;
   // const newStakeBalance =
@@ -146,6 +156,15 @@ export function StakeStnd({ stnd, stndBalance, onStake }: StakeStndTypes) {
             !font-normal
         "
           />
+        </div>
+        <div className="flex align-center justify-center mb-6 mt-2 col-span-2">
+          <div className="flex justify-center items-center space-x-4">
+            <CurrencyLogo currency={xStnd} className="rounded-full" size={48} />
+            <div>
+              <div className="text-grey text-sm">You will Receive:</div>
+              <div>{xStndAmount.toFixed(4)} dSTND</div>
+            </div>
+          </div>
         </div>
 
         <Button

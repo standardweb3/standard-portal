@@ -4,6 +4,7 @@ import { useSizeMdDown, useSizeXs } from '../../components-ui/Responsive';
 export default function WeekChart({ value }) {
   const isViewportXs = useSizeXs();
   const isViewportMdDown = useSizeMdDown();
+
   return (
     <Sparklines
       data={value.data?.map((d) => d.priceUSD) ?? []}
