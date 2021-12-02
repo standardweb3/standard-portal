@@ -75,7 +75,6 @@ export function useDatafeed(allBars, resolution, ticker) {
       const { from, to, countBack, firstDataRequest } = periodParams;
       console.log('[getBars]: Method call', symbolInfo, resolution, from, to);
       const bars = allBars[0]?.data;
-      console.log(bars);
       try {
         if ((bars && bars.length === 0) || !firstDataRequest) {
           // "noData" should be set if there is no data in the requested period.
@@ -84,21 +83,19 @@ export function useDatafeed(allBars, resolution, ticker) {
           });
           return;
         }
+        const parsedBars = bars.map((res) => {
+          return {
+            time: res.time * 1000,
+            open: res.open,
+            high: res.high,
+            low: res.low,
+            close: res.close,
+          };
+        });
         console.log(`[getBars]: returned ${bars.length} bar(s)`);
-        onHistoryCallback(
-          bars.map((res) => {
-            return {
-              time: res.time * 1000,
-              open: res.open,
-              high: res.high,
-              low: res.low,
-              close: res.close,
-            };
-          }),
-          {
-            noData: false,
-          },
-        );
+        onHistoryCallback(parsedBars, {
+          noData: false,
+        });
       } catch (error) {
         console.log('[getBars]: Get error', error);
         onErrorCallback(error);
