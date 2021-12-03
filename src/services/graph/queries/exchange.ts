@@ -393,7 +393,7 @@ export const tokensQuery = gql`
       volumeUSD
       liquidity
       derivedETH
-      dayData(first: 7, skip: 0, orderBy: date, order: asc) {
+      dayData(first: 7, skip: 0, orderBy: date, orderDirection: desc) {
         id
         priceUSD
         volumeUSD

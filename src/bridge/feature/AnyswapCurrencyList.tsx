@@ -1,7 +1,5 @@
 import {
   AnyswapCurrency,
-  AnyswapCurrencyAmount,
-  AnyswapToken,
   Currency,
   CurrencyAmount,
 } from '@digitalnative/standard-protocol-sdk';
@@ -16,16 +14,10 @@ import { CurrencyLogo } from '../../components-ui/CurrencyLogo';
 import { FixedSizeList } from 'react-window';
 // import Loader from '../../components/Loader';
 //   import { MenuItem } from './styleds';
-import { MouseoverTooltip } from '../../components-ui/Tooltip';
 // import div from '../../components/div'
-import { WrappedTokenInfo } from '../../state/lists/wrappedTokenInfo';
-import { isTokenOnList } from '../../functions/validate';
 import styled from '@emotion/styled';
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
-import { useCombinedActiveList } from '../../state/lists/hooks';
 import { useCurrencyBalance } from '../../state/wallet/hooks';
-import { useIsUserAddedToken } from '../../hooks/Tokens';
-import { Question } from '../../components-ui/Question';
 import { RippleSpinner } from '../../components-ui/Spinner/RippleSpinner';
 import { DefinedStyles } from '../../utils/DefinedStyles';
 import useAddTokenToMetaMask from '../../hooks/useAddTokenToMetaMask';

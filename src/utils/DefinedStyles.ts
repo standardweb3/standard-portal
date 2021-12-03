@@ -61,5 +61,5 @@ export const DefinedStyles = {
   pl-1 pr-3 sm:pl-3 sm:pr-3 py-3`,
   step:
     'rounded-full bg-opaque-secondary w-8 h-8 flex items-center justify-center',
-  collateralizePanel: 'bg-opaque rounded-20 p-4 w-full',
+  collateralizePanel: 'bg-opaque rounded-20 p-4 w-full backdrop-blur-[200px]',
 };
