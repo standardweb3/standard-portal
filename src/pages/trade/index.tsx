@@ -37,6 +37,7 @@ const WeekChart = dynamic(() => import('../../features/trade/WeekChart'), {
 });
 import { NetworkGuardWrapper } from '../../guards/Network';
 import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
+import { reverseArray } from '../../utils';
 
 function Tokens() {
   const { chainId } = useActiveWeb3React();
@@ -128,7 +129,6 @@ function Tokens() {
           const oneDayPriceChange = priceYesterday
             ? ((price - priceYesterday) / priceYesterday) * 100
             : 0;
-
           // const oneDayVolume =
           //   parseFloat(token.volumeUSD) - token.dayData && token.dayData.length > 0
           //     ? token.dayData[token.dayData.length - 1].volumeUSD
@@ -155,7 +155,7 @@ function Tokens() {
                   ? 0
                   : -1
                 : 0,
-              data: token.dayData,
+              data: reverseArray(token.dayData),
             },
           };
         })
