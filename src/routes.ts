@@ -15,6 +15,7 @@ export const chainIdGuardRedirect = {
   [ChainId.BSC]: '/router',
   [ChainId.MATIC]: '/router',
   [ChainId.METIS]: '/trade',
+  [ChainId.AVALANCHE]: '/trade',
 };
 
 export const sidebarRoutes = [
@@ -46,14 +47,20 @@ export const sidebarRoutes = [
     icon: dividendIcon,
     iconActive: dividendIcon,
     // hidden: [ChainId.SHIDEN],
-    hidden: [ChainId.MATIC, ChainId.BSC, ChainId.METIS],
+    hidden: [ChainId.MATIC, ChainId.BSC, ChainId.METIS, ChainId.AVALANCHE],
   },
   {
     name: 'Dividend V1',
     urls: ['/v1dividend'],
     icon: dividendv1Icon,
     iconActive: dividendv1Icon,
-    hidden: [ChainId.MAINNET, ChainId.MATIC, ChainId.BSC, ChainId.METIS],
+    hidden: [
+      ChainId.MAINNET,
+      ChainId.MATIC,
+      ChainId.BSC,
+      ChainId.METIS,
+      ChainId.AVALANCHE,
+    ],
   },
   {
     name: 'Bridge',
@@ -75,7 +82,13 @@ export const sidebarRoutes = [
     urls: ['/migrate'],
     icon: migrateIcon,
     iconActive: migrateIcon,
-    hidden: [ChainId.MATIC, ChainId.BSC, ChainId.METIS, ChainId.SHIDEN],
+    hidden: [
+      ChainId.MATIC,
+      ChainId.BSC,
+      ChainId.METIS,
+      ChainId.SHIDEN,
+      ChainId.AVALANCHE,
+    ],
     // hidden: [ChainId.SHIDEN],
   },
 ];

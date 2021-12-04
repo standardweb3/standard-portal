@@ -168,9 +168,7 @@ const builders = {
     data: string,
     type: 'transaction' | 'token' | 'address' | 'block',
   ) => {
-    const prefix = `https://cchain.explorer.avax${
-      chainName ? `-${chainName}` : ''
-    }.network`;
+    const prefix = `https://snowtrace.io/`;
     switch (type) {
       case 'transaction':
         return `${prefix}/tx/${data}`;
@@ -364,7 +362,7 @@ const chains: ChainObject = {
     builder: builders.moonbase,
   },
   [ChainId.AVALANCHE]: {
-    chainName: '',
+    chainName: 'avalanche',
     builder: builders.avalanche,
   },
   [ChainId.AVALANCHE_TESTNET]: {

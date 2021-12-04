@@ -1,5 +1,6 @@
 import { formatSwapTokenList, getLocalRPC } from './methods';
 import { tokenListUrl, VERSION, USE_VERSION } from '../constant';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
 export const AVAX_MAIN_CHAINID = 43114;
 export const AVAX_MAINNET = 'https://api.avax.network/ext/bc/C/rpc';
@@ -22,8 +23,21 @@ const bridgeToken = {
   [VERSION.V5]: {
     bridgeInitToken: '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664',
     bridgeInitChain: '56',
+    bridgeInitTokens: {
+      [ChainId.BSC]: '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664',
+      [ChainId.MAINNET]: '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664',
+      [ChainId.MATIC]: '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664',
+      [ChainId.SHIDEN]: '',
+    },
     nativeToken: '',
+    crossBridgeInitChain: '56',
     crossBridgeInitToken: '0xb44a9b6905af7c801311e8f4e76932ee959c663c',
+    crossBridgeInitTokens: {
+      [ChainId.MAINNET]: '0xfa9343c3897324496a05fc75abed6bac29f8a40f',
+      [ChainId.BSC]: '0x264c1383ea520f73dd837f915ef3a732e204a493',
+      [ChainId.MATIC]: '',
+      [ChainId.SHIDEN]: '',
+    },
   },
 };
 

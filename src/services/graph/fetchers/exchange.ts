@@ -33,7 +33,7 @@ export const EXCHANGE = {
   [ChainId.BSC]: 'sushiswap/bsc-exchange',
   [ChainId.HARMONY]: 'sushiswap/harmony-exchange',
   [ChainId.OKEX]: 'sushiswap/okex-exchange',
-  [ChainId.AVALANCHE]: 'sushiswap/avalanche-exchange',
+  [ChainId.AVALANCHE]: 'billjhlee/avax-exchange',
   [ChainId.CELO]: 'sushiswap/celo-exchange',
   [ChainId.METIS]: 'digitalnativeinc/metis-exchange',
 };

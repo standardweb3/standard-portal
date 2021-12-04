@@ -99,7 +99,7 @@ export const getWalletConnectConnector = async (params?: CONNECTOR_PARAMS) => {
   return new WalletConnectConnector({
     supportedChainIds: params?.chainId
       ? [params?.chainId]
-      : [1, 4, 81, 336, 1088],
+      : [1, 4, 81, 336, 1088, 43114],
     chainId: params?.chainId ?? 1,
     rpc: RPC,
     bridge: 'https://bridge.walletconnect.org',
@@ -110,7 +110,7 @@ export const getWalletConnectConnector = async (params?: CONNECTOR_PARAMS) => {
 
 // mainnet only
 export const walletconnect = new WalletConnectConnector({
-  supportedChainIds: [1, 4, 81, 336, 1088],
+  supportedChainIds: [1, 4, 81, 336, 1088, 43114],
   chainId: 1,
   rpc: RPC,
   bridge: 'https://bridge.walletconnect.org',

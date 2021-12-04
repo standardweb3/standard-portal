@@ -94,6 +94,7 @@ const bridgeToken = {
       [ChainId.MAINNET]: '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',
       [ChainId.SHIDEN]: '',
       [ChainId.MATIC]: '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',
+      [ChainId.AVALANCHE]: '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',
     },
     crossBridgeInitChain: '336',
     crossBridgeInitToken: 'BNB',
@@ -101,6 +102,7 @@ const bridgeToken = {
       [ChainId.MAINNET]: '0x6f817a0ce8f7640add3bc0c1c2298635043c2423',
       [ChainId.SHIDEN]: 'BNB',
       [ChainId.MATIC]: 'BNB',
+      [ChainId.AVALANCHE]: '',
     },
   },
 };

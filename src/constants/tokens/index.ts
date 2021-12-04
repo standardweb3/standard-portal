@@ -473,6 +473,13 @@ export const XDAI: { [key: string]: Token } = {
 };
 
 export const AVALANCHE: { [key: string]: Token } = {
+  STND: new Token(
+    ChainId.AVALANCHE,
+    '0xc12caC7090baa48Ec750CceeC57C80768F6ee58E',
+    18,
+    'STND',
+    'Standard',
+  ),
   DAI: new Token(
     ChainId.AVALANCHE,
     '0xbA7dEebBFC5fA1100Fb055a87773e1E99Cd3507a',
@@ -503,7 +510,6 @@ export const AVALANCHE: { [key: string]: Token } = {
   ),
 };
 
-
 export const METISDAO: { [key: string]: Token } = {
   MDOGE: new Token(
     ChainId.METIS,
@@ -518,9 +524,8 @@ export const METISDAO: { [key: string]: Token } = {
     18,
     'STND',
     'STandard',
-  )
+  ),
 };
-
 
 // Default Ethereum chain tokens
 export const ALPHA = new Token(

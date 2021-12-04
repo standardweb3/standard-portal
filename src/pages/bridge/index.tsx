@@ -633,7 +633,7 @@ export function Bridge() {
               isOpen={chainFromModalOpen}
               onDismiss={closeChainFromModal}
               chainIds={SUPPORTED_NETWORK_IDS.filter(
-                (id) => id != chainFrom.id,
+                (id) => id != chainFrom.id && id != ChainId.METIS,
               )}
               isFrom
             />
@@ -937,5 +937,6 @@ Bridge.Guard = NetworkGuardWrapper([
   ChainId.SHIDEN,
   ChainId.BSC,
   ChainId.MATIC,
+  ChainId.AVALANCHE,
 ]);
 export default Bridge;

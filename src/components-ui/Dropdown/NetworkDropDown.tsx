@@ -21,8 +21,8 @@ export default function NetworkDropDown(): JSX.Element | null {
   const onSelectNetwork = (chainIdStr: string) => {
     const _chainId = Number(chainIdStr);
     const params = SUPPORTED_NETWORKS[_chainId];
-
-    cookie.set('chainId', _chainId);
+    const ethereum = (window as any)?.ethereum;
+    ethereum && ethereum.removeAllListeners(['networkChanged']);
     if ([ChainId.MAINNET, ChainId.RINKEBY].includes(_chainId)) {
       library?.send('wallet_switchEthereumChain', [
         { chainId: params.chainId },

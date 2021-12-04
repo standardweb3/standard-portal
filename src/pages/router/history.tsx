@@ -60,5 +60,6 @@ History.Guard = NetworkGuardWrapper([
   ChainId.SHIDEN,
   ChainId.BSC,
   ChainId.MATIC,
+  ChainId.AVALANCHE,
 ]);
 export default History;

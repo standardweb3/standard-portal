@@ -56,6 +56,8 @@ const Component: FC<NetworkGuardProps> = ({ children, networks = [] }) => {
                 key={idx}
                 onClick={() => {
                   const params = SUPPORTED_NETWORKS[key];
+                  const ethereum = (window as any)?.ethereum;
+                  ethereum && ethereum.removeAllListeners(['networkChanged']);
                   cookie.set('chainId', key);
                   if ([ChainId.MAINNET, ChainId.RINKEBY].includes(key)) {
                     library?.send('wallet_switchEthereumChain', [

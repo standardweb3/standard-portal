@@ -357,6 +357,7 @@ export const COMMON_BASES: ChainTokenList = {
   ],
   [ChainId.AVALANCHE]: [
     ...WRAPPED_NATIVE_ONLY[ChainId.AVALANCHE],
+    AVALANCHE.STND,
     AVALANCHE.DAI,
     AVALANCHE.USDT,
     AVALANCHE.WBTC,

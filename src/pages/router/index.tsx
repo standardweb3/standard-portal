@@ -651,7 +651,7 @@ export function Router() {
               isOpen={chainFromModalOpen}
               onDismiss={closeChainFromModal}
               chainIds={SUPPORTED_NETWORK_IDS.filter(
-                (id) => id != chainFrom.id,
+                (id) => id != chainFrom.id && id != ChainId.METIS,
               )}
               isFrom
             />
@@ -956,5 +956,6 @@ Router.Guard = NetworkGuardWrapper([
   ChainId.SHIDEN,
   ChainId.BSC,
   ChainId.MATIC,
+  ChainId.AVALANCHE,
 ]);
 export default Router;

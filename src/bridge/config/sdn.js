@@ -23,6 +23,7 @@ const bridgeToken = {
       [ChainId.BSC]: '',
       [ChainId.MAINNET]: '0x722377a047e89ca735f09eb7cccab780943c4cb4',
       [ChainId.MATIC]: '',
+      [ChainId.AVALANCHE]: '',
     },
     nativeToken: '',
     crossBridgeInitToken: '',
@@ -31,6 +32,7 @@ const bridgeToken = {
       [ChainId.BSC]: 'BNB',
       [ChainId.MAINNET]: 'SDN',
       [ChainId.MATIC]: '',
+      [ChainId.AVALANCHE]: '',
     },
   },
 };

@@ -33,7 +33,8 @@ export default function RouterChainSelectModal({
 
   const onSelectNetwork = (_chainId) => {
     const params = SUPPORTED_NETWORKS[_chainId];
-
+    const ethereum = (window as any)?.ethereum;
+    ethereum && ethereum.removeAllListeners(['networkChanged']);
     cookie.set('chainId', _chainId);
     if ([ChainId.MAINNET, ChainId.RINKEBY].includes(_chainId)) {
       library?.send('wallet_switchEthereumChain', [

@@ -9,6 +9,7 @@ export const CANDLES = {
   [ChainId.SHIBUYA]: 'digitalnativeinc/shibuya-exchange',
   [ChainId.SHIDEN]: 'digitalnativeinc/shiden-candles',
   [ChainId.METIS]: 'digitalnativeinc/metis-candles',
+  [ChainId.AVALANCHE]: 'billjhlee/avax-candles',
   //   [ChainId.XDAI]: 'sushiswap/xdai-exchange',
   //   [ChainId.MATIC]: 'sushiswap/matic-exchange',
   //   [ChainId.FANTOM]: 'sushiswap/fantom-exchange',

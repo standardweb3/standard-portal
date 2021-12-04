@@ -22,7 +22,8 @@ export const specSymbol = ['BTC', 'LTC', 'BLOCK', 'COLX', 'TRX', 'TERRA'];
 // bridge with integrated connection
 
 export const BRIDGE_RPCS = {
-  [ChainId.MAINNET]: 'https://ethmainnet.anyswap.exchange',
+  [ChainId.MAINNET]:
+    'https://eth-mainnet.alchemyapi.io/v2/EA7UDrnRTL_aXxyoPoasAMx9ey2vQzky',
   [ChainId.BSC]: 'https://bsc-dataseed1.ninicoin.io/',
   [ChainId.OKEX]: 'https://exchainrpc.okex.org',
   [ChainId.XDAI]: 'https://rpc.xdaichain.com',

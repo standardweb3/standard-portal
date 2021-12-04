@@ -90,6 +90,7 @@ export const NORMAL_GUARDED_CHAINS = [
   ChainId.MAINNET,
   ChainId.SHIDEN,
   ChainId.METIS,
+  ChainId.AVALANCHE,
 ];
 
 export const SUPPORTED_NETWORKS: {
@@ -231,17 +232,17 @@ export const SUPPORTED_NETWORKS: {
   //   ],
   //   blockExplorerUrls: ['https://explorer.harmony.one/'],
   // },
-  // [ChainId.AVALANCHE]: {
-  //   chainId: '0xA86A',
-  //   chainName: 'Avalanche',
-  //   nativeCurrency: {
-  //     name: 'Avalanche Token',
-  //     symbol: 'AVAX',
-  //     decimals: 18,
-  //   },
-  //   rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
-  //   blockExplorerUrls: ['https://cchain.explorer.avax.network'],
-  // },
+  [ChainId.AVALANCHE]: {
+    chainId: '0xA86A',
+    chainName: 'Avalanche',
+    nativeCurrency: {
+      name: 'Avalanche Token',
+      symbol: 'AVAX',
+      decimals: 18,
+    },
+    rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
+    blockExplorerUrls: ['https://cchain.explorer.avax.network'],
+  },
   // [ChainId.OKEX]: {
   //   chainId: '0x42',
   //   chainName: 'OKEx',
