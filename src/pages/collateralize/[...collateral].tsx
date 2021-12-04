@@ -6,15 +6,28 @@ import { DefinedStyles } from '../../utils/DefinedStyles';
 import { CollateralSelectPanel } from '../../features/vault/new/CollateralSelectPanel';
 import { useState } from 'react';
 import { tryParseAmount } from '../../functions';
+import { useRouter } from 'next/router';
+import { useCollateral } from '../../services/graph/hooks/collaterals';
+import { useCurrency } from '../../hooks/Tokens';
+import { useCurrencyBalance } from '../../state/wallet/hooks';
+import { useActiveWeb3React } from '../../hooks';
+import { CollateralizeSettingsPanel } from '../../features/vault/new/CollateralizeSettingsPanel';
 
 export default function Vault() {
+  const { account, chainId } = useActiveWeb3React();
+  const router = useRouter();
+  const collateralAddr = router.query.collateral[0];
+
+  const collateralInfo = useCollateral(collateralAddr);
+  const collateral = useCurrency(collateralAddr);
+
+  const balance = useCurrencyBalance(account, collateral);
   const [collateralizeAmount, setCollateralizeAmount] = useState('');
-  const [selectedCollateral, setSelectedCollateral] = useState(undefined);
   const [pendingTx, setPendingTx] = useState(false);
 
   const formattedCollateralizeAmount = tryParseAmount(
     collateralizeAmount,
-    selectedCollateral,
+    collateral,
   );
 
   return (
@@ -32,7 +45,13 @@ export default function Vault() {
           <div className="grid grid-cols-7 w-full">
             <div className="col-span-7 md:col-span-4 space-y-4">
               <VaultInfo />
-              <CollateralSelectPanel />
+              <CollateralSelectPanel
+                balance={balance}
+                collateral={collateral}
+                collateralizeAmount={collateralizeAmount}
+                setCollateralizeAmount={setCollateralizeAmount}
+              />
+              <CollateralizeSettingsPanel />
             </div>
             <div className="col-span-7 md:col-span-3">second</div>
           </div>

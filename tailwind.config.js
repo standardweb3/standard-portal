@@ -88,6 +88,7 @@ module.exports = {
         border: '#837AA0',
         'border-2': '#605273',
         'scrollbar-track': '#6A5684',
+        thumbroller: '#CDC1FF',
       },
       textShadow: {
         white: '0px 0px 1px rgba(255,255,255, 0.5)',

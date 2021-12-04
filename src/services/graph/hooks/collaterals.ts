@@ -14,13 +14,13 @@ export function useCollaterals(swrConfig: SWRConfiguration = undefined) {
 }
 
 export function useCollateral(
-  alias: string,
+  address: string,
   swrConfig: SWRConfiguration = undefined,
 ) {
   const { chainId } = useActiveWeb3React();
   const { data } = useSWR(
-    ['collateral', chainId, alias],
-    () => getCollaterals({ aliases: [alias], chainId }),
+    ['collateral', chainId, address],
+    () => getCollaterals({ addresses: [address], chainId }),
     swrConfig,
   );
   return data?.[0];
