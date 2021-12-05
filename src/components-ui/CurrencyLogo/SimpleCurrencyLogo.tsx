@@ -1,8 +1,6 @@
 import {
   ChainId,
-  Currency,
   STND_ADDRESS,
-  Token,
   WNATIVE,
 } from '@digitalnative/standard-protocol-sdk';
 import React, { FunctionComponent, useMemo } from 'react';
@@ -58,7 +56,7 @@ const BLOCKCHAIN = {
 
 function getCurrencySymbol(symbol, chainId) {
   let _symbol;
-  if (chainId === ChainId.METIS) {
+  if (chainId && chainId === ChainId.METIS) {
     if (symbol.startsWith('m.')) {
       _symbol = symbol.substring(2);
     } else {

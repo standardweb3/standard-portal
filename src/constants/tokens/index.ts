@@ -522,15 +522,15 @@ export const METISDAO: { [key: string]: Token } = {
     ChainId.METIS,
     '0xEA32A96608495e54156Ae48931A7c20f0dcc1a21',
     18,
-    'MDOGE',
-    'MetisDoge',
+    'm.USDC',
+    'USD Coin USDC',
   ),
   USDT: new Token(
     ChainId.METIS,
     '0xbB06DCA3AE6887fAbF931640f67cab3e3a16F4dC',
     18,
-    'STND',
-    'STandard',
+    'm.USDT',
+    'Tether USD',
   ),
 };
 

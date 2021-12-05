@@ -24,6 +24,7 @@ export const getTokenLogoURL = (token: Token, chainId: ChainId) => {
   }
   imageURL = `https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/${getCurrencySymbol(
     token,
+    chainId,
   )}.jpg`;
 
   return imageURL;
@@ -40,22 +41,33 @@ const BLOCKCHAIN = {
   // [ChainId.OKEX]: 'okex',
 };
 
-function getCurrencySymbol(currency) {
-  if (currency.symbol === 'WBTC') {
+function getCurrencySymbol(currency, chainId) {
+  let _symbol;
+  if (chainId && chainId === ChainId.METIS) {
+    if (currency.symbol.startsWith('m.')) {
+      _symbol = currency.symbol.substring(2);
+    } else {
+      _symbol = currency.symbol;
+    }
+  } else {
+    _symbol = currency.symbol;
+  }
+  if (_symbol === 'WBTC') {
     return 'btc';
   }
-  if (currency.symbol === 'WETH') {
+  if (_symbol === 'WETH') {
     return 'eth';
   }
-  return currency.symbol.toLowerCase();
+  return _symbol.toLowerCase();
 }
 
-function getCurrencyLogoUrls(currency) {
+function getCurrencyLogoUrls(currency, chainId) {
   const urls = [];
 
   urls.push(
     `https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/${getCurrencySymbol(
       currency,
+      chainId,
     )}.jpg`,
   );
   if (
@@ -174,7 +186,7 @@ export const CurrencyLogo: FunctionComponent<CurrencyLogoProps> = ({
     }
 
     if (currency.isToken) {
-      const defaultUrls = [...getCurrencyLogoUrls(currency)];
+      const defaultUrls = [...getCurrencyLogoUrls(currency, currency.chainId)];
       if (currency instanceof WrappedTokenInfo) {
         return [...uriLocations, ...defaultUrls, unknown];
       }
