@@ -220,7 +220,12 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
     CELO.cEURO,
     CELO.cBTC,
   ],
-  [ChainId.METIS]: [...WRAPPED_NATIVE_ONLY[ChainId.METIS], METISDAO.STND],
+  [ChainId.METIS]: [
+    ...WRAPPED_NATIVE_ONLY[ChainId.METIS],
+    METISDAO.STND,
+    METISDAO.USDC,
+    METISDAO.USDT,
+  ],
 };
 
 export const ADDITIONAL_BASES: {
@@ -393,7 +398,12 @@ export const COMMON_BASES: ChainTokenList = {
   //   CELO.mcEURO,
   //   CELO.cEUR,
   // ],
-  [ChainId.METIS]: [...WRAPPED_NATIVE_ONLY[ChainId.METIS], METISDAO.STND],
+  [ChainId.METIS]: [
+    ...WRAPPED_NATIVE_ONLY[ChainId.METIS],
+    METISDAO.STND,
+    METISDAO.USDC,
+    METISDAO.USDT,
+  ],
 };
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -489,7 +499,12 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
     OKEX.WBTC,
     OKEX.WETH,
   ],
-  [ChainId.METIS]: [...WRAPPED_NATIVE_ONLY[ChainId.METIS], METISDAO.STND],
+  [ChainId.METIS]: [
+    ...WRAPPED_NATIVE_ONLY[ChainId.METIS],
+    METISDAO.STND,
+    METISDAO.USDC,
+    METISDAO.USDT,
+  ],
   // [ChainId.CELO]: [
   //   ...WRAPPED_NATIVE_ONLY[ChainId.CELO],
   //   CELO.mCUSD,
