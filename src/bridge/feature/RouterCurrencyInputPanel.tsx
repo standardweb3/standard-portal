@@ -1,6 +1,5 @@
 import { Currency, CurrencyAmount } from '@digitalnative/standard-protocol-sdk';
 import { classNames, formatNumber } from '../../functions';
-import { useActiveWeb3React } from '../../hooks';
 import { Input as NumericalInput } from '../../components-ui/NumericalInput';
 import { Button } from '../../components-ui/Button';
 import { CurrencyLogo } from '../../components-ui/CurrencyLogo';

@@ -4,7 +4,7 @@ import { Page } from '../../components-ui/Page';
 import { PageContent } from '../../components-ui/PageContent';
 import { DefinedStyles } from '../../utils/DefinedStyles';
 import { CollateralSelectPanel } from '../../features/vault/new/CollateralSelectPanel';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { tryParseAmount } from '../../functions';
 import { useRouter } from 'next/router';
 import { useCollateral } from '../../services/graph/hooks/collaterals';
@@ -23,6 +23,32 @@ export default function Vault() {
 
   const balance = useCurrencyBalance(account, collateral);
   const [collateralizeAmount, setCollateralizeAmount] = useState('');
+  const [liquidationRatio, setLiquidationRatio] = useState(150);
+
+  const maxLiquidationRatio = 440;
+  const safeLiquidationRatio = 200;
+  // change to collateral info
+  const minLiquidationRatio = 150;
+
+  const [liquidationRatioPercentage, setLiquidationRatioPercentage] = useState(
+    (safeLiquidationRatio / maxLiquidationRatio) * 100,
+  );
+
+  const handleChangeLiquidationRatio = (value) => {
+    if (value >= maxLiquidationRatio) {
+      setLiquidationRatio(maxLiquidationRatio);
+      setLiquidationRatioPercentage(100);
+      return;
+    }
+    const newLiqudationRatioPercentage =
+      Math.round(liquidationRatioPercentage * maxLiquidationRatio * 10) / 1000;
+    console.log(newLiqudationRatioPercentage);
+
+    setLiquidationRatioPercentage(newLiqudationRatioPercentage);
+    setLiquidationRatio(value);
+  };
+
+  useEffect(() => {}, [liquidationRatio]);
   const [pendingTx, setPendingTx] = useState(false);
 
   const formattedCollateralizeAmount = tryParseAmount(
@@ -51,7 +77,13 @@ export default function Vault() {
                 collateralizeAmount={collateralizeAmount}
                 setCollateralizeAmount={setCollateralizeAmount}
               />
-              <CollateralizeSettingsPanel />
+              <CollateralizeSettingsPanel
+                liquidationRatio={liquidationRatio}
+                setLiquidationRatio={handleChangeLiquidationRatio}
+                maxLiquidationRatio={maxLiquidationRatio}
+                setLiquidationRatioPercentage={setLiquidationRatioPercentage}
+                liquidationRatioPercentage={liquidationRatioPercentage}
+              />
             </div>
             <div className="col-span-7 md:col-span-3">second</div>
           </div>
