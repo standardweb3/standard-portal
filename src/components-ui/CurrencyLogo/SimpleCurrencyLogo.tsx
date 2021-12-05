@@ -30,6 +30,7 @@ const getTokenUrls = (chainId, id, symbol) => {
     urls.push(
       `https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/${getCurrencySymbol(
         symbol,
+        chainId,
       )}.jpg`,
     );
   }
@@ -55,14 +56,19 @@ const BLOCKCHAIN = {
   // [ChainId.OKEX]: 'okex',
 };
 
-function getCurrencySymbol(symbol) {
-  if (symbol === 'WBTC') {
+function getCurrencySymbol(symbol, chainId) {
+  let _symbol;
+  if (chainId && chainId === ChainId.AVALANCHE) {
+    if (symbol.endsWith('.e')) _symbol = symbol.substring(0, symbol.length - 2);
+    else _symbol = symbol;
+  } else _symbol = symbol;
+  if (_symbol === 'WBTC') {
     return 'btc';
   }
-  if (symbol === 'WETH') {
+  if (_symbol === 'WETH') {
     return 'eth';
   }
-  return symbol.toLowerCase();
+  return _symbol.toLowerCase();
 }
 
 const AvalancheLogo =
