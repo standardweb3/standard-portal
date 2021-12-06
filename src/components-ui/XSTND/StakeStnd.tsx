@@ -12,10 +12,12 @@ import {
   useActiveWeb3React,
   useApproveCallback,
 } from '../../hooks';
+import useAddTokenToMetaMask from '../../hooks/useAddTokenToMetaMask';
 import { useProtocol } from '../../state/protocol/hooks';
 import { DefinedStyles } from '../../utils/DefinedStyles';
 import { Button } from '../Button';
 import { CurrencyLogo } from '../CurrencyLogo';
+import Image from '../Image';
 import { RippleSpinner } from '../Spinner/RippleSpinner';
 import { TokenInputPanelV2 } from './TokenInputPanelV2';
 
@@ -39,6 +41,7 @@ export function StakeStnd({
   const { chainId } = useActiveWeb3React();
   const [stakeAmount, setStakeAmount] = useState('');
   const [pendingTx, setPendingTx] = useState(false);
+  const { addToken, success } = useAddTokenToMetaMask(xStnd);
 
   // const stndBalanceDecimals = stndBalance && parseFloat(stndBalance.toExact());
 
@@ -163,6 +166,14 @@ export function StakeStnd({
             <div>
               <div className="text-grey text-sm">You will Receive:</div>
               <div>{xStndAmount.toFixed(4)} dSTND</div>
+            </div>
+
+            <div onClick={addToken} className="cursor-pointer">
+              <Image
+                width="24px"
+                height="24px"
+                src={'/img/wallets/metamask.png'}
+              />
             </div>
           </div>
         </div>

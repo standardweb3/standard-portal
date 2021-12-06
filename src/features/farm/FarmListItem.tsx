@@ -17,7 +17,6 @@ import {
   ViewportXSmall,
 } from '../../components-ui/Responsive';
 import dynamic from 'next/dynamic';
-import { useEthPrice } from '../../services/graph';
 
 const FarmListItemDetails = dynamic(() => import('./FarmListItemDetails'), {
   ssr: false,
@@ -30,7 +29,6 @@ const FarmListItem = ({ farm, ...rest }) => {
 
   const totalSupply = parseFloat(farm.pair.totalSupply ?? '0');
   const userShare = amountDecimals ? amountDecimals / totalSupply : 0;
-  const ethPrice = useEthPrice();
 
   const isViewportMediumDown = useSizeMdDown();
   return (
