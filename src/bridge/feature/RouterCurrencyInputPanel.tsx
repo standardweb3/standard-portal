@@ -68,7 +68,7 @@ export function RouterCurrencyInputPanel({
         rounded-20
         p-4 sm:p-0"
       >
-        <div className="flex-1 px-4">
+        <div className="flex-1 px-4 ">
           <NumericalInput
             className={classNames('w-full text-right', inputClassName)}
             value={amount}

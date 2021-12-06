@@ -1,4 +1,5 @@
 import { CurrencyLogo } from '../../../components-ui/CurrencyLogo';
+import { Input as NumericalInput } from '../../../components-ui/NumericalInput';
 import { classNames } from '../../../functions';
 
 export function CurrencyOutputPanel({
@@ -14,6 +15,7 @@ export function CurrencyOutputPanel({
         sm:bg-transparent
         p-4 sm:p-0
         space-y-4 sm:space-y-0
+        space-x-4
         rounded-20`,
         className,
       )}
@@ -33,7 +35,12 @@ export function CurrencyOutputPanel({
         rounded-20
         p-4 sm:p-0"
       >
-        <div className="flex-1 text-right font-bold text-2xl">{amount}</div>
+        <NumericalInput
+          className="text-right w-full"
+          value={amount}
+          onUserInput={() => {}}
+          disabled
+        />
       </div>
     </div>
   );

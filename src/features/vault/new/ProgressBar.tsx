@@ -1,8 +1,7 @@
 import styled from '@emotion/styled';
-import { useEffect, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import useMouse from '@react-hook/mouse-position';
 import { classNames } from '../../../functions';
-import usePrevious from '../../../hooks/usePrevious';
 
 export const TrackCont = styled.div`
   width: 100%;
@@ -21,21 +20,22 @@ export const Thumb = styled.div<{ percentage: number }>`
   height: 100%;
   border-radius: 20px;
   transition-property: width;
+  transition-duration: 50;
 `;
 
 export const ThumbRoller = styled.div`
   cursor: pointer;
-  transform: translateY(-25%) translateX(8px);
+  transform: translateY(-25%) translateX(9.5px);
   border: 3px solid #f365bd;
   position: absolute;
   border-radius: 50%;
   width: 16px;
   height: 16px;
   right: 0;
+  z-index: 10;
 `;
 
 export const TrackTick = styled.div<{ left: string }>`
-  z-index: 100;
   left: ${(props) => props.left};
   position: absolute;
   width: 3px;
@@ -59,6 +59,8 @@ export function ProgressBar({
   setLiquidationRatio,
   liquidationRatio,
   setLiquidationRatioPercentage,
+  setToMinLiquidationRatio,
+  setToSafeLiquidationRatio,
 }) {
   const ref = useRef(null);
 
@@ -75,12 +77,11 @@ export function ProgressBar({
 
   const calculatePercentageOnClick = () => {
     if (ref.current && mouse.x !== null) {
-      const perc =
-        Math.round((mouse.x / ref.current.offsetWidth) * 100000) / 1000;
+      const perc = (mouse.x / ref.current.offsetWidth) * 100;
       const newLiqRatio = Math.round(perc * maxLiquidationRatio * 10) / 1000;
       // console.log(perc);
       setLiquidationRatioPercentage(perc > 99.2 ? 100 : perc < 0.8 ? 0 : perc);
-      setLiquidationRatio(newLiqRatio);
+      setLiquidationRatio(newLiqRatio, false);
     }
   };
 
@@ -95,11 +96,27 @@ export function ProgressBar({
   //   setPercentage(newPercentage);
   // }, [liquidationRatio]);
 
-  const minLeft =
-    String((minLiquidationRatio / maxLiquidationRatio) * 100) + '%';
-  const safeLeft =
-    String((safeLiquidationRatio / maxLiquidationRatio) * 100) + '%';
+  const minLeft = useMemo(
+    () => String((minLiquidationRatio / maxLiquidationRatio) * 100) + '%',
+    [minLiquidationRatio, maxLiquidationRatio],
+  );
+  const safeLeft = useMemo(
+    () => String((safeLiquidationRatio / maxLiquidationRatio) * 100) + '%',
+    [safeLiquidationRatio, maxLiquidationRatio],
+  );
+  // console.log(minLeft, safeLeft);
 
+  const handleClickMinRatio = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setToMinLiquidationRatio();
+  };
+
+  const handleClickSafeRatio = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setToSafeLiquidationRatio();
+  };
   return (
     <TrackCont
       ref={ref}
@@ -124,10 +141,7 @@ export function ProgressBar({
       <Track className="bg-scrollbar-track">
         <Thumb
           percentage={liquidationRatioPercentage}
-          className={classNames(
-            'bg-primary',
-            dragging ? 'duration-75' : 'duration-500',
-          )}
+          className={classNames('bg-primary', !dragging && '!duration-500')}
         >
           <ThumbRoller
             className="bg-thumbroller"
@@ -144,14 +158,31 @@ export function ProgressBar({
         </Thumb>
       </Track>
 
-      <TrackText left={minLeft} className="text-thumbroller">
+      <TrackText
+        left={minLeft}
+        className="text-thumbroller cursor-pointer hover:text-primary"
+        onClick={handleClickMinRatio}
+      >
         Min: {minLiquidationRatio}%
       </TrackText>
-      <TrackTick left={minLeft} className="bg-thumbroller" />
-      <TrackText left={safeLeft} className="text-thumbroller" safe>
+      <TrackTick
+        left={minLeft}
+        onClick={handleClickMinRatio}
+        className="bg-thumbroller cursor-pointer hover:bg-white"
+      />
+      <TrackText
+        left={safeLeft}
+        className="text-thumbroller cursor-pointer hover:text-primary"
+        safe
+        onClick={handleClickSafeRatio}
+      >
         Safe: {safeLiquidationRatio}%
       </TrackText>
-      <TrackTick left={safeLeft} className="bg-thumbroller" />
+      <TrackTick
+        left={safeLeft}
+        onClick={handleClickSafeRatio}
+        className="bg-thumbroller cursor-pointer hover:bg-white"
+      />
     </TrackCont>
   );
 }
