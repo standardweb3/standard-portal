@@ -77,10 +77,11 @@ export function ProgressBar({
 
   const calculatePercentageOnClick = () => {
     if (ref.current && mouse.x !== null) {
-      const perc = (mouse.x / ref.current.offsetWidth) * 100;
+      let perc = (mouse.x / ref.current.offsetWidth) * 100;
+      perc = perc > 99.2 ? 100 : perc < 0.8 ? 0 : perc;
       const newLiqRatio = Math.round(perc * maxLiquidationRatio * 10) / 1000;
       // console.log(perc);
-      setLiquidationRatioPercentage(perc > 99.2 ? 100 : perc < 0.8 ? 0 : perc);
+      setLiquidationRatioPercentage(perc);
       setLiquidationRatio(newLiqRatio, false);
     }
   };

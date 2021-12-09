@@ -137,8 +137,6 @@ export default function Vault() {
     }
   }, [balance, collateralizeCurrencyAmount]);
 
-  console.log('borrwoable', borrowable);
-
   return (
     <>
       <Head>

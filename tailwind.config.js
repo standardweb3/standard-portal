@@ -95,6 +95,9 @@ module.exports = {
         white: '0px 0px 1px rgba(255,255,255, 0.5)',
         // '3xl': '0 0 3px rgba(0, 0, 0, .8), 0 0 5px rgba(0, 0, 0, .9)',
       },
+      backdropBlur: {
+        collateral: '110px',
+      },
     },
     boxShadow: {
       dark: '0px 4px 50px rgba(81, 29, 102, 0.5)',

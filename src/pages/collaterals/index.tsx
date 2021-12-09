@@ -3,6 +3,9 @@ import { Page } from '../../components-ui/Page';
 import { PageContent } from '../../components-ui/PageContent';
 import { DefinedStyles } from '../../utils/DefinedStyles';
 import { CollateralsTable } from '../../features/vault/new/CollateralsTable';
+import { ViewportMediumUp } from '../../components-ui/Responsive';
+import { PageHeader } from '../../components-ui/PageHeader';
+import { Alert } from '../../components-ui/Alert';
 
 export default function Collaterals() {
   return (
@@ -16,8 +19,20 @@ export default function Collaterals() {
         />
       </Head>
       <Page id="trade-page" className={DefinedStyles.page}>
+        <ViewportMediumUp>
+          <PageHeader title="Collaterals" />
+        </ViewportMediumUp>
         <PageContent>
-          <div className="w-full max-w-[1000px]">
+          <div className="w-full">
+            <Alert
+              className={DefinedStyles.pageAlertFull}
+              message={
+                <div className="leading-relaxed">
+                  Select a collateral to borrow MTR
+                </div>
+              }
+              type="information"
+            />
             <CollateralsTable />
           </div>
         </PageContent>

@@ -29,6 +29,7 @@ export type TableProps = {
   rowClassName?: string;
   rowsClassName?: string;
   tableClassName?: string;
+  hideHeaders?: boolean;
   searchTerm?: string;
 };
 // Let's add a fetchData method to our Table component that will be used to fetch
@@ -54,6 +55,7 @@ export function Table({
   rowClassName,
   rowsClassName,
   tableClassName,
+  hideHeaders,
   searchTerm,
 }: TableProps) {
   const {
@@ -159,26 +161,28 @@ export function Table({
         </code>
       </pre> */}
       <div className={tableClassName}>
-        <div>
-          {headerGroups.map((headerGroup, i) => {
-            return (
-              <div className={headerClassName} key={i}>
-                {headerGroup.headers.map((column, i) => (
-                  <div className={column.className} key={i}>
-                    {column.render('Header')}
-                    <span>
-                      {column.isSorted
-                        ? column.isSortedDesc
-                          ? ' 🔽'
-                          : ' 🔼'
-                        : ''}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            );
-          })}
-        </div>
+        {!hideHeaders && (
+          <div>
+            {headerGroups.map((headerGroup, i) => {
+              return (
+                <div className={headerClassName} key={i}>
+                  {headerGroup.headers.map((column, i) => (
+                    <div className={column.className} key={i}>
+                      {column.render('Header')}
+                      <span>
+                        {column.isSorted
+                          ? column.isSortedDesc
+                            ? ' 🔽'
+                            : ' 🔼'
+                          : ''}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              );
+            })}
+          </div>
+        )}
         <div className={rowsClassName}>
           {page.map((row, i) => {
             prepareRow(row);

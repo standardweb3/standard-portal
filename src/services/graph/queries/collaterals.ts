@@ -24,6 +24,10 @@ export const collateralsQuery = gql`
       mcr
       decimals
       chainId
+      type
+      promote
+      popular
+      color
     }
   }
 `;
