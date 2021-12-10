@@ -15,6 +15,7 @@ import { CollateralizeSettingsPanel } from '../../features/vault/new/Collaterali
 import { useEthPrice, useToken } from '../../services/graph';
 import { ConfirmCollateralizeButton } from '../../features/vault/new/ConfirmCollateralizeButton';
 import { CollateralInfo } from '../../features/vault/new/CollateralInfo';
+import { useVaultManagerAssetPrice } from '../../hooks/vault/useVaultManager';
 
 export default function Vault() {
   const { account, chainId } = useActiveWeb3React();
@@ -29,6 +30,8 @@ export default function Vault() {
   const collateralExchangeToken = useToken({
     id: collateral?.isToken ? collateral.address.toLowerCase() : null,
   });
+
+  const assetPrice = useVaultManagerAssetPrice(collateralAddr);
 
   // temporary to use as price - replace with oracle price
   const collateralExchangePrice =
