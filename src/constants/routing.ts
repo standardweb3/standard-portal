@@ -47,6 +47,7 @@ import {
   JPYC,
   METIS,
   METISDAO,
+  EVMOS,
 } from './tokens';
 // a list of tokens by chain
 import {
@@ -114,6 +115,7 @@ const WRAPPED_NATIVE_ONLY: ChainTokenList = {
   [ChainId.OKEX_TESTNET]: [WNATIVE[ChainId.OKEX_TESTNET]],
   [ChainId.CELO]: [WNATIVE[ChainId.CELO]],
   [ChainId.METIS]: [WNATIVE[ChainId.METIS]],
+  [ChainId.EVMOS]: [WNATIVE[ChainId.EVMOS]],
 };
 
 // used to construct intermediary pairs for trading
@@ -226,6 +228,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
     METISDAO.USDC,
     METISDAO.USDT,
   ],
+  [ChainId.EVMOS]: [...WRAPPED_NATIVE_ONLY[ChainId.EVMOS]],
 };
 
 export const ADDITIONAL_BASES: {
@@ -404,6 +407,7 @@ export const COMMON_BASES: ChainTokenList = {
     METISDAO.USDC,
     METISDAO.USDT,
   ],
+  [ChainId.EVMOS]: [...WRAPPED_NATIVE_ONLY[ChainId.EVMOS], EVMOS.STND],
 };
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -505,6 +509,9 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
     METISDAO.USDC,
     METISDAO.USDT,
   ],
+  [ChainId.EVMOS]: {
+    ...WRAPPED_NATIVE_ONLY[ChainId.EVMOS],
+  },
   // [ChainId.CELO]: [
   //   ...WRAPPED_NATIVE_ONLY[ChainId.CELO],
   //   CELO.mCUSD,

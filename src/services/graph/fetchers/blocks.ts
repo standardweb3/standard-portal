@@ -24,6 +24,7 @@ export const BLOCKS = {
   [ChainId.AVALANCHE]: 'matthewlilley/avalanche-blocks',
   [ChainId.CELO]: 'sushiswap/celo-blocks',
   [ChainId.METIS]: 'digitalnativeinc/metis-blocks',
+  [ChainId.EVMOS]: '',
 };
 
 export const fetcher = async (chainId = ChainId.MAINNET, query, variables) =>

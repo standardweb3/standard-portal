@@ -27,4 +27,5 @@ export enum SupportedChainId {
   CELO = 42220,
   PALM = 11297108109,
   METIS = 1088,
+  EVMOS = 9000,
 }

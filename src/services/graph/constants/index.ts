@@ -16,4 +16,5 @@ export const GRAPH_HOST = {
   [ChainId.HARMONY]: 'https://sushi.graph.t.hmny.io',
   [ChainId.OKEX]: 'https://graph.kkt.one/node',
   [ChainId.METIS]: 'https://graph.metis.standardtech.xyz',
+  [ChainId.EVMOS]: '',
 };

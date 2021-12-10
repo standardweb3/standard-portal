@@ -123,6 +123,8 @@ const ShidenLogo =
   'https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/sdn.jpg';
 const MetisLogo =
   'https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/metis.jpg';
+const EvmosLogo =
+  'https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/palm.jpg';
 
 const LOGO: { readonly [chainId in ChainId]?: string } = {
   [ChainId.MAINNET]: EthereumLogo,
@@ -150,6 +152,7 @@ const LOGO: { readonly [chainId in ChainId]?: string } = {
   [ChainId.PALM]: PalmLogo,
   [ChainId.PALM_TESTNET]: PalmLogo,
   [ChainId.METIS]: MetisLogo,
+  [ChainId.EVMOS]: EvmosLogo,
 };
 
 interface CurrencyLogoProps {

@@ -36,6 +36,7 @@ export const EXCHANGE = {
   [ChainId.AVALANCHE]: 'sushiswap/avalanche-exchange',
   [ChainId.CELO]: 'sushiswap/celo-exchange',
   [ChainId.METIS]: 'digitalnativeinc/metis-exchange',
+  [ChainId.EVMOS]: '',
 };
 
 export const exchangeUri = (chainId = ChainId.MAINNET) =>

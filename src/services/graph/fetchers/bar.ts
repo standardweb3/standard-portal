@@ -11,6 +11,7 @@ const BAR = {
   [ChainId.MAINNET]: 'billjhlee/ethereum-dstnd',
   [ChainId.SHIDEN]: 'digitalnativeinc/shiden-xstnd',
   [ChainId.METIS]: '',
+  [ChainId.EVMOS]: '',
 };
 
 export const bar = async (query, chainId = ChainId.MAINNET, variables) =>

@@ -20,6 +20,7 @@ const Celo = '/img/networks/celo-network.jpg';
 const Shibuya = '/img/networks/shibuya-network.jpg';
 const Shiden = '/img/networks/shiden-network.jpg';
 const Metis = '/img/networks/metis-network.jpg';
+const Evmos = '/img/networks/evmos-network.jpg';
 
 // const Palm =
 // 'https://raw.githubusercontent.com/sushiswap/icons/master/network/palm.jpg';
@@ -53,6 +54,7 @@ export const NETWORK_ICON = {
   [ChainId.CELO]: Celo,
   [ChainId.METIS]: Metis,
   // [ChainId.PALM]: Palm,
+  [ChainId.EVMOS]: Evmos,
 };
 
 export const NETWORK_LABEL: { [chainId in ChainId]?: string } = {
@@ -84,12 +86,14 @@ export const NETWORK_LABEL: { [chainId in ChainId]?: string } = {
   [ChainId.CELO]: 'Celo',
   // [ChainId.PALM]: 'Palm',
   [ChainId.METIS]: 'Metis',
+  [ChainId.EVMOS]: 'Evmos',
 };
 
 export const NORMAL_GUARDED_CHAINS = [
   ChainId.MAINNET,
   ChainId.SHIDEN,
   ChainId.METIS,
+  ChainId.EVMOS,
 ];
 
 export const SUPPORTED_NETWORKS: {
@@ -137,6 +141,18 @@ export const SUPPORTED_NETWORKS: {
     },
     rpcUrls: ['https://andromeda.metis.io/?owner=1088'],
     blockExplorerUrls: ['https://andromeda-explorer.metis.io/'],
+  },
+
+  [ChainId.EVMOS]: {
+    chainId: '0x2328',
+    chainName: 'Photon',
+    nativeCurrency: {
+      name: 'Photon',
+      symbol: 'PHOTON',
+      decimals: 18,
+    },
+    rpcUrls: ['https://ethereum.rpc.evmos.dev'],
+    blockExplorerUrls: ['https://etherscan.io/'],
   },
   // [ChainId.RINKEBY]: {
   //   chainId: '0x4',

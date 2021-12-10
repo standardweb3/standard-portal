@@ -88,6 +88,7 @@ export const injected = new InjectedConnector({
     11297108109, // palm,
     1285, // moonriver
     1088,
+    9000,
   ],
 });
 
@@ -99,7 +100,7 @@ export const getWalletConnectConnector = async (params?: CONNECTOR_PARAMS) => {
   return new WalletConnectConnector({
     supportedChainIds: params?.chainId
       ? [params?.chainId]
-      : [1, 4, 81, 336, 1088],
+      : [1, 4, 81, 336, 1088, 9000],
     chainId: params?.chainId ?? 1,
     rpc: RPC,
     bridge: 'https://bridge.walletconnect.org',
@@ -110,7 +111,7 @@ export const getWalletConnectConnector = async (params?: CONNECTOR_PARAMS) => {
 
 // mainnet only
 export const walletconnect = new WalletConnectConnector({
-  supportedChainIds: [1, 4, 81, 336, 1088],
+  supportedChainIds: [1, 4, 81, 336, 1088, 9000],
   chainId: 1,
   rpc: RPC,
   bridge: 'https://bridge.walletconnect.org',

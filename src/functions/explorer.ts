@@ -407,6 +407,10 @@ const chains: ChainObject = {
     chainName: 'metis',
     builder: builders.metis,
   },
+  [ChainId.EVMOS]: {
+    chainName: 'evmos',
+    builder: builders.etherscan,
+  },
 };
 
 export function getExplorerLink(

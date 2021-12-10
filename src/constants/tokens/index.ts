@@ -9,6 +9,16 @@ import {
 
 import { SupportedChainId } from '../chains';
 
+export const EVMOS: { [key: string]: Token } = {
+  STND: new Token(
+    ChainId.EVMOS,
+    STND_ADDRESS[ChainId.EVMOS],
+    18,
+    'STND',
+    'Standard',
+  ),
+};
+
 export const RINKEBY: { [key: string]: Token } = {
   DAI: new Token(
     ChainId.RINKEBY,
