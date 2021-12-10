@@ -211,7 +211,6 @@ function Tokens() {
         className: 'col-span-2 hidden sm:flex justify-center items-center',
         Cell: ({ value }) => {
           const { chainId } = useActiveWeb3React();
-          if (chainId === ChainId.METIS) return '-';
           return (
             <div className="text-xs lg:text-sm">
               {value !== null ? formatNumberScale(value, true) : '-'}
@@ -237,7 +236,6 @@ function Tokens() {
         className: 'col-span-2 justify-center items-center flex',
         Cell: ({ value }) => {
           const { chainId } = useActiveWeb3React();
-          if (chainId === ChainId.METIS) return '-';
           return (
             <div
               className={`text-xs lg:text-sm ${
