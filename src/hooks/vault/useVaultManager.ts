@@ -5,7 +5,8 @@ import { useActiveWeb3React } from '..';
 import { useProtocol } from '../../state/protocol/hooks';
 import { getVaultManagerAddress } from '@digitalnative/standard-protocol-sdk';
 import { useSingleCallResult } from '../../state/multicall/hooks';
-import { useMemo } from 'react';
+import { formatBalance } from '../../functions';
+import { call } from 'eth-permit/dist/rpc';
 
 export function useVaultManagerAddress(): string {
   const { chainId } = useActiveWeb3React();
@@ -13,17 +14,44 @@ export function useVaultManagerAddress(): string {
   return getVaultManagerAddress(protocol, chainId);
 }
 
-export function useVaultMannagerConract(): Contract | null {
+export function useVaultMannagerConract(
+  withSignerIfPossibe = true,
+): Contract | null {
   const vaultManagerAddress = useVaultManagerAddress();
-  return useContract(vaultManagerAddress, VAULT_MANAGER_ABI, false);
+  return useContract(
+    vaultManagerAddress,
+    VAULT_MANAGER_ABI,
+    withSignerIfPossibe,
+  );
 }
 
 export function useVaultManagerAssetPrice(address) {
+  console.log('vault manager asset price addr', address);
   const contract = useVaultMannagerConract();
 
   const args = [address];
-  const assetPrice = useSingleCallResult(contract, 'getPriceOf', args);
+  const callResult = useSingleCallResult(
+    address && contract,
+    'getAssetPrice',
+    args,
+  );
+  const assetPrice = callResult?.result?.[0];
 
-  console.log(assetPrice);
-  return assetPrice;
+  return assetPrice ? parseFloat(formatBalance(assetPrice, 8)) : undefined;
+}
+
+export function useVaultManagerIsValidCDP(collateral, debt, cAmount, dAmount) {
+  const contract = useVaultMannagerConract();
+  console.log('vault:', collateral, debt, cAmount, dAmount);
+
+  const args = [collateral, debt, cAmount, dAmount];
+  const callResult = useSingleCallResult(
+    collateral && cAmount && dAmount && contract,
+    'isValidCDP',
+    args,
+  );
+  console.log('vault isvalidcdp', callResult);
+  const assetPrice = callResult?.result?.[0];
+
+  return assetPrice ? parseFloat(formatBalance(assetPrice, 8)) : undefined;
 }

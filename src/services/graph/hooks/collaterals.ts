@@ -2,11 +2,14 @@ import useSWR, { SWRConfiguration } from 'swr';
 import { useActiveWeb3React } from '../../../hooks';
 import { getCollaterals } from '../fetchers/collaterals';
 
-export function useCollaterals(swrConfig: SWRConfiguration = undefined) {
+export function useCollaterals(
+  variables,
+  swrConfig: SWRConfiguration = undefined,
+) {
   const { chainId } = useActiveWeb3React();
   const { data } = useSWR(
     ['collaterals', chainId],
-    () => getCollaterals({ chainId }),
+    () => getCollaterals({ ...variables, chainId }),
     swrConfig,
   );
   //   console.log('collaterals', data);

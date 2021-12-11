@@ -4,48 +4,64 @@ import { Page } from '../../components-ui/Page';
 import { PageContent } from '../../components-ui/PageContent';
 import { DefinedStyles } from '../../utils/DefinedStyles';
 import { CollateralSelectPanel } from '../../features/vault/new/CollateralSelectPanel';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { tryParseAmount } from '../../functions';
 import { useRouter } from 'next/router';
 import { useCollateral } from '../../services/graph/hooks/collaterals';
 import { useCurrency } from '../../hooks/Tokens';
 import { useCurrencyBalance } from '../../state/wallet/hooks';
-import { useActiveWeb3React } from '../../hooks';
+import {
+  ApprovalState,
+  useActiveWeb3React,
+  useApproveCallback,
+} from '../../hooks';
 import { CollateralizeSettingsPanel } from '../../features/vault/new/CollateralizeSettingsPanel';
 import { useEthPrice, useToken } from '../../services/graph';
 import { ConfirmCollateralizeButton } from '../../features/vault/new/ConfirmCollateralizeButton';
 import { CollateralInfo } from '../../features/vault/new/CollateralInfo';
-import { useVaultManagerAssetPrice } from '../../hooks/vault/useVaultManager';
+import {
+  useVaultManagerAssetPrice,
+  useVaultManagerIsValidCDP,
+} from '../../hooks/vault/useVaultManager';
+import { getVaultManagerAddress } from '@digitalnative/standard-protocol-sdk';
+import { useProtocol } from '../../state/protocol/hooks';
+import useCDP from '../../hooks/vault/useCDP';
+import { useMtr } from '../../hooks/vault/useMtr';
 
 export default function Vault() {
   const { account, chainId } = useActiveWeb3React();
+  const protocol = useProtocol();
   const router = useRouter();
+
   const collateralAddr = router.query.collateral[0];
   // temporary
-  const ethPrice = useEthPrice();
+  // const ethPrice = useEthPrice();
 
   const collateralInfo = useCollateral(collateralAddr);
   const collateral = useCurrency(collateralAddr);
+  const isCollateralETH = collateral.isNative;
+
+  // console.log('vault: collateral', collateral);
+  // console.log('vault: collateralInfo', collateralInfo);
   // temporary to obtain price
-  const collateralExchangeToken = useToken({
-    id: collateral?.isToken ? collateral.address.toLowerCase() : null,
-  });
+  // const collateralExchangeToken = useToken({
+  //   id: collateral?.isToken ? collateral.address.toLowerCase() : null,
+  // });
 
-  const assetPrice = useVaultManagerAssetPrice(collateralAddr);
-
-  // temporary to use as price - replace with oracle price
-  const collateralExchangePrice =
-    ethPrice &&
-    collateralExchangeToken &&
-    collateralExchangeToken.derivedETH * parseFloat(ethPrice);
+  const collateralPriceUSD = useVaultManagerAssetPrice(
+    collateralInfo?.priceAddress,
+  );
+  // console.log('vault: collateral price', collateralPriceUSD);
 
   const balance = useCurrencyBalance(account, collateral);
   const [collateralizeAmount, setCollateralizeAmount] = useState('');
 
   const collateralValueUSD =
-    collateralExchangePrice && collateralizeAmount !== ''
-      ? parseFloat(collateralizeAmount) * collateralExchangePrice
+    collateralPriceUSD && collateralizeAmount !== ''
+      ? parseFloat(collateralizeAmount) * collateralPriceUSD
       : 0;
+
+  // console.log('vault: collateral value usd:', collateralValueUSD);
 
   // // temporary
   const collateralizeCurrencyAmount = tryParseAmount(
@@ -65,11 +81,17 @@ export default function Vault() {
   const handleCollateralizeAmountChange = (value) => {
     setCollateralizeAmount(value);
     const _collateralValueUSD =
-      collateralExchangePrice && value !== ''
-        ? parseFloat(value) * collateralExchangePrice
+      collateralPriceUSD && value !== ''
+        ? parseFloat(value) * collateralPriceUSD
         : 0;
+
+    // console.log(
+    //   'vault _collateralValueUSD / parseFloat(liquidationRatio) ',
+    //   _collateralValueUSD / parseFloat(liquidationRatio),
+    //   liquidationRatio,
+    // );
     setMtrAmount(
-      String((parseFloat(liquidationRatio) * _collateralValueUSD) / 100),
+      String((_collateralValueUSD / parseFloat(liquidationRatio)) * 100),
     );
   };
 
@@ -78,6 +100,8 @@ export default function Vault() {
   );
 
   const [mtrAmount, setMtrAmount] = useState('');
+  const mtr = useMtr();
+  const mtrCourrencyAmount = tryParseAmount(mtrAmount, mtr);
 
   const handleChangeLiquidationRatio = (value, changePerc = true) => {
     if (value === '') {
@@ -100,7 +124,8 @@ export default function Vault() {
       setLiquidationRatioPercentage(newLiqudationRatioPercentage);
     }
     setLiquidationRatio(value);
-    setMtrAmount(String((parseFloat(value) * collateralValueUSD) / 100));
+    // console.log('vault', value, collateralValueUSD);
+    setMtrAmount(String((collateralValueUSD / parseFloat(value)) * 100));
   };
 
   const setToMinLiquidationRatio = () => {
@@ -118,6 +143,26 @@ export default function Vault() {
     collateral,
   );
 
+  // console.log(
+  //   'vault: formatted collateral amount',
+  //   formattedCollateralizeAmount,
+  // );
+
+  const [approvalState, approve] = useApproveCallback(
+    formattedCollateralizeAmount,
+    getVaultManagerAddress(protocol, chainId),
+  );
+
+  const { createCDP, createCDPNative } = useCDP();
+
+  // console.log('vault: approvalState', approvalState);
+  // console.log('vault: manager addr', getVaultManagerAddress(protocol, chainId));
+  // console.log(
+  //   'vault: collateralize amount',
+  //   formattedCollateralizeAmount?.toExact(),
+  // );
+  // console.log('vault: mtr amount', mtrAmount);
+
   // add in desiredsupply and oracle fetch error
   const borrowable =
     balance &&
@@ -131,14 +176,54 @@ export default function Vault() {
       collateralizeCurrencyAmount &&
       (balance.greaterThan(collateralizeCurrencyAmount) ||
         balance.equalTo(collateralizeCurrencyAmount))
-    )
+    ) {
+      if (
+        approvalState == ApprovalState.NOT_APPROVED ||
+        approvalState == ApprovalState.UNKNOWN
+      ) {
+        return 'Approve';
+      } else if (approvalState == ApprovalState.PENDING) {
+        return 'Approving';
+      }
       return 'Borrow';
-    else if (!collateralizeCurrencyAmount) {
+    } else if (!collateralizeCurrencyAmount) {
       return 'Enter Collateral Amount';
     } else {
       return 'Insufficient Balance';
     }
   }, [balance, collateralizeCurrencyAmount]);
+
+  const onClick = useCallback(async () => {
+    if (approvalState == ApprovalState.APPROVED) {
+      if (mtrCourrencyAmount) {
+        if (isCollateralETH) {
+          console.log('vault: createCDPNative');
+          await createCDPNative(mtrCourrencyAmount.quotient.toString());
+        } else if (collateral.isToken) {
+          console.log(
+            'vault: createCDP',
+            formattedCollateralizeAmount.quotient.toString(),
+            mtrCourrencyAmount.quotient.toString(),
+          );
+          await createCDP(
+            collateral.address,
+            mtr.address,
+            formattedCollateralizeAmount.quotient.toString(),
+            mtrCourrencyAmount.quotient.toString(),
+          );
+        }
+      }
+    } else if (approvalState == ApprovalState.NOT_APPROVED) {
+      await approve();
+    }
+  }, [approvalState]);
+
+  const isValidCDP = useVaultManagerIsValidCDP(
+    collateralInfo?.priceAddress,
+    mtr.address,
+    formattedCollateralizeAmount?.quotient.toString(),
+    mtrCourrencyAmount?.quotient.toString(),
+  );
 
   return (
     <>
@@ -172,6 +257,7 @@ export default function Vault() {
                 setToSafeLiquidationRatio={setToSafeLiquidationRatio}
               />
               <ConfirmCollateralizeButton
+                onClick={onClick}
                 disabled={!borrowable}
                 message={confirmButtonMessage}
               />

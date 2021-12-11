@@ -47,7 +47,7 @@ export function CollateralsTable() {
     changeSortDirection,
   } = useCollateralsTable();
 
-  const collaterals = useCollaterals();
+  const collaterals = useCollaterals({ show: true });
 
   const promotedCollaterals = useMemo(() => {
     return collaterals

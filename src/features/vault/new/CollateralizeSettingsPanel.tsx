@@ -6,6 +6,7 @@ import { CurrencyOutputPanel } from './CurrencyOutputPanel';
 import { ProgressBar } from './ProgressBar';
 import { Input as NumericalInput } from '../../../components-ui/NumericalInput';
 import Image from '../../../components-ui/Image';
+import { useMtr } from '../../../hooks/vault/useMtr';
 
 const lf =
   'https://raw.githubusercontent.com/digitalnativeinc/icons/master/collateralize/lf.png';
@@ -27,7 +28,7 @@ export function CollateralizeSettingsPanel({
   setToSafeLiquidationRatio,
 }) {
   // change to use MTR later
-  const mtr = useStnd();
+  const mtr = useMtr();
   return (
     <div className={classNames(DefinedStyles.collateralizePanel, 'space-y-4')}>
       <CollateralizePanelHeader
