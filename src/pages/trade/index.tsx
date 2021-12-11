@@ -135,7 +135,12 @@ function Tokens() {
           //     : 0;
           return {
             name: token.name,
-            info: { symbol: token.symbol, id: token.id },
+            info: {
+              symbol: token.symbol,
+              id: token.id,
+              status:
+                oneDayPriceChange > 0 ? 1 : oneDayPriceChange === 0 ? 0 : -1,
+            },
             volume: oneDayVolume,
             liquidity: token.liquidity * token.derivedETH * ethPrice,
             price: token.derivedETH * ethPrice,
@@ -182,11 +187,19 @@ function Tokens() {
           return (
             <div className="flex justify-start w-full items-center space-x-2">
               <SimpleCurrencyLogo
-                className="rounded-full"
+                className={`rounded-full`}
                 symbol={value.symbol}
                 id={value.id}
               />
-              <div className="text-xs lg:text-sm">
+              <div
+                className={`text-xs lg:text-sm font-bold ${
+                  value.status > 0
+                    ? 'text-green'
+                    : value.status === 0
+                    ? 'text-grey'
+                    : 'text-red'
+                }`}
+              >
                 {getSymbol(chainId, value.symbol)}
               </div>
             </div>
