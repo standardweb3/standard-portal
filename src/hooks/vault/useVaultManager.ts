@@ -18,6 +18,7 @@ export function useVaultMannagerConract(
   withSignerIfPossibe = true,
 ): Contract | null {
   const vaultManagerAddress = useVaultManagerAddress();
+  console.log(vaultManagerAddress)
   return useContract(
     vaultManagerAddress,
     VAULT_MANAGER_ABI,
@@ -42,7 +43,6 @@ export function useVaultManagerAssetPrice(address) {
 
 export function useVaultManagerIsValidCDP(collateral, debt, cAmount, dAmount) {
   const contract = useVaultMannagerConract();
-  console.log('vault:', collateral, debt, cAmount, dAmount);
 
   const args = [collateral, debt, cAmount, dAmount];
   const callResult = useSingleCallResult(
@@ -50,7 +50,6 @@ export function useVaultManagerIsValidCDP(collateral, debt, cAmount, dAmount) {
     'isValidCDP',
     args,
   );
-  console.log('vault isvalidcdp', callResult);
   const assetPrice = callResult?.result?.[0];
 
   return assetPrice ? parseFloat(formatBalance(assetPrice, 8)) : undefined;

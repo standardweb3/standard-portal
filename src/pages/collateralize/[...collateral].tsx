@@ -218,12 +218,12 @@ export default function Vault() {
     }
   }, [approvalState]);
 
-  const isValidCDP = useVaultManagerIsValidCDP(
-    collateralInfo?.priceAddress,
-    mtr.address,
-    formattedCollateralizeAmount?.quotient.toString(),
-    mtrCourrencyAmount?.quotient.toString(),
-  );
+  // const isValidCDP = useVaultManagerIsValidCDP(
+  //   collateralInfo?.priceAddress,
+  //   mtr.address,
+  //   formattedCollateralizeAmount?.quotient.toString(),
+  //   mtrCourrencyAmount?.quotient.toString(),
+  // );
 
   return (
     <>
