@@ -894,8 +894,8 @@ export function Bridge() {
                 <div className="flex flex-col justify-center items-center">
                   <div className="text-xs text-text">Powered by</div>
                   <Image
-                    src="/img/bridge/anyswap.svg"
-                    width="100px"
+                    src="/img/bridge/anyswap.png"
+                    width="169px"
                     height="50px"
                   />
                 </div>
