@@ -9,7 +9,7 @@ export default function useCDP() {
 
   const createCDP = useCallback(
     async (collateral, mtr, cAmount, dAmount) => {
-      console.log('vault: createCDP', collateral, mtr, cAmount, dAmount);
+      console.log('vault: createCDP', collateral, cAmount, dAmount);
       try {
         let tx;
         tx = await vaultManagerContract.createCDP(

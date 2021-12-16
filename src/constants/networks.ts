@@ -90,6 +90,7 @@ export const NORMAL_GUARDED_CHAINS = [
   ChainId.MAINNET,
   ChainId.SHIDEN,
   ChainId.METIS,
+  ChainId.RINKEBY,
 ];
 
 export const SUPPORTED_NETWORKS: {
@@ -138,17 +139,17 @@ export const SUPPORTED_NETWORKS: {
     rpcUrls: ['https://andromeda.metis.io/?owner=1088'],
     blockExplorerUrls: ['https://andromeda-explorer.metis.io/'],
   },
-  // [ChainId.RINKEBY]: {
-  //   chainId: '0x4',
-  //   chainName: 'Rinkeby',
-  //   nativeCurrency: {
-  //     name: 'Ethereum',
-  //     symbol: 'ETH',
-  //     decimals: 18,
-  //   },
-  //   rpcUrls: ['https://rinkeby.infura.io/v3'],
-  //   blockExplorerUrls: ['https://rinkeby.etherscan.io'],
-  // },
+  [ChainId.RINKEBY]: {
+    chainId: '0x4',
+    chainName: 'Rinkeby',
+    nativeCurrency: {
+      name: 'Ethereum',
+      symbol: 'ETH',
+      decimals: 18,
+    },
+    rpcUrls: ['https://rinkeby.infura.io/v3'],
+    blockExplorerUrls: ['https://rinkeby.etherscan.io'],
+  },
   // [ChainId.SHIBUYA]: {
   //   chainId: '0x51',
   //   chainName: 'Shibuya',

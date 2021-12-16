@@ -39,7 +39,7 @@ export default function Vault() {
 
   const collateralInfo = useCollateral(collateralAddr);
   const collateral = useCurrency(collateralAddr);
-  const isCollateralETH = collateral.isNative;
+  const isCollateralETH = collateral?.isNative;
 
   // console.log('vault: collateral', collateral);
   // console.log('vault: collateralInfo', collateralInfo);
