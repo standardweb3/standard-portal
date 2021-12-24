@@ -62,4 +62,5 @@ export const DefinedStyles = {
   step:
     'rounded-full bg-opaque-secondary w-8 h-8 flex items-center justify-center',
   collateralizePanel: 'bg-opaque rounded-20 p-4 w-full backdrop-blur-[200px]',
+  vaultPanel: 'rounded-20 p-4 bg-dark-2 text-text',
 };

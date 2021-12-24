@@ -28,7 +28,7 @@ import { useProtocol } from '../../state/protocol/hooks';
 import useCDP from '../../hooks/vault/useCDP';
 import { useMtr } from '../../hooks/vault/useMtr';
 
-export default function Vault() {
+export default function Collateral() {
   const { account, chainId } = useActiveWeb3React();
   const protocol = useProtocol();
   const router = useRouter();

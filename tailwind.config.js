@@ -43,6 +43,8 @@ module.exports = {
         unbond:
           'linear-gradient(297.07deg, #8525EF 4.24%, #8525EF 4.25%, #41157C 35.24%, #170C34 85.03%)',
         xstnd: 'linear-gradient(#A18CD1 0%, #FBC2EB 100%)',
+        'vault-manager-info':
+          'linear-gradient(180deg, #45017A 0%, rgba(242, 32, 155, 0) 100%)',
       },
       colors: {
         grey: '#BAB8C0',
@@ -90,6 +92,7 @@ module.exports = {
         'border-2': '#605273',
         'scrollbar-track': '#6A5684',
         thumbroller: '#CDC1FF',
+        'dark-2': '#262430',
       },
       textShadow: {
         white: '0px 0px 1px rgba(255,255,255, 0.5)',

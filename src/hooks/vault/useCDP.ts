@@ -12,11 +12,7 @@ export default function useCDP() {
       console.log('vault: createCDP', collateral, cAmount, dAmount);
       try {
         let tx;
-        tx = await vaultManagerContract.createCDP(
-          collateral,
-          cAmount,
-          dAmount,
-        );
+        tx = await vaultManagerContract.createCDP(collateral, cAmount, dAmount);
         return tx;
       } catch (e) {
         console.error(e);

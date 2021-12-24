@@ -6,6 +6,7 @@ import { CollateralsTable } from '../../features/vault/new/CollateralsTable';
 import { ViewportMediumUp } from '../../components-ui/Responsive';
 import { PageHeader } from '../../components-ui/PageHeader';
 import { Alert } from '../../components-ui/Alert';
+import { VaultManagerInfo } from '../../features/vault/VaultManagerInfo';
 
 export default function Collaterals() {
   return (
@@ -33,6 +34,7 @@ export default function Collaterals() {
               }
               type="information"
             />
+            <VaultManagerInfo />
             <CollateralsTable />
           </div>
         </PageContent>

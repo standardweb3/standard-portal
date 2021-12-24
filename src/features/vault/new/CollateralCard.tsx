@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
 import Image from '../../../components-ui/Image';
 
 const Radiation = styled.div`
@@ -15,12 +16,18 @@ const Background = styled.div<{ background?: string }>`
 `;
 
 export function CollateralCard({ collateral }) {
-  const { logo, name, sfr, mcr, color } = collateral;
+  const { logo, name, sfr, mcr, color, address } = collateral;
+  const router = useRouter()
+
+  const handleClick = () => {
+    router.push(`/collateralize/${address}`)
+  }
 
   return (
     <Background
       className="w-full space-y-4 py-[24px] rounded-20"
       background={color}
+      onClick={handleClick}
     >
       <div className="text-center flex flex-col items-center space-y-3">
         <Radiation>

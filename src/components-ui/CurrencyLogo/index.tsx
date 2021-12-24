@@ -25,7 +25,6 @@ export const getTokenLogoURL = (token: Token, chainId: ChainId) => {
   imageURL = `https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/${getCurrencySymbol(
     token,
   )}.jpg`;
-
   return imageURL;
 };
 
@@ -114,6 +113,7 @@ const MetisLogo =
 
 const LOGO: { readonly [chainId in ChainId]?: string } = {
   [ChainId.MAINNET]: EthereumLogo,
+  [ChainId.RINKEBY]: EthereumLogo,
   [ChainId.SHIBUYA]: ShibuyaLogo,
   [ChainId.SHIDEN]: ShidenLogo,
   [ChainId.FANTOM]: FantomLogo,
@@ -168,6 +168,7 @@ export const CurrencyLogo: FunctionComponent<CurrencyLogoProps> = ({
     if (!currency) {
       return [unknown];
     }
+    console.log('currency', currency);
 
     if (currency.isNative || currency.equals(WNATIVE[currency.chainId])) {
       return [LOGO[currency.chainId], unknown];
