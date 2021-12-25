@@ -67,6 +67,20 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     color: '#4196FC',
     mobile: true,
   },
+  Clover: {
+    connector: async () => {
+      const CloverConnector = (await import('@clover-network/clover-connector'))
+        .CloverConnector;
+      return new CloverConnector({
+        supportedChainIds: [1],
+      });
+    },
+    name: 'Clover',
+    iconName: 'clover.svg',
+    description: 'Login using Clover hosted wallet',
+    href: null,
+    color: '#269964',
+  },
   // KEYSTONE: {
   //   connector: async () => {
   //     const KeystoneConnector = (await import('@keystonehq/keystone-connector'))

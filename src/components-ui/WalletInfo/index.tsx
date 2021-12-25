@@ -92,6 +92,7 @@ export const WalletInfo: FC<WalletInfoProps> = ({
           (connector !== injected || isMetaMask === (k === 'METAMASK')),
       )
       .map((k) => SUPPORTED_WALLETS[k].name)[0];
+
     return (
       <div className="font-medium text-baseline text-success">
         Connected with {name}
@@ -119,6 +120,10 @@ export const WalletInfo: FC<WalletInfoProps> = ({
     } else if (connector === fortmatic) {
       return (
         <WalletIcon src="/img/wallets/formatic.png" alt="Fortmatic" size={16} />
+      );
+    } else if (connector.constructor.name === 'CloverConnector') {
+      return (
+        <WalletIcon src="/img/wallets/clover.svg" alt="Fortmatic" size={16} />
       );
     }
     // else if (connector === portis) {

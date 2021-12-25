@@ -1532,6 +1532,15 @@
   resolved "https://registry.yarnpkg.com/@chaitanyapotti/random-id/-/random-id-1.0.3.tgz#f52f647cfe9f79fc7723ea2b01b0ad3889204002"
   integrity sha512-xiVWA2vTL3jQeuZ+yebXAtwIeEbh/13RAFxvRq0YxeUc02RBOGyC9eyDKXjwlN0uxPtnEwWxsELkSwnaH5kxjg==
 
+"@clover-network/clover-connector@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@clover-network/clover-connector/-/clover-connector-1.0.0.tgz#e56a91e9192831f6036b21799a92734fd2a604e7"
+  integrity sha512-r30ymrPAXCxSrhKZZ+PmlQDjBi+wxYo5E+fbh4UvhAeviS+/5QxT0SLNNjPwQpVi5ouP0ZOCvwcwa2vLr/gSwA==
+  dependencies:
+    "@web3-react/abstract-connector" "^6.0.7"
+    "@web3-react/types" "^6.0.7"
+    tiny-warning "^1.0.3"
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.4.tgz#f864ae85004d0fcab6f50be9141c4da368d1656a"
