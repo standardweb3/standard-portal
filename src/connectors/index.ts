@@ -8,6 +8,7 @@ import { NetworkConnector } from './NetworkConnector';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { Web3Provider } from '@ethersproject/providers';
+import { CloverConnector } from '@clover-network/clover-connector';
 
 export const RPC = {
   [ChainId.MAINNET]:
@@ -123,6 +124,10 @@ export const fortmatic = new FortmaticConnector({
   apiKey: process.env.NEXT_PUBLIC_FORTMATIC_API_KEY ?? '',
   chainId: 1,
 });
+
+export const clover = new CloverConnector({
+  supportedChainIds:[1]
+})
 
 // mainnet only
 // export const portis = new PortisConnector({

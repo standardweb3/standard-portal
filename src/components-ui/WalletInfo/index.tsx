@@ -8,6 +8,7 @@ import Image from 'next/image';
 // connectors
 import {
   binance,
+  clover,
   fortmatic,
   // getWalletConnectConnector,
   injected,
@@ -121,7 +122,7 @@ export const WalletInfo: FC<WalletInfoProps> = ({
       return (
         <WalletIcon src="/img/wallets/formatic.png" alt="Fortmatic" size={16} />
       );
-    } else if (connector.constructor.name === 'CloverConnector') {
+    } else if (connector === clover) {
       return (
         <WalletIcon src="/img/wallets/clover.svg" alt="Fortmatic" size={16} />
       );

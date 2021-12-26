@@ -3,6 +3,7 @@ import { AbstractConnector } from '@web3-react/abstract-connector';
 import Image from 'next/image';
 
 import {
+  clover,
   fortmatic,
   injected,
   // portis,
@@ -77,7 +78,7 @@ export function StatusIcon({ connector }: { connector: AbstractConnector }) {
         />
       </IconWrapper>
     );
-  } else if (connector.constructor.name === 'CloverConnector') {
+  } else if (connector === clover) {
     return (
       <IconWrapper size={16}>
         <Image

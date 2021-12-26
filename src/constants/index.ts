@@ -1,5 +1,5 @@
 import { ChainId, JSBI, Percent } from '@digitalnative/standard-protocol-sdk';
-import { CONNECTOR_PARAMS, injected, walletconnect } from '../connectors';
+import { clover, CONNECTOR_PARAMS, injected, walletconnect } from '../connectors';
 
 import { AbstractConnector } from '@web3-react/abstract-connector';
 import { BigNumber } from 'ethers';
@@ -68,13 +68,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     mobile: true,
   },
   Clover: {
-    connector: async () => {
-      const CloverConnector = (await import('@clover-network/clover-connector'))
-        .CloverConnector;
-      return new CloverConnector({
-        supportedChainIds: [1],
-      });
-    },
+    connector: clover,
     name: 'Clover',
     iconName: 'clover.svg',
     description: 'Login using Clover hosted wallet',
