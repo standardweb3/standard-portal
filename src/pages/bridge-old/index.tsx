@@ -64,7 +64,7 @@ export default function Bridge() {
                 <div>
                   STND can be bridged between Ethereum and Shiden Network using{' '}
                   <ExternalLink
-                    href="https://anyswap.exchange/#/router"
+                    href="https://app.multichain.org/#/router"
                     className="!whitespace-normal"
                   >
                     Anyswap Router.
@@ -72,7 +72,7 @@ export default function Bridge() {
                   <br />
                   Other ERC-20 assets can be bridged using{' '}
                   <ExternalLink
-                    href="https://anyswap.exchange/#/bridge"
+                    href="https://app.multichain.org/#/bridge"
                     className="!whitespace-normal"
                   >
                     Anyswap Bridge.
@@ -87,7 +87,7 @@ export default function Bridge() {
             />
             <div className="flex space-x-4">
               <ExternalLink
-                href="https://anyswap.exchange/#/router"
+                href="https://app.multichain.org/#/router"
                 className="!whitespace-normal"
               >
                 <Button>
@@ -102,7 +102,7 @@ export default function Bridge() {
                 </Button>
               </ExternalLink>
               <ExternalLink
-                href="https://anyswap.exchange/#/bridge"
+                href="https://app.multichain.org/#/bridge"
                 className="!whitespace-normal"
               >
                 <Button>
@@ -141,8 +141,8 @@ export default function Bridge() {
                 </div>
                 <div>
                   Go to the Anyswap router page —
-                  <ExternalLink href="https://anyswap.exchange/#/router">
-                    https://anyswap.exchange/#/router
+                  <ExternalLink href="https://app.multichain.org/#/router">
+                    https://app.multichain.org/#/router
                   </ExternalLink>{' '}
                   and connect the Metamask wallet on the ethereum network.
                 </div>
@@ -240,7 +240,7 @@ export default function Bridge() {
                   To cross other assets like #USDC, #USDT, #WBTC, etc. which You
                   will eventually use on Standard DEX for liquidity provision
                   and LP farming, You need to use Anyswap bridge —
-                  https://anyswap.exchange/#/bridge
+                  https://app.multichain.org/#/bridge
                 </div>
                 <div>
                   To use the Anyswap bridge, connect with Metamask on the

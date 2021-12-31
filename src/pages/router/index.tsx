@@ -907,7 +907,7 @@ export function Router() {
 
             <div>
               <ExternalLink
-                href="https://anyswap.exchange/#/router"
+                href="https://app.multichain.org/#/router"
                 className="!whitespace-normal"
               >
                 <div className="flex flex-col justify-center items-center">

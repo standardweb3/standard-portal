@@ -888,7 +888,7 @@ export function Bridge() {
             )}
             <div>
               <ExternalLink
-                href="https://anyswap.exchange/#/bridge"
+                href="https://app.multichain.org/#/bridge"
                 className="!whitespace-normal"
               >
                 <div className="flex flex-col justify-center items-center">
