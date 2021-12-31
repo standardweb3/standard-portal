@@ -1,4 +1,4 @@
-import { current } from '@reduxjs/toolkit';
+import Head from 'next/head';
 import { getAddress } from 'ethers/lib/utils';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -10,11 +10,17 @@ import { VaultWithdraw } from '../../features/vault/vaults/Withdraw';
 import { tryParseAmount } from '../../functions';
 import { useActiveWeb3React } from '../../hooks';
 import { useCurrency } from '../../hooks/Tokens';
+import { useMtr } from '../../hooks/vault/useMtr';
 import { useVaultDebt } from '../../hooks/vault/useVault';
 import { useVaultManagerAssetPrice } from '../../hooks/vault/useVaultManager';
 import { useVault, useVaults } from '../../services/graph/hooks/vault';
 import { useProtocol } from '../../state/protocol/hooks';
 import { useCurrencyBalance } from '../../state/wallet/hooks';
+import { Page } from '../../components-ui/Page';
+import { DefinedStyles } from '../../utils/DefinedStyles';
+import { PageContent } from '../../components-ui/PageContent';
+import { ViewportMediumUp } from '../../components-ui/Responsive';
+import { PageHeader } from '../../components-ui/PageHeader';
 
 export default function Vault() {
   const { account, chainId } = useActiveWeb3React();
@@ -27,7 +33,7 @@ export default function Vault() {
   const vault = useVaults({
     where: {
       address: vaultAddress.toLowerCase(),
-      user: account.toLowerCase(),
+      user: account?.toLowerCase(),
     },
   })?.[0];
 
@@ -70,10 +76,6 @@ export default function Vault() {
   // START: deposit
   const collateralBalance = useCurrencyBalance(account, collateralCurrency);
   const [depositAmount, setDepositAmount] = useState('');
-  // const depositCurrencyAmount = tryParseAmount(
-  //   depositAmount,
-  //   collateralCurrency,
-  // );
   // END: deposit
 
   // START: withdraw
@@ -82,51 +84,70 @@ export default function Vault() {
       ? parseFloat(currrentCollateralized) - fee - minCollateralAmount
       : undefined;
 
-  const minBalance = vault;
-
   const withdrawableCurrencyBalance = tryParseAmount(
     withdrawableBalance?.toString(),
     collateralCurrency,
   );
-
   const [withdrawAmount, setWithdrawAmount] = useState('');
-  // const withdrawCurrencyAmount = tryParseAmount(
-  //   withdrawAmount,
-  //   collateralCurrency,
-  // );
-  // console.log('withdraw', withdrawCurrencyAmount);
   // END: withdraw
 
+  // START: payback
+  const mtr = useMtr();
+  const mtrBalance = useCurrencyBalance(account, mtr);
+  const [paybackAmount, setPaybackAmount] = useState('');
+  // END
+
+  const checksummedVaultAddress = getAddress(vaultAddress);
+
   return (
-    <div>
-      <VaultInfoCard
-        accruedStabilityFee={fee}
-        collateral={collateralCurrency}
-        collateralPriceUSD={collateralPriceUSD}
-        liquidationPriceUSD={liquidationPriceUSD}
-        currentCollateralizedUSD={currentCollateralizedUSD}
-        currentBorrowed={currentBorrowed}
-        currentCollateralized={currrentCollateralized}
-        mcr={mcr}
-        sfr={sfr}
-        collateralRatio={currentCollateralRatio}
-      />
-      <VaultPayBack />
-      <VaultWithdraw
-        onAmountChange={setWithdrawAmount}
-        vaultAddress={getAddress(vaultAddress)}
-        collateral={collateralCurrency}
-        amount={withdrawAmount}
-        balance={withdrawableCurrencyBalance}
-      />
-      <VaultDeposit
-        onAmountChange={setDepositAmount}
-        vaultAddress={getAddress(vaultAddress)}
-        amount={depositAmount}
-        collateral={collateralCurrency}
-        balance={collateralBalance}
-      />
-      <VaultMint />
-    </div>
+    <>
+      <Head>
+        <title>Vault | Standard Protocol</title>
+        <meta key="description" name="description" content="Manage your CDP" />
+      </Head>
+      <Page id="vault-page" className={DefinedStyles.page}>
+        <ViewportMediumUp>
+          <PageHeader title="Vault" />
+        </ViewportMediumUp>
+        <PageContent>
+          <div className="w-full max-w-[1200px]">
+            <VaultInfoCard
+              accruedStabilityFee={fee}
+              collateral={collateralCurrency}
+              collateralPriceUSD={collateralPriceUSD}
+              liquidationPriceUSD={liquidationPriceUSD}
+              currentCollateralizedUSD={currentCollateralizedUSD}
+              currentBorrowed={currentBorrowed}
+              currentCollateralized={currrentCollateralized}
+              mcr={mcr}
+              sfr={sfr}
+              collateralRatio={currentCollateralRatio}
+            />
+            <VaultPayBack
+              vaultAddress={checksummedVaultAddress}
+              mtr={mtr}
+              balance={mtrBalance}
+              amount={paybackAmount}
+              onAmountChange={setPaybackAmount}
+            />
+            <VaultWithdraw
+              onAmountChange={setWithdrawAmount}
+              vaultAddress={checksummedVaultAddress}
+              collateral={collateralCurrency}
+              amount={withdrawAmount}
+              balance={withdrawableCurrencyBalance}
+            />
+            <VaultDeposit
+              onAmountChange={setDepositAmount}
+              vaultAddress={checksummedVaultAddress}
+              amount={depositAmount}
+              collateral={collateralCurrency}
+              balance={collateralBalance}
+            />
+            <VaultMint />
+          </div>
+        </PageContent>
+      </Page>
+    </>
   );
 }

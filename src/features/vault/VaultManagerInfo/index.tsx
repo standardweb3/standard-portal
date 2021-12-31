@@ -4,124 +4,199 @@ import Image from '../../../components-ui/Image';
 import { formatNumber, formatNumberScale } from '../../../functions';
 import { useVaultManager } from '../../../services/graph/hooks/vault';
 import Skeleton from 'react-loading-skeleton';
+import { ChevronDownIcon } from '@heroicons/react/outline';
+import {
+  useSizeMdUp,
+  useSizeXs,
+  ViewportSmallUp,
+  ViewportXSmall,
+} from '../../../components-ui/Responsive';
+import styled from '@emotion/styled';
+
+const VaultManagerInfoBg = styled.div`
+  position: relative;
+  overflow: hidden;
+
+  &:before {
+    @media only screen and (max-width: 640px) {
+      content: '';
+      position: absolute;
+      width: 128px;
+      height: 128px;
+      z-index: -1;
+      top: 5px;
+      right: 5px;
+      background-repeat: no-repeat;
+      background-image: url('/img/mtr.png');
+      background-size: contain;
+    }
+  }
+`;
 
 export function VaultManagerInfo() {
   const vaultManager = useVaultManager();
-  const [expanded, setExpanded] = useState(false);
+  const isViewportMediuUp = useSizeMdUp();
+  const isViewportXs = useSizeXs();
+  const [expanded, setExpanded] = useState(isViewportMediuUp);
 
-  console.log(vaultManager);
   const { runningStat, liquidation } = vaultManager ?? {
     runningStat: undefined,
     liquidation: undefined,
   };
 
   const NumberSkeleton = <Skeleton count={1} />;
+  const logoSize = isViewportMediuUp ? '128px' : '78px';
 
   return (
-    <div className="rounded-20 bg-vault-manager-info p-8">
-      <div className="flex flex-col 2xl:flex-row items-start 2xl:items-end space-x-8 2xl:space-y-0">
-        <div className="flex items-end space-x-8">
-          <Image
-            src="https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/stnd.jpg"
-            width="128px"
-            height="128px"
-            layout="fixed"
-            className="rounded-full"
-          />
-          <div className="space-y-2 flex-col justify-end pb-2">
-            <div className="flex items-center space-x-4 w-full justify-between">
-              <div className="text-4xl font-bold">MTR</div>
-              <Button
-                disabled
-                type="bordered"
-                color={vaultManager?.rebaseActive ? 'success' : 'danger'}
-              >
-                Rebase
-              </Button>
+    <>
+      <VaultManagerInfoBg className="rounded-20 bg-vault-manager-info p-8">
+        <div className="flex flex-col 2xl:flex-row items-start 2xl:items-end md:space-x-8 2xl:space-y-0">
+          <div className="flex items-center md:items-end space-x-8">
+            <ViewportSmallUp>
+              <Image
+                src="https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/stnd.jpg"
+                width={logoSize}
+                height={logoSize}
+                layout="fixed"
+                className="rounded-full"
+              />
+            </ViewportSmallUp>
+            <div className="space-y-2 flex-col justify-end pb-2">
+              <div className="flex items-center space-x-4 w-full justify-between">
+                <div className="text-2xl md:text-4xl font-black md:font-bold flex items-center">
+                  {/* <ViewportXSmall>
+                    <Image
+                      src="https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/stnd.jpg"
+                      width={'24px'}
+                      height={'24px'}
+                      layout="fixed"
+                      className="rounded-full"
+                    />
+                  </ViewportXSmall> */}
+                  <span>MTR</span>
+                </div>
+                {/* <Button
+                  disabled
+                  type="bordered"
+                  color={vaultManager?.rebaseActive ? 'success' : 'danger'}
+                >
+                  On
+                </Button> */}
+              </div>
+              <div className="flex items-center space-x-4 md:space-x-12">
+                <div className="space-y-1">
+                  <div className="text-grey md:text-text text-xs md:text-base">
+                    Total Supply
+                  </div>
+                  <div className="text-2xl md:text-3xl font-bold">
+                    {vaultManager
+                      ? formatNumberScale(vaultManager.currentBorrowed)
+                      : NumberSkeleton}
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  <div className="text-grey md:text-text text-xs md:text-base">
+                    Desired Supply
+                  </div>
+                  <div className="text-2xl md:text-3xl font-bold">
+                    {vaultManager
+                      ? formatNumberScale(vaultManager.desiredSupply)
+                      : NumberSkeleton}
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="flex items-center space-x-12">
-              <div className="space-y-1">
-                <div>Total Supply</div>
-                <div className="text-3xl font-bold">
+          </div>
+
+          {(expanded || isViewportMediuUp) && (
+            <div className="flex justify-start flex-wrap pb-2 mt-4">
+              <div className="mr-8 mt-4">
+                <div className="text-grey text-xs md:text-sm lg:text-sm">
+                  AMM Reserve
+                </div>
+                <div className="text-lg font-bold">
+                  {runningStat ? (
+                    <>
+                      {formatNumber(runningStat.currentCollateralizedUSD)}
+                      <span className="font-normal text-base"> USD</span>
+                    </>
+                  ) : (
+                    NumberSkeleton
+                  )}
+                </div>
+              </div>
+              <div className="mr-8 mt-4">
+                <div className="text-grey text-xs md:text-sm lg:text-sm">
+                  Collaterals
+                </div>
+                <div className="text-lg font-bold">
+                  {runningStat ? (
+                    <>
+                      {formatNumber(runningStat.currentCollateralizedUSD)}
+                      <span className="font-normal text-base"> USD</span>
+                    </>
+                  ) : (
+                    NumberSkeleton
+                  )}
+                </div>
+              </div>
+              <div className="mr-8 mt-4">
+                <div className="text-grey text-xs md:text-sm lg:text-sm">
+                  Liq. Collaterals
+                </div>
+                <div className="text-lg font-bold">
+                  {liquidation ? (
+                    <>
+                      {formatNumber(liquidation.liquidationAMMUSD)}
+                      <span className="font-normal text-base"> USD</span>
+                    </>
+                  ) : (
+                    NumberSkeleton
+                  )}
+                </div>
+              </div>
+              <div className="mr-8 mt-4">
+                <div className="text-grey text-xs md:text-sm lg:text-sm">
+                  Liq. Fees
+                </div>
+                <div className="text-lg font-bold">
+                  {liquidation ? (
+                    <>
+                      {formatNumber(liquidation.liquidationFeeUSD)}
+                      <span className="font-normal text-base"> USD</span>
+                    </>
+                  ) : (
+                    NumberSkeleton
+                  )}
+                </div>
+              </div>
+              <div className="mt-4">
+                <div className="text-grey text-xs md:text-sm lg:text-sm">
+                  Active Vaults
+                </div>
+                <div className="text-lg font-bold">
                   {vaultManager
-                    ? formatNumberScale(vaultManager.currentBorrowed)
+                    ? formatNumberScale(vaultManager.activeVaultCount)
                     : NumberSkeleton}
                 </div>
               </div>
-              <div className="space-y-1">
-                <div>Desired Supply</div>
-                <div className="text-3xl font-bold">
-                  {vaultManager
-                    ? formatNumberScale(vaultManager.desiredSupply)
-                    : NumberSkeleton}
-                </div>
-              </div>
             </div>
-          </div>
+          )}
         </div>
-        <div className="flex justify-start flex-wrap pb-2 mt-4">
-          <div className="mr-8 mt-4">
-            <div className="text-sm lg:text-base">AMM Reserve</div>
-            <div className="md:text-lg lg:text-2xl font-bold">
-              {runningStat ? (
-                <>
-                  {formatNumber(runningStat.currentCollateralizedUSD)}
-                  <span className="font-normal text-base"> USD</span>
-                </>
-              ) : (
-                NumberSkeleton
-              )}
+        {!isViewportMediuUp && (
+          <div className="flex justify-end mt-4">
+            <div
+              onClick={() => setExpanded(!expanded)}
+              className="flex justify-center
+            text-xs text-primary 
+            rounded-20 
+            inline-flex px-3 py-1 cursor-pointer"
+            >
+              {expanded ? 'Close' : 'View'} details
             </div>
           </div>
-          <div className="mr-8 mt-4">
-            <div className="text-sm lg:text-base">Collaterals</div>
-            <div className="md:text-lg lg:text-2xl font-bold">
-              {runningStat ? (
-                <>
-                  {formatNumber(runningStat.currentCollateralizedUSD)}
-                  <span className="font-normal text-base"> USD</span>
-                </>
-              ) : (
-                NumberSkeleton
-              )}
-            </div>
-          </div>
-          <div className="mr-8 mt-4">
-            <div className="text-sm lg:text-base">Liq. Collaterals</div>
-            <div className="md:text-lg lg:text-2xl font-bold">
-              {liquidation ? (
-                <>
-                  {formatNumber(liquidation.liquidationAMMUSD)}
-                  <span className="font-normal text-base"> USD</span>
-                </>
-              ) : (
-                NumberSkeleton
-              )}
-            </div>
-          </div>
-          <div className="mr-8 mt-4">
-            <div className="text-sm lg:text-base">Liq. Fees</div>
-            <div className="md:text-lg lg:text-2xl font-bold">
-              {liquidation ? (
-                <>
-                  {formatNumber(liquidation.liquidationFeeUSD)}
-                  <span className="font-normal text-base"> USD</span>
-                </>
-              ) : (
-                NumberSkeleton
-              )}
-            </div>
-          </div>
-          <div className="mt-4">
-            <div className="text-sm lg:text-base">Active Vaults</div>
-            <div className="md:text-lg lg:text-2xl font-bold">
-              {vaultManager
-                ? formatNumberScale(vaultManager.activeVaultCount)
-                : NumberSkeleton}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+        )}
+      </VaultManagerInfoBg>
+    </>
   );
 }

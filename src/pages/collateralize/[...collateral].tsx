@@ -23,10 +23,17 @@ import {
   useVaultManagerAssetPrice,
   useVaultManagerIsValidCDP,
 } from '../../hooks/vault/useVaultManager';
-import { getVaultManagerAddress } from '@digitalnative/standard-protocol-sdk';
+import {
+  getVaultManagerAddress,
+  NATIVE,
+  WNATIVE,
+} from '@digitalnative/standard-protocol-sdk';
 import { useProtocol } from '../../state/protocol/hooks';
 import useCDP from '../../hooks/vault/useCDP';
 import { useMtr } from '../../hooks/vault/useMtr';
+import { useCVault } from '../../services/graph/hooks/vault';
+import { ViewportMediumUp } from '../../components-ui/Responsive';
+import { PageHeader } from '../../components-ui/PageHeader';
 
 export default function Collateral() {
   const { account, chainId } = useActiveWeb3React();
@@ -34,6 +41,16 @@ export default function Collateral() {
   const router = useRouter();
 
   const collateralAddr = router.query.collateral[0];
+  const isNative = collateralAddr === 'ETH';
+
+  const cVault = useCVault({
+    id: isNative
+      ? WNATIVE[chainId].address.toLowerCase()
+      : collateralAddr.toLowerCase(),
+  });
+
+  const { cdp } = cVault ?? {};
+  const { lfr, sfr, mcr } = cdp ?? {};
   // temporary
   // const ethPrice = useEthPrice();
 
@@ -167,6 +184,8 @@ export default function Collateral() {
   const borrowable =
     balance &&
     collateralizeCurrencyAmount &&
+    liquidationRatio &&
+    parseFloat(liquidationRatio) > minLiquidationRatio &&
     (balance.greaterThan(collateralizeCurrencyAmount) ||
       balance.equalTo(collateralizeCurrencyAmount));
 
@@ -198,7 +217,10 @@ export default function Collateral() {
       if (mtrCourrencyAmount) {
         if (isCollateralETH) {
           console.log('vault: createCDPNative');
-          await createCDPNative(mtrCourrencyAmount.quotient.toString());
+          await createCDPNative(
+            formattedCollateralizeAmount.quotient.toString(),
+            mtrCourrencyAmount.quotient.toString(),
+          );
         } else if (collateral.isToken) {
           console.log(
             'vault: createCDP',
@@ -236,38 +258,39 @@ export default function Collateral() {
         />
       </Head>
       <Page id="trade-page" className={DefinedStyles.page}>
+        <ViewportMediumUp>
+          <PageHeader title="Collateralize" />
+        </ViewportMediumUp>
         <PageContent>
-          <div className="grid grid-cols-7 w-full gap-4">
-            <div className="col-span-7 md:col-span-4 space-y-4">
-              <VaultInfo />
-              <CollateralSelectPanel
-                balance={balance}
-                collateral={collateral}
-                collateralizeAmount={collateralizeAmount}
-                setCollateralizeAmount={handleCollateralizeAmountChange}
-              />
-              <CollateralizeSettingsPanel
-                mtrAmount={mtrAmount}
-                liquidationRatio={liquidationRatio}
-                setLiquidationRatio={handleChangeLiquidationRatio}
-                maxLiquidationRatio={maxLiquidationRatio}
-                setLiquidationRatioPercentage={setLiquidationRatioPercentage}
-                liquidationRatioPercentage={liquidationRatioPercentage}
-                setToMinLiquidationRatio={setToMinLiquidationRatio}
-                setToSafeLiquidationRatio={setToSafeLiquidationRatio}
-              />
-              <ConfirmCollateralizeButton
-                onClick={onClick}
-                disabled={!borrowable}
-                message={confirmButtonMessage}
-              />
-            </div>
-            <div className="col-span-7 md:col-span-3">
-              <CollateralInfo
-                collateral={collateral}
-                collateralInfo={collateralInfo}
-              />
-            </div>
+          <div className="w-full max-w-[1200px] space-y-4">
+            <CollateralInfo
+              mcr={mcr}
+              lfr={lfr}
+              sfr={sfr}
+              priceUSD={collateralPriceUSD}
+              collateral={collateral}
+            />
+            <CollateralSelectPanel
+              balance={balance}
+              collateral={collateral}
+              collateralizeAmount={collateralizeAmount}
+              setCollateralizeAmount={handleCollateralizeAmountChange}
+            />
+            <CollateralizeSettingsPanel
+              mtrAmount={mtrAmount}
+              liquidationRatio={liquidationRatio}
+              setLiquidationRatio={handleChangeLiquidationRatio}
+              maxLiquidationRatio={maxLiquidationRatio}
+              setLiquidationRatioPercentage={setLiquidationRatioPercentage}
+              liquidationRatioPercentage={liquidationRatioPercentage}
+              setToMinLiquidationRatio={setToMinLiquidationRatio}
+              setToSafeLiquidationRatio={setToSafeLiquidationRatio}
+            />
+            <ConfirmCollateralizeButton
+              onClick={onClick}
+              disabled={!borrowable}
+              message={confirmButtonMessage}
+            />
           </div>
         </PageContent>
       </Page>

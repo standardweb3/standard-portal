@@ -40,8 +40,6 @@ export function VaultDeposit({
     (balance.greaterThan(depositCurrencyAmount) ||
       balance.equalTo(depositCurrencyAmount));
 
-  console.log('depositable', depositable);
-
   const confirmButtonMessage = useMemo(() => {
     if (
       balance &&

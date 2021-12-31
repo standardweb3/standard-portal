@@ -6,7 +6,7 @@ export const GRAPH_HOST = {
   [ChainId.KOVAN]: 'http://127.0.0.1:8000',
   [ChainId.SHIBUYA]: 'https://graph.shibuya.standardtech.xyz',
   [ChainId.SHIDEN]: 'https://graph.shiden.standardtech.xyz',
-  [ChainId.RINKEBY]: THE_GRAPH,
+  [ChainId.RINKEBY]: 'THE_GRAPH',
   [ChainId.XDAI]: THE_GRAPH,
   [ChainId.MATIC]: THE_GRAPH,
   [ChainId.FANTOM]: THE_GRAPH,

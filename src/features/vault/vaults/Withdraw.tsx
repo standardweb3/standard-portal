@@ -41,7 +41,7 @@ export function VaultWithdraw({
     }
   };
 
-  const borrowable =
+  const withdrawable =
     balance &&
     withdrawCurrencyAmount &&
     (balance.greaterThan(withdrawCurrencyAmount) ||
@@ -85,7 +85,7 @@ export function VaultWithdraw({
       <Button
         className={DefinedStyles.fullButton}
         onClick={onClick}
-        disabled={!borrowable}
+        disabled={!withdrawable}
       >
         {confirmButtonMessage}
       </Button>

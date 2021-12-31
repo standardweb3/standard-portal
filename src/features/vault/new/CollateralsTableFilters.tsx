@@ -15,6 +15,7 @@ export function CollateralsTableFilters({
       className="
     space-x-4
     inline-flex
+    text-xs md:text-base
     items-center justify-between"
     >
       <div

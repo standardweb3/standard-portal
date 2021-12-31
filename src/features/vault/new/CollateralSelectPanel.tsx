@@ -11,10 +11,15 @@ export function CollateralSelectPanel({
   setCollateralizeAmount,
 }) {
   return (
-    <div className={classNames(DefinedStyles.collateralizePanel, 'space-y-4')}>
+    <div
+      className={classNames(
+        DefinedStyles.collateralizePanel,
+        'flex flex-colmd:flex-row space-y-4 md:space-y-0 md:justify-between md:space-x-8',
+      )}
+    >
       <CollateralizePanelHeader
         number={1}
-        title={'Choose a Collateral Asset'}
+        title={'Enter Amount'}
         subtitle={'Collateral assets have different collateral ratio'}
       />
       <div className="rounded-20 sm:bg-opaque-secondary sm:px-4 py-1">

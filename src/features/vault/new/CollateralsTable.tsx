@@ -11,6 +11,7 @@ import { useCollaterals } from '../../../services/graph/hooks/collaterals';
 import { PromotedCollaterals } from './PromotedCollaterals';
 import { CollateralCard } from './CollateralCard';
 import { CollateralsTableFilters } from './CollateralsTableFilters';
+import { SearchV2 } from '../../../components-ui/Search/SearchV2';
 
 export enum CollateralTableFilter {
   none = 'none',
@@ -155,13 +156,33 @@ export function CollateralsTable() {
     <div className="w-full">
       <MemoPromotedCollaterals collaterals={promotedCollaterals} />
       <div className="!mt-[72px]">
-        <div className="mb-[36px]">
+        <div
+          className="mb-[36px] 
+          flex flex-col sm:flex-row 
+          sm:space-x-12
+          space-y-4 sm:space-y-0 
+          items-end sm:items-center
+          justify-between"
+        >
           <CollateralsTableFilters
             filter={filter}
             setFilterNative={setFilterNative}
             setFilterNone={setFilterNone}
             setFilterPopular={setFilterPopular}
             setFilterStablecoin={setFilterStablecoin}
+          />
+          <SearchV2
+            iconRight
+            className="flex-1 rounded-20 bg-dark-3 p-2 md:max-w-[400px] w-full"
+            search={search}
+            term={term}
+            inputProps={{
+              className: `
+                  relative w-full
+                  bg-transparent
+                  font-bold  text-xs md:text-sm`,
+              placeholder: 'Search by name, symbol or address',
+            }}
           />
         </div>
         <Table

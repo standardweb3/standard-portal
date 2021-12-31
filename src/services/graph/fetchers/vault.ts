@@ -2,18 +2,23 @@ import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import request from 'graphql-request';
 import { useActiveWeb3React } from '../../../hooks';
 import { GRAPH_HOST } from '../constants';
-import { vaultManagerQuery, vaultQuery, vaultsQuery } from '../queries/vault';
+import {
+  cVaultQuery,
+  vaultManagerQuery,
+  vaultQuery,
+  vaultsQuery,
+} from '../queries/vault';
 
 export const VAULT = {
-  [ChainId.RINKEBY]: 'billjhlee/rinkeby-vault',
+  [ChainId.RINKEBY]: 'digitalnative/standardprotocol-vault',
 };
 
 export const vaultUri = (chainId = ChainId.MAINNET) =>
-  `${GRAPH_HOST[chainId]}/subgraphs/name/${VAULT[chainId]}`;
+  `${'http://127.0.0.1:8000'}/subgraphs/name/${VAULT[chainId]}`;
 
 export const vault = async (chainId = ChainId.MAINNET, query, variables) => {
   return request(
-    `${GRAPH_HOST[chainId]}/subgraphs/name/${VAULT[chainId]}`,
+    `${'http://127.0.0.1:8000'}/subgraphs/name/${VAULT[chainId]}`,
     query,
     variables,
   );
@@ -35,4 +40,10 @@ export const getVault = async (chainId = ChainId.MAINNET, variables) => {
   const { vault: result } = await vault(chainId, vaultQuery, variables);
 
   return result;
+};
+
+export const getCVault = async (chainId = ChainId.MAINNET, variables) => {
+  const { collateralVault } = await vault(chainId, cVaultQuery, variables);
+
+  return collateralVault;
 };

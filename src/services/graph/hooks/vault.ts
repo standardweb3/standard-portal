@@ -2,7 +2,12 @@ import { getVaultManagerAddress } from '@digitalnative/standard-protocol-sdk';
 import useSWR, { SWRConfiguration } from 'swr';
 import { useActiveWeb3React } from '../../../hooks';
 import { useProtocol } from '../../../state/protocol/hooks';
-import { getVault, getVaultManager, getVaults } from '../fetchers/vault';
+import {
+  getCVault,
+  getVault,
+  getVaultManager,
+  getVaults,
+} from '../fetchers/vault';
 
 export function useVaultManager(
   variables = undefined,
@@ -43,10 +48,21 @@ export function useVault(
   swrConfig: SWRConfiguration = undefined,
 ) {
   const { chainId } = useActiveWeb3React();
-  console.log(variables);
   const { data } = useSWR(
     chainId ? ['vault', chainId, JSON.stringify(variables)] : null,
     () => getVault(chainId, variables),
+  );
+  return data;
+}
+
+export function useCVault(
+  variables = undefined,
+  swrConfig: SWRConfiguration = undefined,
+) {
+  const { chainId } = useActiveWeb3React();
+  const { data } = useSWR(
+    chainId ? ['cVault', chainId, JSON.stringify(variables)] : null,
+    () => getCVault(chainId, variables),
   );
   return data;
 }

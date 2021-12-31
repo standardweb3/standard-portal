@@ -59,3 +59,17 @@ export const vaultsQuery = gql`
     }
   }
 `;
+
+export const cVaultQuery = gql`
+  query cVault($id: String!) {
+    collateralVault(id: $id) {
+      currentBorrowed
+      currentCollateralized
+      cdp {
+        mcr
+        sfr
+        lfr
+      }
+    }
+  }
+`;

@@ -93,6 +93,7 @@ module.exports = {
         'scrollbar-track': '#6A5684',
         thumbroller: '#CDC1FF',
         'dark-2': '#262430',
+        'dark-3': '#2B1F3C',
       },
       textShadow: {
         white: '0px 0px 1px rgba(255,255,255, 0.5)',

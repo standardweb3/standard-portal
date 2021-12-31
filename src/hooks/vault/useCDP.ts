@@ -1,5 +1,7 @@
+import { BigNumber } from 'ethers';
 import { useCallback } from 'react';
 import { useActiveWeb3React, useApproveCallback } from '..';
+import { calculateGasMargin } from '../../functions';
 import { useVaultMannagerConract } from './useVaultManager';
 
 export default function useCDP() {
@@ -23,10 +25,21 @@ export default function useCDP() {
   );
 
   const createCDPNative = useCallback(
-    async (dAmount) => {
+    async (cAmount, dAmount) => {
       try {
+        const estimate = vaultManagerContract.estimateGas.createCDPNative;
+        const method = vaultManagerContract.createCDPNative;
+        const args = [dAmount];
+        const value = BigNumber.from(cAmount);
+        console.log('value', value.toString());
+
         let tx;
-        tx = await vaultManagerContract.createCDPNative(dAmount);
+        tx = await estimate(...args, { value }).then((estimatedGasLimit) =>
+          method(...args, {
+            value,
+            gasLimit: calculateGasMargin(estimatedGasLimit),
+          }),
+        );
         return tx;
       } catch (e) {
         console.error(e);

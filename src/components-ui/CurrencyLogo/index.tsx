@@ -168,7 +168,6 @@ export const CurrencyLogo: FunctionComponent<CurrencyLogoProps> = ({
     if (!currency) {
       return [unknown];
     }
-    console.log('currency', currency);
 
     if (currency.isNative || currency.equals(WNATIVE[currency.chainId])) {
       return [LOGO[currency.chainId], unknown];

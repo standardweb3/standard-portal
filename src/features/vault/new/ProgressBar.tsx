@@ -82,7 +82,7 @@ export function ProgressBar({
       const newLiqRatio = Math.round(perc * maxLiquidationRatio * 10) / 1000;
       // console.log(perc);
       setLiquidationRatioPercentage(perc);
-      setLiquidationRatio(newLiqRatio, false);
+      setLiquidationRatio(String(newLiqRatio), false);
     }
   };
 
@@ -118,6 +118,23 @@ export function ProgressBar({
     e.preventDefault();
     setToSafeLiquidationRatio();
   };
+
+  const state = useMemo(() => {
+    return liquidationRatio &&
+      parseFloat(liquidationRatio) < minLiquidationRatio
+      ? 'danger'
+      : parseFloat(liquidationRatio) < safeLiquidationRatio
+      ? 'warn'
+      : 'safe';
+  }, [liquidationRatio]);
+
+  const trackColor =
+    state === 'danger'
+      ? 'bg-danger'
+      : state === 'warn'
+      ? 'bg-warn'
+      : 'bg-primary';
+
   return (
     <TrackCont
       ref={ref}
@@ -139,10 +156,10 @@ export function ProgressBar({
         if (dragging) calculatePercentageOnClick();
       }}
     >
-      <Track className="bg-scrollbar-track">
+      <Track className={`bg-scrollbar-track`}>
         <Thumb
           percentage={liquidationRatioPercentage}
-          className={classNames('bg-primary', !dragging && '!duration-500')}
+          className={classNames(trackColor, !dragging && '!duration-500')}
         >
           <ThumbRoller
             className="bg-thumbroller"

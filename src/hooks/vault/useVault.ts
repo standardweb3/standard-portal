@@ -4,6 +4,7 @@ import { useActiveWeb3React, useContract } from '..';
 import { useSingleCallResult } from '../../state/multicall/hooks';
 import { BigNumber } from 'ethers';
 import { useCallback } from 'react';
+import { calculateGasMargin } from '../../functions';
 
 export function useVaultContract(
   address,
@@ -15,7 +16,7 @@ export function useVaultContract(
 export function useVaultDebt(address) {
   const contract = useVaultContract(address);
 
-  const callResult = useSingleCallResult(contract, 'getDebt', []);
+  const callResult = useSingleCallResult(contract, 'getDebt');
 
   const debt = callResult?.result?.[0];
 
@@ -60,8 +61,18 @@ export function useVault(address) {
   const depositNative = useCallback(
     async (amount) => {
       try {
+        const estimate = contract.estimateGas.depositCollateralNative;
+        const method = contract.depositCollateralNative;
+        const args = [];
+        const value = amount;
+
         let tx;
-        tx = await contract.depositCollateralNative();
+        tx = await estimate(...args, { value }).then((estimatedGasLimit) =>
+          method(...args, {
+            value,
+            gasLimit: calculateGasMargin(estimatedGasLimit),
+          }),
+        );
 
         return tx;
       } catch (e) {

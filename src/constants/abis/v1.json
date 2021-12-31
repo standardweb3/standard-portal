@@ -3,7 +3,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "manager_",
+        "name": "factory_",
         "type": "address"
       }
     ],
@@ -282,6 +282,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "factory",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -544,11 +557,11 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "manager_",
+        "name": "factory_",
         "type": "address"
       }
     ],
-    "name": "setManager",
+    "name": "setFactory",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
