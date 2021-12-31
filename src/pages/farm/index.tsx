@@ -182,6 +182,8 @@ function Farm() {
     options,
   });
 
+  console.log(result);
+
   return (
     <>
       <Head>
