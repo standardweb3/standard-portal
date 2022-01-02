@@ -1,5 +1,5 @@
 import useSWR, { SWRConfiguration } from 'swr';
-import { useActiveWeb3React } from '../../../hooks';
+import { useActiveWeb3React } from '../../../hooks/useActiveWeb3React';
 import { getBar, getBarHistories } from '../fetchers/bar';
 
 export function useBarHistories(

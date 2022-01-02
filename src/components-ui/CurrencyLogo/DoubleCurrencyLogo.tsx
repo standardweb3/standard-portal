@@ -1,7 +1,6 @@
 import { Currency } from '@digitalnative/standard-protocol-sdk';
 import { CurrencyLogo } from '../CurrencyLogo';
 import React from 'react';
-import { classNames } from '../../functions';
 
 interface DoubleCurrencyLogoProps {
   margin?: boolean;

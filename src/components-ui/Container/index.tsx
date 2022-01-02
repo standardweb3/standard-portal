@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { classNames } from '../../functions';
 
 const MAX_WIDTH: { [key: string]: string } = {

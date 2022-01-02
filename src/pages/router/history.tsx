@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Image from '../../components-ui/Image';
 import { PageHeader } from '../../components-ui/PageHeader';
 import { ViewportMediumUp } from '../../components-ui/Responsive';
 import { Page } from '../../components-ui/Page';
@@ -8,7 +9,6 @@ import { RouterHistories } from '../../bridge/feature/RouterHistories';
 import { BridgeHeader } from '../../bridge/feature/BridgeHeader';
 import { NetworkGuardWrapper } from '../../guards/Network';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
-import Image from '../../components-ui/Image';
 import { ExternalLink } from '../../components-ui/ExternalLink';
 
 export function History() {

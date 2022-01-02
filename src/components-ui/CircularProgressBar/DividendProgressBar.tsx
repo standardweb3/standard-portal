@@ -1,7 +1,4 @@
-import {
-  CircularProgressbarWithChildren,
-  buildStyles,
-} from 'react-circular-progressbar';
+import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
 // import 'react-circular-progressbar/dist/styles.css';
 
 export type DividendProgressBarProps = {

@@ -4,22 +4,17 @@ import {
   ARGENT_WALLET_DETECTOR_MAINNET_ADDRESS,
 } from '../constants/abis/argent-wallet-detector';
 import {
-  BAR_ADDRESS,
   ChainId,
   getXStndAddress,
-  MAKER_ADDRESS,
-  MASTERCHEF_ADDRESS,
   MASTERCHEF_V2_ADDRESS,
   STND_ADDRESS,
   SUSHI_ADDRESS,
-  TIMELOCK_ADDRESS,
   WNATIVE,
 } from '@digitalnative/standard-protocol-sdk';
 import { MERKLE_DISTRIBUTOR_ADDRESS } from '../constants';
 
 import ALCX_REWARDER_ABI from '../constants/abis/alcx-rewarder.json';
 import ARCHER_ROUTER_ABI from '../constants/abis/archer-router.json';
-import BAR_ABI from '../constants/abis/bar.json';
 import XSTND_ABI from '../constants/abis/xstnd.json';
 import BORING_HELPER_ABI from '../constants/abis/boring-helper.json';
 import CLONE_REWARDER_ABI from '../constants/abis/clone-rewarder.json';
@@ -247,17 +242,6 @@ export function useStakePoolContract(
   );
 }
 
-export function useMasterChefContract(
-  withSignerIfPossible?: boolean,
-): Contract | null {
-  const { chainId } = useActiveWeb3React();
-  return useContract(
-    chainId && MASTERCHEF_ADDRESS[chainId],
-    MASTERCHEF_ABI,
-    withSignerIfPossible,
-  );
-}
-
 export function useMasterChefV2Contract(
   withSignerIfPossible?: boolean,
 ): Contract | null {
@@ -304,17 +288,6 @@ export function useAnyswapTokenContract(
   return useContract(tokenAddress, ANYSWAP_ERC20_ABI, withSignerIfPossible);
 }
 
-export function useSushiBarContract(
-  withSignerIfPossible?: boolean,
-): Contract | null {
-  const { chainId } = useActiveWeb3React();
-  return useContract(
-    chainId && BAR_ADDRESS[chainId],
-    BAR_ABI,
-    withSignerIfPossible,
-  );
-}
-
 export function useStndStakerContract(
   withSignerIfPossible?: boolean,
 ): Contract | null {
@@ -325,16 +298,6 @@ export function useStndStakerContract(
     XSTND_ABI,
     withSignerIfPossible,
   );
-}
-
-export function useMakerContract(): Contract | null {
-  const { chainId } = useActiveWeb3React();
-  return useContract(chainId && MAKER_ADDRESS[chainId], MAKER_ABI, false);
-}
-
-export function useTimelockContract(): Contract | null {
-  const { chainId } = useActiveWeb3React();
-  return useContract(chainId && TIMELOCK_ADDRESS[chainId], TIMELOCK_ABI, false);
 }
 
 export function useSushiRollContract(

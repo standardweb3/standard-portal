@@ -11,10 +11,10 @@ import Fraction from '../../entities/Fraction';
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
 import { useBlockNumber } from '../../state/application/hooks';
 
-const REWARDERS = {
-  [ChainId.MAINNET]: 'some',
-  [ChainId.MATIC]: 'some',
-};
+// const REWARDERS = {
+//   [ChainId.MAINNET]: 'some',
+//   [ChainId.MATIC]: 'some',
+// };
 
 // const useRewarderContract = (farm) => {
 //     const { chainId } = useActiveWeb3React()

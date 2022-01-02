@@ -37,13 +37,10 @@ import TransactionUpdater from '../state/transactions/updater'
 import BridgeTransactionUpdater from '../state/bridgeTransactions/updater'
 
 import UserUpdater from '../state/user/updater'
-import NetworkGuard from '../guards/Network';
 
 
 import '../styles/index.css'
 import '../styles/globals.css';
-import { ChainId } from '@digitalnative/standard-protocol-sdk';
-import { useActiveWeb3React } from '../hooks';
 
 const Web3ProviderNetwork = dynamic(() => import('../components-ui/Web3ProviderNetwork'), { ssr: false })
 const Web3ProviderNetworkBridge = dynamic(() => import('../components-ui/Web3ProviderBridge'), { ssr: false })

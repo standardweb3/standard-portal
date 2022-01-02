@@ -6,7 +6,6 @@ import {
   SwapParameters,
   Trade,
   TradeOptions,
-  TradeOptionsDeadline,
   TradeType,
 } from '@digitalnative/standard-protocol-sdk';
 

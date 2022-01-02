@@ -50,15 +50,11 @@ import {
 } from '../../services/graph';
 import { getAddress } from '@ethersproject/address';
 import { DividendTokens } from '../../components-ui/Dividend/DividendTokens';
-import { DividendKPIInfo } from '../../components-ui/Dividend/DividendKPIInfo';
 import {
   useBondedStrategy,
   useBondedStrategyHistory,
 } from '../../services/graph/hooks/dividend';
-import { ExternalLink } from '../../components-ui/ExternalLink';
-import Countdown from 'react-countdown';
 import { NetworkGuardWrapper } from '../../guards/Network';
-import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
 import { NavigationLink } from '../../components-ui/NavigationLink';
 // import { useBondedStrategy } from '../../services/graph/hooks/dividend';
 // import { useBundle, useStandardPrice } from '../../services/graph';

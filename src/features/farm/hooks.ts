@@ -2,18 +2,16 @@ import {
   ChainId,
   CurrencyAmount,
   JSBI,
-  MASTERCHEF_ADDRESS,
   MASTERCHEF_V2_ADDRESS,
 } from '@digitalnative/standard-protocol-sdk';
 import { Chef } from './enum';
-import { SUSHI } from '../../constants';
 import {
   NEVER_RELOAD,
   useSingleCallResult,
   useSingleContractMultipleData,
 } from '../../state/multicall/hooks';
 import { useCallback, useMemo } from 'react';
-import { useMasterChefContract, useMasterChefV2Contract } from '../../hooks';
+import { useMasterChefV2Contract } from '../../hooks';
 
 import { Contract } from '@ethersproject/contracts';
 import { Zero } from '@ethersproject/constants';

@@ -14,8 +14,6 @@ const MessageWrapper = styled.div`
   height: 20rem;
 `;
 
-const Message = styled.h2``;
-
 const GnosisManagerNoSSR = dynamic(() => import('./GnosisManager'), {
   ssr: false,
 });
