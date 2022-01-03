@@ -93,7 +93,7 @@ function Tokens() {
   const sevenDayEthPrice = parseFloat(_sevenDayEthPrice ?? '0');
 
   const tokens = useTokens({});
-  // console.log('tokens', tokens);
+
   useEffect(() => {
     if (tokens !== undefined && tokens.length === 0) {
       router.push('/trade/buy');
@@ -104,6 +104,7 @@ function Tokens() {
     return (
       tokens
         ?.map((token) => {
+          console.log(token);
           const oneDayToken = oneDayTokens?.find(({ id }) => token.id === id);
           const priceYesterday = oneDayToken
             ? oneDayToken.derivedETH * oneDayEthPrice

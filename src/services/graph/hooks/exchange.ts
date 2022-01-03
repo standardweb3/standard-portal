@@ -33,7 +33,6 @@ import useSWR, { SWRConfiguration } from 'swr';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import { ethPriceQuery } from '../queries';
 import { useActiveWeb3React } from '../../../hooks/useActiveWeb3React';
-import { getPrices } from '../fetchers/prices';
 
 export function useExchange(
   variables = undefined,
