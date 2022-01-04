@@ -1,6 +1,4 @@
-import { MinusCircleIcon } from '@heroicons/react/outline';
 import React, { FC, useCallback } from 'react';
-import { isAddress } from '../../functions';
 import useENS from '../../hooks/useENS';
 
 interface AddressInputPanelProps {

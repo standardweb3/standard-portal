@@ -12,7 +12,6 @@ import { useCrossBridgeCallback } from '../../bridge/hooks/useBridgeCallback';
 import {
   NETWORK_ICON,
   NETWORK_LABEL,
-  NORMAL_GUARDED_CHAINS,
   SUPPORTED_NETWORK_IDS,
 } from '../../constants/networks';
 import { classNames, tryParseAmount } from '../../functions';
@@ -888,14 +887,14 @@ export function Bridge() {
             )}
             <div>
               <ExternalLink
-                href="https://anyswap.exchange/#/bridge"
+                href="https://app.multichain.org/#/bridge"
                 className="!whitespace-normal"
               >
                 <div className="flex flex-col justify-center items-center">
                   <div className="text-xs text-text">Powered by</div>
                   <Image
-                    src="/img/bridge/anyswap.svg"
-                    width="100px"
+                    src="/img/bridge/anyswap.png"
+                    width="169px"
                     height="50px"
                   />
                 </div>

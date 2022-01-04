@@ -1,5 +1,4 @@
 import ReactGA from 'react-ga';
-import Link from 'next/link';
 import {
   ChainId,
   currencyEquals,

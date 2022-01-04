@@ -14,9 +14,10 @@ import { useActiveWeb3React } from '../../hooks';
 import { Alert } from '../../components-ui/Alert';
 import { NetworkGuardWrapper } from '../../guards/Network';
 import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
 function Stake() {
-  const { account } = useActiveWeb3React();
+  const { account, chainId } = useActiveWeb3React();
 
   const stnd = useStnd();
   const xStnd = useXStnd();
@@ -41,6 +42,20 @@ function Stake() {
         </ViewportMediumUp>
         <PageContent>
           <div className="w-full max-w-[1200px]">
+            {chainId === ChainId.METIS && (
+              <Alert
+                className={DefinedStyles.pageAlertFull}
+                title={`Warning`}
+                message={
+                  <div className="leading-relaxed">
+                    This feature is not live on METIS. Please do unstake if you
+                    have done so. This page will be closed when all STND have
+                    been unstaked. We apologize for the inconvenience.
+                  </div>
+                }
+                type="warning"
+              />
+            )}
             <Alert
               className={DefinedStyles.pageAlertFull}
               title={`Stake`}

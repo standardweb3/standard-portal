@@ -1,5 +1,4 @@
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
-import { request } from 'http';
 import { GRAPH_HOST } from '../constants';
 
 export const CANDLES = {

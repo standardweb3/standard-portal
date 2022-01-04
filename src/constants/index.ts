@@ -1,10 +1,13 @@
 import { ChainId, JSBI, Percent } from '@digitalnative/standard-protocol-sdk';
-import { CONNECTOR_PARAMS, injected, walletconnect } from '../connectors';
+import {
+  clover,
+  CONNECTOR_PARAMS,
+  injected,
+  walletconnect,
+} from '../connectors';
 
 import { AbstractConnector } from '@web3-react/abstract-connector';
 import { BigNumber } from 'ethers';
-
-export const POOL_DENY = ['14', '29', '45', '30'];
 
 // Block time here is slightly higher (~1s) than average in order to avoid ongoing proposals past the displayed time
 // export const AVERAGE_BLOCK_TIME_IN_SECS = 13;
@@ -66,6 +69,14 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     href: null,
     color: '#4196FC',
     mobile: true,
+  },
+  Clover: {
+    connector: clover,
+    name: 'Clover',
+    iconName: 'clover.svg',
+    description: 'Login using Clover hosted wallet',
+    href: null,
+    color: '#269964',
   },
   // KEYSTONE: {
   //   connector: async () => {

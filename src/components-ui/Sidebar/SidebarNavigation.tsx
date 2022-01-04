@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { isMobile } from 'react-device-detect';
 import { classNames } from '../../functions';
-import { Socials } from '../Socials';
 
 export function SidebarNavigation({ routes, chainId }) {
   const router = useRouter();
@@ -38,7 +37,10 @@ export function SidebarNavigation({ routes, chainId }) {
           return (
             <div
               key={route.name}
-              className="cursor-pointer rounded-xl hover:bg-primary transition duration-500 my-2"
+              className="
+                cursor-pointer rounded-xl 
+                hover:bg-primary 
+                transition duration-500 my-2"
             >
               <Link href={route.urls[0]}>
                 <div className="flex items-center text-grey hover:text-text py-3 px-3">

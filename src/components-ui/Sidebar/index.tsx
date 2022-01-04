@@ -4,7 +4,6 @@ import { useActiveWeb3React } from '../../hooks';
 import { NetworkStatus } from '../NetworkStatus';
 import { SidebarNavigation } from './SidebarNavigation';
 import { sidebarRoutes } from '../../routes';
-import { Socials } from '../Socials';
 import { Listings } from '../Listings';
 
 export function Sidebar() {

@@ -37,6 +37,7 @@ const WeekChart = dynamic(() => import('../../features/trade/WeekChart'), {
 });
 import { NetworkGuardWrapper } from '../../guards/Network';
 import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
+import { reverseArray } from '../../utils';
 
 function Tokens() {
   const { chainId } = useActiveWeb3React();
@@ -92,7 +93,7 @@ function Tokens() {
   const sevenDayEthPrice = parseFloat(_sevenDayEthPrice ?? '0');
 
   const tokens = useTokens({});
-  // console.log('tokens', tokens);
+
   useEffect(() => {
     if (tokens !== undefined && tokens.length === 0) {
       router.push('/trade/buy');
@@ -103,6 +104,7 @@ function Tokens() {
     return (
       tokens
         ?.map((token) => {
+          console.log(token);
           const oneDayToken = oneDayTokens?.find(({ id }) => token.id === id);
           const priceYesterday = oneDayToken
             ? oneDayToken.derivedETH * oneDayEthPrice
@@ -133,14 +135,18 @@ function Tokens() {
           const oneDayPriceChange = priceYesterday
             ? ((price - priceYesterday) / priceYesterday) * 100
             : 0;
-
           // const oneDayVolume =
           //   parseFloat(token.volumeUSD) - token.dayData && token.dayData.length > 0
           //     ? token.dayData[token.dayData.length - 1].volumeUSD
           //     : 0;
           return {
             name: token.name,
-            info: { symbol: token.symbol, id: token.id },
+            info: {
+              symbol: token.symbol,
+              id: token.id,
+              status:
+                oneDayPriceChange > 0 ? 1 : oneDayPriceChange === 0 ? 0 : -1,
+            },
             volume: oneDayVolume,
             liquidity: token.liquidity * token.derivedETH * ethPrice,
             price: token.derivedETH * ethPrice,
@@ -160,7 +166,7 @@ function Tokens() {
                   ? 0
                   : -1
                 : 0,
-              data: token.dayData,
+              data: reverseArray(token.dayData),
             },
           };
         })
@@ -187,11 +193,19 @@ function Tokens() {
           return (
             <div className="flex justify-start w-full items-center space-x-2">
               <SimpleCurrencyLogo
-                className="rounded-full"
+                className={`rounded-full`}
                 symbol={value.symbol}
                 id={value.id}
               />
-              <div className="text-xs lg:text-sm">
+              <div
+                className={`text-xs lg:text-sm font-bold ${
+                  value.status > 0
+                    ? 'text-green'
+                    : value.status === 0
+                    ? 'text-grey'
+                    : 'text-red'
+                }`}
+              >
                 {getSymbol(chainId, value.symbol)}
               </div>
             </div>
@@ -216,7 +230,6 @@ function Tokens() {
         className: 'col-span-2 hidden sm:flex justify-center items-center',
         Cell: ({ value }) => {
           const { chainId } = useActiveWeb3React();
-          if (chainId === ChainId.METIS) return '-';
           return (
             <div className="text-xs lg:text-sm">
               {value !== null ? formatNumberScale(value, true) : '-'}
@@ -242,7 +255,6 @@ function Tokens() {
         className: 'col-span-2 justify-center items-center flex',
         Cell: ({ value }) => {
           const { chainId } = useActiveWeb3React();
-          if (chainId === ChainId.METIS) return '-';
           return (
             <div
               className={`text-xs lg:text-sm ${

@@ -17,137 +17,18 @@ import {
   ViewportXSmall,
 } from '../../components-ui/Responsive';
 import dynamic from 'next/dynamic';
-import { useActiveWeb3React } from '../../hooks';
-import {
-  ChainId,
-  CurrencyAmount,
-  JSBI,
-} from '@digitalnative/standard-protocol-sdk';
-import { useEthPrice } from '../../services/graph';
-import { useTotalSupply } from '../../hooks/useTotalSupply';
 
 const FarmListItemDetails = dynamic(() => import('./FarmListItemDetails'), {
   ssr: false,
 });
 
 const FarmListItem = ({ farm, ...rest }) => {
-  const { chainId } = useActiveWeb3React();
   const token0 = useCurrency(farm.pair.token0.id);
   const token1 = useCurrency(farm.pair.token1.id);
   const amountDecimals = farm.amount ? farm.amount / 1e18 : undefined;
 
-  const totalSupply = farm.pair.totalSupply;
+  const totalSupply = parseFloat(farm.pair.totalSupply ?? '0');
   const userShare = amountDecimals ? amountDecimals / totalSupply : 0;
-  const ethPrice = useEthPrice();
-  const token0price =
-    farm.pair && parseFloat(farm.pair.token0.derivedETH) * parseFloat(ethPrice);
-  const token1price =
-    farm.pair && parseFloat(farm.pair.token1.derivedETH) * parseFloat(ethPrice);
-
-  const totalPoolTokens = useTotalSupply(
-    chainId === ChainId.METIS ? farm.farmAlt?.amount?.currency : undefined,
-  );
-
-  const _reserve0alt =
-    farm.farmAlt &&
-    !!token0 &&
-    CurrencyAmount.fromRawAmount(token0, farm.farmAlt.reserve0?.toString());
-  const _reserve1alt =
-    farm.farmAlt &&
-    !!token1 &&
-    CurrencyAmount.fromRawAmount(token1, farm.farmAlt.reserve1?.toString());
-  const [token0Amount, token1Amount] =
-    farm.farmAlt && _reserve0alt && _reserve1alt && totalPoolTokens
-      ? [
-          CurrencyAmount.fromRawAmount(
-            token0,
-            JSBI.divide(
-              JSBI.multiply(
-                farm.farmAlt.amount.quotient,
-                _reserve0alt.quotient,
-              ),
-              totalPoolTokens.quotient,
-            ),
-          ),
-          CurrencyAmount.fromRawAmount(
-            token1,
-            JSBI.divide(
-              JSBI.multiply(
-                farm.farmAlt.amount.quotient,
-                _reserve1alt.quotient,
-              ),
-              totalPoolTokens.quotient,
-            ),
-          ),
-        ]
-      : [undefined, undefined];
-
-  const token0decimals =
-    token0Amount && parseFloat(token0Amount.toExact()) * token0price;
-
-  const token1decimals =
-    token1Amount && parseFloat(token1Amount.toExact()) * token1price;
-
-  const altTVL =
-    token0decimals && token1decimals && token0decimals + token1decimals;
-  // console.log('alttvl', altTVL);
-  // console.log(
-  //   '123123',
-  //   chainId === ChainId.METIS &&
-  //     altTVL &&
-  //     farm.rewards.reduce((previousValue, currentValue) => {
-  //       console.log(currentValue);
-  //       return (
-  //         previousValue + currentValue.rewardPerBlock * currentValue.rewardPrice
-  //       );
-  //     }, 0),
-  // );
-
-  // let altRoiD =
-  //   chainId === ChainId.METIS &&
-  //   altTVL &&
-  //   farm.rewards.reduce((previousValue, currentValue) => {
-  //     return (
-  //       previousValue + currentValue.rewardPerBlock * currentValue.rewardPrice
-  //     );
-  //   }, 0) / (altTVL > 0 ? altTVL : 1);
-  let altRoiD =
-    chainId === ChainId.METIS &&
-    altTVL &&
-    farm.rewards.reduce((previousValue, currentValue) => {
-      return (
-        previousValue + currentValue.rewardPerDay * currentValue.rewardPrice
-      );
-    }, 0) / (altTVL > 0 ? altTVL : 1);
-  // let altRoiH = altRoiB && altRoiB * farm.averageBlockTime;
-  // let altRoiD = altRoiB && altRoiH * 24;
-  let altRoiM = altRoiD && altRoiD * 30;
-  let altRoiY = altRoiD && altRoiM * 12;
-
-  // const [token0Amount, token1Amount] =
-  // !!_reserve0alt && !!_reserve1alt &&
-  //   ? [
-  //       CurrencyAmount.fromRawAmount(
-  //         token0,
-  //         JSBI.divide(
-  //           JSBI.multiply(amount.quotient, _reserve0.quotient),
-  //           totalPoolTokens.quotient,
-  //         ),
-  //       ),
-  //       CurrencyAmount.fromRawAmount(
-  //         token1,
-  //         JSBI.divide(
-  //           JSBI.multiply(amount.quotient, _reserve1.quotient),
-  //           totalPoolTokens.quotient,
-  //         ),
-  //       ),
-  //     ]
-  //   : [undefined, undefined];
-  // const _reserve0altDec =
-  //   _reserve0alt && parseFloat(_reserve0alt.toExact()) * token0price;
-
-  // const _reserve1altDec =
-  //   _reserve1alt && parseFloat(_reserve1alt.toExact()) * token1price;
 
   const isViewportMediumDown = useSizeMdDown();
   return (
@@ -242,65 +123,34 @@ const FarmListItem = ({ farm, ...rest }) => {
                 </div>
               </div>
               <div className="flex items-center col-span-3 lg:col-span-3">
-                {chainId !== ChainId.METIS ? (
-                  <div className="flex items-end justify-center space-x-2">
-                    <ViewportXSmall>
-                      <div className="font-bold text-right text-sm lg:text-base">
+                <div className="flex items-end justify-center space-x-2">
+                  <ViewportXSmall>
+                    <div className="font-bold text-right text-sm lg:text-base">
+                      {formatPercent(farm?.roiPerYear * 100)}
+                    </div>
+                  </ViewportXSmall>
+                  <ViewportSmallUp>
+                    <div className="space-y-1">
+                      <div className="font-bold text-right text-base">
                         {formatPercent(farm?.roiPerYear * 100)}
                       </div>
-                    </ViewportXSmall>
-                    <ViewportSmallUp>
-                      <div className="space-y-1">
-                        <div className="font-bold text-right text-base">
-                          {formatPercent(farm?.roiPerYear * 100)}
-                        </div>
-                        <div className="text-xs">
-                          {formatPercent(farm?.roiPerMonth * 100)}
-                        </div>
-                        <div className="text-xs">
-                          {formatPercent(farm?.roiPerDay * 100)}
-                        </div>
+                      <div className="text-xs">
+                        {formatPercent(farm?.roiPerMonth * 100)}
+                      </div>
+                      <div className="text-xs">
+                        {formatPercent(farm?.roiPerDay * 100)}
+                      </div>
 
-                        {/* {farm?.roiPerYear > 100 ? '10000%+' : formatPercent(farm?.roiPerYear * 100)} */}
-                      </div>
-                      <div className="text-xs text-left space-y-1">
-                        <div className="ml-1 text-grey">/year</div>
-                        <div className="ml-1 text-grey">/month</div>
-                        <div className="ml-1 text-grey">/day</div>
-                        {/* {farm?.roiPerYear > 100 ? '10000%+' : formatPercent(farm?.roiPerYear * 100)} */}
-                      </div>
-                    </ViewportSmallUp>
-                  </div>
-                ) : altRoiD ? (
-                  <div className="flex items-end justify-center space-x-2">
-                    <ViewportXSmall>
-                      <div className="font-bold text-right text-sm lg:text-base">
-                        {formatPercent(altRoiY * 100)}
-                      </div>
-                    </ViewportXSmall>
-                    <ViewportSmallUp>
-                      <div className="space-y-1">
-                        <div className="font-bold text-right text-base">
-                          {formatPercent(altRoiY * 100)}
-                        </div>
-                        <div className="text-xs">
-                          {formatPercent(altRoiM * 100)}
-                        </div>
-                        <div className="text-xs">
-                          {formatPercent(altRoiD * 100)}
-                        </div>
-
-                        {/* {farm?.roiPerYear > 100 ? '10000%+' : formatPercent(farm?.roiPerYear * 100)} */}
-                      </div>
-                      <div className="text-xs text-left space-y-1">
-                        <div className="ml-1 text-grey">/year</div>
-                        <div className="ml-1 text-grey">/month</div>
-                        <div className="ml-1 text-grey">/day</div>
-                        {/* {farm?.roiPerYear > 100 ? '10000%+' : formatPercent(farm?.roiPerYear * 100)} */}
-                      </div>
-                    </ViewportSmallUp>
-                  </div>
-                ) : null}
+                      {/* {farm?.roiPerYear > 100 ? '10000%+' : formatPercent(farm?.roiPerYear * 100)} */}
+                    </div>
+                    <div className="text-xs text-left space-y-1">
+                      <div className="ml-1 text-grey">/year</div>
+                      <div className="ml-1 text-grey">/month</div>
+                      <div className="ml-1 text-grey">/day</div>
+                      {/* {farm?.roiPerYear > 100 ? '10000%+' : formatPercent(farm?.roiPerYear * 100)} */}
+                    </div>
+                  </ViewportSmallUp>
+                </div>
               </div>
               <div
                 className="
@@ -314,34 +164,12 @@ const FarmListItem = ({ farm, ...rest }) => {
                 lg:items-start
                 "
               >
-                {chainId !== ChainId.METIS ? (
-                  <div className="text-primary font-bold text-sm sm:text-lg lg:text-xl">
-                    {isViewportMediumDown
-                      ? formatNumberScale(
-                          userShare * farm.pair.reserveUSD,
-                          true,
-                        )
-                      : formatNumber(userShare * farm.pair.reserveUSD, true)}
-                  </div>
-                ) : (
-                  <div className="text-primary font-bold text-sm sm:text-lg lg:text-xl">
-                    {isViewportMediumDown
-                      ? formatNumberScale(
-                          Number(farm.pair.reserve0) * userShare * token0price +
-                            Number(farm.pair.reserve1) *
-                              userShare *
-                              token1price,
-                          true,
-                        )
-                      : formatNumberScale(
-                          Number(farm.pair.reserve0) * userShare * token0price +
-                            Number(farm.pair.reserve1) *
-                              userShare *
-                              token1price,
-                          true,
-                        )}
-                  </div>
-                )}
+                <div className="text-primary font-bold text-sm sm:text-lg lg:text-xl">
+                  {isViewportMediumDown
+                    ? formatNumberScale(userShare * farm.pair.reserveUSD, true)
+                    : formatNumber(userShare * farm.pair.reserveUSD, true)}
+                </div>
+
                 <ViewportLargeUp>
                   <div className="flex items-center space-x-1 text-xs">
                     <div>
@@ -370,56 +198,28 @@ const FarmListItem = ({ farm, ...rest }) => {
                 lg:items-start
                 "
               >
-                {chainId !== ChainId.METIS ? (
-                  <div className="text-primary font-bold text-sm sm:text-lg lg:text-xl">
-                    {isViewportMediumDown
-                      ? formatNumberScale(farm.tvl, true)
-                      : formatNumber(farm.tvl, true)}
-                  </div>
-                ) : altTVL ? (
-                  <div className="text-primary font-bold text-sm sm:text-lg lg:text-xl">
-                    {isViewportMediumDown
-                      ? formatNumberScale(altTVL, true)
-                      : formatNumber(altTVL, true)}
-                  </div>
-                ) : null}
-                {chainId !== ChainId.METIS ? (
-                  <ViewportLargeUp>
-                    <div className="flex items-center space-x-1 text-xs">
+                <div className="text-primary font-bold text-sm sm:text-lg lg:text-xl">
+                  {isViewportMediumDown
+                    ? formatNumberScale(farm.tvl, true)
+                    : formatNumber(farm.tvl, true)}
+                </div>
+                <ViewportLargeUp>
+                  <div className="flex items-center space-x-1 text-xs">
+                    <div>
                       <div>
-                        <div>
-                          {Number(farm.pair.reserve0 * farm.share).toFixed(4)}
-                        </div>
-                        <div>
-                          {' '}
-                          {Number(farm.pair.reserve1 * farm.share).toFixed(4)}
-                        </div>
+                        {Number(farm.pair.reserve0 * farm.share).toFixed(4)}
                       </div>
-                      <div className="text-grey">
-                        <div>{farm.pair.token0.symbol}</div>
-                        <div> {farm.pair.token1.symbol}</div>
+                      <div>
+                        {' '}
+                        {Number(farm.pair.reserve1 * farm.share).toFixed(4)}
                       </div>
                     </div>
-                  </ViewportLargeUp>
-                ) : token0Amount && token1Amount ? (
-                  <ViewportLargeUp>
-                    <div className="flex items-center space-x-1 text-xs">
-                      <div>
-                        <div>
-                          {parseFloat(token0Amount.toExact()).toFixed(4)}
-                        </div>
-                        <div>
-                          {' '}
-                          {parseFloat(token1Amount.toExact()).toFixed(4)}
-                        </div>
-                      </div>
-                      <div className="text-grey">
-                        <div>{farm.pair.token0.symbol}</div>
-                        <div> {farm.pair.token1.symbol}</div>
-                      </div>
+                    <div className="text-grey">
+                      <div>{farm.pair.token0.symbol}</div>
+                      <div> {farm.pair.token1.symbol}</div>
                     </div>
-                  </ViewportLargeUp>
-                ) : null}
+                  </div>
+                </ViewportLargeUp>
               </div>
             </div>
           </Disclosure.Button>

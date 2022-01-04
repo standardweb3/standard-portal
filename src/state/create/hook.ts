@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 import { AppState } from '../index';
 import { CreateState } from './reducer';
 import { t } from '@lingui/macro';
-import { useActiveWeb3React } from '../../hooks';
+import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
 import { useCallback } from 'react';
 import { useCurrency } from '../../hooks/Tokens';
 import { useLingui } from '@lingui/react';

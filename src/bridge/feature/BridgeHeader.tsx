@@ -36,14 +36,14 @@ export function BridgeHeader(): JSX.Element {
           Router
         </a>
       </NavigationLink>
-      <NavigationLink href={`/router/history`}>
-        <a className={classNames(style, isHistoryActive && activeStyle)}>
-          History
-        </a>
-      </NavigationLink>
       <NavigationLink href={`/bridge`}>
         <a className={classNames(style, isBridgeActive && activeStyle)}>
           Bridge
+        </a>
+      </NavigationLink>
+      <NavigationLink href={`/router/history`}>
+        <a className={classNames(style, isHistoryActive && activeStyle)}>
+          History
         </a>
       </NavigationLink>
     </div>

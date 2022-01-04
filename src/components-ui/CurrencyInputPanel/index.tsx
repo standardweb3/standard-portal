@@ -14,9 +14,7 @@ import { CurrencyLogo } from '../CurrencyLogo';
 import CurrencySearchModal from '../../modals/SearchModal/CurrencySearchModal';
 import { DoubleCurrencyLogo } from '../CurrencyLogo/DoubleCurrencyLogo';
 import { FiatValue } from '../FiatValue';
-// import Lottie from 'lottie-react'
 import { Input as NumericalInput } from '../NumericalInput';
-// import selectCoinAnimation from '../../animation/select-coin.json'
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
 import { useCurrencyBalance } from '../../state/wallet/hooks';
 import { BoxSpinner } from '../Spinner/BoxSpinner';

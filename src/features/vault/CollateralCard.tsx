@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
-import Image from '../../../components-ui/Image';
+import Image from '../../components-ui/Image';
 
 const Radiation = styled.div`
   filter: drop-shadow(0px 4px 10px rgba(195, 159, 159, 0.25));
@@ -17,11 +17,11 @@ const Background = styled.div<{ background?: string }>`
 
 export function CollateralCard({ collateral }) {
   const { logo, name, sfr, mcr, color, address } = collateral;
-  const router = useRouter()
+  const router = useRouter();
 
   const handleClick = () => {
-    router.push(`/collateralize/${address}`)
-  }
+    router.push(`/collateralize/${address}`);
+  };
 
   return (
     <Background

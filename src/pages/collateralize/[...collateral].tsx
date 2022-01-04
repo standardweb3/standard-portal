@@ -16,7 +16,6 @@ import {
   useApproveCallback,
 } from '../../hooks';
 import { CollateralizeSettingsPanel } from '../../features/vault/new/CollateralizeSettingsPanel';
-import { useEthPrice, useToken } from '../../services/graph';
 import { ConfirmCollateralizeButton } from '../../features/vault/new/ConfirmCollateralizeButton';
 import { CollateralInfo } from '../../features/vault/new/CollateralInfo';
 import {
@@ -34,6 +33,7 @@ import { useMtr } from '../../hooks/vault/useMtr';
 import { useCVault } from '../../services/graph/hooks/vault';
 import { ViewportMediumUp } from '../../components-ui/Responsive';
 import { PageHeader } from '../../components-ui/PageHeader';
+import { CollateralizeBorrowPanel } from '../../features/vault/new/CollateralizeBorrowPanel';
 
 export default function Collateral() {
   const { account, chainId } = useActiveWeb3React();
@@ -120,6 +120,18 @@ export default function Collateral() {
   const mtr = useMtr();
   const mtrCourrencyAmount = tryParseAmount(mtrAmount, mtr);
 
+  const handleChangeMtrAmount = (value) => {
+    console.log(collateralPriceUSD, liquidationRatio, value);
+    const newCollateralAmount =
+      collateralPriceUSD && liquidationRatio
+        ? (parseFloat(value) * parseFloat(liquidationRatio)) /
+          collateralPriceUSD /
+          100
+        : '';
+    setCollateralizeAmount(newCollateralAmount.toString());
+    setMtrAmount(value);
+  };
+
   const handleChangeLiquidationRatio = (value, changePerc = true) => {
     if (value === '') {
       setLiquidationRatioPercentage(
@@ -159,11 +171,6 @@ export default function Collateral() {
     collateralizeAmount,
     collateral,
   );
-
-  // console.log(
-  //   'vault: formatted collateral amount',
-  //   formattedCollateralizeAmount,
-  // );
 
   const [approvalState, approve] = useApproveCallback(
     formattedCollateralizeAmount,
@@ -286,10 +293,13 @@ export default function Collateral() {
               setToMinLiquidationRatio={setToMinLiquidationRatio}
               setToSafeLiquidationRatio={setToSafeLiquidationRatio}
             />
-            <ConfirmCollateralizeButton
-              onClick={onClick}
-              disabled={!borrowable}
-              message={confirmButtonMessage}
+            <CollateralizeBorrowPanel
+              mtrAmount={mtrAmount}
+              mtr={mtr}
+              setMtrAmount={handleChangeMtrAmount}
+              onBorrowClick={onClick}
+              borrowable={borrowable}
+              buttonMessage={confirmButtonMessage}
             />
           </div>
         </PageContent>

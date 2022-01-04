@@ -2,8 +2,6 @@ import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
 type AddressMap = { [chainId: number]: string };
 
-export const TIMELOCK_ADDRESS = '0x1a9C8182C09F50C8318d769245beA52c32BE35BC';
-
 export const ARCHER_ROUTER_ADDRESS: AddressMap = {
   [ChainId.MAINNET]: '0x9917C083FF9FbD29Df1367FBF7F2388A9a202431',
 };

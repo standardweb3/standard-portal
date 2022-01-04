@@ -14,15 +14,16 @@ export function CollateralSelectPanel({
     <div
       className={classNames(
         DefinedStyles.collateralizePanel,
-        'flex flex-colmd:flex-row space-y-4 md:space-y-0 md:justify-between md:space-x-8',
+        'flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:justify-between lg:space-x-8',
       )}
     >
       <CollateralizePanelHeader
         number={1}
         title={'Enter Amount'}
         subtitle={'Collateral assets have different collateral ratio'}
+        className="min-w-[50%]"
       />
-      <div className="rounded-20 sm:bg-opaque-secondary sm:px-4 py-1">
+      <div className="w-full rounded-20 sm:bg-opaque-secondary sm:px-4 py-1">
         <RouterCurrencyInputPanel
           currency={collateral}
           onAmountChange={setCollateralizeAmount}

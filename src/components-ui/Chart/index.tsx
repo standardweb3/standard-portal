@@ -4,6 +4,7 @@ import {
   getFactoryAddress,
   Price,
   Token,
+  computePairAddress,
   WNATIVE,
 } from '@digitalnative/standard-protocol-sdk';
 import useDexCandles from '../../hooks/useDexCandles';
@@ -11,9 +12,6 @@ import { CandlePeriod, NumericalCandlestickDatum } from '../../types/Candle';
 import React, { useEffect, useState } from 'react';
 import { CurrencyLogo } from '../CurrencyLogo';
 import { classNames, formatNumber } from '../../functions';
-// import Lottie from 'lottie-react'
-// import solarbeamLoading from '../../animation/solarbeam-loading.json'
-import { computePairAddress } from '@digitalnative/standard-protocol-sdk';
 import { useProtocol } from '../../state/protocol/hooks';
 import { useActiveWeb3React } from '../../hooks';
 import { ANALYTICS_URL } from '../../constants';

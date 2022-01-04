@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { Page } from '../../components-ui/Page';
 import { PageContent } from '../../components-ui/PageContent';
 import { DefinedStyles } from '../../utils/DefinedStyles';
-import { CollateralsTable } from '../../features/vault/new/CollateralsTable';
+import { CollateralsTable } from '../../features/vault/CollateralsTable/CollateralsTable';
 import { ViewportMediumUp } from '../../components-ui/Responsive';
 import { PageHeader } from '../../components-ui/PageHeader';
 import { Alert } from '../../components-ui/Alert';

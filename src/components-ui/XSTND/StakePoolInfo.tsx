@@ -62,7 +62,6 @@ export function StakePoolInfo({ stnd, xStnd, className }: StakePoolInfoTypes) {
   // add first 1 skip 1
   const barHistories = useBarHistories({ first: 1, skip: 1 });
   // const bar = useBar();
-  // console.log(bar);
 
   const feeUSD =
     dayDatas && dayDatas[0] && parseFloat(dayDatas[0].volumeUSD) * (0.0005 / 3);

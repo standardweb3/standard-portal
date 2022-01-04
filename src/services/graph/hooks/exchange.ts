@@ -32,8 +32,7 @@ import useSWR, { SWRConfiguration } from 'swr';
 
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import { ethPriceQuery } from '../queries';
-import { useActiveWeb3React } from '../../../hooks';
-import { getPrices } from '../fetchers/prices';
+import { useActiveWeb3React } from '../../../hooks/useActiveWeb3React';
 
 export function useExchange(
   variables = undefined,
@@ -107,12 +106,13 @@ export function useEthPrice(
   const { data } = useSWR(
     chainId ? ['ethPrice', chainId, JSON.stringify(variables)] : null,
     () => {
-      if (chainId === ChainId.METIS) return getPrices({ aliases: ['METIS'] });
+      // if (chainId === ChainId.METIS) return getPrices({ aliases: ['METIS'] });
       return getEthPrice(chainId, variables);
     },
     swrConfig,
   );
-  return chainId === ChainId.METIS ? data?.[0]?.price : data;
+  // return chainId === ChainId.METIS ? data?.[0]?.price :
+  return data;
 }
 
 export function useStakePrice(swrConfig: SWRConfiguration = undefined) {

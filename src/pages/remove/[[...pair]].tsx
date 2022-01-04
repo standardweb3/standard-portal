@@ -26,14 +26,12 @@ import {
 import { useCurrency } from '../../hooks/Tokens';
 import { useV2LiquidityTokenPermit } from '../../hooks/useERC20Permit';
 import useTransactionDeadline from '../../hooks/useTransactionDeadline';
-import { useWalletModalToggle } from '../../state/application/hooks';
 import { Field } from '../../state/burn/actions';
 import {
   useBurnActionHandlers,
   useBurnState,
   useDerivedBurnInfo,
 } from '../../state/burn/hooks';
-import { useDerivedMintInfo } from '../../state/mint/hooks';
 import { useTransactionAdder } from '../../state/transactions/hooks';
 import { useUserSlippageToleranceWithDefault } from '../../state/user/hooks';
 import { CurrencyLogo } from '../../components-ui/CurrencyLogo';

@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 import { useCallback, useMemo } from 'react';
 import { TransactionDetails } from './reducer';
 import { addTransaction } from './actions';
-import { useActiveWeb3React } from '../../hooks';
+import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
 
 export interface TransactionResponseLight {
   hash: string;
