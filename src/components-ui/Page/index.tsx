@@ -19,7 +19,6 @@ export function Page({ children, id, className }: PageProps) {
     relative
     flex flex-col
     justify-start
-    overflow-auto
     text-text
     w-full`,
         className,

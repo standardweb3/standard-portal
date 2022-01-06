@@ -3,6 +3,7 @@ const Main = ({ children }) => (
     className={`
         flex flex-col justify-start 
         flex-grow 
+        overflow-auto
         w-full
     `}
   >

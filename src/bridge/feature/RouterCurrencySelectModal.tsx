@@ -113,15 +113,19 @@ export default function RouterCurrencySelectModal({
           )}
           <div className="text-sm font-bold">All</div>
           <div className="flex-1 rounded-20 h-full bg-opaque-secondary p-3 mt-4">
-            <AutoSizer disableWidth>
-              {({ height }) => (
-                <AnyswapCurrencyList
-                  onCurrencySelect={handleSelect}
-                  currencies={result}
-                  height={height}
-                />
-              )}
-            </AutoSizer>
+            {result.length > 0 ? (
+              <AutoSizer disableWidth>
+                {({ height }) => (
+                  <AnyswapCurrencyList
+                    onCurrencySelect={handleSelect}
+                    currencies={result}
+                    height={height}
+                  />
+                )}
+              </AutoSizer>
+            ) : (
+              <div> No tokens are yet available </div>
+            )}
           </div>
         </div>
       </Modal>

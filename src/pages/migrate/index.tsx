@@ -447,5 +447,5 @@ function Migrate() {
   );
 }
 
-Migrate.Guard = NetworkGuardWrapper(NORMAL_GUARDED_CHAINS);
+Migrate.Guard = NetworkGuardWrapper([ChainId.MAINNET]);
 export default Migrate;

@@ -956,5 +956,6 @@ Router.Guard = NetworkGuardWrapper([
   ChainId.SHIDEN,
   ChainId.BSC,
   ChainId.MATIC,
+  ChainId.METIS,
 ]);
 export default Router;
