@@ -104,7 +104,6 @@ function Tokens() {
     return (
       tokens
         ?.map((token) => {
-          console.log(token);
           const oneDayToken = oneDayTokens?.find(({ id }) => token.id === id);
           const priceYesterday = oneDayToken
             ? oneDayToken.derivedETH * oneDayEthPrice
