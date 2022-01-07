@@ -26,7 +26,7 @@ export function SidebarNavigation({ routes, chainId }) {
                 <Divider className="bg-primary bg-opacity-50 !w-[70%]" />
               </div>
             );
-          const active = route.urls.find((url: string) => {
+          const active = route?.urls?.find((url: string) => {
             return router.pathname.startsWith(url);
           });
           if (active) {

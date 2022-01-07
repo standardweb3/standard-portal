@@ -82,7 +82,6 @@ export const sidebarRoutes = [
     iconActive: routerIcon,
     hidden: [],
   },
-
   {
     name: 'Divider',
     hidden: [ChainId.BSC, ChainId.MATIC, ChainId.METIS, ChainId.SHIDEN],
