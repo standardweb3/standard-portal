@@ -21,7 +21,6 @@ export default function RouterLiquidityPool({
   isDestUnderlying,
   isViewAll,
 }: RouterLiquidityPoolProps) {
-  // console.log(destChain)
   return (
     <>
       <div

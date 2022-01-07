@@ -3,7 +3,8 @@ import { tokenListUrl, VERSION, USE_VERSION } from '../constant';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
 export const ETH_MAIN_CHAINID = 1;
-export const ETH_MAINNET = 'https://ethmainnet.anyswap.exchange';
+export const ETH_MAINNET =
+  'https://eth-mainnet.alchemyapi.io/v2/EA7UDrnRTL_aXxyoPoasAMx9ey2vQzky';
 export const ETH_MAIN_EXPLORER = 'https://etherscan.io';
 
 export const ETH_TEST_CHAINID = 4;
