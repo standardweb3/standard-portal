@@ -103,8 +103,17 @@ export const WalletInfo: FC<WalletInfoProps> = ({
 
   function getStatusIcon() {
     if (connector === injected) {
+      const isMetamask = window?.ethereum?.isMetaMask;
+      const isClover = !!window?.clover;
+
       return (
-        <WalletIcon src="/img/wallets/metamask.png" alt="Metamask" size={16} />
+        <WalletIcon
+          src={`/img/wallets/${
+            isMetamask ? 'metamask.png' : isClover ? 'clover.svg' : ''
+          }`}
+          alt={isMetamask ? 'Metamask' : isClover ? 'Metamask' : ''}
+          size={16}
+        />
       );
     } else if (connector === walletconnect) {
       return (

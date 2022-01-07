@@ -24,11 +24,18 @@ const IconWrapper = styled.div<{ size?: number }>`
 
 // eslint-disable-next-line react/prop-types
 export function StatusIcon({ connector }: { connector: AbstractConnector }) {
+  const isMetamask = window?.ethereum?.isMetaMask;
+  const isClover = !!window?.clover;
+
   if (connector === injected) {
     return (
       <Image
-        src="/img/wallets/metamask.png"
-        alt="Injected (MetaMask etc...)"
+        src={`/img/wallets/${
+          isMetamask ? 'metamask.png' : isClover ? 'clover.svg' : ''
+        }`}
+        alt={`Injected (${
+          isMetamask ? 'Metamask' : isClover ? 'Clover' : ''
+        } etc...)`}
         width={20}
         height={20}
       />

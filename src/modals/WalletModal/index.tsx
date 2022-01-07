@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
-// emotion
-import styled from '@emotion/styled';
-// next
-import Image from 'next/image';
 // device detector
 import { isMobile } from 'react-device-detect';
 // ga
@@ -60,7 +56,6 @@ export default function WalletModal({
   confirmedTransactions: string[]; // hashes of confirmed
   ENSName?: string;
 }) {
-  // console.log({ ENSName })
   // important that these are destructed from the account-specific web3-react context
   const {
     active,
@@ -181,7 +176,9 @@ export default function WalletModal({
 
   // get wallets user can switch too, depending on device/browser
   function getOptions() {
-    const isMetamask = window.ethereum && window.ethereum.isMetaMask;
+    const isMetamask = window?.ethereum?.isMetaMask;
+    const isClover = !!window?.clover;
+
     return Object.keys(SUPPORTED_WALLETS).map((key) => {
       const option = SUPPORTED_WALLETS[key];
 
@@ -191,7 +188,6 @@ export default function WalletModal({
         // if (option.connector === portis) {
         //   return null;
         // }
-
         if (!window.web3 && !window.ethereum && option.mobile) {
           return (
             <Option
@@ -215,7 +211,6 @@ export default function WalletModal({
         }
         return null;
       }
-
       // overwrite injected when needed
       if (option.connector === injected) {
         // don't show injected if there's no injected provider
@@ -240,12 +235,43 @@ export default function WalletModal({
         }
         // don't return metamask if injected provider isn't metamask
         else if (option.name === 'MetaMask' && !isMetamask) {
-          return null;
+          return (
+            <Option
+              disabled={!userAgreement}
+              col
+              id={`connect-${key}`}
+              key={key}
+              color={'#E8831D'}
+              header={'Install Metamask'}
+              subheader={null}
+              link={'https://metamask.io/'}
+              icon="/img/wallets/metamask.png"
+            />
+          );
         }
         // likewise for generic
         else if (option.name === 'Injected' && isMetamask) {
           return null;
         }
+        // likewise for clover
+        else if (option.name === 'Clover' || isClover) {
+          return null;
+        }
+      }
+      if (option.name === 'Clover' && !isClover) {
+        return (
+          <Option
+            disabled={!userAgreement}
+            col
+            id={`connect-${key}`}
+            key={key}
+            color={'#E8831D'}
+            header={'Install Clover'}
+            subheader={null}
+            link={'https://clover.finance/'}
+            icon="/img/wallets/clover.svg"
+          />
+        );
       }
       // return rest of options
       return (

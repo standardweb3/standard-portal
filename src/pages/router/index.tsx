@@ -17,7 +17,6 @@ import {
 import {
   NETWORK_ICON,
   NETWORK_LABEL,
-  NORMAL_GUARDED_CHAINS,
   SUPPORTED_NETWORK_IDS,
 } from '../../constants/networks';
 import { classNames, tryParseAmount } from '../../functions';

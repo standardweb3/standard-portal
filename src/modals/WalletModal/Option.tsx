@@ -57,7 +57,7 @@ export default function Option({
       <Image src={icon} alt={'wallet icon'} width="32px" height="32px" />
 
       <div>
-        <div className="flex items-center text-sm">
+        <div className="flex items-center text-sm text-center">
           {active && (
             <div
               className="w-4 h-4 mr-4 rounded-full"
