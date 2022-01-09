@@ -31,7 +31,6 @@ export default function NetworkModal(): JSX.Element | null {
     const _chainId = Number(chainIdStr);
     const params = SUPPORTED_NETWORKS[_chainId];
 
-    cookie.set('chainId', _chainId);
     if ([ChainId.MAINNET, ChainId.RINKEBY].includes(_chainId)) {
       library?.send('wallet_switchEthereumChain', [
         { chainId: params.chainId },

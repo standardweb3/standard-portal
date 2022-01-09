@@ -39,6 +39,7 @@ module.exports = {
         '20': '20px',
       },
       backgroundImage: {
+        main: 'linear-gradient(90deg, #25084B 0%, #97D9E1 100%)',
         bond: 'rgba(119, 36, 210, 1)',
         unbond:
           'linear-gradient(297.07deg, #8525EF 4.24%, #8525EF 4.25%, #41157C 35.24%, #170C34 85.03%)',
@@ -47,6 +48,7 @@ module.exports = {
           'linear-gradient(180deg, #45017A 0%, rgba(242, 32, 155, 0) 100%)',
       },
       colors: {
+        panel: '#2A1D45',
         grey: '#BAB8C0',
         'grey-2': '#3A324B',
         primary: '#F365BD',

@@ -28,6 +28,7 @@ export function WalletConnector({ className }: WalletConnectorType) {
         text-text 
         bg-primary bg-opacity-10
         flex items-center justify-center
+        text-sm
         `,
           className,
         )}

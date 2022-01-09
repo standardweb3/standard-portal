@@ -27,6 +27,7 @@ import btc, { BTC_MAIN_CHAINID } from './btc';
 import block, { BLOCK_MAIN_CHAINID } from './block';
 import colx, { COLX_MAIN_CHAINID } from './colx';
 import celo, { CELO_MAIN_CHAINID } from './celo';
+import metis, { METIS_MAIN_CHAINID } from './metis';
 
 import { VERSION, USE_VERSION, env } from '../constant';
 
@@ -56,6 +57,7 @@ export const chainInfo: ConFig = {
   ...iotex,
   ...sdn,
   ...celo,
+  ...metis,
 };
 
 const useChain: any = {
@@ -67,6 +69,7 @@ const useChain: any = {
     AVAX_MAIN_CHAINID,
     HT_MAIN_CHAINID,
     OKT_MAIN_CHAINID,
+    METIS_MAIN_CHAINID,
   ],
   [VERSION.V2]: [
     ETH_MAIN_CHAINID,
@@ -138,6 +141,7 @@ const useChain: any = {
     IOTEX_MAIN_CHAINID,
     SDN_MAIN_CHAINID,
     CELO_MAIN_CHAINID,
+    METIS_MAIN_CHAINID,
   ],
   [VERSION.V6]: [
     // ETH_MAIN_CHAINID,
@@ -193,6 +197,7 @@ const useChain: any = {
     BTC_MAIN_CHAINID,
     BLOCK_MAIN_CHAINID,
     COLX_MAIN_CHAINID,
+    METIS_MAIN_CHAINID,
   ],
   ALL_MAIN: [
     ETH_MAIN_CHAINID,

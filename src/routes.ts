@@ -32,13 +32,21 @@ export const sidebarRoutes = [
     iconActive: poolIcon,
     hidden: [ChainId.MATIC, ChainId.BSC],
   },
-
+  {
+    name: 'Divider',
+    hidden: [ChainId.BSC, ChainId.MATIC],
+  },
   {
     name: 'Farm',
     urls: ['/farm'],
     icon: farmIcon,
     iconActive: farmIcon,
     hidden: [ChainId.MATIC, ChainId.BSC],
+  },
+
+  {
+    name: 'Divider',
+    hidden: [ChainId.BSC, ChainId.MATIC],
   },
   {
     name: 'Dividend',
@@ -56,11 +64,15 @@ export const sidebarRoutes = [
     hidden: [ChainId.MAINNET, ChainId.MATIC, ChainId.BSC, ChainId.METIS],
   },
   {
+    name: 'Divider',
+    hidden: [ChainId.BSC, ChainId.MATIC, ChainId.METIS],
+  },
+  {
     name: 'Bridge',
     urls: ['/bridge'],
     icon: bridgeIcon,
     iconActive: bridgeIcon,
-    hidden: [ChainId.METIS],
+    hidden: [],
     // hidden: [],
   },
   {
@@ -68,14 +80,18 @@ export const sidebarRoutes = [
     urls: ['/router'],
     icon: routerIcon,
     iconActive: routerIcon,
-    hidden: [ChainId.METIS],
+    hidden: [],
+  },
+  {
+    name: 'Divider',
+    hidden: [ChainId.BSC, ChainId.MATIC, ChainId.METIS, ChainId.SHIDEN],
   },
   {
     name: 'Migrate',
     urls: ['/migrate'],
     icon: migrateIcon,
     iconActive: migrateIcon,
-    hidden: [ChainId.MATIC, ChainId.BSC, ChainId.METIS, ChainId.SHIDEN],
+    hidden: [ChainId.MATIC, ChainId.BSC, ChainId.SHIDEN, ChainId.METIS],
     // hidden: [ChainId.SHIDEN],
   },
 ];

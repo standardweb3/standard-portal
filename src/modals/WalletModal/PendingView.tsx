@@ -53,6 +53,9 @@ export default function PendingView({
   ) => void;
 }) {
   const isMetamask = window?.ethereum?.isMetaMask;
+  const isClover = window?.clover?.isClover;
+
+  // add isClover
   return (
     <PendingSection>
       <LoadingMessage error={error}>
@@ -90,6 +93,12 @@ export default function PendingView({
               return null;
             }
             if (!isMetamask && option.name === 'MetaMask') {
+              return null;
+            }
+            if (isClover && option.name !== 'Clover') {
+              return null;
+            }
+            if (!isClover && option.name === 'Clover') {
               return null;
             }
           }

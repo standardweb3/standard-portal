@@ -3,7 +3,8 @@ import { tokenListUrl, VERSION, USE_VERSION } from '../constant';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
 export const ETH_MAIN_CHAINID = 1;
-export const ETH_MAINNET = 'https://ethmainnet.anyswap.exchange';
+export const ETH_MAINNET =
+  'https://eth-mainnet.alchemyapi.io/v2/EA7UDrnRTL_aXxyoPoasAMx9ey2vQzky';
 export const ETH_MAIN_EXPLORER = 'https://etherscan.io';
 
 export const ETH_TEST_CHAINID = 4;
@@ -137,6 +138,7 @@ const bridgeToken = {
       [ChainId.BSC]: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
       [ChainId.SHIDEN]: '0x9040e237c3bf18347bb00957dc22167d0f2b999d',
       [ChainId.MATIC]: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+      [ChainId.METIS]: '0x9040e237c3bf18347bb00957dc22167d0f2b999d',
     },
     nativeToken: '',
     crossBridgeInitChain: '336',

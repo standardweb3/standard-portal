@@ -58,6 +58,7 @@ const bridgeToken = {
       [ChainId.BSC]: '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
       [ChainId.SHIDEN]: '',
       [ChainId.MAINNET]: '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
+      [ChainId.METIS]: '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
     },
     crossBridgeInitChain: '56',
     crossBridgeInitToken: '0x6ab6d61428fde76768d7b45d8bfeec19c6ef91a8',

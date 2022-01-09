@@ -104,7 +104,6 @@ function Tokens() {
     return (
       tokens
         ?.map((token) => {
-          console.log(token);
           const oneDayToken = oneDayTokens?.find(({ id }) => token.id === id);
           const priceYesterday = oneDayToken
             ? oneDayToken.derivedETH * oneDayEthPrice
@@ -416,7 +415,7 @@ function Tokens() {
           <PageHeader title="Trade" />
         </ViewportMediumUp>
         <PageContent>
-          <div className="w-full text-text bg-opaque bg-transparent md:bg-opaque md:py-5 md:px-4 rounded-20">
+          <div className="w-full text-text bg-transparent md:bg-opaque md:py-5 md:px-4 rounded-20">
             <div className="rounded-20 bg-opaque px-4 py-4 flex items-center">
               <SearchV2
                 className="flex-1"

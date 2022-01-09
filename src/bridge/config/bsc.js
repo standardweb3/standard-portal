@@ -1,4 +1,4 @@
-import { formatSwapTokenList, getLocalRPC } from './methods';
+import { formatSwapTokenList } from './methods';
 import { tokenListUrl, VERSION, USE_VERSION } from '../constant';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 // alert(process.env.NODE_ENV)
@@ -94,6 +94,7 @@ const bridgeToken = {
       [ChainId.MAINNET]: '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',
       [ChainId.SHIDEN]: '',
       [ChainId.MATIC]: '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',
+      [ChainId.METIS]: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
     },
     crossBridgeInitChain: '336',
     crossBridgeInitToken: 'BNB',

@@ -34,7 +34,6 @@ const Layout = ({ children }) => {
       )}
       <div
         className="z-[1] w-full h-full 
-        overflow-auto
       flex flex-col md:flex-row"
       >
         <ViewportSmallDown>

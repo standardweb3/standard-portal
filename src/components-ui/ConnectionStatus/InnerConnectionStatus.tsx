@@ -22,8 +22,6 @@ export function InnerConnectionStatus({
   className,
 }: InnerConnectionStatusType) {
   const { account, connector } = useWeb3React();
-  // const { account: bridgeAccount } = useWeb3React(BridgeContextName);
-  const { route } = useRouter();
 
   const { ENSName } = useENSName(account ?? undefined);
 

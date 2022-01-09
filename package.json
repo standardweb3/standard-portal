@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 2999",
+    "dev": "next dev -p 2998",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -19,7 +19,7 @@
     "@apollo/client": "^3.4.16",
     "@binance-chain/bsc-connector": "^1.0.0",
     "@clover-network/clover-connector": "^1.0.0",
-    "@digitalnative/default-token-list": "0.0.34",
+    "@digitalnative/default-token-list": "0.0.37",
     "@digitalnative/standard-protocol-sdk": "^0.0.161",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",

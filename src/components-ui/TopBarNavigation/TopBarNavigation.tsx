@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { isMobile } from 'react-device-detect';
 import { classNames } from '../../functions';
+import { Divider } from '../Divider';
 
 export function TopBarNavigation({ routes, chainId, onRouteClick }) {
   const router = useRouter();
@@ -14,6 +15,12 @@ export function TopBarNavigation({ routes, chainId, onRouteClick }) {
           route.hidden ? !route.hidden.includes(chainId) : true,
         )
         .map((route) => {
+          if (route.name === 'Divider')
+            return (
+              <div className="w-full my-4 flex justify-center">
+                <Divider className="bg-primary bg-opacity-50 !w-[70%]" />
+              </div>
+            );
           const active = route.urls.find((url: string) => {
             return router.pathname.startsWith(url);
           });
