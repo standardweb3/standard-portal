@@ -254,7 +254,7 @@ export default function WalletModal({
           return null;
         }
         // likewise for clover
-        else if (option.name === 'Clover' || isClover) {
+        else if (option.name === 'Clover' && isClover) {
           return null;
         }
       }
