@@ -39,7 +39,7 @@ module.exports = {
         '20': '20px',
       },
       backgroundImage: {
-        main: 'linear-gradient(90deg, #25084B 0%, #97D9E1 100%)',
+        main: 'linear-gradient(90deg, #25084B 0%, #367c85 100%)',
         bond: 'rgba(119, 36, 210, 1)',
         unbond:
           'linear-gradient(297.07deg, #8525EF 4.24%, #8525EF 4.25%, #41157C 35.24%, #170C34 85.03%)',
@@ -49,8 +49,8 @@ module.exports = {
         panel: '#2A1D45',
         grey: '#BAB8C0',
         'grey-2': '#3A324B',
-        primary: '#F365BD',
-        bright: '#8525EF',
+        primary: '#B984FC',
+        bright: '#8525ef',
         highlight: '#8DE7D8',
         secondary: '#170c34',
         link: '#31a6f4',
@@ -79,6 +79,7 @@ module.exports = {
         opaque: 'rgba(255,255,255,0.04)',
         'opaque-secondary': 'rgba(222, 199, 239, 0.13)',
         'opaque-tertiary': 'rgba(100, 70, 100, 0.43)',
+        'opaque-4': 'rgba(0,0,0,0.2)',
         'opaque-slider': 'rgba(24,1,1,0.35)',
         'opaque-farm-list': 'rgba(222, 199, 239, 0.05)',
         'opaque-alert': 'rgba(97, 67, 188, 0.07)',

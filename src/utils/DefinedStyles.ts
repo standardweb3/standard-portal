@@ -20,7 +20,7 @@ export const DefinedStyles = {
   pageContent: `
     w-full
     md:max-w-[600px]
-    bg-opaque
+    bg-background
     rounded-20 p-5 sm:p-5
     text-text
   `,

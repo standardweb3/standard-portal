@@ -40,7 +40,7 @@ export function ExchangeNavigation({ input, output }: ExchangeNavigationProps) {
     >
       <NavigationLink
         activeClassName={`
-            bg-opaque
+            bg-opaque-4
             border
             border-opaque-border
             text-text

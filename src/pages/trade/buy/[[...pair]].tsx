@@ -496,7 +496,7 @@ function Swap() {
               gap-8
               p-0 md:p-8 
               rounded-20 
-              bg-transparent md:bg-opaque"
+              bg-transparent md:bg-background"
           >
             <div
               className={`
