@@ -1,5 +1,6 @@
 import { getAddress } from 'ethers/lib/utils';
 import { useCallback, useMemo } from 'react';
+import { RouterCurrencyInputPanel } from '../../../bridge/feature/RouterCurrencyInputPanel';
 import { Button } from '../../../components-ui/Button';
 import { TokenInputPanelV2 } from '../../../components-ui/XSTND/TokenInputPanelV2';
 import { tryParseAmount } from '../../../functions';
@@ -71,15 +72,14 @@ export function VaultWithdraw({
   }, [balance, withdrawCurrencyAmount]);
 
   return (
-    <div className={DefinedStyles.vaultPanel}>
-      Withdraw
-      <div>
-        <TokenInputPanelV2
+    <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 ">
+      <div className="w-full rounded-20 sm:bg-opaque-secondary sm:px-4 py-1">
+        <RouterCurrencyInputPanel
           onAmountChange={onAmountChange}
-          token={collateral}
+          currency={collateral}
           max={balance}
-          balance={balance}
           amount={amount}
+          hideChevron
         />
       </div>
       <Button

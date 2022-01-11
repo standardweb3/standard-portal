@@ -1,3 +1,4 @@
+import { ViewGridIcon, ViewListIcon } from '@heroicons/react/outline';
 import { classNames } from '../../../functions';
 import { View } from '../../../hooks/useViewSwitcher';
 
@@ -14,7 +15,7 @@ export function ViewSwitcher({ handleListView, handleCardView, view }) {
           view === View.List && activeClassName,
         )}
       >
-        List
+        <ViewListIcon className="w-5 h-5" />
       </div>
       <div
         onClick={handleCardView}
@@ -23,7 +24,7 @@ export function ViewSwitcher({ handleListView, handleCardView, view }) {
           view === View.Card && activeClassName,
         )}
       >
-        Card
+        <ViewGridIcon className="w-5 h-5" />
       </div>
     </div>
   );

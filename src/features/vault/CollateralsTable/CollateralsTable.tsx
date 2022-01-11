@@ -25,7 +25,7 @@ const MemoPromotedCollaterals = React.memo(PromotedCollaterals);
 
 function ListViewHeader() {
   return (
-    <div className="p-2 grid grid-cols-4">
+    <div className="p-2 grid grid-cols-4 text-xs md:text-sm">
       <div className="flex justify-center items-center text-grey font-bold">
         Asset
       </div>
@@ -230,7 +230,7 @@ export function CollateralsTable() {
             }}
           />
         </div>
-        <div className="flex justify-center">
+        <div className="flex justify-center mb-4">
           <ViewSwitcher
             view={view}
             handleListView={setListView}

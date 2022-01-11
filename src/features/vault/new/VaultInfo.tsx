@@ -3,6 +3,8 @@ import { classNames, formatNumber, formatPercent } from '../../../functions';
 import { DefinedStyles } from '../../../utils/DefinedStyles';
 import Skeleton from 'react-loading-skeleton';
 import { Button } from '../../../components-ui/Button';
+import { useSizeMdUp } from '../../../components-ui/Responsive';
+import { useState } from 'react';
 
 type VaultInfoType = {
   totalSupply?: number;
@@ -10,9 +12,12 @@ type VaultInfoType = {
 };
 
 export function VaultInfo({ mcr, sfr, collateral, collateralPriceUSD }) {
+  const isViewportMediuUp = useSizeMdUp();
+  const [expanded, setExpanded] = useState(isViewportMediuUp);
+
   return (
     <div className="rounded-20 bg-vault-manager-info p-8 text-text">
-      <div className="flex flex-col 2xl: justify-between 2xl:flex-row items-start 2xl:items-end space-x-8 2xl:space-y-0">
+      <div className="flex flex-col 2xl:flex-row items-start 2xl:items-end md:space-x-8 2xl:space-y-0">
         <div className="flex items-end space-x-8">
           <CurrencyLogo
             size="128px"

@@ -14,6 +14,7 @@ export type RouterCurrencyInputPanelTypes = {
   maxClassName?: string;
   amount?: string;
   onCurrencyClick?: () => void;
+  hideChevron?: boolean;
 };
 
 export function RouterCurrencyInputPanel({
@@ -25,6 +26,7 @@ export function RouterCurrencyInputPanel({
   inputClassName,
   maxClassName,
   onCurrencyClick,
+  hideChevron,
 }: RouterCurrencyInputPanelTypes) {
   const onMax = () => {
     max && onAmountChange(max.toExact());
@@ -59,7 +61,7 @@ export function RouterCurrencyInputPanel({
             </div>
           )}
         </div>
-        <ChevronDownIcon className="w-4 h-4 text-grey" />
+        {!hideChevron && <ChevronDownIcon className="w-4 h-4 text-grey" />}
       </div>
       <div
         className="

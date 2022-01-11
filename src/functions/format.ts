@@ -119,7 +119,7 @@ export const formatNumber = (
     }
   }
 
-  return parseFloat(String(num)).toPrecision(4);
+  return parseFloat(parseFloat(String(num)).toPrecision(4)).toString();
 };
 
 export function formatNumberScale(number: any, usd = false) {

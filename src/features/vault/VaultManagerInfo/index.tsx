@@ -1,15 +1,12 @@
 import { useState } from 'react';
-import { Button } from '../../../components-ui/Button';
 import Image from '../../../components-ui/Image';
 import { formatNumber, formatNumberScale } from '../../../functions';
 import { useVaultManager } from '../../../services/graph/hooks/vault';
 import Skeleton from 'react-loading-skeleton';
-import { ChevronDownIcon } from '@heroicons/react/outline';
 import {
   useSizeMdUp,
   useSizeXs,
-  ViewportSmallUp,
-  ViewportXSmall,
+  ViewportMediumUp,
 } from '../../../components-ui/Responsive';
 import styled from '@emotion/styled';
 
@@ -18,7 +15,7 @@ const VaultManagerInfoBg = styled.div`
   overflow: hidden;
 
   &:before {
-    @media only screen and (max-width: 640px) {
+    @media only screen and (max-width: 908px) {
       content: '';
       position: absolute;
       width: 128px;
@@ -36,7 +33,6 @@ const VaultManagerInfoBg = styled.div`
 export function VaultManagerInfo() {
   const vaultManager = useVaultManager();
   const isViewportMediuUp = useSizeMdUp();
-  const isViewportXs = useSizeXs();
   const [expanded, setExpanded] = useState(isViewportMediuUp);
 
   const { runningStat, liquidation } = vaultManager ?? {
@@ -50,9 +46,9 @@ export function VaultManagerInfo() {
   return (
     <>
       <VaultManagerInfoBg className="rounded-20 bg-vault-manager-info p-8">
-        <div className="flex flex-col 2xl:flex-row items-start 2xl:items-end md:space-x-8 2xl:space-y-0">
+        <div className="flex flex-col 2xl:flex-row items-start 2xl:items-end md:space-x-12 2xl:space-y-0">
           <div className="flex items-center md:items-end space-x-8">
-            <ViewportSmallUp>
+            <ViewportMediumUp>
               <Image
                 src="https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/stnd.jpg"
                 width={logoSize}
@@ -60,28 +56,10 @@ export function VaultManagerInfo() {
                 layout="fixed"
                 className="rounded-full"
               />
-            </ViewportSmallUp>
+            </ViewportMediumUp>
             <div className="space-y-2 flex-col justify-end pb-2">
-              <div className="flex items-center space-x-4 w-full justify-between">
-                <div className="text-2xl md:text-4xl font-black md:font-bold flex items-center">
-                  {/* <ViewportXSmall>
-                    <Image
-                      src="https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/stnd.jpg"
-                      width={'24px'}
-                      height={'24px'}
-                      layout="fixed"
-                      className="rounded-full"
-                    />
-                  </ViewportXSmall> */}
-                  <span>MTR</span>
-                </div>
-                {/* <Button
-                  disabled
-                  type="bordered"
-                  color={vaultManager?.rebaseActive ? 'success' : 'danger'}
-                >
-                  On
-                </Button> */}
+              <div className="text-2xl md:text-4xl font-black md:font-bold flex items-center">
+                <span>MTR</span>
               </div>
               <div className="flex items-center space-x-4 md:space-x-12">
                 <div className="space-y-1">

@@ -2,32 +2,33 @@ import Head from 'next/head';
 import { getAddress } from 'ethers/lib/utils';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { VaultDeposit } from '../../features/vault/vaults/Deposit';
-import { VaultMint } from '../../features/vault/vaults/Mint';
-import { VaultPayBack } from '../../features/vault/vaults/PayBack';
-import { VaultInfoCard } from '../../features/vault/vaults/VaultInfoCard';
-import { VaultWithdraw } from '../../features/vault/vaults/Withdraw';
-import { tryParseAmount } from '../../functions';
-import { useActiveWeb3React } from '../../hooks';
-import { useCurrency } from '../../hooks/Tokens';
-import { useMtr } from '../../hooks/vault/useMtr';
-import { useVaultDebt } from '../../hooks/vault/useVault';
-import { useVaultManagerAssetPrice } from '../../hooks/vault/useVaultManager';
-import { useVault, useVaults } from '../../services/graph/hooks/vault';
-import { useProtocol } from '../../state/protocol/hooks';
-import { useCurrencyBalance } from '../../state/wallet/hooks';
-import { Page } from '../../components-ui/Page';
-import { DefinedStyles } from '../../utils/DefinedStyles';
-import { PageContent } from '../../components-ui/PageContent';
-import { ViewportMediumUp } from '../../components-ui/Responsive';
-import { PageHeader } from '../../components-ui/PageHeader';
+import { VaultDeposit } from '../../../features/vault/vaults/Deposit';
+import { VaultMint } from '../../../features/vault/vaults/Mint';
+import { VaultPayBack } from '../../../features/vault/vaults/PayBack';
+import { VaultInfoCard } from '../../../features/vault/vaults/VaultInfoCard';
+import { VaultWithdraw } from '../../../features/vault/vaults/Withdraw';
+import { tryParseAmount } from '../../../functions';
+import { useActiveWeb3React } from '../../../hooks';
+import { useCurrency } from '../../../hooks/Tokens';
+import { useMtr } from '../../../hooks/vault/useMtr';
+import { useVaultDebt } from '../../../hooks/vault/useVault';
+import { useVaultManagerAssetPrice } from '../../../hooks/vault/useVaultManager';
+import { useVaults } from '../../../services/graph/hooks/vault';
+import { useProtocol } from '../../../state/protocol/hooks';
+import { useCurrencyBalance } from '../../../state/wallet/hooks';
+import { Page } from '../../../components-ui/Page';
+import { DefinedStyles } from '../../../utils/DefinedStyles';
+import { PageContent } from '../../../components-ui/PageContent';
+import { ViewportMediumUp } from '../../../components-ui/Responsive';
+import { PageHeader } from '../../../components-ui/PageHeader';
+import { VaultHeader } from '../../../features/vault/vaults/VaultHeader';
 
 export default function Vault() {
   const { account, chainId } = useActiveWeb3React();
   const protocol = useProtocol();
   const router = useRouter();
 
-  const vaultAddress = router.query.vault[0];
+  const vaultAddress = router.query.address as string;
 
   // START: vault info
   const vault = useVaults({
@@ -123,28 +124,16 @@ export default function Vault() {
               sfr={sfr}
               collateralRatio={currentCollateralRatio}
             />
-            <VaultPayBack
-              vaultAddress={checksummedVaultAddress}
-              mtr={mtr}
-              balance={mtrBalance}
-              amount={paybackAmount}
-              onAmountChange={setPaybackAmount}
-            />
-            <VaultWithdraw
-              onAmountChange={setWithdrawAmount}
-              vaultAddress={checksummedVaultAddress}
-              collateral={collateralCurrency}
-              amount={withdrawAmount}
-              balance={withdrawableCurrencyBalance}
-            />
-            <VaultDeposit
-              onAmountChange={setDepositAmount}
-              vaultAddress={checksummedVaultAddress}
-              amount={depositAmount}
-              collateral={collateralCurrency}
-              balance={collateralBalance}
-            />
-            <VaultMint />
+            <div className={DefinedStyles.vaultPanel}>
+              <VaultHeader vaultAddress={vaultAddress} withdraw />
+              <VaultWithdraw
+                onAmountChange={setWithdrawAmount}
+                vaultAddress={checksummedVaultAddress}
+                collateral={collateralCurrency}
+                amount={withdrawAmount}
+                balance={withdrawableCurrencyBalance}
+              />
+            </div>
           </div>
         </PageContent>
       </Page>

@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
+import { RouterCurrencyInputPanel } from '../../../bridge/feature/RouterCurrencyInputPanel';
 import { Button } from '../../../components-ui/Button';
 import { TokenInputPanelV2 } from '../../../components-ui/XSTND/TokenInputPanelV2';
-import { tryParseAmount } from '../../../functions';
+import { formatNumber, tryParseAmount } from '../../../functions';
 import { ApprovalState, useApproveCallback } from '../../../hooks';
 import { useVault } from '../../../hooks/vault/useVault';
 import { DefinedStyles } from '../../../utils/DefinedStyles';
@@ -12,6 +13,7 @@ export function VaultPayBack({
   balance,
   amount,
   onAmountChange,
+  borrowed,
 }) {
   const { payBack } = useVault(vaultAddress);
   const paybackCurrencyAmount = tryParseAmount(amount, mtr);
@@ -59,25 +61,36 @@ export function VaultPayBack({
     }
   }, [balance, paybackCurrencyAmount]);
 
+  const remainingBalance =
+    borrowed && parseFloat(borrowed) - (amount !== '' ? parseFloat(amount) : 0);
+
   return (
-    <div className={DefinedStyles.vaultPanel}>
-      Payback
-      <div>
-        <TokenInputPanelV2
-          onAmountChange={onAmountChange}
-          token={mtr}
-          max={balance}
-          balance={balance}
-          amount={amount}
-        />
+    <div className="space-y-4">
+      <div className="flex items-end space-x-2">
+        <div className="text-grey font-bold">Debt After Payback:</div>
+        <div className="font-bold text-2xl">
+          {formatNumber(remainingBalance)}{' '}
+          <span className="text-base font-normal">MTR</span>
+        </div>
       </div>
-      <Button
-        className={DefinedStyles.fullButton}
-        onClick={onClick}
-        disabled={!payable}
-      >
-        {confirmButtonMessage}
-      </Button>
+      <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 ">
+        <div className="w-full rounded-20 sm:bg-opaque-secondary sm:px-4 py-1">
+          <RouterCurrencyInputPanel
+            onAmountChange={onAmountChange}
+            currency={mtr}
+            max={balance}
+            amount={amount}
+            hideChevron
+          />
+        </div>
+        <Button
+          className={DefinedStyles.fullButton}
+          onClick={onClick}
+          disabled={!payable}
+        >
+          {confirmButtonMessage}
+        </Button>
+      </div>
     </div>
   );
 }

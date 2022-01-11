@@ -106,6 +106,7 @@ module.exports = {
       },
     },
     boxShadow: {
+      simple: '0 4px 8px 0 rgba(0, 0, 0, 0.01)',
       dark: '0px 4px 50px rgba(81, 29, 102, 0.5)',
       arbitrage: '0px 0px 10px #BBE7E0',
     },

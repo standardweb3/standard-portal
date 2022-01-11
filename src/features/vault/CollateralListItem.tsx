@@ -14,7 +14,7 @@ export function CollateralListItem({ collateral }) {
   };
 
   return (
-    <div className="grid grid-cols-4 text-text w-full rounded-20 hover:bg-bright transition duration-500 p-2">
+    <div className="grid grid-cols-4 shadow-simple text-text w-full rounded-20 bg-opaque hover:bg-bright transition duration-500 p-2">
       <div className="col-span-1 flex flex-col items-center space-y-2">
         <Image
           className="rounded-full select-none"

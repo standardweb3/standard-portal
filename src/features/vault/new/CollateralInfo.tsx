@@ -1,9 +1,12 @@
 import { Button } from '../../../components-ui/Button';
 import { CurrencyLogo } from '../../../components-ui/CurrencyLogo';
 import { formatNumber, formatPercent } from '../../../functions';
-import { DefinedStyles } from '../../../utils/DefinedStyles';
 import Skeleton from 'react-loading-skeleton';
-import { useSizeMdUp } from '../../../components-ui/Responsive';
+import {
+  useSizeMdUp,
+  ViewportMediumUp,
+  ViewportSmallDown,
+} from '../../../components-ui/Responsive';
 import { useState } from 'react';
 
 export function CollateralInfo({ mcr, lfr, sfr, collateral, priceUSD }) {
@@ -11,17 +14,30 @@ export function CollateralInfo({ mcr, lfr, sfr, collateral, priceUSD }) {
   const [expanded, setExpanded] = useState(isViewportMediuUp);
 
   return (
-    <div className="rounded-20 bg-vault-manager-info p-8">
-      <div className="flex flex-col 2xl:flex-row items-start 2xl:items-end space-x-8 2xl:space-y-0">
-        <div className="flex items-end space-x-8">
-          <CurrencyLogo
-            currency={collateral}
-            size="128px"
-            className="rounded-full"
-          />
-          <div className="space-y-2 flex-col justify-end pb-2">
+    <div className="rounded-20 bg-vault-manager-info p-8 relative">
+      <div className="flex flex-col 2xl:flex-row items-start 2xl:items-end md:space-x-12 2xl:space-y-0">
+        <div className="flex items-center md:items-end">
+          <ViewportSmallDown>
+            <div className="absolute top-[24px] right-[24px] z-[-10]">
+              <CurrencyLogo
+                currency={collateral}
+                size="84px"
+                className="rounded-full"
+              />
+            </div>
+          </ViewportSmallDown>
+          <ViewportMediumUp>
+            <CurrencyLogo
+              currency={collateral}
+              size="128px"
+              className="rounded-full"
+            />
+          </ViewportMediumUp>
+          <div className="space-y-2 flex-col justify-end pb-2 md:ml-8">
             <div className="flex items-center space-x-4 w-full justify-between">
-              <div className="text-4xl font-bold">{collateral.symbol}</div>
+              <div className="text-2xl md:text-4xl font-black md:font-bold flex items-center">
+                {collateral.symbol}
+              </div>
               <Button
                 disabled
                 type="bordered"
@@ -30,10 +46,12 @@ export function CollateralInfo({ mcr, lfr, sfr, collateral, priceUSD }) {
                 Rebase
               </Button>
             </div>
-            <div className="flex items-center space-x-12">
+            <div className="flex items-center space-x-4 md:space-x-12">
               <div className="space-y-1">
-                <div>Stability Fee</div>
-                <div className="text-3xl font-bold">
+                <div className="text-grey md:text-text text-xs md:text-base">
+                  Stability Fee
+                </div>
+                <div className="text-2xl md:text-3xl font-bold">
                   {sfr !== undefined ? (
                     formatPercent(sfr)
                   ) : (
@@ -42,8 +60,10 @@ export function CollateralInfo({ mcr, lfr, sfr, collateral, priceUSD }) {
                 </div>
               </div>
               <div className="space-y-1">
-                <div>Min. Collateral Ratio </div>
-                <div className="text-3xl font-bold">
+                <div className="text-grey md:text-text text-xs md:text-base">
+                  Min. Collateral Ratio
+                </div>
+                <div className="text-2xl md:text-3xl font-bold">
                   {mcr !== undefined ? (
                     formatPercent(mcr)
                   ) : (

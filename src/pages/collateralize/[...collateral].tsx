@@ -86,7 +86,7 @@ export default function Collateral() {
     collateral,
   );
 
-  const maxLiquidationRatio = 400;
+  const maxLiquidationRatio = 320;
   const safeLiquidationRatio = 200;
   // change to collateral info
   const minLiquidationRatio = 150;
