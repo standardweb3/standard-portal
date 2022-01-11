@@ -50,7 +50,7 @@ export default function Option({
             ? 'bg-background-modal-inner '
             : 'bg-background border border-green'
         }
-        ${!active ? 'hover:bg-green' : ''}
+        ${!active ? 'hover:bg-bright' : ''}
         transition duration-500
         `}
     >
