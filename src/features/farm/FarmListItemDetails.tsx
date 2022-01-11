@@ -88,7 +88,7 @@ const FarmListItem = ({ farm }) => {
       <Disclosure.Panel
         className="
         flex flex-col w-full border-t-0 
-        rounded-20 rounded-t-none bg-opaque-4"
+        rounded-20 rounded-t-none bg-opaque"
         static
       >
         <div className="p-4 space-y-4 flex flex-col items-center">

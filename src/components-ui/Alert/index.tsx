@@ -4,7 +4,7 @@ import { XIcon } from '@heroicons/react/solid';
 import { classNames } from '../../functions';
 import { ExclamationCircleIcon } from '@heroicons/react/outline';
 
-const infoClassName = 'bg-opaque-alert text-text text-opacity-50';
+const infoClassName = 'bg-grey bg-opacity-10 text-text text-opacity-75';
 
 const TYPE = {
   information: {
@@ -28,7 +28,7 @@ const TYPE = {
     ),
   },
   warning: {
-    typeClassName: 'bg-success bg-opacity-25',
+    typeClassName: 'bg-black bg-opacity-50',
     icon: <ExclamationCircleIcon className="text-warn w-4 h-4" />,
   },
   error: {

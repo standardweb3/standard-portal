@@ -43,7 +43,7 @@ export default function StndStaker({
   const { enter, leave } = useStndStaker();
 
   return (
-    <div className="md:bg-opaque p-0 md:p-5 rounded-20 w-full h-full">
+    <div className="md:bg-background p-0 md:p-5 rounded-20 w-full h-full">
       <StndStakerHeader stake={stake} onStake={onStake} onUnstake={onUnstake} />
       <ViewportSmallDown>
         <div className="w-full flex justify-center my-4">

@@ -20,8 +20,8 @@ export const DefinedStyles = {
   pageContent: `
     w-full
     md:max-w-[600px]
-    bg-background
-    rounded-20 p-5 sm:p-5
+    md:bg-background
+    rounded-20 p-0 sm:p-5
     text-text
   `,
   manageTab: ` 

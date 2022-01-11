@@ -36,7 +36,7 @@ const StyledDialogOverlay = styled(AnimatedDialogOverlay)`
   &[data-reach-dialog-overlay] {
     z-index: 10;
     padding: 0;
-    background-color: rgba(14, 5, 37, 0.7);
+    background-color: rgba(255, 255, 255, 0.08);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -133,7 +133,7 @@ export function Modal({
                  rounded-xl
                  px-4 py-6
                  sm:px-8 sm:py-8
-                 bg-background-modal`,
+                 bg-background`,
                 className ?? '',
               )}
             >

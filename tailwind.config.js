@@ -40,6 +40,7 @@ module.exports = {
       },
       backgroundImage: {
         main: 'linear-gradient(90deg, #25084B 0%, #367c85 100%)',
+        'mobile-main': 'linear-gradient(90deg, #170430 0%, #04434a 100%)',
         bond: 'rgba(119, 36, 210, 1)',
         unbond:
           'linear-gradient(297.07deg, #8525EF 4.24%, #8525EF 4.25%, #41157C 35.24%, #170C34 85.03%)',
@@ -68,6 +69,7 @@ module.exports = {
         divider: 'rgba(255,255,255,0.05)',
         'icon-btn-grey': '#5B526A',
         background: '#170c34',
+        'background-dim': 'rgba(23, 12, 52, 0.5)',
         'background-2': '#373448',
         'background-main': '#111123',
         'background-modal': '#382A4B',
@@ -76,10 +78,10 @@ module.exports = {
         'background-farm-list': '#474771',
         'background-bond': 'rgba(119, 36, 210, 1)',
         'background-currency-input-xs': 'rgba(77, 36, 96, 0.2)',
-        opaque: 'rgba(255,255,255,0.04)',
+        opaque: 'rgba(255,255,255,0.06)',
         'opaque-secondary': 'rgba(222, 199, 239, 0.13)',
         'opaque-tertiary': 'rgba(100, 70, 100, 0.43)',
-        'opaque-4': 'rgba(0,0,0,0.2)',
+        'opaque-4': 'rgba(0,0,0,0.4)',
         'opaque-slider': 'rgba(24,1,1,0.35)',
         'opaque-farm-list': 'rgba(222, 199, 239, 0.05)',
         'opaque-alert': 'rgba(97, 67, 188, 0.07)',

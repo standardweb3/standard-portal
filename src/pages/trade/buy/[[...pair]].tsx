@@ -514,7 +514,7 @@ function Swap() {
             <div className="col-span-2 xl:col-span-1">
               <div className="mb-4">
                 <ViewportSmallDown>
-                  <div className="flex justify-end items-center space-x-2">
+                  <div className="flex justify-end items-center space-x-2 px-4">
                     <TransactionSettingsWithGas
                       allowedSlippage={allowedSlippage}
                     />

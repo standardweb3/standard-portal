@@ -20,7 +20,7 @@ const Menu = ({ positionsLength }) => {
             exact
             href={`/farm?filter=portfolio`}
             activeClassName={`
-          bg-opaque-4
+          bg-opaque
           border
           border-opaque-border
           text-text
@@ -42,7 +42,7 @@ const Menu = ({ positionsLength }) => {
           exact
           href="/farm"
           activeClassName={`
-        bg-opaque-4
+        bg-opaque
         border
         border-opaque-border
         text-text

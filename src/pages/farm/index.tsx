@@ -211,7 +211,7 @@ function Farm() {
               className="
               p-0 md:p-5
               rounded-20 
-              bg-transparent md:bg-opaque-secondary"
+              bg-transparent md:bg-background"
             >
               <ViewportMediumUp>
                 <div className="mb-6">
@@ -226,7 +226,7 @@ function Farm() {
                     className: `
                     relative w-full
                     bg-transparent
-                    bg-opaque-4
+                    bg-opaque
                     rounded-20
                     border border-transparent
                     focus:border-primary

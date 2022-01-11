@@ -96,7 +96,7 @@ export function StakePoolInfo({ stnd, xStnd, className }: StakePoolInfoTypes) {
       className={classNames(
         `w-full
         flex flex-col justify-start items-center
-        bg-opaque p-5 rounded-20`,
+        bg-background bg-opacity-25  p-5 rounded-20`,
         className,
       )}
     >

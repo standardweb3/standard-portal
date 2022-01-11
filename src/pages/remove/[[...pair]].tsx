@@ -825,7 +825,7 @@ function Remove() {
           <div className={DefinedStyles.pageContent}>
             <div className="mb-4">
               <ViewportSmallDown>
-                <div className="flex justify-end items-center space-x-2">
+                <div className="flex justify-end items-center space-x-2 px-4">
                   <TransactionSettingsWithGas
                     allowedSlippage={allowedSlippage}
                   />

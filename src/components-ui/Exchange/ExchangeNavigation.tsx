@@ -40,7 +40,7 @@ export function ExchangeNavigation({ input, output }: ExchangeNavigationProps) {
     >
       <NavigationLink
         activeClassName={`
-            bg-opaque-4
+            bg-opaque
             border
             border-opaque-border
             text-text
@@ -62,7 +62,7 @@ export function ExchangeNavigation({ input, output }: ExchangeNavigationProps) {
       </NavigationLink>
       <NavigationLink
         activeClassName={`
-          bg-opaque 
+          bg-opaque
           border 
           border-opaque-border
           text-text

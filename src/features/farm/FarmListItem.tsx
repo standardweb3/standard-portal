@@ -43,7 +43,7 @@ const FarmListItem = ({ farm, ...rest }) => {
               rounded-20
               cursor-pointer 
               select-none 
-              bg-opaque-4
+              bg-opaque
               hover:bg-bright
               transition
               duration-500
