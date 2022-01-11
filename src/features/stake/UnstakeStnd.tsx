@@ -14,9 +14,9 @@ import {
 } from '../../hooks';
 import { useProtocol } from '../../state/protocol/hooks';
 import { DefinedStyles } from '../../utils/DefinedStyles';
-import { Button } from '../Button';
-import { CurrencyLogo } from '../CurrencyLogo';
-import { RippleSpinner } from '../Spinner/RippleSpinner';
+import { Button } from '../../components-ui/Button';
+import { CurrencyLogo } from '../../components-ui/CurrencyLogo';
+import { RippleSpinner } from '../../components-ui/Spinner/RippleSpinner';
 import { TokenInputPanelV2 } from './TokenInputPanelV2';
 
 export type UnstakeStndTypes = {

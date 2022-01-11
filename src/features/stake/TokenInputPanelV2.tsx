@@ -5,9 +5,9 @@ import {
 } from '@digitalnative/standard-protocol-sdk';
 import { useEffect, useState } from 'react';
 import { classNames } from '../../functions';
-import { Button } from '../Button';
-import { CurrencyLogo } from '../CurrencyLogo';
-import { Input as NumericalInput } from '../NumericalInput';
+import { Button } from '../../components-ui/Button';
+import { CurrencyLogo } from '../../components-ui/CurrencyLogo';
+import { Input as NumericalInput } from '../../components-ui/NumericalInput';
 
 export type TokenInputPanelV2Types = {
   token: Currency;

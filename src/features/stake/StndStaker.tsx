@@ -5,8 +5,8 @@ import { StndStakerHeader } from './StndStakerHeader';
 import { CurrencyAmount, Token } from '@digitalnative/standard-protocol-sdk';
 import useStndStaker from '../../hooks/stake';
 import { useXStndInfo } from '../../hooks/stake/useXStndInfo';
-import { CurrencyLogo } from '../CurrencyLogo';
-import { ViewportSmallDown } from '../Responsive';
+import { CurrencyLogo } from '../../components-ui/CurrencyLogo';
+import { ViewportSmallDown } from '../../components-ui/Responsive';
 import { formatNumber } from '../../functions';
 
 export type StndStakerProps = {

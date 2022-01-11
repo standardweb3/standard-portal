@@ -1,11 +1,11 @@
 import Head from 'next/head';
-import StndStaker from '../../components-ui/XSTND/StndStaker';
+import StndStaker from '../../features/stake/StndStaker';
 import { Page } from '../../components-ui/Page';
 import { ViewportMediumUp } from '../../components-ui/Responsive';
 import { PageHeader } from '../../components-ui/PageHeader';
 import { DefinedStyles } from '../../utils/DefinedStyles';
 import { PageContent } from '../../components-ui/PageContent';
-import { StakePoolInfo } from '../../components-ui/XSTND/StakePoolInfo';
+import { StakePoolInfo } from '../../features/stake/StakePoolInfo';
 
 import { useStnd, useXStnd } from '../../hooks/Tokens';
 import { useStandardPrice } from '../../services/graph';

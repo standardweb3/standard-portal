@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import { classNames } from '../../functions';
 import { useActiveWeb3React } from '../../hooks';
 import { useCurrencyBalance } from '../../state/wallet/hooks';
-import { Button } from '../Button';
-import { CurrencyLogo } from '../CurrencyLogo';
-import { Input as NumericalInput } from '../NumericalInput';
+import { Button } from '../../components-ui/Button';
+import { CurrencyLogo } from '../../components-ui/CurrencyLogo';
+import { Input as NumericalInput } from '../../components-ui/NumericalInput';
 
 export type TokenInputPanelTypes = {
   token: Currency;
