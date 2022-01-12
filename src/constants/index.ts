@@ -60,7 +60,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     description: 'Easy-to-use browser extension.',
     href: null,
     color: '#E8831D',
-    mobile: true
+    mobile: true,
   },
   WALLET_CONNECT: {
     connector: walletconnect,

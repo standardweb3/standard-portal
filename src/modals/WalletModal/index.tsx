@@ -188,7 +188,7 @@ export default function WalletModal({
         // if (option.connector === portis) {
         //   return null;
         // }
-        if (!window.web3 && !window.ethereum && option.mobile) {
+        if (option.mobile) {
           return (
             <Option
               disabled={!userAgreement}
