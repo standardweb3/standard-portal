@@ -25,7 +25,7 @@ export function TokenAdder({ currency }: TokenAdderProps) {
         `cursor-pointer
         outline-none
         select-none
-        bg-opaque-secondary
+        bg-opaque md:bg-background
         rounded-20
         px-3 py-2
         flex items-center space-x-1 t

@@ -25,7 +25,7 @@ export function AnalyticsLink({
         'View Analytics'
       ) : (
         <ChartBarIcon
-          className={classNames('w-5 h-5 text-grey opacity-50', iconClassName)}
+          className={classNames('w-5 h-5 text-grey', iconClassName)}
         />
       )}
     </ExternalLink>

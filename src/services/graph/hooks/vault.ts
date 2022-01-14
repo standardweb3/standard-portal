@@ -3,9 +3,11 @@ import useSWR, { SWRConfiguration } from 'swr';
 import { useActiveWeb3React } from '../../../hooks';
 import { useProtocol } from '../../../state/protocol/hooks';
 import {
+  getCdps,
   getCVault,
   getVault,
   getVaultManager,
+  getVaultManagerHistories,
   getVaults,
 } from '../fetchers/vault';
 
@@ -64,5 +66,33 @@ export function useCVault(
     chainId ? ['cVault', chainId, JSON.stringify(variables)] : null,
     () => getCVault(chainId, variables),
   );
+  return data;
+}
+
+export function useVaultManagerHistories(
+  variables = undefined,
+  swrConfig: SWRConfiguration = undefined,
+) {
+  const { chainId } = useActiveWeb3React();
+  const { data } = useSWR(
+    chainId
+      ? ['vaultManagerHistories', chainId, JSON.stringify(variables)]
+      : null,
+    () => getVaultManagerHistories(chainId, variables),
+  );
+
+  return data;
+}
+
+export function useCdps(
+  variables = undefined,
+  swrConfig: SWRConfiguration = undefined,
+) {
+  const { chainId } = useActiveWeb3React();
+  const { data } = useSWR(
+    chainId ? ['cdps', chainId, JSON.stringify(variables)] : null,
+    () => getCdps(chainId, variables),
+  );
+
   return data;
 }

@@ -1,5 +1,4 @@
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
-import cookie from 'cookie-cutter';
 // next
 import Image from 'next/image';
 // networks
@@ -96,7 +95,7 @@ export default function NetworkModal(): JSX.Element | null {
               className={`
                 flex items-center 
                 w-full col-span-1 p-3 space-x-3 rounded-xl
-                bg-background-modal-inner hover:bg-green
+                bg-background-modal-inner hover:bg-bright
                 cursor-pointer
                 transition duration-500
                 `}

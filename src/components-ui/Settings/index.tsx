@@ -49,7 +49,7 @@ export default function Settings({
         onClick={toggle}
         id="open-settings-dialog-button"
       >
-        <CogIcon className="w-[26px] h-[26px] text-grey opacity-50" />
+        <CogIcon className="w-[26px] h-[26px] text-grey" />
       </div>
       {open && (
         <div

@@ -473,7 +473,7 @@ function Liquidity() {
             {/* <AddRemoveTabs creating={isCreate} adding={true} defaultSlippage={DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE} /> */}
             <div className="mb-4">
               <ViewportSmallDown>
-                <div className="flex justify-end items-center space-x-2">
+                <div className="flex justify-end items-center space-x-2 px-4">
                   <TransactionSettingsWithGas
                     allowedSlippage={allowedSlippage}
                   />

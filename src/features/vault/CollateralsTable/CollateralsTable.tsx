@@ -13,6 +13,7 @@ import { SearchV2 } from '../../../components-ui/Search/SearchV2';
 import { ViewSwitcher } from './ViewSwitcher';
 import { useViewSwitcher, View } from '../../../hooks/useViewSwitcher';
 import { CollateralListItem } from '../CollateralListItem';
+import { useCdps } from '../../../services/graph/hooks/vault';
 
 export enum CollateralTableFilter {
   none = 'none',
@@ -69,6 +70,9 @@ export function CollateralsTable() {
   } = useCollateralsTable();
 
   const collaterals = useCollaterals({ show: true });
+  console.log(collaterals);
+  const cdps = useCdps();
+  console.log(cdps);
 
   const promotedCollaterals = useMemo(() => {
     return collaterals

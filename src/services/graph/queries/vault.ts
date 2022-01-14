@@ -19,6 +19,43 @@ export const vaultManagerQuery = gql`
   }
 `;
 
+export const vaultManagerHistoriesQuery = gql`
+  query vaultManagerHistoriesQuery(
+    $first: Int! = 1000
+    $date: Int! = 0
+    $where: VaultManagerHistory_filter
+    $skip: Int! = 0
+  ) {
+    vaultManagerHistories(
+      skip: $skip
+      first: $first
+      orderBy: date
+      orderDirection: desc
+      where: $where
+    ) {
+      id
+      date
+      desiredSupply
+      currentBorrowed
+      historicBorrowed
+      historicPaidBack
+      historicVaultCount
+      activeVaultCount
+      historicUserCount
+      activeUserCount
+      collectedStabilityFee
+      ammReserveCollateralUSD
+      currentCollateralizedUSD
+      historicCollateralizedUSD
+      liquidationCount
+      liquidationAmountUSD
+      liquidationFeeUSD
+      liquidationAMMUSD
+      timestamp
+    }
+  }
+`;
+
 export const vaultQuery = gql`
   query vault($where: Vault_filter, $block: Block_height) {
     vault(where: $where, block: $block) {
@@ -70,6 +107,30 @@ export const cVaultQuery = gql`
         sfr
         lfr
       }
+    }
+  }
+`;
+
+export const cdpsQuery = gql`
+  query cdps(
+    $first: Int! = 1000
+    $date: Int! = 0
+    $where: CDP_filter
+    $skip: Int! = 0
+  ) {
+    cdps(
+      skip: $skip
+      first: $first
+      orderBy: symbol
+      orderDirection: asc
+      where: $where
+    ) {
+      id
+      lfr
+      mcr
+      sfr
+      decimals
+      symbol
     }
   }
 `;

@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import { VaultInfo } from '../../features/vault/new/VaultInfo';
 import { Page } from '../../components-ui/Page';
 import { PageContent } from '../../components-ui/PageContent';
 import { DefinedStyles } from '../../utils/DefinedStyles';
@@ -16,15 +15,10 @@ import {
   useApproveCallback,
 } from '../../hooks';
 import { CollateralizeSettingsPanel } from '../../features/vault/new/CollateralizeSettingsPanel';
-import { ConfirmCollateralizeButton } from '../../features/vault/new/ConfirmCollateralizeButton';
 import { CollateralInfo } from '../../features/vault/new/CollateralInfo';
-import {
-  useVaultManagerAssetPrice,
-  useVaultManagerIsValidCDP,
-} from '../../hooks/vault/useVaultManager';
+import { useVaultManagerAssetPrice } from '../../hooks/vault/useVaultManager';
 import {
   getVaultManagerAddress,
-  NATIVE,
   WNATIVE,
 } from '@digitalnative/standard-protocol-sdk';
 import { useProtocol } from '../../state/protocol/hooks';

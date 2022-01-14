@@ -5,8 +5,8 @@ import { StndStakerHeader } from './StndStakerHeader';
 import { CurrencyAmount, Token } from '@digitalnative/standard-protocol-sdk';
 import useStndStaker from '../../hooks/stake';
 import { useXStndInfo } from '../../hooks/stake/useXStndInfo';
-import { CurrencyLogo } from '../CurrencyLogo';
-import { ViewportSmallDown } from '../Responsive';
+import { CurrencyLogo } from '../../components-ui/CurrencyLogo';
+import { ViewportSmallDown } from '../../components-ui/Responsive';
 import { formatNumber } from '../../functions';
 
 export type StndStakerProps = {
@@ -43,7 +43,7 @@ export default function StndStaker({
   const { enter, leave } = useStndStaker();
 
   return (
-    <div className="md:bg-opaque p-0 md:p-5 rounded-20 w-full h-full">
+    <div className="md:bg-background p-0 md:p-5 rounded-20 w-full h-full">
       <StndStakerHeader stake={stake} onStake={onStake} onUnstake={onUnstake} />
       <ViewportSmallDown>
         <div className="w-full flex justify-center my-4">

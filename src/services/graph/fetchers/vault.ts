@@ -3,7 +3,9 @@ import request from 'graphql-request';
 import { useActiveWeb3React } from '../../../hooks';
 import { GRAPH_HOST } from '../constants';
 import {
+  cdpsQuery,
   cVaultQuery,
+  vaultManagerHistoriesQuery,
   vaultManagerQuery,
   vaultQuery,
   vaultsQuery,
@@ -46,4 +48,23 @@ export const getCVault = async (chainId = ChainId.MAINNET, variables) => {
   const { collateralVault } = await vault(chainId, cVaultQuery, variables);
 
   return collateralVault;
+};
+
+export const getVaultManagerHistories = async (
+  chainId = ChainId.MAINNET,
+  variables,
+) => {
+  const { vaultManagerHistories: result } = await vault(
+    chainId,
+    vaultManagerHistoriesQuery,
+    variables,
+  );
+
+  return result;
+};
+
+export const getCdps = async (chainId = ChainId.MAINNET, variables) => {
+  const { cdps: result } = await vault(chainId, cdpsQuery, variables);
+
+  return result;
 };

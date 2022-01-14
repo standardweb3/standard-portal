@@ -15,10 +15,10 @@ import {
 import useAddTokenToMetaMask from '../../hooks/useAddTokenToMetaMask';
 import { useProtocol } from '../../state/protocol/hooks';
 import { DefinedStyles } from '../../utils/DefinedStyles';
-import { Button } from '../Button';
-import { CurrencyLogo } from '../CurrencyLogo';
-import Image from '../Image';
-import { RippleSpinner } from '../Spinner/RippleSpinner';
+import { Button } from '../../components-ui/Button';
+import { CurrencyLogo } from '../../components-ui/CurrencyLogo';
+import Image from '../../components-ui/Image';
+import { RippleSpinner } from '../../components-ui/Spinner/RippleSpinner';
 import { TokenInputPanelV2 } from './TokenInputPanelV2';
 
 export type StakeStndTypes = {

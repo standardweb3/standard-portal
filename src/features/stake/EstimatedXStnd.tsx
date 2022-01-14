@@ -1,6 +1,6 @@
 import { Token } from '@digitalnative/standard-protocol-sdk';
 import { formatNumber } from '../../functions';
-import { CurrencyLogo } from '../CurrencyLogo';
+import { CurrencyLogo } from '../../components-ui/CurrencyLogo';
 
 export type EstimatedXStndTypes = {
   stnd: Token;

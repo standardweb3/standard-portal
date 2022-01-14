@@ -107,7 +107,7 @@ CurrencyInputPanelProps) {
         id={id}
         className={classNames(
           'px-4 py-2 sm:py-1',
-          'rounded-20 bg-background-currency-input-xs sm:bg-opaque-secondary',
+          'rounded-20 bg-opaque sm:bg-opaque-secondary',
         )}
       >
         <div

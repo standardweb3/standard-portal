@@ -88,6 +88,7 @@
     "react-tsparticles": "^1.33.3",
     "react-virtualized-auto-sizer": "^1.0.6",
     "react-window": "^1.8.6",
+    "recharts": "^2.1.8",
     "redux": "^4.1.1",
     "redux-devtools-extension": "^2.13.9",
     "redux-localstorage-simple": "^2.4.1",

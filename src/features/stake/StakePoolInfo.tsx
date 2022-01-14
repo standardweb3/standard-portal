@@ -1,13 +1,13 @@
 import { Token } from '@digitalnative/standard-protocol-sdk';
 import styled from '@emotion/styled';
 import { useMemo } from 'react';
-import { classNames, formatNumber, formatPercent } from '../../functions';
+import { classNames, formatNumber } from '../../functions';
 import { useXStndInfo } from '../../hooks/stake/useXStndInfo';
 import useCurrentBlockTimestamp from '../../hooks/useCurrentBlockTimestamp';
 import { useDayData, useStandardPrice } from '../../services/graph';
-import { useBar, useBarHistories } from '../../services/graph/hooks/bar';
-import { CurrencyLogo } from '../CurrencyLogo';
-import { ViewportMediumUp } from '../Responsive';
+import { useBarHistories } from '../../services/graph/hooks/bar';
+import { CurrencyLogo } from '../../components-ui/CurrencyLogo';
+import { ViewportMediumUp } from '../../components-ui/Responsive';
 
 export const StakePoolInfoWrapper = styled.div`
   background-repeat: no-repeat;
@@ -96,7 +96,7 @@ export function StakePoolInfo({ stnd, xStnd, className }: StakePoolInfoTypes) {
       className={classNames(
         `w-full
         flex flex-col justify-start items-center
-        bg-opaque p-5 rounded-20`,
+        bg-background bg-opacity-25  p-5 rounded-20`,
         className,
       )}
     >

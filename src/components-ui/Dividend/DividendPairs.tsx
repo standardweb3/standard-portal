@@ -18,7 +18,7 @@ export function DividendPairs({
   return (
     <div
       className={classNames(
-        'space-y-2 bg-transparent md:bg-opaque md:p-5 rounded-20',
+        'space-y-2 bg-transparent md:bg-background md:p-5 rounded-20',
         className,
       )}
     >

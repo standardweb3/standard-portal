@@ -36,7 +36,7 @@ export function RouterCurrencyInputPanel({
     <div
       className={classNames(
         `flex flex-col sm:flex-row items-end sm:items-center
-        bg-background-currency-input-xs
+        bg-opaque
         sm:bg-transparent
         p-4 sm:p-0
         space-y-4 sm:space-y-0

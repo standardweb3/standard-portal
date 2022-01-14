@@ -619,7 +619,7 @@ export function Bridge() {
           <PageHeader title="Bridge" />
         </ViewportMediumUp>
         <PageContent>
-          <div className="space-y-4 w-full md:max-w-[600px] bg-transparent sm:bg-opaque rounded-20 p-0 sm:p-5 text-text">
+          <div className="space-y-4 w-full md:max-w-[600px] bg-transparent sm:bg-background rounded-20 p-0 sm:p-5 text-text">
             <RouterCurrencySelectModal
               currencyList={allTokensArray}
               isOpen={modalOpen}

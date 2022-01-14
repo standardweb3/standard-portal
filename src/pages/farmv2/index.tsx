@@ -88,7 +88,7 @@ function Farmbare() {
               className="
               p-0 md:p-4
               rounded-20 
-              bg-transparent md:bg-opaque"
+              bg-transparent md:bg-background"
             >
               <ViewportMediumUp>
                 <div className="mb-6">
