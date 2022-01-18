@@ -13,7 +13,7 @@ const Layout = ({ children }) => {
   return (
     <div
       className={`
-      bg-mobile-main sm:bg-main
+      bg-mobile-main md:bg-main
       relative
       overflow-hidden
       w-full h-full

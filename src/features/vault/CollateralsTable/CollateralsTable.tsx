@@ -2,18 +2,19 @@ import React from 'react';
 import { useMemo, useState } from 'react';
 import { Table } from '../../../components-ui/Table/Table';
 import { formatBalance, formatPercent } from '../../../functions';
-import { useFuse } from '../../../hooks';
+import { useActiveWeb3React, useFuse } from '../../../hooks';
 import { usePagination } from '../../../hooks/usePagination';
 import { useCollateralsTable } from '../../../hooks/vault/useCollateralsTable';
-import { useCollaterals } from '../../../services/graph/hooks/collaterals';
 import { PromotedCollaterals } from '../new/PromotedCollaterals';
 import { CollateralCard } from '../CollateralCard';
-import { CollateralsTableFilters } from './TableFilters';
 import { SearchV2 } from '../../../components-ui/Search/SearchV2';
 import { ViewSwitcher } from './ViewSwitcher';
 import { useViewSwitcher, View } from '../../../hooks/useViewSwitcher';
 import { CollateralListItem } from '../CollateralListItem';
 import { useCdps } from '../../../services/graph/hooks/vault';
+import { getAddress } from 'ethers/lib/utils';
+import { WNATIVE_ADDRESS } from '@digitalnative/standard-protocol-sdk';
+import { CDP_DECIMALS } from '../constants';
 
 export enum CollateralTableFilter {
   none = 'none',
@@ -22,42 +23,37 @@ export enum CollateralTableFilter {
   stablecoin = 'stablecoin',
 }
 
-const MemoPromotedCollaterals = React.memo(PromotedCollaterals);
-
 function ListViewHeader() {
   return (
-    <div className="p-2 grid grid-cols-4 text-xs md:text-sm">
-      <div className="flex justify-center items-center text-grey font-bold">
-        Asset
-      </div>
-      <div className="flex justify-center items-center text-grey font-bold">
+    <div className="p-2 grid grid-cols-4 text-xs md:text-sm text-text">
+      <div className="flex justify-center items-center font-bold">Asset</div>
+      <div className="flex justify-center items-center font-bold">
         Stability Fee
       </div>
-      <div className="flex justify-center items-center text-grey font-bold">
+      <div className="flex justify-center items-center font-bold">
         Min. Collateral Ratio
       </div>
-      <div className="flex justify-center items-center text-grey font-bold">
-        Price
-      </div>
+      <div className="flex justify-center items-center font-bold">Price</div>
     </div>
   );
 }
 
 export function CollateralsTable() {
+  const { chainId } = useActiveWeb3React();
   const { view, setListView, setCardView } = useViewSwitcher();
 
-  const [filter, setFilter] = useState(CollateralTableFilter.popular);
+  const [filter, setFilter] = useState(CollateralTableFilter.none);
 
   const setFilterNone = () => setFilter(CollateralTableFilter.none);
-  const setFilterPopular = () => setFilter(CollateralTableFilter.popular);
-  const setFilterNative = () => setFilter(CollateralTableFilter.native);
-  const setFilterStablecoin = () => setFilter(CollateralTableFilter.stablecoin);
+  // const setFilterPopular = () => setFilter(CollateralTableFilter.popular);
+  // const setFilterNative = () => setFilter(CollateralTableFilter.native);
+  // const setFilterStablecoin = () => setFilter(CollateralTableFilter.stablecoin);
 
   const filters = {
     [CollateralTableFilter.none]: (c) => c,
-    [CollateralTableFilter.popular]: (c) => c.popular,
-    [CollateralTableFilter.native]: (c) => c.native,
-    [CollateralTableFilter.stablecoin]: (c) => c.type === 3,
+    // [CollateralTableFilter.popular]: (c) => c.popular,
+    // [CollateralTableFilter.native]: (c) => c.native,
+    // [CollateralTableFilter.stablecoin]: (c) => c.type === 3,
   };
 
   const {
@@ -69,23 +65,23 @@ export function CollateralsTable() {
     // changeSortDirection,
   } = useCollateralsTable();
 
-  const collaterals = useCollaterals({ show: true });
-  console.log(collaterals);
+  // const collaterals = useCollaterals({ show: true });
+  // console.log(collaterals);
   const cdps = useCdps();
-  console.log(cdps);
+  // const collaterals = cdps.map
 
-  const promotedCollaterals = useMemo(() => {
-    return collaterals
-      ?.filter((c) => c.promote)
-      .map((c) => {
-        return {
-          ...c,
-          lfr: formatPercent(formatBalance(c.lfr, 5)),
-          sfr: formatPercent(formatBalance(c.sfr, 5)),
-          mcr: formatPercent(formatBalance(c.mcr, 5)),
-        };
-      });
-  }, [collaterals]);
+  // const promotedCollaterals = useMemo(() => {
+  //   return collaterals
+  //     ?.filter((c) => c.promote)
+  //     .map((c) => {
+  //       return {
+  //         ...c,
+  //         lfr: formatPercent(formatBalance(c.lfr, 5)),
+  //         sfr: formatPercent(formatBalance(c.sfr, 5)),
+  //         mcr: formatPercent(formatBalance(c.mcr, 5)),
+  //       };
+  //     });
+  // }, [collaterals]);
 
   const listColumnClassName = `w-full flex items-center`;
   const cardColumnClassName = `col-span-8 flex items-center`;
@@ -94,30 +90,33 @@ export function CollateralsTable() {
     view === View.List ? listColumnClassName : cardColumnClassName;
 
   const sortedCollaterals = useMemo(() => {
-    return collaterals
+    return cdps
       ?.filter(filters[filter])
       ?.map((c) => {
+        const collateralAddress = getAddress(c.id);
+        const isNative = collateralAddress === WNATIVE_ADDRESS[chainId];
         return {
           info: {
-            symbol: c.symbol,
-            alias: c.alias,
-            name: c.name,
-            description: c.description,
-            logo: c.logo,
-            address: c.address,
-            priceAddress: c.priceAddress,
-            lfr: formatPercent(formatBalance(c.lfr, 5)),
-            sfr: formatPercent(formatBalance(c.sfr, 5)),
-            mcr: formatPercent(formatBalance(c.mcr, 5)),
-            chainId: c.chainid,
-            color: c.color,
+            symbol: isNative ? c.symbol.substr(1) : c.symbol,
+            // alias: c.alias,
+            // name: c.name,
+            // description: c.description,
+            // logo: c.logo,
+            address: isNative ? 'ETH' : getAddress(c.id),
+            priceAddress: collateralAddress,
+            lfr: formatPercent(formatBalance(c.lfr, CDP_DECIMALS)),
+            sfr: formatPercent(formatBalance(c.sfr, CDP_DECIMALS)),
+            mcr: formatPercent(formatBalance(c.mcr, CDP_DECIMALS)),
+            // chainId: c.chainid,
+            // color: c.color,
           },
-          chainId: c.chainId,
+          // chainId: c.chainId,
         };
       })
       .sort(sortFns[sortBy]);
-  }, [collaterals, filter, sortBy]);
+  }, [cdps, filter, sortBy]);
 
+  console.log(sortedCollaterals);
   const columns = useMemo(
     () => [
       {
@@ -175,7 +174,7 @@ export function CollateralsTable() {
 
   const listRowsClassName = `
     grid grid-cols-1 gap-4`;
-  const cardRowsClassName = `grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 `;
+  const cardRowsClassName = `grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 `;
 
   const rowsClassName =
     view === View.List ? listRowsClassName : cardRowsClassName;
@@ -201,9 +200,9 @@ export function CollateralsTable() {
     grid grid-cols-8
 `;
 
-  return collaterals ? (
+  return cdps ? (
     <div className="w-full">
-      <MemoPromotedCollaterals collaterals={promotedCollaterals} />
+      {/* <MemoPromotedCollaterals collaterals={promotedCollaterals} /> */}
       <div className="!mt-[72px]">
         <div
           className="mb-[36px] 
@@ -213,16 +212,21 @@ export function CollateralsTable() {
           items-end sm:items-center
           justify-between"
         >
-          <CollateralsTableFilters
+          {/* <CollateralsTableFilters
             filter={filter}
             setFilterNative={setFilterNative}
             setFilterNone={setFilterNone}
             setFilterPopular={setFilterPopular}
             setFilterStablecoin={setFilterStablecoin}
+          /> */}
+          <ViewSwitcher
+            view={view}
+            handleListView={setListView}
+            handleCardView={setCardView}
           />
           <SearchV2
             iconRight
-            className="flex-1 rounded-20 bg-dark-3 p-2 md:max-w-[400px] w-full"
+            className="flex-1 rounded-20 bg-background p-2 md:max-w-[400px] w-full"
             search={search}
             term={term}
             inputProps={{
@@ -234,13 +238,13 @@ export function CollateralsTable() {
             }}
           />
         </div>
-        <div className="flex justify-center mb-4">
+        {/* <div className="flex justify-center mb-4">
           <ViewSwitcher
             view={view}
             handleListView={setListView}
             handleCardView={setCardView}
           />
-        </div>
+        </div> */}
         {view === View.List && <ListViewHeader />}
         <Table
           columns={columns}

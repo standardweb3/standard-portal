@@ -57,6 +57,7 @@ function Farm() {
   const ethPrice = useEthPrice();
 
   const [stndPrice] = [useStandardPrice()];
+  console.log('stndprice', stndPrice);
   const averageBlockTime = useAverageBlockTime();
 
   const _averageBlockTime =
@@ -67,6 +68,7 @@ function Farm() {
       : averageBlockTime && averageBlockTime?.averageBlockTime !== 0
       ? averageBlockTime?.averageBlockTime
       : AVERAGE_BLOCK_TIME_IN_SECS[chainId];
+
   // const masterChefV2TotalAllocPoint = useMasterChefV2TotalAllocPoint();
   const masterChefV2SushiPerBlock = useMasterChefV2SushiPerBlock();
   const blocksPerDay = 86400 / _averageBlockTime;

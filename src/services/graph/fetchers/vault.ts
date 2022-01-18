@@ -5,6 +5,7 @@ import { GRAPH_HOST } from '../constants';
 import {
   cdpsQuery,
   cVaultQuery,
+  vaultUserQuery,
   vaultManagerHistoriesQuery,
   vaultManagerQuery,
   vaultQuery,
@@ -65,6 +66,12 @@ export const getVaultManagerHistories = async (
 
 export const getCdps = async (chainId = ChainId.MAINNET, variables) => {
   const { cdps: result } = await vault(chainId, cdpsQuery, variables);
+
+  return result;
+};
+
+export const getVaultUser = async (chainId = ChainId.MAINNET, variables) => {
+  const { user: result } = await vault(chainId, vaultUserQuery, variables);
 
   return result;
 };

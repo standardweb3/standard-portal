@@ -103,9 +103,12 @@ export const cVaultQuery = gql`
       currentBorrowed
       currentCollateralized
       cdp {
+        id
         mcr
         sfr
         lfr
+        symbol
+        decimals
       }
     }
   }
@@ -131,6 +134,15 @@ export const cdpsQuery = gql`
       sfr
       decimals
       symbol
+    }
+  }
+`;
+
+export const vaultUserQuery = gql`
+  query user($id: String!) {
+    user(id: $id) {
+      currentBorrowed
+      activeVaultCount
     }
   }
 `;

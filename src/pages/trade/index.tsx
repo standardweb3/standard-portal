@@ -117,12 +117,9 @@ function Tokens() {
             ({ id }) => token.id === id,
           );
 
-          console.log(sevenDayToken);
           const priceWeekAgo = sevenDayToken
             ? sevenDayToken.derivedETH * sevenDayEthPrice
             : 0;
-          console.log(sevenDayToken?.derivedETH);
-          console.log(sevenDayEthPrice);
 
           const price = parseFloat(token.derivedETH) * ethPrice;
 
@@ -130,7 +127,6 @@ function Tokens() {
             ? ((price - priceWeekAgo) / priceWeekAgo) * 100
             : 0;
 
-          console.log(token.name, token.dayData);
           const oneDayPriceChange = priceYesterday
             ? ((price - priceYesterday) / priceYesterday) * 100
             : 0;
@@ -293,7 +289,7 @@ function Tokens() {
 
           const { chainId } = useActiveWeb3React();
           if (chainId === ChainId.METIS) return '-';
-          console.log(value, cell);
+
           return (
             <div
               className={`${

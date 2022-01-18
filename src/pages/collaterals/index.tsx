@@ -5,7 +5,6 @@ import { DefinedStyles } from '../../utils/DefinedStyles';
 import { CollateralsTable } from '../../features/vault/CollateralsTable/CollateralsTable';
 import { ViewportMediumUp } from '../../components-ui/Responsive';
 import { PageHeader } from '../../components-ui/PageHeader';
-import { Alert } from '../../components-ui/Alert';
 import { VaultManagerInfo } from '../../features/vault/VaultManagerInfo';
 
 export default function Collaterals() {
@@ -24,8 +23,8 @@ export default function Collaterals() {
           <PageHeader title="Collaterals" />
         </ViewportMediumUp>
         <PageContent>
-          <div className="w-full">
-            <Alert
+          <div className="w-full max-w-[1200px]">
+            {/* <Alert
               className={DefinedStyles.pageAlertFull}
               message={
                 <div className="leading-relaxed">
@@ -33,7 +32,7 @@ export default function Collaterals() {
                 </div>
               }
               type="information"
-            />
+            /> */}
             <VaultManagerInfo />
             <CollateralsTable />
           </div>

@@ -1,5 +1,4 @@
 import { RouterCurrencyInputPanel } from '../../../bridge/feature/RouterCurrencyInputPanel';
-import { TokenInputPanelV2 } from '../../../components-ui/XSTND/TokenInputPanelV2';
 import { classNames } from '../../../functions';
 import { DefinedStyles } from '../../../utils/DefinedStyles';
 import { CollateralizePanelHeader } from './CollateralizePanelHeader';
@@ -14,7 +13,7 @@ export function CollateralSelectPanel({
     <div
       className={classNames(
         DefinedStyles.collateralizePanel,
-        'flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:justify-between lg:space-x-8',
+        DefinedStyles.collateralizePanelContent,
       )}
     >
       <CollateralizePanelHeader
@@ -29,6 +28,7 @@ export function CollateralSelectPanel({
           onAmountChange={setCollateralizeAmount}
           max={balance}
           amount={collateralizeAmount}
+          className="!bg-transparent !p-0"
         />
       </div>
     </div>

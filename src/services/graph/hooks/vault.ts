@@ -9,6 +9,7 @@ import {
   getVaultManager,
   getVaultManagerHistories,
   getVaults,
+  getVaultUser,
 } from '../fetchers/vault';
 
 export function useVaultManager(
@@ -32,6 +33,21 @@ export function useVaultManager(
   return data;
 }
 
+export function useUserVaults(
+  variables = undefined,
+  swrConfig: SWRConfiguration = undefined,
+) {
+  const { account, chainId } = useActiveWeb3React();
+
+  const { data } = useSWR(
+    account && chainId ? ['vaults', chainId, JSON.stringify(variables)] : null,
+    () =>
+      getVaults(chainId, {
+        user: account.toLowerCase(),
+      }),
+  );
+  return data;
+}
 export function useVaults(
   variables = undefined,
   swrConfig: SWRConfiguration = undefined,
@@ -96,3 +112,35 @@ export function useCdps(
 
   return data;
 }
+
+export function useVaultUser(
+  variables = undefined,
+  swrConfig: SWRConfiguration = undefined,
+) {
+  const { account, chainId } = useActiveWeb3React();
+  const { data } = useSWR(
+    account && chainId
+      ? ['vaultUser', account, chainId, JSON.stringify(variables)]
+      : null,
+    () =>
+      getVaultUser(chainId, {
+        id: account.toLowerCase(),
+        ...variables,
+      }),
+    swrConfig,
+  );
+  return data;
+}
+
+// export function useCdps(
+//   variables = undefined,
+//   swrConfig: SWRConfiguration = undefined,
+// ) {
+//   const { chainId } = useActiveWeb3React();
+//   const { data } = useSWR(
+//     chainId ? ['cdps', chainId, JSON.stringify(variables)] : null,
+//     () => getCdps(chainId, variables),
+//   );
+
+//   return data;
+// }

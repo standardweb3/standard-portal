@@ -52,9 +52,9 @@
       },
       {
         "indexed": false,
-        "internalType": "uint8",
-        "name": "cDecimals",
-        "type": "uint8"
+        "internalType": "bool",
+        "name": "isOpen",
+        "type": "bool"
       }
     ],
     "name": "CDPInitialized",
@@ -653,6 +653,11 @@
         "internalType": "address",
         "name": "factory_",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "liquidator_",
+        "type": "address"
       }
     ],
     "name": "initialize",
@@ -741,6 +746,19 @@
         "internalType": "bool",
         "name": "",
         "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "liquidator",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",

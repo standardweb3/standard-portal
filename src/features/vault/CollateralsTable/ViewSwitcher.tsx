@@ -5,7 +5,7 @@ import { View } from '../../../hooks/useViewSwitcher';
 export function ViewSwitcher({ handleListView, handleCardView, view }) {
   const defaultClassName =
     'text-grey cursor-pointer p-2 rounded-xl transition duration-500';
-  const activeClassName = 'bg-primary !text-white';
+  const activeClassName = 'bg-background !text-white';
   return (
     <div className="flex space-x-2">
       <div

@@ -1,10 +1,16 @@
 import { CurrencyLogo } from '../../../components-ui/CurrencyLogo';
-import { classNames, formatNumber, formatPercent } from '../../../functions';
+import {
+  classNames,
+  formatBalance,
+  formatNumber,
+  formatPercent,
+} from '../../../functions';
 import { DefinedStyles } from '../../../utils/DefinedStyles';
 import Skeleton from 'react-loading-skeleton';
 import { Button } from '../../../components-ui/Button';
 import { useSizeMdUp } from '../../../components-ui/Responsive';
 import { useState } from 'react';
+import { CDP_DECIMALS } from '../constants';
 
 type VaultInfoType = {
   totalSupply?: number;
@@ -42,7 +48,7 @@ export function VaultInfo({ mcr, sfr, collateral, collateralPriceUSD }) {
                 <div>Stability Fee</div>
                 <div className="text-3xl font-bold">
                   {sfr !== undefined ? (
-                    formatPercent(sfr)
+                    formatPercent(formatBalance(sfr, CDP_DECIMALS))
                   ) : (
                     <Skeleton count={1} />
                   )}
@@ -52,7 +58,7 @@ export function VaultInfo({ mcr, sfr, collateral, collateralPriceUSD }) {
                 <div>Min. Collateral Ratio </div>
                 <div className="text-3xl font-bold">
                   {mcr !== undefined ? (
-                    formatPercent(mcr)
+                    formatPercent(formatBalance(mcr, CDP_DECIMALS))
                   ) : (
                     <Skeleton count={1} />
                   )}

@@ -89,6 +89,7 @@ export default function Vault() {
     withdrawableBalance?.toString(),
     collateralCurrency,
   );
+
   const [withdrawAmount, setWithdrawAmount] = useState('');
   // END: withdraw
 

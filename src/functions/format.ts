@@ -67,7 +67,7 @@ const priceFormatter = new Intl.NumberFormat('en-US', {
 });
 
 export function formatPercent(percentString: any) {
-  const percent = parseFloat(percentString);
+  const percent = parseFloat(String(percentString));
   if (!percent || percent === Infinity || percent === 0) {
     return '0%';
   }
@@ -97,6 +97,7 @@ export const formatNumber = (
   usd = false,
   scale = true,
   min = 0.0001,
+  fixedPrecision = 2,
 ) => {
   if (isNaN(number) || number === '' || number === undefined) {
     return usd ? '$0.00' : '0';
@@ -120,8 +121,14 @@ export const formatNumber = (
 
   if (num > 1000) {
     return usd
-      ? '$' + Number(parseFloat(String(num)).toFixed(0)).toLocaleString()
-      : '' + Number(parseFloat(String(num)).toFixed(0)).toLocaleString();
+      ? '$' +
+          Number(
+            parseFloat(String(num)).toFixed(fixedPrecision),
+          ).toLocaleString()
+      : '' +
+          Number(
+            parseFloat(String(num)).toFixed(fixedPrecision),
+          ).toLocaleString();
   }
 
   if (usd) {

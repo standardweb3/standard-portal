@@ -26,7 +26,6 @@ export const Thumb = styled.div<{ percentage: number }>`
 export const ThumbRoller = styled.div`
   cursor: pointer;
   transform: translateY(-25%) translateX(9.5px);
-  border: 3px solid #f365bd;
   position: absolute;
   border-radius: 50%;
   width: 16px;
@@ -52,20 +51,20 @@ export const TrackText = styled.div<{ left: string; safe?: boolean }>`
 `;
 
 export function ProgressBar({
-  liquidationRatioPercentage,
-  maxLiquidationRatio = 300,
-  minLiquidationRatio = 150,
-  safeLiquidationRatio = 200,
-  setLiquidationRatio,
-  liquidationRatio,
-  setLiquidationRatioPercentage,
-  setToMinLiquidationRatio,
-  setToSafeLiquidationRatio,
+  collateralRatioPercentage,
+  maxCollateralRatio = 300,
+  minCollateralRatio = 150,
+  safeCollateralRatio = 200,
+  setCollateralRatio,
+  collateralRatio,
+  setCollateralRatioPercentage,
+  setToMinCollataralRatio,
+  setToSafeCollateralRatio,
 }) {
   const ref = useRef(null);
 
   // const [percentage, setPercentage] = useState(
-  //   (safe / maxLiquidationRatio) * 100,
+  //   (safe / maxCollateralRatio) * 100,
   // );
 
   const [dragging, setDragging] = useState(false);
@@ -79,54 +78,53 @@ export function ProgressBar({
     if (ref.current && mouse.x !== null) {
       let perc = (mouse.x / ref.current.offsetWidth) * 100;
       perc = perc > 99.2 ? 100 : perc < 0.8 ? 0 : perc;
-      const newLiqRatio = Math.round(perc * maxLiquidationRatio * 10) / 1000;
+      const newLiqRatio = Math.round(perc * maxCollateralRatio * 10) / 1000;
       // console.log(perc);
-      setLiquidationRatioPercentage(perc);
-      setLiquidationRatio(String(newLiqRatio), false);
+      setCollateralRatioPercentage(perc);
+      setCollateralRatio(String(newLiqRatio), false);
     }
   };
 
   // useEffect(() => {
   //   const newLiqRatio =
-  //     Math.round(percentage * maxLiquidationRatio * 10) / 1000;
-  //   setLiquidationRatio(newLiqRatio);
-  // }, [percentage, maxLiquidationRatio]);
+  //     Math.round(percentage * maxCollateralRatio * 10) / 1000;
+  //   setCollateralRatio(newLiqRatio);
+  // }, [percentage, maxCollateralRatio]);
 
   // useEffect(() => {
-  //   const newPercentage = parseFloat(liquidationRatio) / maxLiquidationRatio;
+  //   const newPercentage = parseFloat(collateralRatio) / maxCollateralRatio;
   //   setPercentage(newPercentage);
-  // }, [liquidationRatio]);
+  // }, [collateralRatio]);
 
   const minLeft = useMemo(
-    () => String((minLiquidationRatio / maxLiquidationRatio) * 100) + '%',
-    [minLiquidationRatio, maxLiquidationRatio],
+    () => String((minCollateralRatio / maxCollateralRatio) * 100) + '%',
+    [minCollateralRatio, maxCollateralRatio],
   );
   const safeLeft = useMemo(
-    () => String((safeLiquidationRatio / maxLiquidationRatio) * 100) + '%',
-    [safeLiquidationRatio, maxLiquidationRatio],
+    () => String((safeCollateralRatio / maxCollateralRatio) * 100) + '%',
+    [safeCollateralRatio, maxCollateralRatio],
   );
   // console.log(minLeft, safeLeft);
 
   const handleClickMinRatio = (e) => {
     e.stopPropagation();
     e.preventDefault();
-    setToMinLiquidationRatio();
+    setToMinCollataralRatio();
   };
 
   const handleClickSafeRatio = (e) => {
     e.stopPropagation();
     e.preventDefault();
-    setToSafeLiquidationRatio();
+    setToSafeCollateralRatio();
   };
 
   const state = useMemo(() => {
-    return liquidationRatio &&
-      parseFloat(liquidationRatio) < minLiquidationRatio
+    return collateralRatio && parseFloat(collateralRatio) < minCollateralRatio
       ? 'danger'
-      : parseFloat(liquidationRatio) < safeLiquidationRatio
+      : parseFloat(collateralRatio) < safeCollateralRatio
       ? 'warn'
       : 'safe';
-  }, [liquidationRatio]);
+  }, [collateralRatio]);
 
   const trackColor =
     state === 'danger'
@@ -158,11 +156,11 @@ export function ProgressBar({
     >
       <Track className={`bg-scrollbar-track`}>
         <Thumb
-          percentage={liquidationRatioPercentage}
+          percentage={collateralRatioPercentage}
           className={classNames(trackColor, !dragging && '!duration-500')}
         >
           <ThumbRoller
-            className="bg-thumbroller"
+            className="bg-thumbroller border-[3px] border-primary"
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -181,7 +179,7 @@ export function ProgressBar({
         className="text-thumbroller cursor-pointer hover:text-primary"
         onClick={handleClickMinRatio}
       >
-        Min: {minLiquidationRatio}%
+        Min: {minCollateralRatio}%
       </TrackText>
       <TrackTick
         left={minLeft}
@@ -194,7 +192,7 @@ export function ProgressBar({
         safe
         onClick={handleClickSafeRatio}
       >
-        Safe: {safeLiquidationRatio}%
+        Safe: {safeCollateralRatio}%
       </TrackText>
       <TrackTick
         left={safeLeft}

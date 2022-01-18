@@ -4,9 +4,9 @@ import { PageContent } from '../../components-ui/PageContent';
 import { DefinedStyles } from '../../utils/DefinedStyles';
 import { CollateralSelectPanel } from '../../features/vault/new/CollateralSelectPanel';
 import { useCallback, useMemo, useState } from 'react';
-import { tryParseAmount } from '../../functions';
+import { classNames, formatBalance, tryParseAmount } from '../../functions';
 import { useRouter } from 'next/router';
-import { useCollateral } from '../../services/graph/hooks/collaterals';
+// import { useCollateral } from '../../services/graph/hooks/collaterals';
 import { useCurrency } from '../../hooks/Tokens';
 import { useCurrencyBalance } from '../../state/wallet/hooks';
 import {
@@ -28,11 +28,17 @@ import { useCVault } from '../../services/graph/hooks/vault';
 import { ViewportMediumUp } from '../../components-ui/Responsive';
 import { PageHeader } from '../../components-ui/PageHeader';
 import { CollateralizeBorrowPanel } from '../../features/vault/new/CollateralizeBorrowPanel';
+import { getAddress } from 'ethers/lib/utils';
+import { CDP_DECIMALS } from '../../features/vault/constants';
+import { CollateralizeMetrics } from '../../features/vault/new/CollateralizeMetrics';
+import { CollateralizeJargons } from '../../features/vault/new/CollateralizeJargons';
+import { Button } from '../../components-ui/Button';
 
 export default function Collateral() {
   const { account, chainId } = useActiveWeb3React();
   const protocol = useProtocol();
   const router = useRouter();
+  const mtr = useMtr();
 
   const collateralAddr = router.query.collateral[0];
   const isNative = collateralAddr === 'ETH';
@@ -44,25 +50,17 @@ export default function Collateral() {
   });
 
   const { cdp } = cVault ?? {};
-  const { lfr, sfr, mcr } = cdp ?? {};
-  // temporary
-  // const ethPrice = useEthPrice();
+  const { id, symbol, lfr: _lfr, sfr: _sfr, mcr: _mcr, decimals } = cdp ?? {};
+  const lfr = parseFloat(formatBalance(_lfr ?? 0, CDP_DECIMALS));
+  const sfr = parseFloat(formatBalance(_sfr ?? 0, CDP_DECIMALS));
+  const mcr = parseFloat(formatBalance(_mcr ?? 0, CDP_DECIMALS));
 
-  const collateralInfo = useCollateral(collateralAddr);
+  // const collateralInfo = useCollateral(collateralAddr);
   const collateral = useCurrency(collateralAddr);
   const isCollateralETH = collateral?.isNative;
 
-  // console.log('vault: collateral', collateral);
-  // console.log('vault: collateralInfo', collateralInfo);
-  // temporary to obtain price
-  // const collateralExchangeToken = useToken({
-  //   id: collateral?.isToken ? collateral.address.toLowerCase() : null,
-  // });
-
-  const collateralPriceUSD = useVaultManagerAssetPrice(
-    collateralInfo?.priceAddress,
-  );
-  // console.log('vault: collateral price', collateralPriceUSD);
+  const collateralPriceUSD = useVaultManagerAssetPrice(id && getAddress(id));
+  const mtrPriceUSD = useVaultManagerAssetPrice(mtr && mtr.address);
 
   const balance = useCurrencyBalance(account, collateral);
   const [collateralizeAmount, setCollateralizeAmount] = useState('');
@@ -72,22 +70,24 @@ export default function Collateral() {
       ? parseFloat(collateralizeAmount) * collateralPriceUSD
       : 0;
 
-  // console.log('vault: collateral value usd:', collateralValueUSD);
-
   // // temporary
   const collateralizeCurrencyAmount = tryParseAmount(
     collateralizeAmount,
     collateral,
   );
 
-  const maxLiquidationRatio = 320;
-  const safeLiquidationRatio = 200;
+  const maxCollateralRatio = 320;
+  const safeCollateralRatio = 200;
   // change to collateral info
-  const minLiquidationRatio = 150;
+  const minCollateralRatio = mcr;
 
-  const [liquidationRatio, setLiquidationRatio] = useState(
-    String(safeLiquidationRatio),
+  const [collateralRatio, setCollateralRatio] = useState(
+    String(safeCollateralRatio),
   );
+
+  const liquidationPriceUSD =
+    collateralPriceUSD &&
+    (collateralPriceUSD / parseFloat(collateralRatio)) * 100;
 
   const handleCollateralizeAmountChange = (value) => {
     setCollateralizeAmount(value);
@@ -96,29 +96,22 @@ export default function Collateral() {
         ? parseFloat(value) * collateralPriceUSD
         : 0;
 
-    // console.log(
-    //   'vault _collateralValueUSD / parseFloat(liquidationRatio) ',
-    //   _collateralValueUSD / parseFloat(liquidationRatio),
-    //   liquidationRatio,
-    // );
     setMtrAmount(
-      String((_collateralValueUSD / parseFloat(liquidationRatio)) * 100),
+      String((_collateralValueUSD / parseFloat(collateralRatio)) * 100),
     );
   };
 
-  const [liquidationRatioPercentage, setLiquidationRatioPercentage] = useState(
-    (safeLiquidationRatio / maxLiquidationRatio) * 100,
+  const [collateralRatioPercentage, setCollateralRatioPercentage] = useState(
+    (safeCollateralRatio / maxCollateralRatio) * 100,
   );
 
   const [mtrAmount, setMtrAmount] = useState('');
-  const mtr = useMtr();
   const mtrCourrencyAmount = tryParseAmount(mtrAmount, mtr);
 
   const handleChangeMtrAmount = (value) => {
-    console.log(collateralPriceUSD, liquidationRatio, value);
     const newCollateralAmount =
-      collateralPriceUSD && liquidationRatio
-        ? (parseFloat(value) * parseFloat(liquidationRatio)) /
+      collateralPriceUSD && collateralRatio
+        ? (parseFloat(value) * parseFloat(collateralRatio)) /
           collateralPriceUSD /
           100
         : '';
@@ -126,37 +119,37 @@ export default function Collateral() {
     setMtrAmount(value);
   };
 
-  const handleChangeLiquidationRatio = (value, changePerc = true) => {
+  const handleChangeCollateralRatio = (value, changePerc = true) => {
     if (value === '') {
-      setLiquidationRatioPercentage(
-        (minLiquidationRatio / maxLiquidationRatio) * 100,
+      setCollateralRatioPercentage(
+        (minCollateralRatio / maxCollateralRatio) * 100,
       );
-      setLiquidationRatio('');
+      setCollateralRatio('');
       setMtrAmount('');
       return;
     }
-    if (parseFloat(value) >= maxLiquidationRatio) {
-      setLiquidationRatio(String(maxLiquidationRatio));
-      setLiquidationRatioPercentage(100);
+    if (parseFloat(value) >= maxCollateralRatio) {
+      setCollateralRatio(String(maxCollateralRatio));
+      setCollateralRatioPercentage(100);
       return;
     }
     if (changePerc) {
-      const newLiqudationRatioPercentage =
-        (parseFloat(value) / maxLiquidationRatio) * 100;
+      const newCollateralRatioPercentage =
+        (parseFloat(value) / maxCollateralRatio) * 100;
 
-      setLiquidationRatioPercentage(newLiqudationRatioPercentage);
+      setCollateralRatioPercentage(newCollateralRatioPercentage);
     }
-    setLiquidationRatio(value);
+    setCollateralRatio(value);
     // console.log('vault', value, collateralValueUSD);
     setMtrAmount(String((collateralValueUSD / parseFloat(value)) * 100));
   };
 
-  const setToMinLiquidationRatio = () => {
-    handleChangeLiquidationRatio(String(minLiquidationRatio), true);
+  const setToMinCollataralRatio = () => {
+    handleChangeCollateralRatio(String(minCollateralRatio), true);
   };
 
-  const setToSafeLiquidationRatio = () => {
-    handleChangeLiquidationRatio(String(safeLiquidationRatio), true);
+  const setToSafeCollateralRatio = () => {
+    handleChangeCollateralRatio(String(safeCollateralRatio), true);
   };
 
   const [pendingTx, setPendingTx] = useState(false);
@@ -173,20 +166,11 @@ export default function Collateral() {
 
   const { createCDP, createCDPNative } = useCDP();
 
-  // console.log('vault: approvalState', approvalState);
-  // console.log('vault: manager addr', getVaultManagerAddress(protocol, chainId));
-  // console.log(
-  //   'vault: collateralize amount',
-  //   formattedCollateralizeAmount?.toExact(),
-  // );
-  // console.log('vault: mtr amount', mtrAmount);
-
-  // add in desiredsupply and oracle fetch error
   const borrowable =
     balance &&
     collateralizeCurrencyAmount &&
-    liquidationRatio &&
-    parseFloat(liquidationRatio) > minLiquidationRatio &&
+    collateralRatio &&
+    parseFloat(collateralRatio) >= minCollateralRatio &&
     (balance.greaterThan(collateralizeCurrencyAmount) ||
       balance.equalTo(collateralizeCurrencyAmount));
 
@@ -263,7 +247,7 @@ export default function Collateral() {
           <PageHeader title="Collateralize" />
         </ViewportMediumUp>
         <PageContent>
-          <div className="w-full max-w-[1200px] space-y-4">
+          <div className="w-full max-w-[1000px] space-y-8">
             <CollateralInfo
               mcr={mcr}
               lfr={lfr}
@@ -271,30 +255,55 @@ export default function Collateral() {
               priceUSD={collateralPriceUSD}
               collateral={collateral}
             />
-            <CollateralSelectPanel
-              balance={balance}
-              collateral={collateral}
-              collateralizeAmount={collateralizeAmount}
-              setCollateralizeAmount={handleCollateralizeAmountChange}
-            />
-            <CollateralizeSettingsPanel
-              mtrAmount={mtrAmount}
-              liquidationRatio={liquidationRatio}
-              setLiquidationRatio={handleChangeLiquidationRatio}
-              maxLiquidationRatio={maxLiquidationRatio}
-              setLiquidationRatioPercentage={setLiquidationRatioPercentage}
-              liquidationRatioPercentage={liquidationRatioPercentage}
-              setToMinLiquidationRatio={setToMinLiquidationRatio}
-              setToSafeLiquidationRatio={setToSafeLiquidationRatio}
-            />
-            <CollateralizeBorrowPanel
-              mtrAmount={mtrAmount}
-              mtr={mtr}
-              setMtrAmount={handleChangeMtrAmount}
-              onBorrowClick={onClick}
-              borrowable={borrowable}
-              buttonMessage={confirmButtonMessage}
-            />
+            <div className="grid grid-cols-2 lg:grid-cols-7 gap-4">
+              <div className="space-y-4 col-span-2 lg:col-span-5">
+                <CollateralSelectPanel
+                  balance={balance}
+                  collateral={collateral}
+                  collateralizeAmount={collateralizeAmount}
+                  setCollateralizeAmount={handleCollateralizeAmountChange}
+                />
+                <CollateralizeSettingsPanel
+                  mtrAmount={mtrAmount}
+                  collateralRatio={collateralRatio}
+                  setCollateralRatio={handleChangeCollateralRatio}
+                  maxCollateralRatio={maxCollateralRatio}
+                  setCollateralRatioPercentage={setCollateralRatioPercentage}
+                  collateralRatioPercentage={collateralRatioPercentage}
+                  setToMinCollataralRatio={setToMinCollataralRatio}
+                  setToSafeCollateralRatio={setToSafeCollateralRatio}
+                />
+                <CollateralizeBorrowPanel
+                  mtrAmount={mtrAmount}
+                  mtr={mtr}
+                  setMtrAmount={handleChangeMtrAmount}
+                  onBorrowClick={onClick}
+                  borrowable={borrowable}
+                  buttonMessage={confirmButtonMessage}
+                />
+              </div>
+              <div className="col-span-2">
+                <CollateralizeMetrics
+                  collateralPrice={collateralPriceUSD}
+                  liquidationPrice={liquidationPriceUSD}
+                  mtrPriceUSD={mtrPriceUSD}
+                  debtAmount={mtrAmount}
+                />
+              </div>
+            </div>
+            <div className="flex justify-center">
+              <Button
+                disabled={!borrowable}
+                className={classNames(
+                  DefinedStyles.fullButton,
+                  'md:max-w-[50%]',
+                )}
+                onClick={onClick}
+              >
+                {confirmButtonMessage}
+              </Button>
+            </div>
+            {/* <CollateralizeJargons /> */}
           </div>
         </PageContent>
       </Page>

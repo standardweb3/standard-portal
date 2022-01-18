@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from '../../../components-ui/Button';
-import { formatNumber, formatPercent } from '../../../functions';
+import { formatBalance, formatNumber, formatPercent } from '../../../functions';
 import Skeleton from 'react-loading-skeleton';
 import { CurrencyLogo } from '../../../components-ui/CurrencyLogo';
 import {
@@ -8,6 +8,7 @@ import {
   ViewportMediumUp,
   ViewportSmallDown,
 } from '../../../components-ui/Responsive';
+import { CDP_DECIMALS } from '../constants';
 
 export function VaultInfoCard({
   collateral,
@@ -139,7 +140,11 @@ export function VaultInfoCard({
                 Liquidation Ratio
               </div>
               <div className="text-lg font-bold">
-                {mcr !== undefined ? <>{formatPercent(mcr)}</> : NumberSkeleton}
+                {mcr !== undefined ? (
+                  <>{formatPercent(formatBalance(mcr, CDP_DECIMALS))}</>
+                ) : (
+                  NumberSkeleton
+                )}
               </div>
             </div>
             <div className="mr-8 mt-4 col-span-1">
@@ -159,7 +164,11 @@ export function VaultInfoCard({
                 Stability Fee Ratio
               </div>
               <div className="text-lg font-bold">
-                {sfr !== undefined ? <>{formatPercent(sfr)}</> : NumberSkeleton}
+                {sfr !== undefined ? (
+                  <>{formatPercent(formatBalance(sfr, CDP_DECIMALS))}</>
+                ) : (
+                  NumberSkeleton
+                )}
               </div>
             </div>
           </div>

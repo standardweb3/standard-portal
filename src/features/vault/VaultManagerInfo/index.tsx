@@ -7,8 +7,11 @@ import {
   useSizeMdUp,
   useSizeXs,
   ViewportMediumUp,
+  ViewportSmallDown,
 } from '../../../components-ui/Responsive';
 import styled from '@emotion/styled';
+import { SimpleCurrencyLogo } from '../../../components-ui/CurrencyLogo/SimpleCurrencyLogo';
+import { CurrencyLogo } from '../../../components-ui/CurrencyLogo';
 
 const VaultManagerInfoBg = styled.div`
   position: relative;
@@ -45,25 +48,32 @@ export function VaultManagerInfo() {
 
   return (
     <>
-      <VaultManagerInfoBg className="rounded-20 bg-vault-manager-info p-8">
-        <div className="flex flex-col 2xl:flex-row items-start 2xl:items-end md:space-x-12 2xl:space-y-0">
-          <div className="flex items-center md:items-end space-x-8">
+      <div className="rounded-20 bg-vault-manager-info p-8 relative">
+        <div className="flex flex-col lg:flex-row items-start lg:items-end md:space-x-12 lg:space-y-0">
+          <div className="flex items-center md:items-end flex-1">
+            <ViewportSmallDown>
+              <div className="absolute top-[24px] right-[24px] z-[0] opacity-25">
+                <SimpleCurrencyLogo
+                  symbol="mtr"
+                  size="84px"
+                  className="rounded-full"
+                />
+              </div>
+            </ViewportSmallDown>
             <ViewportMediumUp>
-              <Image
-                src="https://raw.githubusercontent.com/digitalnativeinc/icons/master/token/stnd.jpg"
-                width={logoSize}
-                height={logoSize}
-                layout="fixed"
+              <SimpleCurrencyLogo
+                symbol="mtr"
+                size="128px"
                 className="rounded-full"
               />
             </ViewportMediumUp>
-            <div className="space-y-2 flex-col justify-end pb-2">
+            <div className="space-y-2 flex-col justify-end pb-2 md:ml-8 z-[10]">
               <div className="text-2xl md:text-4xl font-black md:font-bold flex items-center">
                 <span>MTR</span>
               </div>
               <div className="flex items-center space-x-4 md:space-x-12">
                 <div className="space-y-1">
-                  <div className="text-grey md:text-text text-xs md:text-base">
+                  <div className="text-grey md:text-text text-xs md:text-base whitespace-nowrap">
                     Total Supply
                   </div>
                   <div className="text-2xl md:text-3xl font-bold">
@@ -73,7 +83,7 @@ export function VaultManagerInfo() {
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <div className="text-grey md:text-text text-xs md:text-base">
+                  <div className="text-grey md:text-text text-xs md:text-base whitespace-nowrap">
                     Desired Supply
                   </div>
                   <div className="text-2xl md:text-3xl font-bold">
@@ -174,7 +184,7 @@ export function VaultManagerInfo() {
             </div>
           </div>
         )}
-      </VaultManagerInfoBg>
+      </div>
     </>
   );
 }

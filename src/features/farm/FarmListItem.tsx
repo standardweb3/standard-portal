@@ -31,6 +31,7 @@ const FarmListItem = ({ farm, ...rest }) => {
   const userShare = amountDecimals ? amountDecimals / totalSupply : 0;
 
   const isViewportMediumDown = useSizeMdDown();
+
   return (
     <Disclosure {...rest}>
       {({ open }) => (

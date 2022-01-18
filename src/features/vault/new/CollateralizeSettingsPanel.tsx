@@ -7,19 +7,19 @@ import { useMtr } from '../../../hooks/vault/useMtr';
 
 export function CollateralizeSettingsPanel({
   mtrAmount,
-  liquidationRatio,
-  setLiquidationRatio,
-  maxLiquidationRatio,
-  setLiquidationRatioPercentage,
-  liquidationRatioPercentage,
-  setToMinLiquidationRatio,
-  setToSafeLiquidationRatio,
+  collateralRatio,
+  setCollateralRatio,
+  maxCollateralRatio,
+  setCollateralRatioPercentage,
+  collateralRatioPercentage,
+  setToMinCollataralRatio,
+  setToSafeCollateralRatio,
 }) {
   // change to use MTR later
   const mtr = useMtr();
   return (
     <div className={classNames(DefinedStyles.collateralizePanel, 'space-y-4')}>
-      <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-8">
+      <div className={DefinedStyles.collateralizePanelContent}>
         <CollateralizePanelHeader
           number={2}
           title={'Set A Collateral Ratio'}
@@ -31,28 +31,28 @@ export function CollateralizeSettingsPanel({
         <div className="w-full space-y-2">
           <div
             className="
-        rounded-20 bg-background-currency-input-xs sm:bg-opaque 
-        px-4 py-4 sm:py-2
+        rounded-20 bg-transparent sm:bg-opaque 
+        px-0 py-0 sm:py-2 sm:px-4
         flex flex-col-reverse sm:flex-row 
         items-end sm:items-center 
         w-full space-x-4"
           >
             <div className="flex flex-1 w-full">
               <ProgressBar
-                liquidationRatioPercentage={liquidationRatioPercentage}
-                setLiquidationRatioPercentage={setLiquidationRatioPercentage}
-                maxLiquidationRatio={maxLiquidationRatio}
-                setLiquidationRatio={setLiquidationRatio}
-                liquidationRatio={liquidationRatio}
-                setToMinLiquidationRatio={setToMinLiquidationRatio}
-                setToSafeLiquidationRatio={setToSafeLiquidationRatio}
+                collateralRatioPercentage={collateralRatioPercentage}
+                setCollateralRatioPercentage={setCollateralRatioPercentage}
+                maxCollateralRatio={maxCollateralRatio}
+                setCollateralRatio={setCollateralRatio}
+                collateralRatio={collateralRatio}
+                setToMinCollataralRatio={setToMinCollataralRatio}
+                setToSafeCollateralRatio={setToSafeCollateralRatio}
               />
             </div>
             <div className="flex items-center space-x-2 bg-opaque rounded-20 px-4 py-4">
               <NumericalInput
                 className={classNames('text-right max-w-[110px]')}
-                value={liquidationRatio}
-                onUserInput={setLiquidationRatio}
+                value={collateralRatio}
+                onUserInput={setCollateralRatio}
               />
               <div>%</div>
             </div>

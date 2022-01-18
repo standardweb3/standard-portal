@@ -100,7 +100,6 @@ export const getSevenDayTokens = async (
   variables,
 ) => {
   const block = await getOneWeekBlock(chainId);
-  console.log('block', block);
   const { tokens } = await exchange(chainId, query, {
     ...variables,
     block: { number: parseInt(block) },
