@@ -10,7 +10,7 @@ import { ExternalLink } from '../ExternalLink';
 
 export function Socials() {
   const SOCIALS = [
-    { alt: 'twitter', src: twitter, url: 'https://twitter.com/standarddefi' },
+    { alt: 'twitter', src: twitter, url: 'https://twitter.com/standardweb3' },
     { alt: 'medium', src: medium, url: 'https://blog.standard.tech' },
     {
       alt: 'discord',
