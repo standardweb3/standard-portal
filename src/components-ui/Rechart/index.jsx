@@ -535,7 +535,7 @@ function Rechart({
           <Skeleton count={1} />
         ) : (
           <div className="flex space-x-1 items-center">
-            <div className="text-bright font-bold">{headerSubText}</div>
+            <div className="text-primary font-bold">{headerSubText}</div>
           </div>
         )}
       </div>

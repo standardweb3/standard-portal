@@ -20,7 +20,6 @@ const renderDate = (index, payload, item) => {
 };
 
 const renderItem = (type, item) => {
-  console.log(item);
   return type === '$' ? (
     <div>{`${formatNumber(item, true)}`}</div>
   ) : (

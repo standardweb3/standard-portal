@@ -10,6 +10,7 @@ import {
   getVaultManagerHistories,
   getVaults,
   getVaultUser,
+  getVaultUserHistories,
 } from '../fetchers/vault';
 
 export function useVaultManager(
@@ -124,6 +125,25 @@ export function useVaultUser(
       : null,
     () =>
       getVaultUser(chainId, {
+        id: account.toLowerCase(),
+        ...variables,
+      }),
+    swrConfig,
+  );
+  return data;
+}
+
+export function useVaultUserHistories(
+  variables = undefined,
+  swrConfig: SWRConfiguration = undefined,
+) {
+  const { account, chainId } = useActiveWeb3React();
+  const { data } = useSWR(
+    account && chainId
+      ? ['vaultUserHistories', account, chainId, JSON.stringify(variables)]
+      : null,
+    () =>
+      getVaultUserHistories(chainId, {
         id: account.toLowerCase(),
         ...variables,
       }),

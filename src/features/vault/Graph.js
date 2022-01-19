@@ -2,12 +2,13 @@ import Rechart from '../../components-ui/Rechart';
 import { formatNumber } from '../../functions';
 
 export const TooltipItems = {
-  supplies: ['Total Borrowed', 'Desired Supply'],
-  historicSupply: ['Historic Borrowed'],
-  paidBack: ['Total Paid Back'],
-  collectedStabilityFee: ['Collected Stability Fee'],
-  currentCollateralizedUSD: ['Current Collateralized Assets (USD)'],
-  currentAMMReserveUSD: ['Current Collateral AMM Reserve (USD)'],
+  supplies: ['Total Borrowed:', 'Desired Supply:'],
+  historicSupply: ['Historic Borrowed:'],
+  paidBack: ['Total Paid Back:'],
+  collectedStabilityFee: ['Collected Stability Fee:'],
+  currentCollateralizedUSD: ['Current Collateralized Assets (USD):'],
+  currentAMMReserveUSD: ['Current Collateral AMM Reserve (USD):'],
+  userBorrowedUSM: ['Borrowed USM:'],
 };
 
 export const TooltipInfoMessages = {
@@ -22,6 +23,7 @@ export const TooltipInfoMessages = {
     'Current Collateralized Assets represents USD value of collaterals',
   currentAMMReserveUSD:
     'Current Collateral AMM Reserve represents USD value of collaterals in Collateral-MTR AMMs',
+  userBorrowedUSM: 'Historical data of UserBorrowed USM amount',
 };
 
 export const ItemType = {
@@ -36,6 +38,7 @@ export const DataKeys = {
   paidBack: ['historicPaidBack'],
   currentCollateralizedUSD: ['currentCollateralizedUSD'],
   collectedStabilityFee: ['collectedStabilityFee'],
+  userBorrowedUSM: ['currentBorrowed'],
 };
 
 export const SuppliesGraph = ({ data }) => {
@@ -162,6 +165,31 @@ export const CollectedStabilityFeeGraph = ({ data }) => {
       expandedGraphStrokeColor={'#fff'}
       headerSubText={`${data &&
         formatNumber(data[0].collectedStabilityFee, true)}`}
+    />
+  );
+};
+
+export const UserBorrowedHistoryGraph = ({ data }) => {
+  return (
+    <Rechart
+      type="area"
+      data={data}
+      itemType={ItemType.number}
+      itemNames={TooltipItems.userBorrowedUSM}
+      dataKey={DataKeys.userBorrowedUSM}
+      headerText="Borrowed USM"
+      stopColor={[['#F5AC37', '#EA9276']]}
+      bulletpointColors={[
+        {
+          right: 20,
+          top: -12,
+          background: '#CDC1FF',
+        },
+      ]}
+      infoTooltipMessage={TooltipInfoMessages.userBorrowedUSM}
+      expandedGraphStrokeColor={'#fff'}
+      headerSubText={`${data &&
+        parseFloat(data[0].currentBorrowed).toFixed(4)}`}
     />
   );
 };

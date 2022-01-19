@@ -58,9 +58,9 @@ export default function Vaults() {
           <PageHeader title="Vaults" />
         </ViewportMediumUp>
         <PageContent>
-          <div className="w-full max-w-[1200px]">
+          <div className="w-full max-w-[1200px] space-y-4">
             <VaultUserInfo />
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+            <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
               {renderVaults()}
             </div>
           </div>

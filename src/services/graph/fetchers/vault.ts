@@ -1,7 +1,5 @@
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import request from 'graphql-request';
-import { useActiveWeb3React } from '../../../hooks';
-import { GRAPH_HOST } from '../constants';
 import {
   cdpsQuery,
   cVaultQuery,
@@ -10,6 +8,7 @@ import {
   vaultManagerQuery,
   vaultQuery,
   vaultsQuery,
+  vaultUserHistoriesQuery,
 } from '../queries/vault';
 
 export const VAULT = {
@@ -72,6 +71,19 @@ export const getCdps = async (chainId = ChainId.MAINNET, variables) => {
 
 export const getVaultUser = async (chainId = ChainId.MAINNET, variables) => {
   const { user: result } = await vault(chainId, vaultUserQuery, variables);
+
+  return result;
+};
+
+export const getVaultUserHistories = async (
+  chainId = ChainId.MAINNET,
+  variables,
+) => {
+  const { userHistories: result } = await vault(
+    chainId,
+    vaultUserHistoriesQuery,
+    variables,
+  );
 
   return result;
 };

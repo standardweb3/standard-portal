@@ -13,6 +13,7 @@ import router from 'next/router';
 import { CDP_DECIMALS } from '../constants';
 import { current } from '@reduxjs/toolkit';
 import { Question } from '../../../components-ui/Question';
+import { VaultStatusBadage } from './VaultStatusBadge';
 
 const Radiation = styled.div`
   filter: drop-shadow(0px 4px 10px rgba(195, 159, 159, 0.25));
@@ -27,6 +28,13 @@ const Background = styled.div<{ background?: string }>`
       : 'rgba(0,0,0,0)'};
 `;
 
+export enum VaultCondition {
+  SAFE = 'safe',
+  WARNING = 'warning',
+  DANGER = 'danger',
+  UNKNWON = 'unknown',
+}
+
 export function VaultCard({
   address,
   collateralAddress,
@@ -40,16 +48,16 @@ export function VaultCard({
 
   const liquidationPriceUSD =
     (currentBorrowed * mcr) / 100 / currentCollateralized;
-  const text =
-    collateralPriceUSD > liquidationPriceUSD * 1.2
-      ? 'safe'
-      : collateralPriceUSD >= liquidationPriceUSD
-      ? 'warning'
-      : 'danger';
 
-  const bgColor = 'bg-' + text;
-  const textColor = 'text-' + text;
-  const borderColor = 'border-' + text;
+  const condition =
+    collateralPriceUSD !== undefined
+      ? collateralPriceUSD > liquidationPriceUSD * 1.2
+        ? VaultCondition.SAFE
+        : collateralPriceUSD >= liquidationPriceUSD
+        ? VaultCondition.WARNING
+        : VaultCondition.DANGER
+      : VaultCondition.UNKNWON;
+
   // const ratio = collateralValueUSD
   //   ? (collateralValueUSD / parseFloat(currentBorrowed)) * 100
   //   : undefined;
@@ -66,11 +74,6 @@ export function VaultCard({
         transition duration-500"
       onClick={handleClick}
     >
-      <div
-        className={classNames(
-          'w-6 h-6 rounded-full absolute right-4 top-4 z-10',
-        )}
-      ></div>
       <Radiation>
         {collateral ? (
           <CurrencyLogo
@@ -82,72 +85,17 @@ export function VaultCard({
           <Skeleton circle width="72px" height="72px" />
         )}
       </Radiation>
-      <div
-        className={classNames(
-          'absolute top-4 right-4 px-3 py-1 rounded-20 text-xs flex items-center space-x-1',
-          textColor,
-          'border',
-          borderColor,
-        )}
-      >
-        <div>{text}</div>
-        <Question
-          text={
-            <div>
-              <div className="flex flex-col items-center">
-                <div className="text-sm text-grey">Current Price</div>
-                <div className={classNames('font-bold', textColor)}>
-                  $
-                  {collateralPriceUSD !== undefined ? (
-                    collateralPriceUSD.toFixed(4)
-                  ) : (
-                    <Skeleton count={1} />
-                  )}
-                </div>
-              </div>
-
-              <div className="flex flex-col items-center mt-1">
-                <div className="text-sm text-grey">Liquidation Price</div>
-                <div className="font-bold text-primary">
-                  $
-                  {liquidationPriceUSD !== undefined ? (
-                    liquidationPriceUSD.toFixed(4)
-                  ) : (
-                    <Skeleton count={1} />
-                  )}
-                </div>
-              </div>
-            </div>
-          }
+      {condition !== VaultCondition.UNKNWON && (
+        <VaultStatusBadage
+          collateralPrice={collateralPriceUSD}
+          liquidationPrice={liquidationPriceUSD}
+          condition={condition}
         />
-      </div>
+      )}
 
       <div className="font-bold text-2xl mt-3 mb-2">
         {collateral ? collateral.symbol : <Skeleton count={1} />}
       </div>
-      {/* <div className="flex flex-col items-center">
-        <div className="text-sm text-grey">Current Price</div>
-        <div className={classNames('font-bold', textColor)}>
-          $
-          {collateralPriceUSD !== undefined ? (
-            collateralPriceUSD.toFixed(4)
-          ) : (
-            <Skeleton count={1} />
-          )}
-        </div>
-      </div>
-
-      <div className="flex flex-col items-center mt-1">
-        <div className="text-sm text-grey">Liquidation Price</div>
-        <div className="font-bold text-primary">
-          $
-          {liquidationPriceUSD !== undefined ? (
-            liquidationPriceUSD.toFixed(4)
-          ) : (
-            <Skeleton count={1} />
-          )}
-        </div>
-      </div> */}
 
       <div className="flex flex-col items-center">
         <div className="text-sm text-grey">Borrowed</div>
