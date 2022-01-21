@@ -97,11 +97,8 @@ export function useVaultAddresses2(vaultIds) {
     'allVaults',
     vaultIds.map((id) => [id]),
   )?.map((data) => {
-    console.log(data);
     return data?.result?.[0] ?? undefined;
   });
-
-  console.log(vaultAddrs);
 }
 
 // export function useVaultConfig(collateralAddr) {

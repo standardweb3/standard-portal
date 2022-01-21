@@ -30,7 +30,6 @@ export function useVault(address) {
 
   const borrowMore = useCallback(
     async (cAmount, dAmount) => {
-      console.log(cAmount, dAmount);
       try {
         let tx;
         tx = await contract.borrowMore(cAmount, dAmount);

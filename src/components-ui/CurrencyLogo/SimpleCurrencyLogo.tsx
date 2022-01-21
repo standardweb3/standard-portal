@@ -55,8 +55,6 @@ const BLOCKCHAIN = {
 };
 
 function getCurrencySymbol(symbol, chainId) {
-  console.log(symbol);
-
   let _symbol;
   if (chainId && chainId === ChainId.METIS) {
     if (symbol.startsWith('m.')) {

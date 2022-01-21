@@ -38,7 +38,7 @@ export default function Vault() {
     },
   })?.[0];
 
-  const debt = vaultAddress && useVaultDebt(getAddress(vaultAddress));
+  const debt = useVaultDebt(getAddress(vaultAddress));
 
   const {
     address,

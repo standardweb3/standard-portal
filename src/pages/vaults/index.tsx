@@ -36,6 +36,7 @@ export default function Vaults() {
         } = vault;
         return (
           <VaultCard
+            key={id}
             id={id}
             address={address}
             collateralAddress={collateral}

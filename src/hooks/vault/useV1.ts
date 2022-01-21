@@ -74,7 +74,7 @@ export function useV1Ids() {
       Promise.all(v1sPromise).then((values) => {
         const _v1sData = [];
         for (let i = 0; i < values.length; i++) {
-          _v1sData.push(parseInt(values[i]));
+          _v1sData.push(parseInt(values[i] as string));
         }
         setV1sData(_v1sData);
       });

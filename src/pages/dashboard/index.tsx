@@ -11,7 +11,6 @@ import { useVaultManagerHistories } from '../../services/graph/hooks/vault';
 
 export default function Dashboard() {
   const data = useVaultManagerHistories();
-  console.log('data', data);
 
   return (
     <div className="p-8 text-text">

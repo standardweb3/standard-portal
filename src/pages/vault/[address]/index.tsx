@@ -44,7 +44,7 @@ export default function Vault() {
     },
   })?.[0];
 
-  const debt = vaultAddress && useVaultDebt(getAddress(vaultAddress));
+  const debt = useVaultDebt(getAddress(vaultAddress));
 
   const {
     address,
@@ -56,7 +56,6 @@ export default function Vault() {
 
   const fee =
     debt && currentBorrowed ? debt - parseFloat(currentBorrowed) : undefined;
-  console.log(fee);
 
   const collateralPriceUSD = useVaultManagerAssetPrice(collateralAddress);
   const mcr = CDP && applyCdpDecimals(CDP.mcr);
