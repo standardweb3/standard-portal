@@ -57,7 +57,7 @@ function Farm() {
   const ethPrice = useEthPrice();
 
   const [stndPrice] = [useStandardPrice()];
-  console.log('stndprice', stndPrice);
+
   const averageBlockTime = useAverageBlockTime();
 
   const _averageBlockTime =
