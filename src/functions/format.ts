@@ -121,14 +121,8 @@ export const formatNumber = (
 
   if (num > 1000) {
     return usd
-      ? '$' +
-          Number(
-            parseFloat(String(num)).toFixed(fixedPrecision),
-          ).toLocaleString()
-      : '' +
-          Number(
-            parseFloat(String(num)).toFixed(fixedPrecision),
-          ).toLocaleString();
+      ? '$' + parseFloat(num.toFixed(fixedPrecision)).toLocaleString()
+      : '' + parseFloat(num.toFixed(fixedPrecision)).toLocaleString();
   }
 
   if (usd) {
@@ -140,7 +134,7 @@ export const formatNumber = (
     }
   }
 
-  return parseFloat(parseFloat(String(num)).toPrecision(4)).toString();
+  return Number(parseFloat(String(num)).toPrecision(4)).toString();
 };
 
 export function formatNumberScale(number: any, usd = false) {

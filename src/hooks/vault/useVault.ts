@@ -28,6 +28,22 @@ export function useVault(address) {
 
   const contract = useVaultContract(address);
 
+  const borrowMore = useCallback(
+    async (cAmount, dAmount) => {
+      console.log(cAmount, dAmount);
+      try {
+        let tx;
+        tx = await contract.borrowMore(cAmount, dAmount);
+
+        return tx;
+      } catch (e) {
+        console.error(e);
+        return e;
+      }
+    },
+    [account, contract],
+  );
+
   const payBack = useCallback(
     async (amount) => {
       try {
@@ -114,6 +130,7 @@ export function useVault(address) {
   );
 
   return {
+    borrowMore,
     payBack,
     withdraw,
     withdrawNative,

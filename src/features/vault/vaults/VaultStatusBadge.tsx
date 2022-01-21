@@ -21,25 +21,24 @@ export function VaultStatusBadage({
                   condition === VaultCondition.SAFE
                     ? 'text-safe'
                     : condition === VaultCondition.WARNING
-                    ? 'text-warning'
+                    ? 'text-warn'
                     : 'text-danger',
                 )}
               >
                 $
                 {collateralPrice !== undefined ? (
-                  collateralPrice.toFixed(4)
+                  parseFloat(collateralPrice.toFixed(4))
                 ) : (
                   <Skeleton count={1} />
                 )}
               </div>
             </div>
-
             <div className="flex flex-col items-center mt-1">
               <div className="text-sm text-grey">Liquidation Price</div>
               <div className="font-bold text-primary">
-                $
+                {'< '}$
                 {liquidationPrice !== undefined ? (
-                  liquidationPrice.toFixed(4)
+                  parseFloat(liquidationPrice.toFixed(4))
                 ) : (
                   <Skeleton count={1} />
                 )}
@@ -54,7 +53,7 @@ export function VaultStatusBadage({
             condition === VaultCondition.SAFE
               ? 'text-safe border-safe'
               : condition === VaultCondition.WARNING
-              ? 'text-warning border-warning'
+              ? 'text-warn border-warn'
               : 'text-danger border-danger',
             'border',
           )}
@@ -67,7 +66,7 @@ export function VaultStatusBadage({
                 condition === VaultCondition.SAFE
                   ? 'bg-safe'
                   : condition === VaultCondition.WARNING
-                  ? 'bg-warning'
+                  ? 'bg-warn'
                   : 'bg-danger',
               )}
             ></div>

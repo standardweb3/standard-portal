@@ -15,6 +15,7 @@ import { useCdps } from '../../../services/graph/hooks/vault';
 import { getAddress } from 'ethers/lib/utils';
 import { WNATIVE_ADDRESS } from '@digitalnative/standard-protocol-sdk';
 import { CDP_DECIMALS } from '../constants';
+import { applyCdpDecimals } from '../utils';
 
 export enum CollateralTableFilter {
   none = 'none',
@@ -104,9 +105,9 @@ export function CollateralsTable() {
             // logo: c.logo,
             address: isNative ? 'ETH' : getAddress(c.id),
             priceAddress: collateralAddress,
-            lfr: formatPercent(formatBalance(c.lfr, CDP_DECIMALS)),
-            sfr: formatPercent(formatBalance(c.sfr, CDP_DECIMALS)),
-            mcr: formatPercent(formatBalance(c.mcr, CDP_DECIMALS)),
+            lfr: formatPercent(applyCdpDecimals(c.lfr)),
+            sfr: formatPercent(applyCdpDecimals(c.sfr)),
+            mcr: formatPercent(applyCdpDecimals(c.mcr)),
             // chainId: c.chainid,
             // color: c.color,
           },
@@ -116,7 +117,6 @@ export function CollateralsTable() {
       .sort(sortFns[sortBy]);
   }, [cdps, filter, sortBy]);
 
-  console.log(sortedCollaterals);
   const columns = useMemo(
     () => [
       {

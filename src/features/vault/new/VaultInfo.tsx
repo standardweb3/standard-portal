@@ -11,6 +11,7 @@ import { Button } from '../../../components-ui/Button';
 import { useSizeMdUp } from '../../../components-ui/Responsive';
 import { useState } from 'react';
 import { CDP_DECIMALS } from '../constants';
+import { applyCdpDecimals } from '../utils';
 
 type VaultInfoType = {
   totalSupply?: number;
@@ -48,7 +49,7 @@ export function VaultInfo({ mcr, sfr, collateral, collateralPriceUSD }) {
                 <div>Stability Fee</div>
                 <div className="text-3xl font-bold">
                   {sfr !== undefined ? (
-                    formatPercent(formatBalance(sfr, CDP_DECIMALS))
+                    formatPercent(applyCdpDecimals(sfr))
                   ) : (
                     <Skeleton count={1} />
                   )}
@@ -58,7 +59,7 @@ export function VaultInfo({ mcr, sfr, collateral, collateralPriceUSD }) {
                 <div>Min. Collateral Ratio </div>
                 <div className="text-3xl font-bold">
                   {mcr !== undefined ? (
-                    formatPercent(formatBalance(mcr, CDP_DECIMALS))
+                    formatPercent(applyCdpDecimals(mcr))
                   ) : (
                     <Skeleton count={1} />
                   )}

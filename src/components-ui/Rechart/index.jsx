@@ -506,8 +506,8 @@ function Rechart({
   }, [data]);
 
   return loading ? (
-    <div className="flex justify-center items-center">
-      <LogoSpinner width={24} height={24} />
+    <div className="flex justify-center items-center w-full min-h-[300px]">
+      <LogoSpinner width={48} height={48} />
     </div>
   ) : (
     <div className="w-full h-full text-text p-6 space-y-4">
@@ -532,7 +532,7 @@ function Rechart({
           />
         </div>
         {loading ? (
-          <Skeleton count={1} />
+          <Skeleton width="50px" count={1} />
         ) : (
           <div className="flex space-x-1 items-center">
             <div className="text-primary font-bold">{headerSubText}</div>

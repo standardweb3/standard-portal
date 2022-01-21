@@ -46,6 +46,11 @@ export function VaultCard({
   const collateralPriceUSD = useVaultManagerAssetPrice(collateralAddress);
   const collateral = useCurrency(collateralAddress);
 
+  const collateralValueUSD =
+    collateralPriceUSD !== undefined
+      ? collateralPriceUSD * parseFloat(currentCollateralized)
+      : undefined;
+
   const liquidationPriceUSD =
     (currentBorrowed * mcr) / 100 / currentCollateralized;
 
@@ -110,8 +115,8 @@ export function VaultCard({
       <div className="flex flex-col items-center mt-2">
         <div className="text-sm text-grey">Collateralized</div>
         <div className="font-bold text-xl">
-          {currentCollateralized ? (
-            formatNumber(currentCollateralized, true)
+          {collateralValueUSD !== undefined ? (
+            formatNumber(collateralValueUSD, true)
           ) : (
             <Skeleton count={1} />
           )}

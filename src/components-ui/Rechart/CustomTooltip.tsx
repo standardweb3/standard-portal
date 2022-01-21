@@ -35,7 +35,6 @@ const renderTooltipItems = (
   isStaked = false,
   isPOL = false,
 ) => {
-  console.log('why', bulletpointColors);
   return isStaked ? (
     <div>
       <div className="flex justify-between">

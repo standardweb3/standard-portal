@@ -7,7 +7,7 @@ import { VaultMint } from '../../../features/vault/vaults/Mint';
 import { VaultPayBack } from '../../../features/vault/vaults/PayBack';
 import { VaultInfoCard } from '../../../features/vault/vaults/VaultInfoCard';
 import { VaultWithdraw } from '../../../features/vault/vaults/Withdraw';
-import { classNames, tryParseAmount } from '../../../functions';
+import { classNames, formatBalance, tryParseAmount } from '../../../functions';
 import { useActiveWeb3React } from '../../../hooks';
 import { useCurrency } from '../../../hooks/Tokens';
 import { useMtr } from '../../../hooks/vault/useMtr';
@@ -22,12 +22,19 @@ import { PageContent } from '../../../components-ui/PageContent';
 import { ViewportMediumUp } from '../../../components-ui/Responsive';
 import { PageHeader } from '../../../components-ui/PageHeader';
 import { VaultHeader } from '../../../features/vault/vaults/VaultHeader';
+import { CDP_DECIMALS } from '../../../features/vault/constants';
+import { applyCdpDecimals } from '../../../features/vault/utils';
+import { CDPMetrics } from '../../../features/vault/new/CDPMetrics';
+import { VaultCDPMetrics } from '../../../features/vault/new/VaultCDPMetrics';
 
 export default function Vault() {
   const { account, chainId } = useActiveWeb3React();
   const protocol = useProtocol();
   const router = useRouter();
   const vaultAddress = router.query.address as string;
+
+  const mtr = useMtr();
+  const mtrPriceUSD = useVaultManagerAssetPrice(mtr && mtr.address);
 
   // START: vault info
   const vault = useVaults({
@@ -43,22 +50,28 @@ export default function Vault() {
     address,
     collateral: collateralAddress,
     currentBorrowed,
-    currrentCollateralized,
+    currentCollateralized,
     CDP,
   } = vault ?? {};
 
   const fee =
     debt && currentBorrowed ? debt - parseFloat(currentBorrowed) : undefined;
+  console.log(fee);
 
   const collateralPriceUSD = useVaultManagerAssetPrice(collateralAddress);
-  const mcr = CDP && parseFloat(CDP.mcr) / 100;
-  const sfr = CDP && parseFloat(CDP.sfr) / 100;
+  const mcr = CDP && applyCdpDecimals(CDP.mcr);
+  const sfr = CDP && applyCdpDecimals(CDP.sfr);
 
-  const liquidationPriceUSD = vault ? mcr * collateralPriceUSD : undefined;
+  const liquidationPriceUSD =
+    CDP &&
+    (parseFloat(currentBorrowed) * mcr) /
+      100 /
+      parseFloat(currentCollateralized);
+
   const collateralCurrency = useCurrency(collateralAddress);
 
   const currentCollateralizedUSD =
-    vault && collateralPriceUSD * parseFloat(currrentCollateralized);
+    vault && collateralPriceUSD * parseFloat(currentCollateralized);
 
   const currentCollateralRatio =
     vault && (currentCollateralizedUSD / parseFloat(currentBorrowed)) * 100;
@@ -73,26 +86,7 @@ export default function Vault() {
 
   // END: vault info
 
-  // START: deposit
-  const collateralBalance = useCurrencyBalance(account, collateralCurrency);
-  const [depositAmount, setDepositAmount] = useState('');
-  // END: deposit
-
-  // START: withdraw
-  const withdrawableBalance =
-    vault && fee !== undefined
-      ? parseFloat(currrentCollateralized) - fee - minCollateralAmount
-      : undefined;
-
-  const withdrawableCurrencyBalance = tryParseAmount(
-    withdrawableBalance?.toString(),
-    collateralCurrency,
-  );
-  const [withdrawAmount, setWithdrawAmount] = useState('');
-  // END: withdraw
-
   // START: payback
-  const mtr = useMtr();
   const mtrBalance = useCurrencyBalance(account, mtr);
   const [paybackAmount, setPaybackAmount] = useState('');
   // END
@@ -118,10 +112,20 @@ export default function Vault() {
               liquidationPriceUSD={liquidationPriceUSD}
               currentCollateralizedUSD={currentCollateralizedUSD}
               currentBorrowed={currentBorrowed}
-              currentCollateralized={currrentCollateralized}
+              currentCollateralized={currentCollateralized}
               mcr={mcr}
               sfr={sfr}
               collateralRatio={currentCollateralRatio}
+            />
+            <VaultCDPMetrics
+              stabilityFee={fee}
+              currentCollateralRatio={currentCollateralRatio}
+              minCollateralRatio={mcr}
+              collateralPrice={collateralPriceUSD}
+              liquidationPrice={liquidationPriceUSD}
+              mtrPriceUSD={mtrPriceUSD}
+              debtAmount={currentBorrowed}
+              horizontal
             />
             <div
               className={classNames(
@@ -131,6 +135,9 @@ export default function Vault() {
             >
               <VaultHeader vaultAddress={vaultAddress} payback />
               <VaultPayBack
+                mcr={mcr}
+                collateralPriceUSD={collateralPriceUSD}
+                currentCollateralized={currentCollateralized}
                 borrowed={currentBorrowed}
                 vaultAddress={checksummedVaultAddress}
                 mtr={mtr}

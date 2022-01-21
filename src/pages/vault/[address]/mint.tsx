@@ -22,10 +22,10 @@ import { PageContent } from '../../../components-ui/PageContent';
 import { ViewportMediumUp } from '../../../components-ui/Responsive';
 import { PageHeader } from '../../../components-ui/PageHeader';
 import { VaultHeader } from '../../../features/vault/vaults/VaultHeader';
+import { applyCdpDecimals } from '../../../features/vault/utils';
 
 export default function Vault() {
-  const { account, chainId } = useActiveWeb3React();
-  const protocol = useProtocol();
+  const { account } = useActiveWeb3React();
   const router = useRouter();
 
   const vaultAddress = router.query.address as string;
@@ -44,7 +44,7 @@ export default function Vault() {
     address,
     collateral: collateralAddress,
     currentBorrowed,
-    currrentCollateralized,
+    currentCollateralized,
     CDP,
   } = vault ?? {};
 
@@ -52,14 +52,19 @@ export default function Vault() {
     debt && currentBorrowed ? debt - parseFloat(currentBorrowed) : undefined;
 
   const collateralPriceUSD = useVaultManagerAssetPrice(collateralAddress);
-  const mcr = CDP && parseFloat(CDP.mcr) / 100;
-  const sfr = CDP && parseFloat(CDP.sfr) / 100;
+  const mcr = CDP && applyCdpDecimals(CDP.mcr);
+  const sfr = CDP && applyCdpDecimals(CDP.sfr);
 
-  const liquidationPriceUSD = vault ? mcr * collateralPriceUSD : undefined;
+  const liquidationPriceUSD =
+    CDP &&
+    (parseFloat(currentBorrowed) * mcr) /
+      100 /
+      parseFloat(currentCollateralized);
+
   const collateralCurrency = useCurrency(collateralAddress);
 
   const currentCollateralizedUSD =
-    vault && collateralPriceUSD * parseFloat(currrentCollateralized);
+    vault && collateralPriceUSD * parseFloat(currentCollateralized);
 
   const currentCollateralRatio =
     vault && (currentCollateralizedUSD / parseFloat(currentBorrowed)) * 100;
@@ -67,6 +72,7 @@ export default function Vault() {
   const minCollateralAmountUSD = vault
     ? mcr * parseFloat(currentBorrowed)
     : undefined;
+
   const minCollateralAmount =
     minCollateralAmountUSD && collateralPriceUSD
       ? minCollateralAmountUSD / collateralPriceUSD
@@ -79,23 +85,12 @@ export default function Vault() {
   const [depositAmount, setDepositAmount] = useState('');
   // END: deposit
 
-  // START: withdraw
-  const withdrawableBalance =
-    vault && fee !== undefined
-      ? parseFloat(currrentCollateralized) - fee - minCollateralAmount
-      : undefined;
-
-  const withdrawableCurrencyBalance = tryParseAmount(
-    withdrawableBalance?.toString(),
-    collateralCurrency,
-  );
-  const [withdrawAmount, setWithdrawAmount] = useState('');
   // END: withdraw
 
-  // START: payback
+  // START: borrow more
   const mtr = useMtr();
   const mtrBalance = useCurrencyBalance(account, mtr);
-  const [paybackAmount, setPaybackAmount] = useState('');
+  const [borrowMoreAmount, setBorrowMoreAmount] = useState('');
   // END
 
   const checksummedVaultAddress = getAddress(vaultAddress);
@@ -119,13 +114,27 @@ export default function Vault() {
               liquidationPriceUSD={liquidationPriceUSD}
               currentCollateralizedUSD={currentCollateralizedUSD}
               currentBorrowed={currentBorrowed}
-              currentCollateralized={currrentCollateralized}
+              currentCollateralized={currentCollateralized}
               mcr={mcr}
               sfr={sfr}
               collateralRatio={currentCollateralRatio}
             />
             <VaultHeader vaultAddress={vaultAddress} mint />
-            <VaultMint />
+            <VaultMint
+              collateral={collateralCurrency}
+              mcr={mcr}
+              minCollateralAmount={minCollateralAmount}
+              collateralBalance={collateralBalance}
+              collateralPriceUSD={collateralPriceUSD}
+              currentCollateralized={currentCollateralized}
+              borrowed={currentBorrowed}
+              vaultAddress={checksummedVaultAddress}
+              mtr={mtr}
+              depositAmount={depositAmount}
+              borrowMoreAmount={borrowMoreAmount}
+              onBorrowMoreAmountChange={setBorrowMoreAmount}
+              onDepositAmountChange={setDepositAmount}
+            />
           </div>
         </PageContent>
       </Page>

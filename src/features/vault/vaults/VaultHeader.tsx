@@ -20,7 +20,7 @@ export function VaultHeader({
 
   return (
     <div className="flex items-center justify-center p-3px">
-      <NavigationLink href={`/vault/${vaultAddress}/payback`}>
+      <NavigationLink href={`/vault/${vaultAddress}`}>
         <a className={classNames(style, payback && activeStyle)}>Payback</a>
       </NavigationLink>
       <NavigationLink href={`/vault/${vaultAddress}/mint`}>

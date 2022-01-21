@@ -30,9 +30,10 @@ import { PageHeader } from '../../components-ui/PageHeader';
 import { CollateralizeBorrowPanel } from '../../features/vault/new/CollateralizeBorrowPanel';
 import { getAddress } from 'ethers/lib/utils';
 import { CDP_DECIMALS } from '../../features/vault/constants';
-import { CollateralizeMetrics } from '../../features/vault/new/CollateralizeMetrics';
+import { CDPMetrics } from '../../features/vault/new/CDPMetrics';
 import { CollateralizeJargons } from '../../features/vault/new/CollateralizeJargons';
 import { Button } from '../../components-ui/Button';
+import { applyCdpDecimals } from '../../features/vault/utils';
 
 export default function Collateral() {
   const { account, chainId } = useActiveWeb3React();
@@ -51,9 +52,9 @@ export default function Collateral() {
 
   const { cdp } = cVault ?? {};
   const { id, symbol, lfr: _lfr, sfr: _sfr, mcr: _mcr, decimals } = cdp ?? {};
-  const lfr = parseFloat(formatBalance(_lfr ?? 0, CDP_DECIMALS));
-  const sfr = parseFloat(formatBalance(_sfr ?? 0, CDP_DECIMALS));
-  const mcr = parseFloat(formatBalance(_mcr ?? 0, CDP_DECIMALS));
+  const lfr = applyCdpDecimals(_lfr ?? 0);
+  const sfr = applyCdpDecimals(_sfr ?? 0);
+  const mcr = applyCdpDecimals(_mcr ?? 0);
 
   // const collateralInfo = useCollateral(collateralAddr);
   const collateral = useCurrency(collateralAddr);
@@ -106,7 +107,7 @@ export default function Collateral() {
   );
 
   const [mtrAmount, setMtrAmount] = useState('');
-  const mtrCourrencyAmount = tryParseAmount(mtrAmount, mtr);
+  const mtrCurrencyAmount = tryParseAmount(mtrAmount, mtr);
 
   const handleChangeMtrAmount = (value) => {
     const newCollateralAmount =
@@ -199,37 +200,43 @@ export default function Collateral() {
 
   const onClick = useCallback(async () => {
     if (approvalState == ApprovalState.APPROVED) {
-      if (mtrCourrencyAmount) {
+      if (mtrCurrencyAmount) {
         if (isCollateralETH) {
           console.log('vault: createCDPNative');
           await createCDPNative(
             formattedCollateralizeAmount.quotient.toString(),
-            mtrCourrencyAmount.quotient.toString(),
+            mtrCurrencyAmount.quotient.toString(),
           );
         } else if (collateral.isToken) {
           console.log(
             'vault: createCDP',
             formattedCollateralizeAmount.quotient.toString(),
-            mtrCourrencyAmount.quotient.toString(),
+            mtrCurrencyAmount.quotient.toString(),
           );
           await createCDP(
             collateral.address,
             mtr.address,
             formattedCollateralizeAmount.quotient.toString(),
-            mtrCourrencyAmount.quotient.toString(),
+            mtrCurrencyAmount.quotient.toString(),
           );
         }
       }
     } else if (approvalState == ApprovalState.NOT_APPROVED) {
       await approve();
     }
-  }, [approvalState]);
+  }, [
+    approvalState,
+    mtrCurrencyAmount,
+    formattedCollateralizeAmount,
+    collateral,
+    mtr,
+  ]);
 
   // const isValidCDP = useVaultManagerIsValidCDP(
   //   collateralInfo?.priceAddress,
   //   mtr.address,
   //   formattedCollateralizeAmount?.quotient.toString(),
-  //   mtrCourrencyAmount?.quotient.toString(),
+  //   mtrCurrencyAmount?.quotient.toString(),
   // );
 
   return (
@@ -283,7 +290,7 @@ export default function Collateral() {
                 />
               </div>
               <div className="col-span-2">
-                <CollateralizeMetrics
+                <CDPMetrics
                   collateralPrice={collateralPriceUSD}
                   liquidationPrice={liquidationPriceUSD}
                   mtrPriceUSD={mtrPriceUSD}

@@ -23,7 +23,7 @@ export const TooltipInfoMessages = {
     'Current Collateralized Assets represents USD value of collaterals',
   currentAMMReserveUSD:
     'Current Collateral AMM Reserve represents USD value of collaterals in Collateral-MTR AMMs',
-  userBorrowedUSM: 'Historical data of UserBorrowed USM amount',
+  userBorrowedUSM: "Historical data of User's Borrowed USM amount",
 };
 
 export const ItemType = {

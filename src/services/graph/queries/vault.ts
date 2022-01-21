@@ -88,7 +88,7 @@ export const vaultsQuery = gql`
       address
       isLiquidated
       currentBorrowed
-      currrentCollateralized
+      currentCollateralized
       CDP {
         mcr
         sfr

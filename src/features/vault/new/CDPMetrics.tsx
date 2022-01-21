@@ -2,17 +2,25 @@ import Skeleton from 'react-loading-skeleton';
 import { Flasher } from '../../../components-ui/Flasher';
 import { classNames, formatNumber } from '../../../functions';
 import { DefinedStyles } from '../../../utils/DefinedStyles';
-import { CollateralizeMetric } from './CollateralizeMetric';
+import { CDPMetric } from './CDPMetric';
 
-export function CollateralizeMetrics({
+export function CDPMetrics({
   collateralPrice,
   liquidationPrice,
   mtrPriceUSD,
   debtAmount,
+  horizontal = false,
 }) {
   return (
-    <div className={DefinedStyles.collateralizePanel}>
-      <CollateralizeMetric
+    <div
+      className={classNames(
+        DefinedStyles.collateralizePanel,
+        horizontal &&
+          'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 !p-8',
+      )}
+    >
+      <CDPMetric
+        horizontal={horizontal}
         header="Collateral Price"
         tooltip="This is the oracle price of the collateral asset."
         content={
@@ -27,9 +35,12 @@ export function CollateralizeMetrics({
           )
         }
       />
-      <div className={classNames(DefinedStyles.divider, '!my-6')} />
+      {!horizontal && (
+        <div className={classNames(DefinedStyles.divider, '!my-6')} />
+      )}
 
-      <CollateralizeMetric
+      <CDPMetric
+        horizontal={horizontal}
         header="Liquidation Price"
         tooltip="This is the price of the collateral asset at which the collaterals will be liquidated."
         content={
@@ -37,15 +48,18 @@ export function CollateralizeMetrics({
             <Flasher
               baseColor="#B984FC"
               fromColor="#fff"
-              content={formatNumber(liquidationPrice, true)}
+              content={'$' + parseFloat(liquidationPrice.toFixed(4))}
             />
           ) : (
             <Skeleton width="50%" />
           )
         }
       />
-      <div className={classNames(DefinedStyles.divider, '!my-6')} />
-      <CollateralizeMetric
+      {!horizontal && (
+        <div className={classNames(DefinedStyles.divider, '!my-6')} />
+      )}
+      <CDPMetric
+        horizontal={horizontal}
         header="USM Price"
         tooltip="This is the oracle price of USM."
         content={
@@ -60,8 +74,11 @@ export function CollateralizeMetrics({
           )
         }
       />
-      <div className={classNames(DefinedStyles.divider, '!my-6')} />
-      <CollateralizeMetric
+      {!horizontal && (
+        <div className={classNames(DefinedStyles.divider, '!my-6')} />
+      )}
+      <CDPMetric
+        horizontal={horizontal}
         header="Market Debt Value"
         tooltip="This is the rounded market value of borrowed USM."
         content={

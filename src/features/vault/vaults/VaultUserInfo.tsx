@@ -14,12 +14,12 @@ export function VaultUserInfo() {
   const user = userHistories && userHistories[0];
 
   return (
-    <div className="w-full rounded-20 flex bg-vault-manager-info box-border">
+    <div className="w-full rounded-20 flex flex-col lg:flex-row bg-vault-manager-info box-border">
       <div className="rounded-20 p-8">
         <div className="text-2xl font-bold text-primary mb-4">
           {shortenAddress(account)}
         </div>
-        <div className="flex md:flex-col items-start space-y-2">
+        <div className="flex md:flex-col items-start space-x-2 md:space-x-0 md:space-y-2">
           <div className="space-y-1">
             <div className="text-sm">Total Borrowed</div>
             <div className="font-bold text-xl">

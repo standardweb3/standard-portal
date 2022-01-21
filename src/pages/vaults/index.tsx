@@ -15,6 +15,7 @@ import { ViewportMediumUp } from '../../components-ui/Responsive';
 import { VaultUserInfo } from '../../features/vault/vaults/VaultUserInfo';
 import { formatBalance } from '../../functions';
 import { CDP_DECIMALS } from '../../features/vault/constants';
+import { applyCdpDecimals } from '../../features/vault/utils';
 
 export default function Vaults() {
   const { account } = useActiveWeb3React();
@@ -30,7 +31,7 @@ export default function Vaults() {
           address,
           CDP,
           currentBorrowed,
-          currrentCollateralized,
+          currentCollateralized,
           collateral,
         } = vault;
         return (
@@ -38,9 +39,9 @@ export default function Vaults() {
             id={id}
             address={address}
             collateralAddress={collateral}
-            mcr={formatBalance(CDP.mcr, CDP_DECIMALS)}
+            mcr={applyCdpDecimals(CDP.mcr)}
             currentBorrowed={parseFloat(currentBorrowed)}
-            currentCollateralized={parseFloat(currrentCollateralized)}
+            currentCollateralized={parseFloat(currentCollateralized)}
           />
         );
       }) ?? 'Loading'

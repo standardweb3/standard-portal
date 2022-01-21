@@ -1,10 +1,11 @@
 import { useMemo } from 'react';
+import Skeleton from 'react-loading-skeleton';
 import { RouterCurrencyInputPanel } from '../../../bridge/feature/RouterCurrencyInputPanel';
 import { Button } from '../../../components-ui/Button';
-import { TokenInputPanelV2 } from '../../../components-ui/XSTND/TokenInputPanelV2';
-import { tryParseAmount } from '../../../functions';
+import { formatNumber, tryParseAmount } from '../../../functions';
 import { ApprovalState, useApproveCallback } from '../../../hooks';
 import { useVault } from '../../../hooks/vault/useVault';
+import { useNewVaultState } from '../../../state/vault/hooks';
 import { DefinedStyles } from '../../../utils/DefinedStyles';
 
 export function VaultDeposit({
@@ -13,6 +14,10 @@ export function VaultDeposit({
   balance,
   amount,
   onAmountChange,
+  borrowed,
+  mcr,
+  collateralPriceUSD,
+  currentCollateralized,
 }) {
   const { deposit, depositNative } = useVault(vaultAddress);
   const depositCurrencyAmount = tryParseAmount(amount, collateral);
@@ -41,13 +46,14 @@ export function VaultDeposit({
     (balance.greaterThan(depositCurrencyAmount) ||
       balance.equalTo(depositCurrencyAmount));
 
+  const newCollateralized =
+    currentCollateralized !== undefined
+      ? parseFloat(currentCollateralized) +
+        (amount !== '' ? parseFloat(amount) : 0)
+      : undefined;
+
   const confirmButtonMessage = useMemo(() => {
-    if (
-      balance &&
-      depositCurrencyAmount &&
-      (balance.greaterThan(depositCurrencyAmount) ||
-        balance.equalTo(depositCurrencyAmount))
-    ) {
+    if (depositable) {
       if (
         approvalState == ApprovalState.NOT_APPROVED ||
         approvalState == ApprovalState.UNKNOWN
@@ -62,26 +68,69 @@ export function VaultDeposit({
     } else {
       return 'Insufficient Balance';
     }
-  }, [balance, depositCurrencyAmount]);
+  }, [approvalState, depositable, depositCurrencyAmount]);
+
+  const { newLiquidationPriceUSD, newCollateralRatio } = useNewVaultState(
+    borrowed,
+    newCollateralized,
+    collateralPriceUSD,
+    mcr,
+  );
 
   return (
-    <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 ">
-      <div className="w-full rounded-20 sm:bg-opaque-secondary sm:px-4 py-1">
-        <RouterCurrencyInputPanel
-          onAmountChange={onAmountChange}
-          currency={collateral}
-          max={balance}
-          amount={amount}
-          hideChevron
-        />
+    <div className="space-y-4">
+      <div className="flex items-end space-x-2">
+        <div className="text-grey font-bold">Collateral After Deposit:</div>
+        <div className="font-bold text-2xl">
+          {newCollateralized !== undefined ? (
+            `${formatNumber(newCollateralized)} ${collateral.symbol}`
+          ) : (
+            <Skeleton />
+          )}
+        </div>
       </div>
-      <Button
-        className={DefinedStyles.fullButton}
-        disabled={!depositable}
-        onClick={onClick}
-      >
-        {confirmButtonMessage}
-      </Button>
+      <div className="flex items-end space-x-2">
+        <div className="text-grey font-bold">
+          Liquidation Price After Deposit
+        </div>
+        <div className="font-bold text-2xl">
+          {newLiquidationPriceUSD !== undefined ? (
+            `$${formatNumber(newLiquidationPriceUSD)}`
+          ) : (
+            <Skeleton />
+          )}
+        </div>
+      </div>
+      <div className="flex items-end space-x-2">
+        <div className="text-grey font-bold">
+          Collateral Ratio After Deposit
+        </div>
+        <div className="font-bold text-2xl">
+          {newCollateralRatio !== undefined ? (
+            `${formatNumber(newCollateralRatio)}%`
+          ) : (
+            <Skeleton />
+          )}
+        </div>
+      </div>
+      <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 ">
+        <div className="w-full rounded-20 sm:bg-opaque-secondary sm:px-4 py-1">
+          <RouterCurrencyInputPanel
+            onAmountChange={onAmountChange}
+            currency={collateral}
+            max={balance}
+            amount={amount}
+            hideChevron
+          />
+        </div>
+        <Button
+          className={DefinedStyles.fullButton}
+          disabled={!depositable}
+          onClick={onClick}
+        >
+          {confirmButtonMessage}
+        </Button>
+      </div>
     </div>
   );
 }

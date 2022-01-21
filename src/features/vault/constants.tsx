@@ -1,1 +1,1 @@
-export const CDP_DECIMALS = 5;
+export const CDP_DECIMALS = 10e4;

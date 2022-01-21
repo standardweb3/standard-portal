@@ -1,10 +1,11 @@
 import { useMemo } from 'react';
+import Skeleton from 'react-loading-skeleton';
 import { RouterCurrencyInputPanel } from '../../../bridge/feature/RouterCurrencyInputPanel';
 import { Button } from '../../../components-ui/Button';
-import { TokenInputPanelV2 } from '../../../components-ui/XSTND/TokenInputPanelV2';
 import { formatNumber, tryParseAmount } from '../../../functions';
 import { ApprovalState, useApproveCallback } from '../../../hooks';
 import { useVault } from '../../../hooks/vault/useVault';
+import { useNewVaultState } from '../../../state/vault/hooks';
 import { DefinedStyles } from '../../../utils/DefinedStyles';
 
 export function VaultPayBack({
@@ -14,9 +15,13 @@ export function VaultPayBack({
   amount,
   onAmountChange,
   borrowed,
+  currentCollateralized,
+  collateralPriceUSD,
+  mcr,
 }) {
   const { payBack } = useVault(vaultAddress);
   const paybackCurrencyAmount = tryParseAmount(amount, mtr);
+  const borrowedCurrencyAmount = tryParseAmount(borrowed, mtr);
   const [approvalState, approve] = useApproveCallback(
     paybackCurrencyAmount,
     vaultAddress,
@@ -36,7 +41,9 @@ export function VaultPayBack({
     balance &&
     paybackCurrencyAmount &&
     (balance.greaterThan(paybackCurrencyAmount) ||
-      balance.equalTo(paybackCurrencyAmount));
+      balance.equalTo(paybackCurrencyAmount)) &&
+    (borrowedCurrencyAmount.greaterThan(paybackCurrencyAmount) ||
+      borrowedCurrencyAmount.equalTo(paybackCurrencyAmount));
 
   const confirmButtonMessage = useMemo(() => {
     if (
@@ -53,24 +60,65 @@ export function VaultPayBack({
       } else if (approvalState == ApprovalState.PENDING) {
         return 'Approving';
       }
-      return 'Pay Back';
+      return 'Payback';
     } else if (!paybackCurrencyAmount) {
-      return 'Enter Pay Back amount';
+      return 'Enter Payback amount';
+    } else if (
+      borrowedCurrencyAmount.greaterThan(paybackCurrencyAmount) ||
+      borrowedCurrencyAmount.equalTo(paybackCurrencyAmount)
+    ) {
+      return 'Payback amount is greater than borrowed amount';
     } else {
       return 'Insufficient Mtr Balance';
     }
-  }, [balance, paybackCurrencyAmount]);
+  }, [approvalState, balance, paybackCurrencyAmount]);
 
   const remainingBalance =
-    borrowed && parseFloat(borrowed) - (amount !== '' ? parseFloat(amount) : 0);
+    borrowed !== undefined
+      ? parseFloat(borrowed) - (amount !== '' ? parseFloat(amount) : 0)
+      : undefined;
+
+  const { newLiquidationPriceUSD, newCollateralRatio } = useNewVaultState(
+    remainingBalance,
+    currentCollateralized,
+    collateralPriceUSD,
+    mcr,
+  );
 
   return (
     <div className="space-y-4">
       <div className="flex items-end space-x-2">
         <div className="text-grey font-bold">Debt After Payback:</div>
         <div className="font-bold text-2xl">
-          {formatNumber(remainingBalance)}{' '}
-          <span className="text-base font-normal">MTR</span>
+          {remainingBalance !== undefined ? (
+            `${formatNumber(remainingBalance)} MTR`
+          ) : (
+            <Skeleton />
+          )}
+        </div>
+      </div>
+      <div className="flex items-end space-x-2">
+        <div className="text-grey font-bold">
+          Liquidation Price After Payback
+        </div>
+        <div className="font-bold text-2xl">
+          {newLiquidationPriceUSD !== undefined ? (
+            `$${formatNumber(newLiquidationPriceUSD)}`
+          ) : (
+            <Skeleton />
+          )}
+        </div>
+      </div>
+      <div className="flex items-end space-x-2">
+        <div className="text-grey font-bold">
+          Collateral Ratio After Payback
+        </div>
+        <div className="font-bold text-2xl">
+          {newCollateralRatio !== undefined ? (
+            `${formatNumber(newCollateralRatio)}%`
+          ) : (
+            <Skeleton />
+          )}
         </div>
       </div>
       <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 ">
@@ -78,7 +126,8 @@ export function VaultPayBack({
           <RouterCurrencyInputPanel
             onAmountChange={onAmountChange}
             currency={mtr}
-            max={balance}
+            max={borrowedCurrencyAmount}
+            balance={balance}
             amount={amount}
             hideChevron
           />

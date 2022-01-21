@@ -9,6 +9,7 @@ import {
   ViewportSmallDown,
 } from '../../../components-ui/Responsive';
 import { CDP_DECIMALS } from '../constants';
+import { applyCdpDecimals } from '../utils';
 
 export function VaultInfoCard({
   collateral,
@@ -29,7 +30,7 @@ export function VaultInfoCard({
 
   return (
     <div className="rounded-20 bg-vault-manager-info p-8 relative">
-      <div className="flex flex-col 2xl:flex-row items-start 2xl:items-center md:space-x-12 2xl:space-y-0">
+      <div className="flex flex-col 2xl:flex-row items-start 2xl:items-end md:space-x-12 2xl:space-y-0">
         <div className="flex items-center md:items-end">
           <ViewportSmallDown>
             <div className="absolute top-[24px] right-[24px] z-[-10]">
@@ -90,7 +91,7 @@ export function VaultInfoCard({
         </div>
         {(expanded || isViewportMediuUp) && (
           <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 justify-start flex-wrap pb-2 mt-4">
-            <div className="mr-8 mt-4 col-span-1">
+            {/* <div className="mr-8 mt-4 col-span-1">
               <div className="text-grey text-xs md:text-sm lg:text-sm">
                 Liquidation Price
               </div>
@@ -119,8 +120,8 @@ export function VaultInfoCard({
                   NumberSkeleton
                 )}
               </div>
-            </div>
-            <div className="mr-8 mt-4 col-span-1">
+            </div> */}
+            {/* <div className="mr-8 mt-4 col-span-1">
               <div className="text-grey text-xs md:text-sm lg:text-sm">
                 Accrued Stability Fee
               </div>
@@ -134,41 +135,22 @@ export function VaultInfoCard({
                   NumberSkeleton
                 )}
               </div>
-            </div>
+            </div> */}
             <div className="mr-8 mt-4 col-span-1">
               <div className="text-grey text-xs md:text-sm lg:text-sm">
-                Liquidation Ratio
+                Min Collateral Ratio
               </div>
               <div className="text-lg font-bold">
-                {mcr !== undefined ? (
-                  <>{formatPercent(formatBalance(mcr, CDP_DECIMALS))}</>
-                ) : (
-                  NumberSkeleton
-                )}
+                {mcr !== undefined ? <>{formatPercent(mcr)}</> : NumberSkeleton}
               </div>
             </div>
-            <div className="mr-8 mt-4 col-span-1">
-              <div className="text-grey text-xs md:text-sm lg:text-sm">
-                Current Collateral Ratio
-              </div>
-              <div className="text-lg font-bold">
-                {collateralRatio !== undefined ? (
-                  <>{formatPercent(collateralRatio)}</>
-                ) : (
-                  NumberSkeleton
-                )}
-              </div>
-            </div>
+
             <div className="mr-8 mt-4 col-span-1">
               <div className="text-grey text-xs md:text-sm lg:text-sm">
                 Stability Fee Ratio
               </div>
               <div className="text-lg font-bold">
-                {sfr !== undefined ? (
-                  <>{formatPercent(formatBalance(sfr, CDP_DECIMALS))}</>
-                ) : (
-                  NumberSkeleton
-                )}
+                {sfr !== undefined ? <>{formatPercent(sfr)}</> : NumberSkeleton}
               </div>
             </div>
           </div>

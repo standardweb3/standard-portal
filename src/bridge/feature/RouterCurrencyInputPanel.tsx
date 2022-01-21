@@ -9,6 +9,7 @@ export type RouterCurrencyInputPanelTypes = {
   currency: Currency | undefined;
   onAmountChange?: (amount: string) => void;
   max?: CurrencyAmount<Currency>;
+  balance?: CurrencyAmount<Currency>;
   className?: string;
   inputClassName?: string;
   maxClassName?: string;
@@ -22,6 +23,7 @@ export function RouterCurrencyInputPanel({
   onAmountChange,
   amount,
   max,
+  balance,
   className,
   inputClassName,
   maxClassName,
@@ -55,10 +57,16 @@ export function RouterCurrencyInputPanel({
         />
         <div>
           <div className="font-bold">{currency?.symbol}</div>
-          {max && (
+          {balance ? (
             <div className="text-xs text-grey">
-              {formatNumber(max.toExact())}
+              {formatNumber(balance.toExact())}
             </div>
+          ) : (
+            max && (
+              <div className="text-xs text-grey">
+                {formatNumber(max.toExact())}
+              </div>
+            )
           )}
         </div>
         {!hideChevron && <ChevronDownIcon className="w-4 h-4 text-grey" />}
