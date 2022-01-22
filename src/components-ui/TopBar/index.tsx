@@ -39,7 +39,7 @@ export function TopBar() {
         </div>
       </div>
       <Slider isOpen={menuOpen}>
-        <div className="p-8 flex flex-col justify-between h-full">
+        <div className="p-8 flex flex-col justify-between h-full overflow-auto no-scrollbar">
           <div className="w-full text-text space-y-4">
             <ModalHeader
               title={<Logo height="31px" width="128px" />}

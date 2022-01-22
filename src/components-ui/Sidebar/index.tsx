@@ -12,6 +12,7 @@ export function Sidebar() {
   return (
     <div
       className="
+      no-scrollbar
       relative
       bg-background 
       min-w-[194px]
@@ -20,6 +21,7 @@ export function Sidebar() {
       flex
       flex-col 
       justify-between
+      overflow-auto
     "
     >
       <div className="py-8">
