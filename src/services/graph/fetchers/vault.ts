@@ -1,5 +1,6 @@
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import request from 'graphql-request';
+import { GRAPH_HOST } from '../constants';
 import {
   cdpsQuery,
   cVaultQuery,
@@ -12,15 +13,16 @@ import {
 } from '../queries/vault';
 
 export const VAULT = {
-  [ChainId.RINKEBY]: 'digitalnative/standardprotocol-vault',
+  [ChainId.RINKEBY]: 'billjhlee/rinkeby-vault',
 };
 
 export const vaultUri = (chainId = ChainId.MAINNET) =>
-  `${'http://127.0.0.1:8000'}/subgraphs/name/${VAULT[chainId]}`;
+  `${GRAPH_HOST[chainId]}/subgraphs/name/${VAULT[chainId]}`;
 
 export const vault = async (chainId = ChainId.MAINNET, query, variables) => {
+  console.log(`${GRAPH_HOST[chainId]}/subgraphs/name/${VAULT[chainId]}`);
   return request(
-    `${'http://127.0.0.1:8000'}/subgraphs/name/${VAULT[chainId]}`,
+    `${GRAPH_HOST[chainId]}/subgraphs/name/${VAULT[chainId]}`,
     query,
     variables,
   );

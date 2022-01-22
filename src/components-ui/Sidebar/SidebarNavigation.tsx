@@ -19,10 +19,10 @@ export function SidebarNavigation({ routes, chainId }) {
             ? !route.hidden.includes(chainId)
             : true,
         )
-        .map((route) => {
+        .map((route, index) => {
           if (route.name === 'Divider')
             return (
-              <div className="w-full my-4 flex justify-center">
+              <div className="w-full my-4 flex justify-center" key={index}>
                 <Divider className="bg-primary bg-opacity-50 !w-[70%]" />
               </div>
             );

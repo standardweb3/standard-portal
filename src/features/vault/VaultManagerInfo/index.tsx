@@ -100,7 +100,7 @@ export function VaultManagerInfo() {
             <div className="flex justify-start flex-wrap pb-2 mt-4">
               <div className="mr-8 mt-4">
                 <div className="text-grey text-xs md:text-sm lg:text-sm">
-                  AMM Reserve
+                  Current Collateralized
                 </div>
                 <div className="text-lg font-bold">
                   {runningStat ? (
