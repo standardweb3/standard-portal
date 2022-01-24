@@ -1,6 +1,21 @@
 const withPWA = require('next-pwa');
 const runtimeCaching = require('next-pwa/cache');
-
+const withAntdLess = require('next-plugin-antd-less');
+// const withTM = require('next-transpile-modules')(['redux-persist'])
+const pluginAntdLess = withAntdLess({
+  // modifyVars: {
+  //   '@THEME--DARK': 'theme-dark',
+  // },
+  lessVarsFilePath: './src/celer/app/app.less',
+  // cssLoaderOptions: {
+  // esModule: false,
+  // sourceMap: false,
+  // modules: {
+  // mode: 'local',
+  // localIdentName: '[hash:2]',
+  // },
+  // },
+});
 // const linguiConfig = require('./lingui.config.js');
 
 // const { locales, sourceLocale } = linguiConfig;
