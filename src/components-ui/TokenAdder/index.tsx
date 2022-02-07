@@ -1,5 +1,5 @@
 import { Currency } from '@digitalnative/standard-protocol-sdk';
-import { useCallback } from 'react';
+import { ReactNode } from 'react';
 import { classNames, formatNumber } from '../../functions';
 import { useActiveWeb3React } from '../../hooks';
 import useAddTokenToMetaMask from '../../hooks/useAddTokenToMetaMask';
@@ -9,12 +9,16 @@ import { CurrencyLogo } from '../CurrencyLogo';
 
 export type TokenAdderProps = {
   currency: Currency | undefined;
+  rightComponent?: ReactNode;
 };
 
-export function TokenAdder({ currency }: TokenAdderProps) {
+export function TokenAdder({
+  currency,
+  rightComponent = undefined,
+}: TokenAdderProps) {
   const { account } = useActiveWeb3React();
 
-  const { addToken, success } = useAddTokenToMetaMask(currency);
+  const { addToken } = useAddTokenToMetaMask(currency);
   const balance = useCurrencyBalance(account ?? undefined, currency);
   const stndPrice = useStandardPrice();
 
@@ -43,6 +47,7 @@ export function TokenAdder({ currency }: TokenAdderProps) {
         </div>
       )}
       <div>{currency.symbol}</div>
+      {rightComponent}
     </div>
   ) : null;
 }

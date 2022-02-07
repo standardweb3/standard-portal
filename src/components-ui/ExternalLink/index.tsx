@@ -32,6 +32,7 @@ export function ExternalLink({
 }: ExternalLinkProps) {
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLAnchorElement>) => {
+      event.stopPropagation();
       // don't prevent default, don't redirect if it's a new tab
       if (target === '_blank' || event.ctrlKey || event.metaKey) {
         ReactGA.outboundLink({ label: href }, () => {
