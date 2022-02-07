@@ -1,3 +1,4 @@
+import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import request from 'graphql-request';
 import { GRAPH_HOST } from '../constants';
@@ -16,11 +17,20 @@ export const VAULT = {
   [ChainId.RINKEBY]: 'billjhlee/rinkeby-vault',
 };
 
+export const vaultsGraphClient = (chainId) => {
+  const uri = vaultUri(chainId);
+  return new ApolloClient({
+    link: createHttpLink({
+      uri,
+    }),
+    cache: new InMemoryCache(),
+  });
+};
+
 export const vaultUri = (chainId = ChainId.MAINNET) =>
   `${GRAPH_HOST[chainId]}/subgraphs/name/${VAULT[chainId]}`;
 
 export const vault = async (chainId = ChainId.MAINNET, query, variables) => {
-  console.log(`${GRAPH_HOST[chainId]}/subgraphs/name/${VAULT[chainId]}`);
   return request(
     `${GRAPH_HOST[chainId]}/subgraphs/name/${VAULT[chainId]}`,
     query,
@@ -41,9 +51,8 @@ export const getVaults = async (chainId = ChainId.MAINNET, variables) => {
 };
 
 export const getVault = async (chainId = ChainId.MAINNET, variables) => {
-  const { vault: result } = await vault(chainId, vaultQuery, variables);
-
-  return result;
+  const { vaults } = await vault(chainId, vaultsQuery, variables);
+  return vaults?.[0];
 };
 
 export const getCVault = async (chainId = ChainId.MAINNET, variables) => {

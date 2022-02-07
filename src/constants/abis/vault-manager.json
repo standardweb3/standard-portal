@@ -753,6 +753,19 @@
   },
   {
     "inputs": [],
+    "name": "lastRebase",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "liquidator",
     "outputs": [
       {
@@ -816,6 +829,19 @@
       }
     ],
     "name": "revokeRole",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "desiredSupply_",
+        "type": "uint256"
+      }
+    ],
+    "name": "setDesiredSupply",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

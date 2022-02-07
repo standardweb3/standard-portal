@@ -2,162 +2,173 @@ import Head from 'next/head';
 import { Page } from '../../components-ui/Page';
 import { PageContent } from '../../components-ui/PageContent';
 import { DefinedStyles } from '../../utils/DefinedStyles';
-import { CollateralSelectPanel } from '../../features/vault/new/CollateralSelectPanel';
-import { useCallback, useMemo, useState } from 'react';
-import { classNames, formatBalance, tryParseAmount } from '../../functions';
+import { CollateralSelectPanel } from '../../features/usm/collateralize/CollateralSelectPanel';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { classNames, formatNumber, tryParseAmount } from '../../functions';
 import { useRouter } from 'next/router';
-// import { useCollateral } from '../../services/graph/hooks/collaterals';
-import { useCurrency } from '../../hooks/Tokens';
 import { useCurrencyBalance } from '../../state/wallet/hooks';
 import {
   ApprovalState,
   useActiveWeb3React,
   useApproveCallback,
 } from '../../hooks';
-import { CollateralizeSettingsPanel } from '../../features/vault/new/CollateralizeSettingsPanel';
-import { CollateralInfo } from '../../features/vault/new/CollateralInfo';
-import { useVaultManagerAssetPrice } from '../../hooks/vault/useVaultManager';
+import { CollateralInfo } from '../../features/usm/collateralize/CollateralInfo';
 import {
+  ChainId,
   getVaultManagerAddress,
-  WNATIVE,
 } from '@digitalnative/standard-protocol-sdk';
 import { useProtocol } from '../../state/protocol/hooks';
 import useCDP from '../../hooks/vault/useCDP';
-import { useMtr } from '../../hooks/vault/useMtr';
-import { useCVault } from '../../services/graph/hooks/vault';
 import { ViewportMediumUp } from '../../components-ui/Responsive';
 import { PageHeader } from '../../components-ui/PageHeader';
-import { CollateralizeBorrowPanel } from '../../features/vault/new/CollateralizeBorrowPanel';
-import { getAddress } from 'ethers/lib/utils';
-import { CDP_DECIMALS } from '../../features/vault/constants';
-import { CDPMetrics } from '../../features/vault/new/CDPMetrics';
-import { CollateralizeJargons } from '../../features/vault/new/CollateralizeJargons';
+import { CollateralizeBorrowPanel } from '../../features/usm/collateralize/CollateralizeBorrowPanel';
+import { CDPMetrics } from '../../features/usm/collateralize/CDPMetrics';
 import { Button } from '../../components-ui/Button';
-import { applyCdpDecimals } from '../../features/vault/utils';
+import { CollateralizeSettingsPanel } from '../../features/usm/collateralize/CollateralizeSettingsPanel';
+import { useTransactionAdder } from '../../state/transactions/hooks';
+import { useCollateral } from '../../features/usm/useCollateral';
+import {
+  getSafeCollateralRatio,
+  MAX_COLLATERAL_RATIO,
+} from '../../features/usm/constants';
+import { RippleSpinner } from '../../components-ui/Spinner/RippleSpinner';
+import { useUsmMintableSupply } from '../../features/usm/useUsmMintableSupply';
+import { Alert } from '../../components-ui/Alert';
+import { NetworkGuardWrapper } from '../../guards/Network';
+import TransactionConfirmationModal from '../../modals/TransactionConfirmationModal';
+import { useTransactionSubmission } from '../../hooks/useTransactionSubmission';
 
-export default function Collateral() {
+function Collateral() {
+  const addTransaction = useTransactionAdder();
+  const {
+    showConfirm,
+    attemptingTxn,
+    setAttemptingTxn,
+    txHash,
+    handleSubmission,
+    handleDismissConfirmation,
+  } = useTransactionSubmission();
+  const { isMintable, mintableSupply } = useUsmMintableSupply();
   const { account, chainId } = useActiveWeb3React();
   const protocol = useProtocol();
   const router = useRouter();
-  const mtr = useMtr();
-
   const collateralAddr = router.query.collateral[0];
-  const isNative = collateralAddr === 'ETH';
 
-  const cVault = useCVault({
-    id: isNative
-      ? WNATIVE[chainId].address.toLowerCase()
-      : collateralAddr.toLowerCase(),
-  });
+  const {
+    collateralAddress,
+    collateralCurrency,
+    cVault,
+    usm,
+    lfr,
+    sfr,
+    mcr,
+    collateralPrice,
+    usmPrice,
+    loading,
+    isNative,
+    isWnative,
+    handleWrapUnwrap,
+  } = useCollateral(collateralAddr);
 
-  const { cdp } = cVault ?? {};
-  const { id, symbol, lfr: _lfr, sfr: _sfr, mcr: _mcr, decimals } = cdp ?? {};
-  const lfr = applyCdpDecimals(_lfr ?? 0);
-  const sfr = applyCdpDecimals(_sfr ?? 0);
-  const mcr = applyCdpDecimals(_mcr ?? 0);
-
-  // const collateralInfo = useCollateral(collateralAddr);
-  const collateral = useCurrency(collateralAddr);
-  const isCollateralETH = collateral?.isNative;
-
-  const collateralPriceUSD = useVaultManagerAssetPrice(id && getAddress(id));
-  const mtrPriceUSD = useVaultManagerAssetPrice(mtr && mtr.address);
-
-  const balance = useCurrencyBalance(account, collateral);
+  const balance = useCurrencyBalance(account, collateralCurrency);
   const [collateralizeAmount, setCollateralizeAmount] = useState('');
 
-  const collateralValueUSD =
-    collateralPriceUSD && collateralizeAmount !== ''
-      ? parseFloat(collateralizeAmount) * collateralPriceUSD
+  const [usmAmount, setUsmAmount] = useState('');
+  const usmCurrencyAmount = tryParseAmount(usmAmount, usm);
+
+  const collateralizeValue =
+    collateralPrice && collateralizeAmount !== ''
+      ? parseFloat(collateralizeAmount) * collateralPrice
       : 0;
 
-  // // temporary
   const collateralizeCurrencyAmount = tryParseAmount(
     collateralizeAmount,
-    collateral,
+    collateralCurrency,
   );
 
-  const maxCollateralRatio = 320;
-  const safeCollateralRatio = 200;
-  // change to collateral info
-  const minCollateralRatio = mcr;
+  const safeCollateralRatio = getSafeCollateralRatio(mcr);
 
   const [collateralRatio, setCollateralRatio] = useState(
     String(safeCollateralRatio),
   );
 
-  const liquidationPriceUSD =
-    collateralPriceUSD &&
-    (collateralPriceUSD / parseFloat(collateralRatio)) * 100;
+  const [collateralRatioPercentage, setCollateralRatioPercentage] = useState(
+    (safeCollateralRatio / MAX_COLLATERAL_RATIO) * 100,
+  );
+
+  useEffect(() => {
+    if (safeCollateralRatio) {
+      setCollateralRatio(String(safeCollateralRatio));
+      setCollateralRatioPercentage(
+        (safeCollateralRatio / MAX_COLLATERAL_RATIO) * 100,
+      );
+    }
+  }, [safeCollateralRatio]);
 
   const handleCollateralizeAmountChange = (value) => {
     setCollateralizeAmount(value);
-    const _collateralValueUSD =
-      collateralPriceUSD && value !== ''
-        ? parseFloat(value) * collateralPriceUSD
-        : 0;
+    const _collateralValue =
+      collateralPrice && value !== '' ? parseFloat(value) * collateralPrice : 0;
 
-    setMtrAmount(
-      String((_collateralValueUSD / parseFloat(collateralRatio)) * 100),
-    );
+    if (collateralRatio !== '') {
+      setUsmAmount(
+        String((_collateralValue / parseFloat(collateralRatio)) * 100),
+      );
+    } else {
+      setUsmAmount('');
+    }
   };
 
-  const [collateralRatioPercentage, setCollateralRatioPercentage] = useState(
-    (safeCollateralRatio / maxCollateralRatio) * 100,
-  );
+  const liquidationPrice =
+    !loading && usmAmount !== '' && collateralizeAmount !== ''
+      ? (parseFloat(usmAmount) * mcr) / 100 / parseFloat(collateralizeAmount)
+      : 0;
 
-  const [mtrAmount, setMtrAmount] = useState('');
-  const mtrCurrencyAmount = tryParseAmount(mtrAmount, mtr);
-
-  const handleChangeMtrAmount = (value) => {
+  const handleChangeUsmAmount = (value) => {
     const newCollateralAmount =
-      collateralPriceUSD && collateralRatio
+      collateralPrice && collateralRatio
         ? (parseFloat(value) * parseFloat(collateralRatio)) /
-          collateralPriceUSD /
+          collateralPrice /
           100
         : '';
     setCollateralizeAmount(newCollateralAmount.toString());
-    setMtrAmount(value);
+    setUsmAmount(value);
   };
 
   const handleChangeCollateralRatio = (value, changePerc = true) => {
     if (value === '') {
-      setCollateralRatioPercentage(
-        (minCollateralRatio / maxCollateralRatio) * 100,
-      );
+      setCollateralRatioPercentage((mcr / MAX_COLLATERAL_RATIO) * 100);
       setCollateralRatio('');
-      setMtrAmount('');
+      setUsmAmount('');
       return;
     }
-    if (parseFloat(value) >= maxCollateralRatio) {
-      setCollateralRatio(String(maxCollateralRatio));
+    if (parseFloat(value) >= MAX_COLLATERAL_RATIO) {
+      setCollateralRatio(String(value));
       setCollateralRatioPercentage(100);
+      setUsmAmount(String((collateralizeValue / parseFloat(value)) * 100));
       return;
     }
     if (changePerc) {
       const newCollateralRatioPercentage =
-        (parseFloat(value) / maxCollateralRatio) * 100;
+        (parseFloat(value) / MAX_COLLATERAL_RATIO) * 100;
 
       setCollateralRatioPercentage(newCollateralRatioPercentage);
     }
     setCollateralRatio(value);
-    // console.log('vault', value, collateralValueUSD);
-    setMtrAmount(String((collateralValueUSD / parseFloat(value)) * 100));
+    setUsmAmount(String((collateralizeValue / parseFloat(value)) * 100));
   };
 
   const setToMinCollataralRatio = () => {
-    handleChangeCollateralRatio(String(minCollateralRatio), true);
+    handleChangeCollateralRatio(String(mcr), true);
   };
 
   const setToSafeCollateralRatio = () => {
     handleChangeCollateralRatio(String(safeCollateralRatio), true);
   };
 
-  const [pendingTx, setPendingTx] = useState(false);
-
   const formattedCollateralizeAmount = tryParseAmount(
     collateralizeAmount,
-    collateral,
+    collateralCurrency,
   );
 
   const [approvalState, approve] = useApproveCallback(
@@ -168,14 +179,16 @@ export default function Collateral() {
   const { createCDP, createCDPNative } = useCDP();
 
   const borrowable =
+    isMintable &&
     balance &&
     collateralizeCurrencyAmount &&
     collateralRatio &&
-    parseFloat(collateralRatio) >= minCollateralRatio &&
+    parseFloat(collateralRatio) >= mcr &&
     (balance.greaterThan(collateralizeCurrencyAmount) ||
       balance.equalTo(collateralizeCurrencyAmount));
 
   const confirmButtonMessage = useMemo(() => {
+    if (!isMintable) return 'USM is not borrowable';
     if (
       balance &&
       collateralizeCurrencyAmount &&
@@ -188,7 +201,12 @@ export default function Collateral() {
       ) {
         return 'Approve';
       } else if (approvalState == ApprovalState.PENDING) {
-        return 'Approving';
+        return (
+          <div className="flex items-center justify-center space-x-3">
+            <div>Approving</div>
+            <RippleSpinner size={16} />
+          </div>
+        );
       }
       return 'Borrow';
     } else if (!collateralizeCurrencyAmount) {
@@ -200,44 +218,41 @@ export default function Collateral() {
 
   const onClick = useCallback(async () => {
     if (approvalState == ApprovalState.APPROVED) {
-      if (mtrCurrencyAmount) {
-        if (isCollateralETH) {
-          console.log('vault: createCDPNative');
-          await createCDPNative(
+      if (usmCurrencyAmount) {
+        let tx;
+        if (collateralCurrency.isNative) {
+          tx = await createCDPNative(
             formattedCollateralizeAmount.quotient.toString(),
-            mtrCurrencyAmount.quotient.toString(),
+            usmCurrencyAmount.quotient.toString(),
           );
-        } else if (collateral.isToken) {
-          console.log(
-            'vault: createCDP',
+        } else if (collateralCurrency.isToken) {
+          tx = await createCDP(
+            collateralCurrency.address,
+            usm.address,
             formattedCollateralizeAmount.quotient.toString(),
-            mtrCurrencyAmount.quotient.toString(),
-          );
-          await createCDP(
-            collateral.address,
-            mtr.address,
-            formattedCollateralizeAmount.quotient.toString(),
-            mtrCurrencyAmount.quotient.toString(),
+            usmCurrencyAmount.quotient.toString(),
           );
         }
+        tx &&
+          addTransaction(tx, {
+            summary: `Collateralize ${formatNumber(
+              formattedCollateralizeAmount.toExact(),
+            )} ${collateralCurrency.symbol} and borrow ${formatNumber(
+              usmCurrencyAmount.toExact(),
+            )}`,
+          });
+        tx && handleSubmission(tx.hash);
       }
     } else if (approvalState == ApprovalState.NOT_APPROVED) {
       await approve();
     }
   }, [
     approvalState,
-    mtrCurrencyAmount,
+    usmCurrencyAmount,
     formattedCollateralizeAmount,
-    collateral,
-    mtr,
+    collateralCurrency,
+    usm,
   ]);
-
-  // const isValidCDP = useVaultManagerIsValidCDP(
-  //   collateralInfo?.priceAddress,
-  //   mtr.address,
-  //   formattedCollateralizeAmount?.quotient.toString(),
-  //   mtrCurrencyAmount?.quotient.toString(),
-  // );
 
   return (
     <>
@@ -249,41 +264,60 @@ export default function Collateral() {
           content="Trade ERC 20 tokens on Standard Protocol"
         />
       </Head>
-      <Page id="trade-page" className={DefinedStyles.page}>
+      <Page id="collateralize-page" className={DefinedStyles.page}>
         <ViewportMediumUp>
           <PageHeader title="Collateralize" />
         </ViewportMediumUp>
         <PageContent>
           <div className="w-full max-w-[1000px] space-y-8">
+            {!isMintable && (
+              <Alert
+                type="error"
+                dismissable={false}
+                showIcon
+                message={
+                  <div>
+                    <div>
+                      USM Cap has been reached and USM is not borrowable at the
+                      moment
+                    </div>
+                  </div>
+                }
+              />
+            )}
             <CollateralInfo
               mcr={mcr}
               lfr={lfr}
               sfr={sfr}
-              priceUSD={collateralPriceUSD}
-              collateral={collateral}
+              collateralPrice={collateralPrice}
+              collateral={collateralCurrency}
             />
             <div className="grid grid-cols-2 lg:grid-cols-7 gap-4">
               <div className="space-y-4 col-span-2 lg:col-span-5">
                 <CollateralSelectPanel
                   balance={balance}
-                  collateral={collateral}
+                  collateral={collateralCurrency}
                   collateralizeAmount={collateralizeAmount}
                   setCollateralizeAmount={handleCollateralizeAmountChange}
+                  isNative={isNative}
+                  isWnative={isWnative}
+                  handleWrapUnwrap={handleWrapUnwrap}
                 />
                 <CollateralizeSettingsPanel
-                  mtrAmount={mtrAmount}
+                  usmAmount={usmAmount}
                   collateralRatio={collateralRatio}
                   setCollateralRatio={handleChangeCollateralRatio}
-                  maxCollateralRatio={maxCollateralRatio}
+                  maxCollateralRatio={MAX_COLLATERAL_RATIO}
                   setCollateralRatioPercentage={setCollateralRatioPercentage}
                   collateralRatioPercentage={collateralRatioPercentage}
                   setToMinCollataralRatio={setToMinCollataralRatio}
                   setToSafeCollateralRatio={setToSafeCollateralRatio}
                 />
                 <CollateralizeBorrowPanel
-                  mtrAmount={mtrAmount}
-                  mtr={mtr}
-                  setMtrAmount={handleChangeMtrAmount}
+                  mintableSupply={mintableSupply}
+                  usmAmount={usmAmount}
+                  usm={usm}
+                  setUsmAmount={handleChangeUsmAmount}
                   onBorrowClick={onClick}
                   borrowable={borrowable}
                   buttonMessage={confirmButtonMessage}
@@ -291,10 +325,10 @@ export default function Collateral() {
               </div>
               <div className="col-span-2">
                 <CDPMetrics
-                  collateralPrice={collateralPriceUSD}
-                  liquidationPrice={liquidationPriceUSD}
-                  mtrPriceUSD={mtrPriceUSD}
-                  debtAmount={mtrAmount}
+                  collateralPrice={collateralPrice}
+                  liquidationPrice={liquidationPrice}
+                  mtrPriceUSD={usmPrice}
+                  debtAmount={usmAmount}
                 />
               </div>
             </div>
@@ -310,10 +344,23 @@ export default function Collateral() {
                 {confirmButtonMessage}
               </Button>
             </div>
-            {/* <CollateralizeJargons /> */}
+            <TransactionConfirmationModal
+              isOpen={showConfirm}
+              onDismiss={handleDismissConfirmation}
+              attemptingTxn={attemptingTxn}
+              currencyToAdd={usm}
+              hash={txHash ? txHash : ''}
+              content={() => {
+                return <></>;
+              }}
+              pendingText={''}
+            />
           </div>
         </PageContent>
       </Page>
     </>
   );
 }
+
+Collateral.Guard = NetworkGuardWrapper([ChainId.RINKEBY]);
+export default Collateral;

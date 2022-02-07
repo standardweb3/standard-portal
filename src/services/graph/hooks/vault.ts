@@ -1,6 +1,7 @@
 import { getVaultManagerAddress } from '@digitalnative/standard-protocol-sdk';
 import useSWR, { SWRConfiguration } from 'swr';
 import { useActiveWeb3React } from '../../../hooks';
+import { useBlockNumber } from '../../../state/application/hooks';
 import { useProtocol } from '../../../state/protocol/hooks';
 import {
   getCdps,
@@ -62,14 +63,20 @@ export function useVaults(
   return data;
 }
 
-export function useVault(
-  variables = undefined,
+export function useUserVault(
+  vaultAddress = undefined,
   swrConfig: SWRConfiguration = undefined,
 ) {
-  const { chainId } = useActiveWeb3React();
+  const { account, chainId } = useActiveWeb3React();
   const { data } = useSWR(
-    chainId ? ['vault', chainId, JSON.stringify(variables)] : null,
-    () => getVault(chainId, variables),
+    chainId && vaultAddress ? ['vault', chainId, vaultAddress, account] : null,
+    () =>
+      getVault(chainId, {
+        where: {
+          address: vaultAddress?.toLowerCase(),
+          user: account?.toLowerCase(),
+        },
+      }),
   );
   return data;
 }

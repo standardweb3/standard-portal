@@ -1,3 +1,4 @@
+import { XIcon } from '@heroicons/react/outline';
 import { ResponsiveContainer } from 'recharts';
 import { Modal } from '../Modal';
 import { Question } from '../Question';
@@ -17,9 +18,9 @@ function ExpandedChart({
 
   return (
     <Modal isOpen={open} onDismiss={handleClose}>
-      <div className="ohm-card ohm-popover">
+      <div className="">
         <div className="chart-card-header">
-          <div className="flex">
+          <div className="flex space-x-1">
             <div className="flex items-center whitespace-nowrap max-w-max">
               <div>{headerText}</div>
             </div>
@@ -28,25 +29,24 @@ function ExpandedChart({
               <div>
                 <Question text={infoTooltipMessage} />
               </div>
-              <div onClick={handleClose}>Close</div>
+              <XIcon className="w-4 h-4 cursor-pointer" onClick={handleClose} />
             </div>
           </div>
 
-          <div className="flex flex-wrap">
+          <div className="flex flex-wrap text-primary">
             <div>{headerSubText}</div>
-            {runwayExtraInfo}
-            <div>Today</div>
+            <div>{runwayExtraInfo}</div>
           </div>
         </div>
 
-        <div className="w-full min-w-[300px]">
+        <div className="w-full min-w-[300px] mt-4">
           {data && data.length > 0 && (
             <ResponsiveContainer minHeight={260} minWidth={300}>
               {renderChart}
             </ResponsiveContainer>
           )}
         </div>
-        <div className="flex w-full">
+        <div className="flex w-full text-grey">
           <div>{infoTooltipMessage}</div>
         </div>
       </div>

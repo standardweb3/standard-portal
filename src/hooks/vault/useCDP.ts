@@ -10,15 +10,13 @@ export default function useCDP() {
   const vaultManagerContract = useVaultMannagerConract();
 
   const createCDP = useCallback(
-    async (collateral, mtr, cAmount, dAmount) => {
-      console.log('vault: createCDP', collateral, cAmount, dAmount);
+    async (collateral, usm, cAmount, dAmount) => {
       try {
         let tx;
         tx = await vaultManagerContract.createCDP(collateral, cAmount, dAmount);
         return tx;
       } catch (e) {
         console.error(e);
-        return e;
       }
     },
     [account, vaultManagerContract],
@@ -31,7 +29,6 @@ export default function useCDP() {
         const method = vaultManagerContract.createCDPNative;
         const args = [dAmount];
         const value = BigNumber.from(cAmount);
-        console.log('value', value.toString());
 
         let tx;
         tx = await estimate(...args, { value }).then((estimatedGasLimit) =>
@@ -43,7 +40,6 @@ export default function useCDP() {
         return tx;
       } catch (e) {
         console.error(e);
-        return e;
       }
     },
     [account, vaultManagerContract],

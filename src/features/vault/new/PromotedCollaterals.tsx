@@ -1,4 +1,4 @@
-import { DraggableWheelableCarousel } from './DraggableWheelableCarousel';
+import { DraggableWheelableCarousel } from '../../../components-ui/Carousel/DraggableWheelableCarousel';
 import { PromoteCollateralCard } from './PromoteCollateralCard';
 
 export function PromotedCollaterals({ collaterals }) {

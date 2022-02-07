@@ -115,7 +115,7 @@ function CustomTooltip({
 }) {
   if (active && payload && payload.length) {
     return (
-      <div className="rounded-lg text-text bg-bright bg-opacity-50 p-4">
+      <div className="rounded-lg text-text bg-tooltip border border-tooltip-border bg-opacity-50 p-4">
         {renderTooltipItems(
           payload,
           bulletpointColors,

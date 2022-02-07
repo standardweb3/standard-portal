@@ -2,37 +2,30 @@ import Head from 'next/head';
 import { Page } from '../../components-ui/Page';
 import { PageContent } from '../../components-ui/PageContent';
 import { DefinedStyles } from '../../utils/DefinedStyles';
-import { CollateralsTable } from '../../features/vault/CollateralsTable/CollateralsTable';
+import { CollateralsTable } from '../../features/usm/collaterals/CollateralsTable/CollateralsTable';
 import { ViewportMediumUp } from '../../components-ui/Responsive';
 import { PageHeader } from '../../components-ui/PageHeader';
-import { VaultManagerInfo } from '../../features/vault/VaultManagerInfo';
+import { VaultManagerInfo } from '../../features/usm/collaterals/VaultManagerInfo';
+import { NetworkGuardWrapper } from '../../guards/Network';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
-export default function Collaterals() {
+function Collaterals() {
   return (
     <>
       <Head>
-        <title>Collateralize | Standard Protocol</title>
+        <title>Collaterals | Standard Protocol</title>
         <meta
           key="description"
           name="description"
           content="Trade ERC 20 tokens on Standard Protocol"
         />
       </Head>
-      <Page id="trade-page" className={DefinedStyles.page}>
+      <Page id="collaterals-page" className={DefinedStyles.page}>
         <ViewportMediumUp>
           <PageHeader title="Collaterals" />
         </ViewportMediumUp>
         <PageContent>
           <div className="w-full max-w-[1200px]">
-            {/* <Alert
-              className={DefinedStyles.pageAlertFull}
-              message={
-                <div className="leading-relaxed">
-                  Select a collateral to borrow MTR
-                </div>
-              }
-              type="information"
-            /> */}
             <VaultManagerInfo />
             <CollateralsTable />
           </div>
@@ -41,3 +34,6 @@ export default function Collaterals() {
     </>
   );
 }
+
+Collaterals.Guard = NetworkGuardWrapper([ChainId.RINKEBY]);
+export default Collaterals;

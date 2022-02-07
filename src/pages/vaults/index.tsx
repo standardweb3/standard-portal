@@ -1,53 +1,133 @@
 import Head from 'next/head';
-import { VaultCard } from '../../features/vault/vaults/VaultCard';
-import { useActiveWeb3React } from '../../hooks';
-// import { useV1Balance, useV1Ids, useV1Ids2 } from '../../hooks/vault/useV1';
-// import {
-//   useVaultAddresses,
-//   useVaultAddresses2,
-// } from '../../hooks/vault/useVaultManager';
-import { useUserVaults, useVaults } from '../../services/graph/hooks/vault';
 import { Page } from '../../components-ui/Page';
 import { DefinedStyles } from '../../utils/DefinedStyles';
 import { PageContent } from '../../components-ui/PageContent';
 import { PageHeader } from '../../components-ui/PageHeader';
 import { ViewportMediumUp } from '../../components-ui/Responsive';
-import { VaultUserInfo } from '../../features/vault/vaults/VaultUserInfo';
-import { formatBalance } from '../../functions';
-import { CDP_DECIMALS } from '../../features/vault/constants';
-import { applyCdpDecimals } from '../../features/vault/utils';
+import { VaultUserInfo } from '../../features/usm/vaults/VaultUserInfo';
+import { applyCdpDecimals } from '../../features/usm/utils';
+import { useUserVaults2 } from '../../services/graph/hooks/userVaults';
+import { useCdpPrices } from '../../services/graph/hooks/cdpPrices';
+import { useMemo, useState } from 'react';
+import { VaultsTable } from '../../features/usm/vaults/VaultsTable';
+import { RiskyVaultsTable } from '../../features/usm/collaterals/RiskyVaultsTable';
+import { getAddress } from 'ethers/lib/utils';
+import useCurrentBlockTimestamp from '../../hooks/useCurrentBlockTimestamp';
+import { useVaultManagerAssetPrice } from '../../hooks/vault/useVaultManager';
+import { useMtr } from '../../hooks/vault/useMtr';
+import { calculateFee } from '../../features/usm/functions';
+import {
+  CloseVaultContext,
+  useCloseVaultState,
+} from '../../features/usm/vault/CloseVaultContext';
+import CloseVaultModal from '../../features/usm/vault/CloseVaultModal';
+import { ChainId, WNATIVE } from '@digitalnative/standard-protocol-sdk';
+import { useActiveWeb3React } from '../../hooks';
+import { NetworkGuardWrapper } from '../../guards/Network';
+import { WavySpinner } from '../../components-ui/Spinner/WavySpinner';
+import { Button } from '../../components-ui/Button';
+import { CollateralsTable } from '../../features/usm/collaterals/CollateralsTable/CollateralsTable';
+import { Alert } from '../../components-ui/Alert';
 
-export default function Vaults() {
-  const { account } = useActiveWeb3React();
-  const vaults = useUserVaults();
+export enum VaultCondition {
+  SAFE = 'safe',
+  WARNING = 'warning',
+  DANGER = 'danger',
+  UNKNWON = 'unknown',
+}
+
+function Vaults() {
+  const { chainId } = useActiveWeb3React();
+  const [filters, setFilters] = useState([]);
+
+  const currentBlock = useCurrentBlockTimestamp();
+  const cdpPrices = useCdpPrices();
+  const usm = useMtr();
+  const usmPrice = useVaultManagerAssetPrice(usm.address);
+  const { isLoading, userVaults } = useUserVaults2();
+
+  const {
+    dangerVaults,
+    warningVaults,
+    allVaults,
+    totalCollateralized,
+  } = useMemo(() => {
+    const dangerVaults = [];
+    const warningVaults = [];
+    let totalCollateralized = 0;
+    const allVaults = userVaults.map((v) => {
+      const {
+        id,
+        address,
+        CDP,
+        currentBorrowed,
+        currentCollateralized,
+        collateral,
+        createdAt,
+      } = v;
+
+      const isWnative = getAddress(collateral) === WNATIVE[chainId].address;
+
+      const vMcr = applyCdpDecimals(CDP.mcr);
+      const vSfr = applyCdpDecimals(CDP.sfr);
+
+      const fee = currentBlock
+        ? calculateFee(
+            currentBlock.toNumber(),
+            parseFloat(createdAt),
+            vSfr,
+            parseFloat(currentBorrowed),
+          )
+        : 0;
+      const debt = parseFloat(currentBorrowed) + fee;
+
+      const collateralPrice = cdpPrices[collateral]?.price;
+      const collateralValue =
+        collateralPrice && parseFloat(currentCollateralized) * collateralPrice;
+      if (collateralValue) totalCollateralized += collateralValue;
+
+      const liquidationPrice =
+        (debt * vMcr) / 100 / parseFloat(currentCollateralized);
+
+      const condition =
+        collateralPrice !== undefined
+          ? collateralPrice > liquidationPrice * 1.3
+            ? VaultCondition.SAFE
+            : collateralPrice >= liquidationPrice * 1.1
+            ? VaultCondition.WARNING
+            : VaultCondition.DANGER
+          : VaultCondition.UNKNWON;
+
+      const refactoredVault = {
+        id,
+        address: getAddress(address),
+        mcr: vMcr,
+        collateralValue,
+        liquidationPrice,
+        condition,
+        currentBorrowed: parseFloat(currentBorrowed),
+        currentCollateralized: parseFloat(currentCollateralized),
+        collateralAddress: getAddress(collateral),
+        collateralPrice,
+        isWnative,
+        fee,
+        debt,
+      };
+
+      if (condition === VaultCondition.DANGER) {
+        dangerVaults.push(refactoredVault);
+      } else if (condition === VaultCondition.WARNING) {
+        warningVaults.push(refactoredVault);
+      }
+
+      return refactoredVault;
+    });
+    return { dangerVaults, warningVaults, allVaults, totalCollateralized };
+  }, [cdpPrices, userVaults]);
 
   // const vaultAddrs = useVaultAddresses(v1Ids);
 
-  const renderVaults = () => {
-    return (
-      vaults?.map((vault) => {
-        const {
-          id,
-          address,
-          CDP,
-          currentBorrowed,
-          currentCollateralized,
-          collateral,
-        } = vault;
-        return (
-          <VaultCard
-            key={id}
-            id={id}
-            address={address}
-            collateralAddress={collateral}
-            mcr={applyCdpDecimals(CDP.mcr)}
-            currentBorrowed={parseFloat(currentBorrowed)}
-            currentCollateralized={parseFloat(currentCollateralized)}
-          />
-        );
-      }) ?? 'Loading'
-    );
-  };
+  const closeVaultState = useCloseVaultState();
 
   return (
     <>
@@ -60,14 +140,53 @@ export default function Vaults() {
           <PageHeader title="Vaults" />
         </ViewportMediumUp>
         <PageContent>
-          <div className="w-full max-w-[1200px] space-y-4">
-            <VaultUserInfo />
-            <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
-              {renderVaults()}
-            </div>
+          <div className="w-full max-w-[1200px] space-y-16">
+            <CloseVaultContext.Provider value={closeVaultState}>
+              <VaultUserInfo
+                totalCollateralized={totalCollateralized}
+                dangerVaultCount={dangerVaults.length}
+              />
+              {isLoading ? (
+                <div>
+                  <WavySpinner />
+                </div>
+              ) : (
+                <>
+                  {dangerVaults.length > 0 && (
+                    <RiskyVaultsTable vaults={dangerVaults} />
+                  )}
+                  {allVaults.length > 0 ? (
+                    <VaultsTable vaults={allVaults} />
+                  ) : (
+                    <div className="text-center">
+                      <Alert
+                        message={
+                          <div>
+                            <div>You don't own any vaults</div>
+                            <div>
+                              Pick a collateral from below and borrow USM
+                            </div>
+                          </div>
+                        }
+                      />
+                      <CollateralsTable />
+                    </div>
+                  )}
+
+                  <CloseVaultModal
+                    isOpen={closeVaultState.isOpen}
+                    onDismiss={closeVaultState.dismiss}
+                    onConfirm={undefined}
+                  />
+                </>
+              )}
+            </CloseVaultContext.Provider>
           </div>
         </PageContent>
       </Page>
     </>
   );
 }
+
+Vaults.Guard = NetworkGuardWrapper([ChainId.RINKEBY]);
+export default Vaults;

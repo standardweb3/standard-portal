@@ -105,7 +105,9 @@ export const formatNumber = (
   const num = parseFloat(number);
 
   if (num > 500000000 && scale) {
-    return (usd ? '$' : '') + formatK(num.toFixed(0));
+    const formatted = formatK(num.toFixed(0));
+    if (formatted.startsWith('NaN')) return num.toFixed(0);
+    return (usd ? '$' : '') + formatted;
   }
 
   if (num === 0) {

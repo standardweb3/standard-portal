@@ -2,7 +2,6 @@ import VAULT_ABI from '../../constants/abis/vault.json';
 import { Contract } from '@ethersproject/contracts';
 import { useActiveWeb3React, useContract } from '..';
 import { useSingleCallResult } from '../../state/multicall/hooks';
-import { BigNumber } from 'ethers';
 import { useCallback } from 'react';
 import { calculateGasMargin } from '../../functions';
 
@@ -16,7 +15,7 @@ export function useVaultContract(
 export function useVaultDebt(address) {
   const contract = useVaultContract(address);
 
-  const callResult = useSingleCallResult(contract, 'getDebt');
+  const callResult = useSingleCallResult(contract, 'outstandingPayment');
 
   const debt = callResult?.result?.[0];
 
@@ -28,6 +27,20 @@ export function useVault(address) {
 
   const contract = useVaultContract(address);
 
+  const closeVault = useCallback(
+    async (amount) => {
+      try {
+        let tx;
+        tx = await contract.closeVault(amount);
+        return tx;
+      } catch (e) {
+        console.error(e);
+        // return e;
+      }
+    },
+    [account, contract],
+  );
+
   const borrowMore = useCallback(
     async (cAmount, dAmount) => {
       try {
@@ -37,7 +50,7 @@ export function useVault(address) {
         return tx;
       } catch (e) {
         console.error(e);
-        return e;
+        // return e;
       }
     },
     [account, contract],
@@ -52,7 +65,7 @@ export function useVault(address) {
         return tx;
       } catch (e) {
         console.error(e);
-        return e;
+        // return e;
       }
     },
     [account, contract],
@@ -67,7 +80,7 @@ export function useVault(address) {
         return tx;
       } catch (e) {
         console.error(e);
-        return e;
+        // return e;
       }
     },
     [account, contract],
@@ -92,7 +105,7 @@ export function useVault(address) {
         return tx;
       } catch (e) {
         console.error(e);
-        return e;
+        // return e;
       }
     },
     [account, contract],
@@ -107,7 +120,7 @@ export function useVault(address) {
         return tx;
       } catch (e) {
         console.error(e);
-        return e;
+        // return e;
       }
     },
     [account, contract],
@@ -122,13 +135,14 @@ export function useVault(address) {
         return tx;
       } catch (e) {
         console.error(e);
-        return e;
+        // return e;
       }
     },
     [account, contract],
   );
 
   return {
+    closeVault,
     borrowMore,
     payBack,
     withdraw,

@@ -384,7 +384,7 @@ function Tokens() {
     changepageSize,
     lastPage,
     pageSize,
-  } = usePagination(0, 20, count);
+  } = usePagination(0, 12, count);
 
   const start = currentPage * pageSize;
   const end = start + pageSize;
@@ -454,6 +454,7 @@ function Tokens() {
                 data={data}
                 initialPage={currentPage}
                 rowsPerPage={pageSize}
+                initialPageSize={12}
                 pageCount={lastPage + 1}
                 onNextPage={toNextPage}
                 onPrevPage={toPrevPage}

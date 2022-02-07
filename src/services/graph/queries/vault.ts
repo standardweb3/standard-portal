@@ -57,8 +57,8 @@ export const vaultManagerHistoriesQuery = gql`
 `;
 
 export const vaultQuery = gql`
-  query vault($where: Vault_filter, $block: Block_height) {
-    vault(where: $where, block: $block) {
+  query vault($id: String!, $block: Block_height) {
+    vault(id: $id, block: $block) {
       id
       address
       CDP {
@@ -76,10 +76,11 @@ export const vaultQuery = gql`
 export const vaultsQuery = gql`
   query vaults(
     $first: Int! = 1000
+    $skip: Int! = 0
     $where: Vault_filter
     $block: Block_height
   ) {
-    vaults(first: $first, where: $where, block: $block) {
+    vaults(first: $first, skip: $skip, where: $where, block: $block) {
       id
       collateral
       user {
@@ -90,9 +91,12 @@ export const vaultsQuery = gql`
       currentBorrowed
       currentCollateralized
       CDP {
+        id
         mcr
+        lfr
         sfr
       }
+      createdAt
     }
   }
 `;

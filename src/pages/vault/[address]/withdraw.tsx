@@ -1,95 +1,63 @@
 import Head from 'next/head';
-import { getAddress } from 'ethers/lib/utils';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { VaultDeposit } from '../../../features/vault/vaults/Deposit';
-import { VaultMint } from '../../../features/vault/vaults/Mint';
-import { VaultPayBack } from '../../../features/vault/vaults/PayBack';
-import { VaultInfoCard } from '../../../features/vault/vaults/VaultInfoCard';
-import { VaultWithdraw } from '../../../features/vault/vaults/Withdraw';
-import { classNames, tryParseAmount } from '../../../functions';
+import { VaultInfoCard } from '../../../features/usm/vault/VaultInfoCard';
+import { VaultWithdraw } from '../../../features/usm/vault/Withdraw';
+import { tryParseAmount } from '../../../functions';
 import { useActiveWeb3React } from '../../../hooks';
-import { useCurrency } from '../../../hooks/Tokens';
-import { useMtr } from '../../../hooks/vault/useMtr';
-import { useVaultDebt } from '../../../hooks/vault/useVault';
-import { useVaultManagerAssetPrice } from '../../../hooks/vault/useVaultManager';
-import { useVaults } from '../../../services/graph/hooks/vault';
-import { useProtocol } from '../../../state/protocol/hooks';
 import { useCurrencyBalance } from '../../../state/wallet/hooks';
 import { Page } from '../../../components-ui/Page';
 import { DefinedStyles } from '../../../utils/DefinedStyles';
 import { PageContent } from '../../../components-ui/PageContent';
 import { ViewportMediumUp } from '../../../components-ui/Responsive';
 import { PageHeader } from '../../../components-ui/PageHeader';
-import { VaultHeader } from '../../../features/vault/vaults/VaultHeader';
-import { applyCdpDecimals } from '../../../features/vault/utils';
-import { VaultCDPMetrics } from '../../../features/vault/new/VaultCDPMetrics';
+import { VaultHeader } from '../../../features/usm/vault/VaultHeader';
+import { VaultCDPMetrics } from '../../../features/usm/vault/VaultCDPMetrics';
+import { VaultFees } from '../../../features/usm/vault/VaultFees';
+import { useUserVaultInfo } from '../../../features/usm/useVaultInfo';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
+import { NetworkGuardWrapper } from '../../../guards/Network';
 
-export default function Vault() {
-  const { account, chainId } = useActiveWeb3React();
-  const protocol = useProtocol();
+function Vault() {
+  const { account } = useActiveWeb3React();
   const router = useRouter();
 
   const vaultAddress = router.query.address as string;
-  const mtr = useMtr();
-  const mtrPriceUSD = useVaultManagerAssetPrice(mtr && mtr.address);
-  const mtrBalance = useCurrencyBalance(account, mtr);
-
-  // START: vault info
-  const vault = useVaults({
-    where: {
-      address: vaultAddress.toLowerCase(),
-      user: account?.toLowerCase(),
-    },
-  })?.[0];
-
-  const debt = useVaultDebt(getAddress(vaultAddress));
 
   const {
-    address,
-    collateral: collateralAddress,
+    mcr,
+    sfr,
+    lfr,
+    fee,
+    debt,
+    usm,
+    usmPrice,
+    collateralCurrency,
+    collateralPrice,
+    liquidationPrice,
     currentBorrowed,
     currentCollateralized,
-    CDP,
-  } = vault ?? {};
-
-  const fee =
-    debt && currentBorrowed ? debt - parseFloat(currentBorrowed) : undefined;
-
-  const collateralPriceUSD = useVaultManagerAssetPrice(collateralAddress);
-  const mcr = CDP && applyCdpDecimals(CDP.mcr);
-  const sfr = CDP && applyCdpDecimals(CDP.sfr);
-
-  const liquidationPriceUSD =
-    CDP &&
-    (parseFloat(currentBorrowed) * mcr) /
-      100 /
-      parseFloat(currentCollateralized);
-
-  const collateralCurrency = useCurrency(collateralAddress);
-
-  const currentCollateralizedUSD =
-    vault && collateralPriceUSD * parseFloat(currentCollateralized);
-
-  const currentCollateralRatio =
-    vault && (currentCollateralizedUSD / parseFloat(currentBorrowed)) * 100;
-
-  const minCollateralAmountUSD = vault
-    ? (mcr / 100) * parseFloat(currentBorrowed)
-    : undefined;
-
-  const minCollateralAmount =
-    minCollateralAmountUSD && collateralPriceUSD
-      ? minCollateralAmountUSD / collateralPriceUSD
-      : undefined;
-  // END: vault info
+    currentCollateralizedValue,
+    currentCollateralRatio,
+    minCollateralAmountValue,
+    minCollateralAmount,
+    condition,
+    loading,
+    address,
+    id,
+    liquidatable,
+    handleWrapUnwrap,
+    isCollateralNative,
+    isCollateralWnative,
+  } = useUserVaultInfo(vaultAddress);
 
   // START: withdraw
 
-  const withdrawableBalance =
-    vault && fee !== undefined
-      ? parseFloat(currentCollateralized) - fee - minCollateralAmount
-      : undefined;
+  const collateralBalance = useCurrencyBalance(account, collateralCurrency);
+
+  const withdrawableBalance = !loading
+    ? Math.max(currentCollateralized - minCollateralAmount, 0)
+    : undefined;
 
   const withdrawableCurrencyBalance = tryParseAmount(
     withdrawableBalance?.toString(),
@@ -97,9 +65,6 @@ export default function Vault() {
   );
 
   const [withdrawAmount, setWithdrawAmount] = useState('');
-  // END: withdraw
-
-  const checksummedVaultAddress = getAddress(vaultAddress);
 
   return (
     <>
@@ -109,52 +74,66 @@ export default function Vault() {
       </Head>
       <Page id="vault-page" className={DefinedStyles.page}>
         <ViewportMediumUp>
-          <PageHeader title="Vault" />
+          <PageHeader title="Vault" back href="/vaults" />
         </ViewportMediumUp>
         <PageContent>
-          <div className="w-full max-w-[1200px] space-y-4">
+          <div className="w-full max-w-[1200px] space-y-8">
             <VaultInfoCard
-              accruedStabilityFee={fee}
+              condition={condition}
+              fee={fee}
               collateral={collateralCurrency}
-              collateralPriceUSD={collateralPriceUSD}
-              liquidationPriceUSD={liquidationPriceUSD}
-              currentCollateralizedUSD={currentCollateralizedUSD}
+              collateralPrice={collateralPrice}
+              liquidationPrice={liquidationPrice}
+              currentCollateralizedValue={currentCollateralizedValue}
               currentBorrowed={currentBorrowed}
               currentCollateralized={currentCollateralized}
               mcr={mcr}
               sfr={sfr}
-              collateralRatio={currentCollateralRatio}
+              currentCollateralRatio={currentCollateralRatio}
+              address={address}
             />
 
-            <VaultCDPMetrics
-              stabilityFee={fee}
-              currentCollateralRatio={currentCollateralRatio}
-              minCollateralRatio={mcr}
-              collateralPrice={collateralPriceUSD}
-              liquidationPrice={liquidationPriceUSD}
-              mtrPriceUSD={mtrPriceUSD}
-              debtAmount={currentBorrowed}
-              horizontal
-            />
-            <div
-              className={classNames(
-                DefinedStyles.vaultPanel,
-                'py-8 px-8 space-y-8',
-              )}
-            >
-              <VaultHeader vaultAddress={vaultAddress} withdraw />
-              <VaultWithdraw
-                minCollateralAmount={minCollateralAmount}
-                borrowed={currentBorrowed}
-                mcr={mcr}
-                collateralPriceUSD={collateralPriceUSD}
-                currentCollateralized={currentCollateralized}
-                onAmountChange={setWithdrawAmount}
-                vaultAddress={checksummedVaultAddress}
-                collateral={collateralCurrency}
-                amount={withdrawAmount}
-                balance={withdrawableCurrencyBalance}
-              />
+            <div className="grid grid-cols-2 lg:grid-cols-7 gap-4">
+              <div className="col-span-2 lg:col-span-7">
+                <VaultCDPMetrics
+                  fee={fee}
+                  currentCollateralRatio={currentCollateralRatio}
+                  minCollateralRatio={mcr}
+                  collateralPrice={collateralPrice}
+                  liquidationPrice={liquidationPrice}
+                  usmPrice={usmPrice}
+                  debtAmount={currentBorrowed}
+                  debt={debt}
+                  currentBorrowed={currentBorrowed}
+                  horizontal
+                />
+              </div>
+              <div className="col-span-2 lg:col-span-4">
+                <div className="rounded-20 p-8 bg-background space-y-8">
+                  <VaultHeader vaultAddress={vaultAddress} withdraw />
+                  <VaultWithdraw
+                    minCollateralAmount={minCollateralAmount}
+                    borrowed={currentBorrowed}
+                    mcr={mcr}
+                    collateralPrice={collateralPrice}
+                    currentCollateralized={currentCollateralized}
+                    onAmountChange={setWithdrawAmount}
+                    vaultAddress={address}
+                    collateral={collateralCurrency}
+                    amount={withdrawAmount}
+                    balance={withdrawableCurrencyBalance}
+                    collateralBalance={collateralBalance}
+                    debt={debt}
+                    fee={fee}
+                    handleWrapUnwrap={handleWrapUnwrap}
+                    isCollateralNative={isCollateralNative}
+                    isCollateralWnative={isCollateralWnative}
+                  />
+                </div>
+              </div>
+              <div className="col-span-2 lg:col-span-3">
+                <VaultFees sfr={sfr} mcr={mcr} lfr={lfr} />
+              </div>
             </div>
           </div>
         </PageContent>
@@ -162,3 +141,6 @@ export default function Vault() {
     </>
   );
 }
+
+Vault.Guard = NetworkGuardWrapper([ChainId.RINKEBY]);
+export default Vault;

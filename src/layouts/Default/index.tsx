@@ -33,7 +33,7 @@ const Layout = ({ children }) => {
         </style>
       )}
       <div
-        className="z-[1] w-full h-full 
+        className="z-[1] relative w-full h-full 
       flex flex-col md:flex-row"
       >
         <ViewportSmallDown>

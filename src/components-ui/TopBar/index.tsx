@@ -31,11 +31,11 @@ export function TopBar() {
     "
       >
         <div className="relative">
-          <Logo short />
+          <Logo short width="46.5" height="52.5" />
         </div>
         {library && library.provider.isMetaMask && <NetworkDropDown />}
         <div onClick={handleMenuOpen} className="cursor-pointer">
-          <MenuIcon className="w-6 h-6" />
+          <MenuIcon className="w-8 h-8" />
         </div>
       </div>
       <Slider isOpen={menuOpen}>

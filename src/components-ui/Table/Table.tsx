@@ -31,6 +31,8 @@ export type TableProps = {
   tableClassName?: string;
   hideHeaders?: boolean;
   searchTerm?: string;
+  disablePageSize?: boolean;
+  initialPageSize?: number;
 };
 // Let's add a fetchData method to our Table component that will be used to fetch
 // new data when pagination state changes
@@ -39,6 +41,7 @@ export function Table({
   columns,
   data,
   initialPage = 0,
+  initialPageSize,
   rowsPerPage = 10,
   pageCount: controlledPageCount = data.length,
   loading,
@@ -57,6 +60,7 @@ export function Table({
   tableClassName,
   hideHeaders,
   searchTerm,
+  disablePageSize,
 }: TableProps) {
   const {
     // getTableProps,
@@ -218,13 +222,20 @@ export function Table({
           <div className="flex items-center space-x-4">
             <div>Rows per page:</div>
             <select
-              className="bg-opaque outline-none"
+              className="bg-dark-3 outline-none rounded-lg text-center px-2 py-1 cursor-pointer appearance-none"
               value={pageSize}
+              disabled={disablePageSize}
               onChange={(e) => {
                 handleChangePageSize(Number(e.target.value));
               }}
             >
-              {[10, 20, 30, 40, 50].map((pageSize) => (
+              {[
+                initialPageSize,
+                2 * initialPageSize,
+                3 * initialPageSize,
+                4 * initialPageSize,
+                5 * initialPageSize,
+              ].map((pageSize) => (
                 <option key={pageSize} value={pageSize}>
                   {pageSize}
                 </option>

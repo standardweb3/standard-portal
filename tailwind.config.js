@@ -47,6 +47,8 @@ module.exports = {
         xstnd: 'linear-gradient(#A18CD1 0%, #FBC2EB 100%)',
         'vault-manager-info':
           'linear-gradient(180deg, #45017A 0%, rgba(242, 32, 155, 0) 100%)',
+        'currency-input-mobile':
+          'linear-gradient(92.93deg, rgba(185, 132, 252, 0.5) -22.44%, rgba(185, 132, 252, 0.273438) 76.07%, rgba(185, 132, 252, 0) 115.61%)',
       },
       colors: {
         panel: '#2A1D45',
@@ -55,6 +57,7 @@ module.exports = {
         primary: '#B984FC',
         bright: 'rgba(133, 37, 239, 1)',
         highlight: '#8DE7D8',
+        'highlight-2': '#F365BD',
         secondary: '#170c34',
         link: '#31a6f4',
         blue: '#31a6f4',
@@ -96,9 +99,13 @@ module.exports = {
         'border-light': '#DEC7EF',
         border: '#837AA0',
         'border-2': '#605273',
+        'border-3': 'rgba(127, 119, 119, 0.5)',
         'scrollbar-track': '#6A5684',
         thumbroller: '#CDC1FF',
         'dark-2': '#262430',
+        tooltip: 'rgba(88, 88, 88, 0.5)',
+        'tooltip-border': 'rgba(186, 186, 186, 0.6)',
+        'dark-3': '#44446D',
       },
       textShadow: {
         white: '0px 0px 1px rgba(255,255,255, 0.5)',

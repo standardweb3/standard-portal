@@ -7,6 +7,7 @@ export const DefinedStyles = {
   fullButton: 'font-bold !py-4 !px-4 !text-xl w-full',
   button: 'font-bold !py-4 !px-4 !text-xl',
   liquidityButton: 'font-bold text-base !px-3 !py-3',
+  horizontalDivider: 'border-r border-grey',
   divider: 'border-t border-divider mt-2 mb-2',
   'txSettings-text': 'text-white !text-opacity-50',
   'txSettings-auto': '!text-white text-md',
@@ -65,8 +66,8 @@ export const DefinedStyles = {
   collateralizePanel: `bg-opaque
     rounded-20 p-4 
     w-full 
-    md:backdrop-blur-[200px] 
-    md:bg-background
+    backdrop-blur-[200px] 
+    bg-background
     md:px-8
     md:py-12`,
   collateralizePanelContent: 'w-full flex flex-col space-y-4',

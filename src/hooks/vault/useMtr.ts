@@ -10,7 +10,7 @@ export function useMtr() {
     chainId,
     getMtrAddress(protocol, chainId),
     18,
-    'MTR',
+    'USM',
     'Meter USD',
   );
 }

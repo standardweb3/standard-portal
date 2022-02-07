@@ -9,9 +9,10 @@ interface CopierProps {
   toCopy: string;
   children?: ReactNode;
   iconSize?: number;
+  hideIcon?: boolean;
 }
 
-export function Copier({ className, toCopy, children }: CopierProps) {
+export function Copier({ className, toCopy, children, hideIcon }: CopierProps) {
   const [isCopied, setCopied] = useCopyClipboard();
 
   return (
@@ -28,14 +29,14 @@ export function Copier({ className, toCopy, children }: CopierProps) {
     >
       {isCopied && (
         <>
-          <CheckIcon className="w-4 h-4" />
+          {!hideIcon && <CheckIcon className="w-4 h-4" />}
           <div className={DefinedStyles.copierCopied}>Copied</div>
         </>
       )}
 
       {!isCopied && (
         <>
-          <PencilIcon className="w-4 h-4" />
+          {!hideIcon && <PencilIcon className="w-4 h-4" />}
           {children}
         </>
       )}
