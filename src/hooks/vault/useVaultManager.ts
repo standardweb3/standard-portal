@@ -10,7 +10,8 @@ import {
 } from '../../state/multicall/hooks';
 import { formatBalance } from '../../functions';
 import { call } from 'eth-permit/dist/rpc';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import useCurrentBlockTimestamp from '../useCurrentBlockTimestamp';
 
 export function useVaultManagerAddress(): string {
   const { chainId } = useActiveWeb3React();
@@ -101,6 +102,24 @@ export function useVaultAddresses2(vaultIds) {
   });
 }
 
+export function useLastRebase() {
+  const contract = useVaultMannagerConract();
+
+  const callResult = useSingleCallResult(contract, 'lastRebase', []);
+
+  return callResult?.result?.[0];
+}
+
+export function useRebaseCountdown() {
+  const lastRebase = useLastRebase();
+  const timestamp = useCurrentBlockTimestamp();
+
+  return (
+    lastRebase &&
+    timestamp &&
+    Math.max(3600 - (timestamp.toNumber() - lastRebase.toNumber()), 0)
+  );
+}
 // export function useVaultConfig(collateralAddr) {
 //   const contract = useVaultMannagerConract()
 //   const

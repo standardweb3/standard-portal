@@ -10,6 +10,7 @@ import {
 } from '../../../components-ui/Responsive';
 import { SimpleCurrencyLogo } from '../../../components-ui/CurrencyLogo/SimpleCurrencyLogo';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/outline';
+import { Alert } from '../../../components-ui/Alert';
 
 // const VaultManagerInfoBg = styled.div`
 //   position: relative;
@@ -180,12 +181,12 @@ export function VaultManagerInfo() {
               </div>
               <div className="mr-8 mt-4">
                 <div className="text-grey text-xs md:text-sm lg:text-sm">
-                  Collaterals
+                  AMM Collaterals Reserve
                 </div>
                 <div className="text-lg font-bold">
                   {runningStat ? (
                     <>
-                      {formatNumber(runningStat.currentCollateralizedUSD)}
+                      {formatNumber(runningStat.ammReserveCollateralUSD)}
                       <span className="font-normal text-base"> USD</span>
                     </>
                   ) : (
@@ -251,6 +252,22 @@ export function VaultManagerInfo() {
           )}
         </div>
       </Background>
+      {!isMintable && (
+        <Alert
+          className="mt-4"
+          type="error"
+          dismissable={false}
+          message={
+            <div className="p-0 md:p-4">
+              <div className="text-xl font-bold">Borrowing Disabled</div>
+              <div>
+                Supply limit of USM has been reached and borrowing USM is
+                restricted.
+              </div>
+            </div>
+          }
+        />
+      )}
     </>
   );
 }

@@ -24,6 +24,9 @@ import { ExternalLink } from '../../../components-ui/ExternalLink';
 import { useActiveWeb3React } from '../../../hooks';
 import { getExplorerLink } from '../../../functions/explorer';
 import Copier from '../../../components-ui/Copier';
+import { CloseVaultContext, useCloseVaultState } from './CloseVaultContext';
+import CloseVaultModal from './CloseVaultModal';
+import { Button } from '../../../components-ui/Button';
 
 const Background = styled.div`
   overflow: hidden;
@@ -64,11 +67,16 @@ export function VaultInfoCard({
   const NumberSkeleton = <Skeleton count={1} />;
 
   const conditionColor = getConditionColor(condition);
+  const closeVaultState = useCloseVaultState();
+
+  const handleOpen = () => {
+    closeVaultState.setOpen(address);
+  };
 
   return (
     <Background
       className="
-    w-full rounded-20 bg-background p-8 xl:pb-16 relative
+    w-full rounded-20 bg-background pt-8 pr-8 pl-8 pb-4 xl:pb-8 relative
     flex flex-col items-center cursor-pointer"
     >
       <div className="relative z-[10] w-full">
@@ -207,7 +215,15 @@ export function VaultInfoCard({
             </div>
           </div>
         </div>
-
+        <div className="mt-4 flex justify-end">
+          <Button
+            type="bordered"
+            className="!border !border-4 md:text-lg border-primary !bg-transparent font-bold"
+            onClick={handleOpen}
+          >
+            Close Vault
+          </Button>
+        </div>
         {!isViewportLargUp && (
           <div
             onClick={() => setExpanded(!expanded)}
@@ -223,6 +239,13 @@ export function VaultInfoCard({
           </div>
         )}
       </div>
+      <CloseVaultContext.Provider value={closeVaultState}>
+        <CloseVaultModal
+          isOpen={closeVaultState.isOpen}
+          onDismiss={closeVaultState.dismiss}
+          onConfirm={undefined}
+        />
+      </CloseVaultContext.Provider>
     </Background>
   );
 }

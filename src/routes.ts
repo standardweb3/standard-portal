@@ -6,6 +6,9 @@ import dividendv1Icon from '../public/icons/dividendv1.svg';
 import bridgeIcon from '../public/icons/bridge.svg';
 import migrateIcon from '../public/icons/migrate.svg';
 import routerIcon from '../public/icons/router.svg';
+import dashboardIcon from '../public/icons/dashboard.svg';
+import vaultIcon from '../public/icons/vault.svg';
+import borrowIcon from '../public/icons/borrow.svg';
 
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
@@ -22,8 +25,8 @@ export const sidebarRoutes = [
   {
     name: 'Dashboard',
     urls: ['/dashboard'],
-    icon: farmIcon,
-    iconActive: farmIcon,
+    icon: dashboardIcon,
+    iconActive: dashboardIcon,
     hidden: [
       ChainId.MATIC,
       ChainId.MAINNET,
@@ -35,9 +38,9 @@ export const sidebarRoutes = [
   },
   {
     name: 'Borrow',
-    urls: ['/collaterals'],
-    icon: farmIcon,
-    iconActive: farmIcon,
+    urls: ['/borrow'],
+    icon: borrowIcon,
+    iconActive: borrowIcon,
     hidden: [
       ChainId.MATIC,
       ChainId.MAINNET,
@@ -50,8 +53,19 @@ export const sidebarRoutes = [
   {
     name: 'Vaults',
     urls: ['/vaults'],
-    icon: farmIcon,
-    iconActive: farmIcon,
+    icon: vaultIcon,
+    iconActive: vaultIcon,
+    hidden: [
+      ChainId.MATIC,
+      ChainId.MAINNET,
+      ChainId.SHIDEN,
+      ChainId.MATIC,
+      ChainId.BSC,
+      ChainId.METIS,
+    ],
+  },
+  {
+    name: 'Divider',
     hidden: [
       ChainId.MATIC,
       ChainId.MAINNET,

@@ -11,6 +11,7 @@ export const vaultManagerQuery = gql`
       collectedStabilityFee
       runningStat {
         currentCollateralizedUSD
+        ammReserveCollateralUSD
       }
       liquidation {
         liquidationFeeUSD

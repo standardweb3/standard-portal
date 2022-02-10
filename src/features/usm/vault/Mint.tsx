@@ -218,7 +218,12 @@ export function VaultMint({
   ]);
 
   return (
-    <div className="px-0 md:px-8 space-y-8">
+    <div
+      className={classNames(
+        'px-0 md:px-8 space-y-8',
+        !isMintable && 'is-disabled',
+      )}
+    >
       <div className="space-y-4">
         <div className="font-bold text-lg">Enter amount to borrow</div>
         <div className="w-full rounded-20 sm:bg-opaque-secondary sm:px-4 py-1">

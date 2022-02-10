@@ -8,21 +8,24 @@ import { PageHeader } from '../../components-ui/PageHeader';
 import { VaultManagerInfo } from '../../features/usm/collaterals/VaultManagerInfo';
 import { NetworkGuardWrapper } from '../../guards/Network';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
+// import { useUsmMintableSupply } from '../../features/usm/useUsmMintableSupply';
 
 function Collaterals() {
+  // const { isMintable, mintableSupply } = useUsmMintableSupply();
+
   return (
     <>
       <Head>
-        <title>Collaterals | Standard Protocol</title>
+        <title>Borrow | Standard Protocol</title>
         <meta
           key="description"
           name="description"
-          content="Trade ERC 20 tokens on Standard Protocol"
+          content="Borrow USM on Standard Protocol"
         />
       </Head>
-      <Page id="collaterals-page" className={DefinedStyles.page}>
+      <Page id="borrow-page" className={DefinedStyles.page}>
         <ViewportMediumUp>
-          <PageHeader title="Collaterals" />
+          <PageHeader title="Select a Collateral" />
         </ViewportMediumUp>
         <PageContent>
           <div className="w-full max-w-[1200px]">

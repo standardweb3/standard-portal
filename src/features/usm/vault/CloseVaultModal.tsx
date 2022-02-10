@@ -2,15 +2,13 @@ import { useContext } from 'react';
 import { Modal } from '../../../components-ui/Modal';
 import { useSizeSmDown } from '../../../components-ui/Responsive';
 import { WavySpinner } from '../../../components-ui/Spinner/WavySpinner';
-import { useActiveWeb3React } from '../../../hooks';
 import { useUserVaultInfo } from '../useVaultInfo';
 import { Close } from './Close';
 import { CloseVaultContext } from './CloseVaultContext';
 
 export default function CloseVaultModal({ isOpen, onDismiss, onConfirm }) {
   const { vaultAddress, dismiss } = useContext(CloseVaultContext);
-
-  const vaultInfo = useUserVaultInfo(vaultAddress);
+  const vaultInfo = useUserVaultInfo(vaultAddress?.toLowerCase());
 
   const isViewportSmallDown = useSizeSmDown();
 

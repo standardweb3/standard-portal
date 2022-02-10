@@ -171,22 +171,7 @@ function Vault() {
           <PageHeader title="Vault" back href="/vaults" />
         </ViewportMediumUp>
         <PageContent>
-          <div className="w-full max-w-[1200px] space-y-8">
-            {!isMintable && (
-              <Alert
-                type="error"
-                dismissable={false}
-                showIcon
-                message={
-                  <div>
-                    <div>
-                      USM Cap has been reached and USM is not borrowable at the
-                      moment
-                    </div>
-                  </div>
-                }
-              />
-            )}
+          <div className="w-full max-w-[1200px] space-y-4">
             <VaultInfoCard
               condition={condition}
               fee={fee}
@@ -203,7 +188,7 @@ function Vault() {
             />
 
             <div className="grid grid-cols-2 lg:grid-cols-7 gap-4">
-              <div className="col-span-2 lg:col-span-7">
+              <div className="col-span-2 lg:col-span-7 space-y-4">
                 <VaultCDPMetrics
                   fee={fee}
                   currentCollateralRatio={currentCollateralRatio}
@@ -216,7 +201,25 @@ function Vault() {
                   currentBorrowed={currentBorrowed}
                   horizontal
                 />
+                {!isMintable && (
+                  <Alert
+                    type="error"
+                    dismissable={false}
+                    message={
+                      <div className="p-0 md:p-4">
+                        <div className="text-xl font-bold">
+                          Borrowing Disabled
+                        </div>
+                        <div>
+                          Supply limit of USM has been reached and borrowing USM
+                          is restricted.
+                        </div>
+                      </div>
+                    }
+                  />
+                )}
               </div>
+
               <div className="col-span-2 lg:col-span-4">
                 <div className="rounded-20 p-8 bg-background space-y-8">
                   <VaultHeader vaultAddress={vaultAddress} mint />

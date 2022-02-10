@@ -26,7 +26,8 @@ export function Close({ vaultInfo, onDismiss }) {
   );
 
   const usmBalance = useCurrencyBalance(account, vaultInfo.usm);
-  const closeable = usmBalance?.greaterThan(vaultInfo.debt);
+  const closeable =
+    usmBalance && vaultInfo && Number(usmBalance.toExact()) >= vaultInfo.debt;
 
   const conditionColor = getConditionColor(vaultInfo.condition);
 

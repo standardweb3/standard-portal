@@ -1,5 +1,4 @@
 import { getAddress } from 'ethers/lib/utils';
-import { useCurrency } from '../../hooks/Tokens';
 import { useWrappableCurrency } from '../../hooks/useWrappableCurrency';
 import { useMtr } from '../../hooks/vault/useMtr';
 import { useVaultDebt } from '../../hooks/vault/useVault';

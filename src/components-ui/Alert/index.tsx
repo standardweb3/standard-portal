@@ -32,7 +32,7 @@ const TYPE = {
     icon: <ExclamationCircleIcon className="text-warn w-4 h-4" />,
   },
   error: {
-    typeClassName: 'bg-danger bg-opacity-25',
+    typeClassName: 'bg-alert-error backdrop-blur-2xl bg-opacity-25',
     icon: <ExclamationCircleIcon className="text-danger w-4 h-4" />,
   },
   'bordered-primary': {
@@ -64,7 +64,7 @@ export function Alert({
   return message && show ? (
     <div
       className={classNames(
-        'flex relative w-full rounded-20 text-sm p-5',
+        'flex relative w-full rounded-lg text-sm p-5',
         typeClassName,
         className,
       )}

@@ -13,7 +13,6 @@ import { VaultsTable } from '../../features/usm/vaults/VaultsTable';
 import { RiskyVaultsTable } from '../../features/usm/collaterals/RiskyVaultsTable';
 import { getAddress } from 'ethers/lib/utils';
 import useCurrentBlockTimestamp from '../../hooks/useCurrentBlockTimestamp';
-import { useVaultManagerAssetPrice } from '../../hooks/vault/useVaultManager';
 import { useMtr } from '../../hooks/vault/useMtr';
 import { calculateFee } from '../../features/usm/functions';
 import {
@@ -25,7 +24,6 @@ import { ChainId, WNATIVE } from '@digitalnative/standard-protocol-sdk';
 import { useActiveWeb3React } from '../../hooks';
 import { NetworkGuardWrapper } from '../../guards/Network';
 import { WavySpinner } from '../../components-ui/Spinner/WavySpinner';
-import { Button } from '../../components-ui/Button';
 import { CollateralsTable } from '../../features/usm/collaterals/CollateralsTable/CollateralsTable';
 import { Alert } from '../../components-ui/Alert';
 
@@ -38,12 +36,12 @@ export enum VaultCondition {
 
 function Vaults() {
   const { chainId } = useActiveWeb3React();
-  const [filters, setFilters] = useState([]);
+  // const [filters, setFilters] = useState([]);
 
   const currentBlock = useCurrentBlockTimestamp();
   const cdpPrices = useCdpPrices();
   const usm = useMtr();
-  const usmPrice = useVaultManagerAssetPrice(usm.address);
+  // const usmPrice = useVaultManagerAssetPrice(usm.address);
   const { isLoading, userVaults } = useUserVaults2();
 
   const {
@@ -158,11 +156,14 @@ function Vaults() {
                   {allVaults.length > 0 ? (
                     <VaultsTable vaults={allVaults} />
                   ) : (
-                    <div className="text-center">
+                    <div>
                       <Alert
+                        dismissable={false}
                         message={
-                          <div>
-                            <div>You don't own any vaults</div>
+                          <div className="p-0 md:p-4">
+                            <div className="text-xl font-bold">
+                              You don't own any vaults
+                            </div>
                             <div>
                               Pick a collateral from below and borrow USM
                             </div>

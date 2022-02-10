@@ -20,7 +20,7 @@ export function PromoteCollateralCard({ collateral }) {
   const router = useRouter();
 
   const onClickCard = () => {
-    router.push(`/collateralize/${address}`);
+    router.push(`/borrow/collateralize/${address}`);
   };
   return (
     <Background

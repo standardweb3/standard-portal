@@ -1,12 +1,10 @@
 import Head from 'next/head';
 import {
-  CollectedStabilityFeeGraph,
   CurrentCollateralizedGraph,
   HistoricSuppliesGraph,
   PaidBackGraph,
   SuppliesGraph,
 } from '../../features/usm/Graph';
-import { VaultManagerInfo } from '../../features/usm/collaterals/VaultManagerInfo';
 import { useVaultManagerHistories } from '../../services/graph/hooks/vault';
 import { DashboardMetric } from '../../features/usm/dashboard/DashboardMetric';
 import { Page } from '../../components-ui/Page';
@@ -16,8 +14,18 @@ import { DefinedStyles } from '../../utils/DefinedStyles';
 import { PageContent } from '../../components-ui/PageContent';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import { NetworkGuardWrapper } from '../../guards/Network';
+import { Rebase } from '../../features/usm/Rebase';
+import { useVaultManager } from '../../services/graph/hooks/vault';
+import { useMtr } from '../../hooks/vault/useMtr';
+import { useVaultManagerAssetPrice } from '../../hooks/vault/useVaultManager';
+import { classNames, formatNumber } from '../../functions';
+import { Rebase2 } from '../../features/usm/Rebase2';
 
 function Dashboard() {
+  const vaultManager = useVaultManager();
+  const usm = useMtr();
+  const usmPrice = useVaultManagerAssetPrice(usm.address);
+
   const data = useVaultManagerHistories();
   const dataForChart = data?.map((d) => {
     return {
@@ -48,11 +56,21 @@ function Dashboard() {
         <PageContent>
           <div className="w-full max-w-[1000px] space-y-8">
             {/* <VaultManagerInfo /> */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-              <DashboardMetric header={'USM Total Supply'} stat="0" />
-              <DashboardMetric header={'USM Price'} stat="0" />
-              <DashboardMetric header={'USM Desired Supply'} stat="0" />
-              <DashboardMetric header={'Borrowable USM'} stat="0" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* <div className="grid grid-cols-1 gap-4">
+                <DashboardMetric
+                  header={'USM Total Supply'}
+                  stat={
+                    vaultManager && formatNumber(vaultManager?.currentBorrowed)
+                  }
+                />
+                <DashboardMetric
+                  header={'USM Price'}
+                  stat={usm && formatNumber(usmPrice, true)}
+                />
+              </div> */}
+              <Rebase />
+              {/* <Rebase2 /> */}
             </div>
             <div
               className="

@@ -62,7 +62,7 @@ function Vault() {
           <PageHeader title="Vault" back href="/vaults" />
         </ViewportMediumUp>
         <PageContent>
-          <div className="w-full max-w-[1200px] space-y-8">
+          <div className="w-full max-w-[1200px] space-y-4">
             <VaultInfoCard
               condition={condition}
               fee={fee}

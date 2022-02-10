@@ -27,7 +27,7 @@ export function CollateralCard({ collateral }) {
   const collateralPrice = useVaultManagerAssetPrice(priceAddress);
 
   const handleClick = () => {
-    router.push(`/collateralize/${address}`);
+    router.push(`/borrow/collateralize/${address}`);
   };
 
   return (

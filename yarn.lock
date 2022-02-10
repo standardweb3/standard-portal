@@ -1646,10 +1646,10 @@
     postcss-selector-matches "^4.0.0"
     postcss-selector-not "^4.0.0"
 
-"@digitalnative/standard-protocol-sdk@^0.0.171":
-  version "0.0.171"
-  resolved "https://registry.yarnpkg.com/@digitalnative/standard-protocol-sdk/-/standard-protocol-sdk-0.0.171.tgz#8b9bdf6f2d68d19c71a5e96383053f02c842429e"
-  integrity sha512-E2gD7zKcSSzQdDqCTfJZ3YxxpqU5ttXzGJtrPimap6tURWggSenCPMrPHpgYpWvc32Tmsh2Do6JsV/OXMPmPPQ==
+"@digitalnative/standard-protocol-sdk@^0.0.174":
+  version "0.0.174"
+  resolved "https://registry.yarnpkg.com/@digitalnative/standard-protocol-sdk/-/standard-protocol-sdk-0.0.174.tgz#e8f92bcddc1f7c001ce9e758ba0936d8b973a15e"
+  integrity sha512-SPLnGGuuM2q/C67Y2P0NSmW9X8bPTcYby4OEQyVSOpk4paajRUd8eNRf+cDb/mxKT64eYOHF0pSDPsknDA93Sw==
   dependencies:
     big.js "^6.1.0"
     decimal.js-light "^2.5.0"
@@ -14510,6 +14510,11 @@ react-clientside-effect@^1.2.5:
   integrity sha512-2bL8qFW1TGBHozGGbVeyvnggRpMjibeZM2536AKNENLECutp2yfs44IL8Hmpn8qjFQ2K7A9PnYf3vc7aQq/cPA==
   dependencies:
     "@babel/runtime" "^7.12.13"
+
+react-countdown-circle-timer@^3.0.8:
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/react-countdown-circle-timer/-/react-countdown-circle-timer-3.0.8.tgz#18992440c2cc39be3bfe08a6802ae522b9852a77"
+  integrity sha512-4aPcgQyInHcmrZ/8j5lPhV+wTp1e/Kqy6YcGex3sFxMjugNTVkTT9TlM+HQqYna786ZCbu9eiUU/QIjYME0VxA==
 
 react-countdown@^2.3.2:
   version "2.3.2"

@@ -1,13 +1,24 @@
+import { t } from '@lingui/macro';
 import { BigNumber } from 'ethers';
 import { useCallback } from 'react';
 import { useActiveWeb3React, useApproveCallback } from '..';
 import { calculateGasMargin } from '../../functions';
 import { useVaultMannagerConract } from './useVaultManager';
 
-export default function useCDP() {
+export default function useVaultManagerCallbacks() {
   const { account } = useActiveWeb3React();
 
   const vaultManagerContract = useVaultMannagerConract();
+
+  const triggerRebase = useCallback(async () => {
+    try {
+      let tx;
+      tx = await vaultManagerContract.rebase();
+      return tx;
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
 
   const createCDP = useCallback(
     async (collateral, usm, cAmount, dAmount) => {
@@ -45,5 +56,5 @@ export default function useCDP() {
     [account, vaultManagerContract],
   );
 
-  return { createCDP, createCDPNative };
+  return { triggerRebase, createCDP, createCDPNative };
 }

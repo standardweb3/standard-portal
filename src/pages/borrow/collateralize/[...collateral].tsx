@@ -1,42 +1,43 @@
 import Head from 'next/head';
-import { Page } from '../../components-ui/Page';
-import { PageContent } from '../../components-ui/PageContent';
-import { DefinedStyles } from '../../utils/DefinedStyles';
-import { CollateralSelectPanel } from '../../features/usm/collateralize/CollateralSelectPanel';
+import { Page } from '../../../components-ui/Page';
+import { PageContent } from '../../../components-ui/PageContent';
+import { DefinedStyles } from '../../../utils/DefinedStyles';
+import { CollateralSelectPanel } from '../../../features/usm/collateralize/CollateralSelectPanel';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { classNames, formatNumber, tryParseAmount } from '../../functions';
+import { classNames, formatNumber, tryParseAmount } from '../../../functions';
 import { useRouter } from 'next/router';
-import { useCurrencyBalance } from '../../state/wallet/hooks';
+import { useCurrencyBalance } from '../../../state/wallet/hooks';
 import {
   ApprovalState,
   useActiveWeb3React,
   useApproveCallback,
-} from '../../hooks';
-import { CollateralInfo } from '../../features/usm/collateralize/CollateralInfo';
+} from '../../../hooks';
+import { CollateralInfo } from '../../../features/usm/collateralize/CollateralInfo';
 import {
   ChainId,
   getVaultManagerAddress,
 } from '@digitalnative/standard-protocol-sdk';
-import { useProtocol } from '../../state/protocol/hooks';
-import useCDP from '../../hooks/vault/useCDP';
-import { ViewportMediumUp } from '../../components-ui/Responsive';
-import { PageHeader } from '../../components-ui/PageHeader';
-import { CollateralizeBorrowPanel } from '../../features/usm/collateralize/CollateralizeBorrowPanel';
-import { CDPMetrics } from '../../features/usm/collateralize/CDPMetrics';
-import { Button } from '../../components-ui/Button';
-import { CollateralizeSettingsPanel } from '../../features/usm/collateralize/CollateralizeSettingsPanel';
-import { useTransactionAdder } from '../../state/transactions/hooks';
-import { useCollateral } from '../../features/usm/useCollateral';
+import { useProtocol } from '../../../state/protocol/hooks';
+import useCDP from '../../../hooks/vault/useVaultManagerCallbacks';
+import { ViewportMediumUp } from '../../../components-ui/Responsive';
+import { PageHeader } from '../../../components-ui/PageHeader';
+import { CollateralizeBorrowPanel } from '../../../features/usm/collateralize/CollateralizeBorrowPanel';
+import { CDPMetrics } from '../../../features/usm/collateralize/CDPMetrics';
+import { Button } from '../../../components-ui/Button';
+import { CollateralizeSettingsPanel } from '../../../features/usm/collateralize/CollateralizeSettingsPanel';
+import { useTransactionAdder } from '../../../state/transactions/hooks';
+import { useCollateral } from '../../../features/usm/useCollateral';
 import {
   getSafeCollateralRatio,
   MAX_COLLATERAL_RATIO,
-} from '../../features/usm/constants';
-import { RippleSpinner } from '../../components-ui/Spinner/RippleSpinner';
-import { useUsmMintableSupply } from '../../features/usm/useUsmMintableSupply';
-import { Alert } from '../../components-ui/Alert';
-import { NetworkGuardWrapper } from '../../guards/Network';
-import TransactionConfirmationModal from '../../modals/TransactionConfirmationModal';
-import { useTransactionSubmission } from '../../hooks/useTransactionSubmission';
+} from '../../../features/usm/constants';
+import { RippleSpinner } from '../../../components-ui/Spinner/RippleSpinner';
+import { useUsmMintableSupply } from '../../../features/usm/useUsmMintableSupply';
+import { Alert } from '../../../components-ui/Alert';
+import { NetworkGuardWrapper } from '../../../guards/Network';
+import TransactionConfirmationModal from '../../../modals/TransactionConfirmationModal';
+import { useTransactionSubmission } from '../../../hooks/useTransactionSubmission';
+import useVaultManagerCallbacks from '../../../hooks/vault/useVaultManagerCallbacks';
 
 function Collateral() {
   const addTransaction = useTransactionAdder();
@@ -176,7 +177,7 @@ function Collateral() {
     getVaultManagerAddress(protocol, chainId),
   );
 
-  const { createCDP, createCDPNative } = useCDP();
+  const { createCDP, createCDPNative } = useVaultManagerCallbacks();
 
   const borrowable =
     isMintable &&
@@ -270,21 +271,6 @@ function Collateral() {
         </ViewportMediumUp>
         <PageContent>
           <div className="w-full max-w-[1000px] space-y-8">
-            {!isMintable && (
-              <Alert
-                type="error"
-                dismissable={false}
-                showIcon
-                message={
-                  <div>
-                    <div>
-                      USM Cap has been reached and USM is not borrowable at the
-                      moment
-                    </div>
-                  </div>
-                }
-              />
-            )}
             <CollateralInfo
               mcr={mcr}
               lfr={lfr}
@@ -292,7 +278,27 @@ function Collateral() {
               collateralPrice={collateralPrice}
               collateral={collateralCurrency}
             />
-            <div className="grid grid-cols-2 lg:grid-cols-7 gap-4">
+            {!isMintable && (
+              <Alert
+                type="error"
+                dismissable={false}
+                message={
+                  <div className="p-0 md:p-4">
+                    <div className="text-xl font-bold">Borrowing Disabled</div>
+                    <div>
+                      Supply limit of USM has been reached and borrowing USM is
+                      restricted.
+                    </div>
+                  </div>
+                }
+              />
+            )}
+            <div
+              className={classNames(
+                'grid grid-cols-2 lg:grid-cols-7 gap-4',
+                !isMintable && 'is-disabled',
+              )}
+            >
               <div className="space-y-4 col-span-2 lg:col-span-5">
                 <CollateralSelectPanel
                   balance={balance}

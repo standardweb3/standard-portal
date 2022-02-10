@@ -54,3 +54,9 @@ input:focus {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+.is-disabled
+{
+  pointer-events: none;
+  opacity: 0.4;
+}

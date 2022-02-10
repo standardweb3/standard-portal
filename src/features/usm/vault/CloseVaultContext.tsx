@@ -12,7 +12,6 @@ export const CloseVaultContext = createContext(initialState);
 
 export const useCloseVaultState = () => {
   const [vaultAddress, setVaultAddress] = useState(undefined);
-  useEffect(() => {}, [vaultAddress]);
   const [isOpen, setIsOpen] = useState(false);
 
   const dismiss = () => setIsOpen(false);
