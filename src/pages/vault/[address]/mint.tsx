@@ -81,7 +81,7 @@ function Vault() {
   useEffect(() => {
     if (currentCollateralRatio === undefined) return;
     setCollateralRatio(String(currentCollateralRatio));
-    if (collateralRatioPercentage !== undefined) {
+    if (collateralRatioPercentage === undefined) {
       setCollateralRatioPercentage(
         Math.min((currentCollateralRatio / maxCollateralRatio) * 100, 100),
       );
