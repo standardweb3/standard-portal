@@ -46,7 +46,7 @@ module.exports = {
           'linear-gradient(297.07deg, #8525EF 4.24%, #8525EF 4.25%, #41157C 35.24%, #170C34 85.03%)',
         xstnd: 'linear-gradient(#A18CD1 0%, #FBC2EB 100%)',
         'vault-manager-info':
-          'linear-gradient(180deg, #45017A 0%, rgba(242, 32, 155, 0) 100%)',
+          'linear-gradient(180deg, #45017A 0%, rgba(242, 32, 155, 0.1) 100%)',
         'currency-input-mobile':
           'linear-gradient(92.93deg, rgba(185, 132, 252, 0.5) -22.44%, rgba(185, 132, 252, 0.273438) 76.07%, rgba(185, 132, 252, 0) 115.61%)',
         'alert-error':

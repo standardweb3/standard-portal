@@ -30,7 +30,7 @@ export function VaultPayBack({
     usm,
   );
 
-  const borrowedCurrencyAmount = tryParseAmount(borrowed, usm);
+  // const borrowedCurrencyAmount = tryParseAmount(borrowed, usm);
   const [approvalState, approve] = useApproveCallback(
     paybackCurrencyAmount,
     vaultAddress,
@@ -104,6 +104,11 @@ export function VaultPayBack({
     mcr,
   );
 
+  const maxBalance =
+    balance && debtCurrencyAmount && balance.greaterThan(debtCurrencyAmount)
+      ? debtCurrencyAmount
+      : balance;
+
   return (
     <div className="px-0 md:px-8 space-y-8">
       <div className="space-y-4">
@@ -114,7 +119,7 @@ export function VaultPayBack({
           <RouterCurrencyInputPanel
             onAmountChange={onAmountChange}
             currency={usm}
-            max={debtCurrencyAmount}
+            max={maxBalance}
             balance={balance}
             amount={amount}
             hideChevron

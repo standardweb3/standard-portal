@@ -49,7 +49,7 @@ const RebaseTimer = ({ duration = 0, remaining = 0, rebaseActive = false }) => {
   );
 };
 
-export function Rebase2() {
+export function Rebase3() {
   const addTransaction = useTransactionAdder();
   const vaultManager = useVaultManager();
   const { triggerRebase } = useVaultManagerCallbacks();
@@ -65,45 +65,47 @@ export function Rebase2() {
         summary: `Rebase USM's desired supply`,
       });
   };
-  const newDesiredSupply =
+  const nextDesiredSupply =
     usmPrice !== undefined && vaultManager?.currentBorrowed !== undefined
       ? usmPrice * parseFloat(vaultManager.currentBorrowed)
       : undefined;
 
   return (
-    <div className="rounded-20 bg-background p-6 md:p-8 flex flex-col items-center space-y-4">
-      <div className="flex items-center space-x-4 justify-between w-full">
+    <div className="rounded-20 bg-background p-4 md:p-8 flex flex-col items-center space-y-4">
+      <div>
+        <div className="font-bold text-xl md:text-xl">USM</div>
         <div>
-          <div className="font-bold text-xl md:text-xl">USM</div>
-          <div>
-            {usmPrice !== undefined ? (
-              <div className="text-grey text-sm md:text-base">
-                <span className="text-lg md:text-xl">
-                  {formatNumber(usmPrice)}
-                </span>{' '}
-                USD
-              </div>
-            ) : (
-              <Skeleton width="33%" />
-            )}
-          </div>
+          {usmPrice !== undefined ? (
+            <div className="text-grey text-sm md:text-base">
+              <span className="text-lg md:text-xl">
+                {formatNumber(usmPrice)}
+              </span>{' '}
+              USD
+            </div>
+          ) : (
+            <Skeleton width="33%" />
+          )}
         </div>
-        <div
-          className={classNames(!vaultManager?.rebaseActive && 'is-disabled')}
-        >
-          <RebaseTimer
-            duration={3600}
-            rebaseActive={vaultManager?.rebaseActive}
-            remaining={vaultManager?.rebaseActive ? rebaseCountdown ?? 0 : 3600}
-          />
+      </div>
+      <div className={classNames(!vaultManager?.rebaseActive && 'is-disabled')}>
+        <RebaseTimer
+          duration={3600}
+          rebaseActive={vaultManager?.rebaseActive}
+          remaining={vaultManager?.rebaseActive ? rebaseCountdown ?? 0 : 3600}
+        />
+      </div>
+      <Button
+        disabled={!vaultManager?.rebaseActive || !rebasable}
+        className="font-bold !rounded-lg text-sm md:text-base !py-2 !px-8"
+        onClick={handleRebase}
+      >
+        Rebase
+      </Button>
+      <div className="text-center">
+        <div className="text-primary text-xs">Next Desired Supply</div>
+        <div className="text-sm text-text">
+          {formatNumber(nextDesiredSupply)}
         </div>
-        <Button
-          disabled={!vaultManager?.rebaseActive || !rebasable}
-          className="font-bold !rounded-lg text-sm md:text-base !py-2 !px-8"
-          onClick={handleRebase}
-        >
-          Rebase
-        </Button>
       </div>
     </div>
   );

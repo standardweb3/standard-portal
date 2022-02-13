@@ -4,3 +4,5 @@ export const MAX_COLLATERAL_RATIO = 320;
 export const getSafeCollateralRatio = (mcr) => {
   return (mcr * 4) / 3;
 };
+
+export const CLOSE_FEE_MARGIN = 0.01;

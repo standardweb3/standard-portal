@@ -36,7 +36,7 @@ const RebaseTimer = ({ duration = 0, rebaseActive = undefined }) => {
         return rebaseActive === undefined ? (
           <LogoSpinner width={48} height={48} />
         ) : !rebaseActive ? (
-          <div className="text-sm text-primary">Rebase is off</div>
+          <div className="text-sm text-primary">Rebase unavailable</div>
         ) : (
           <div className="text-center">
             <div className="text-xs text-primary opacity-75">Next Rebase</div>
@@ -78,9 +78,7 @@ export function Rebase() {
       <div className="flex items-center space-x-8 justify-between w-full">
         <div className="space-y-3">
           <div>
-            <div className="font-bold text-xl md:text-2xl text-primary">
-              USM Price
-            </div>
+            <div className="font-bold text-xl md:text-2xl">USM</div>
             <div>
               {usmPrice !== undefined ? (
                 <div className="text-grey text-sm md:text-base">

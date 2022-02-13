@@ -113,7 +113,7 @@ function Collateral() {
 
     if (collateralRatio !== '') {
       setUsmAmount(
-        String((_collateralValue / parseFloat(collateralRatio)) * 100),
+        ((_collateralValue / parseFloat(collateralRatio)) * 100).toFixed(4),
       );
     } else {
       setUsmAmount('');
@@ -146,7 +146,7 @@ function Collateral() {
     if (parseFloat(value) >= MAX_COLLATERAL_RATIO) {
       setCollateralRatio(String(value));
       setCollateralRatioPercentage(100);
-      setUsmAmount(String((collateralizeValue / parseFloat(value)) * 100));
+      setUsmAmount(((collateralizeValue / parseFloat(value)) * 100).toFixed(4));
       return;
     }
     if (changePerc) {
@@ -156,7 +156,7 @@ function Collateral() {
       setCollateralRatioPercentage(newCollateralRatioPercentage);
     }
     setCollateralRatio(value);
-    setUsmAmount(String((collateralizeValue / parseFloat(value)) * 100));
+    setUsmAmount(((collateralizeValue / parseFloat(value)) * 100).toFixed(4));
   };
 
   const setToMinCollataralRatio = () => {

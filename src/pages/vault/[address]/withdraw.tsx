@@ -97,10 +97,6 @@ function Vault() {
               <div className="col-span-2 lg:col-span-7">
                 <VaultCDPMetrics
                   fee={fee}
-                  currentCollateralRatio={currentCollateralRatio}
-                  minCollateralRatio={mcr}
-                  collateralPrice={collateralPrice}
-                  liquidationPrice={liquidationPrice}
                   usmPrice={usmPrice}
                   debtAmount={currentBorrowed}
                   debt={debt}
@@ -122,6 +118,7 @@ function Vault() {
                     collateral={collateralCurrency}
                     amount={withdrawAmount}
                     balance={withdrawableCurrencyBalance}
+                    balanceNum={withdrawableBalance}
                     collateralBalance={collateralBalance}
                     debt={debt}
                     fee={fee}

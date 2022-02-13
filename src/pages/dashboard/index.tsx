@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import {
+  CurrentCollateralAssetsAMMReserveGraph,
   CurrentCollateralizedGraph,
   HistoricSuppliesGraph,
   PaidBackGraph,
@@ -14,15 +15,19 @@ import { DefinedStyles } from '../../utils/DefinedStyles';
 import { PageContent } from '../../components-ui/PageContent';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import { NetworkGuardWrapper } from '../../guards/Network';
-import { Rebase } from '../../features/usm/Rebase';
 import { useVaultManager } from '../../services/graph/hooks/vault';
 import { useMtr } from '../../hooks/vault/useMtr';
 import { useVaultManagerAssetPrice } from '../../hooks/vault/useVaultManager';
-import { classNames, formatNumber } from '../../functions';
-import { Rebase2 } from '../../features/usm/Rebase2';
+import { Rebase4 } from '../../features/usm/Rebase4';
+import { formatNumber } from '../../functions';
 
 function Dashboard() {
   const vaultManager = useVaultManager();
+  const totalBacking =
+    vaultManager &&
+    parseFloat(vaultManager.runningStat.ammReserveCollateralUSD) +
+      parseFloat(vaultManager.runningStat.currentCollateralizedUSD);
+  console.log(vaultManager);
   const usm = useMtr();
   const usmPrice = useVaultManagerAssetPrice(usm.address);
 
@@ -36,6 +41,7 @@ function Dashboard() {
       currentCollateralizedUSD: parseFloat(d.currentCollateralizedUSD),
       historicPaidBack: parseFloat(d.historicPaidBack),
       collectedStabilityFee: parseFloat(d.collectedStabilityFee),
+      ammReserveCollateralUSD: parseFloat(d.ammReserveCollateralUSD),
     };
   });
 
@@ -56,20 +62,24 @@ function Dashboard() {
         <PageContent>
           <div className="w-full max-w-[1000px] space-y-8">
             {/* <VaultManagerInfo /> */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {/* <div className="grid grid-cols-1 gap-4">
-                <DashboardMetric
-                  header={'USM Total Supply'}
-                  stat={
-                    vaultManager && formatNumber(vaultManager?.currentBorrowed)
-                  }
-                />
-                <DashboardMetric
-                  header={'USM Price'}
-                  stat={usm && formatNumber(usmPrice, true)}
-                />
-              </div> */}
-              <Rebase />
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <DashboardMetric
+                header={'USM Total Supply'}
+                stat={
+                  vaultManager && formatNumber(vaultManager?.currentBorrowed)
+                }
+              />
+              <DashboardMetric
+                header={'Total Backing'}
+                stat={usm && formatNumber(totalBacking, true)}
+                tip={
+                  'Total Backing is the sum of the value of collateralized assets in vaults and the value of collateral assets in USM-collateral AMMs'
+                }
+              />
+              <div className="col-span-2">
+                <Rebase4 />
+              </div>
+              {/* <Rebase3 /> */}
               {/* <Rebase2 /> */}
             </div>
             <div
@@ -85,6 +95,9 @@ function Dashboard() {
               </div>
               <div className="col-span-1 bg-background rounded-20 p-2">
                 <CurrentCollateralizedGraph data={dataForChart} />
+              </div>
+              <div className="col-span-1 bg-background rounded-20 p-2">
+                <CurrentCollateralAssetsAMMReserveGraph data={dataForChart} />
               </div>
               <div className="col-span-1 bg-background rounded-20 p-2">
                 <PaidBackGraph data={dataForChart} />

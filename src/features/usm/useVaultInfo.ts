@@ -1,7 +1,11 @@
 import { getAddress } from 'ethers/lib/utils';
 import { useWrappableCurrency } from '../../hooks/useWrappableCurrency';
 import { useMtr } from '../../hooks/vault/useMtr';
-import { useVaultDebt } from '../../hooks/vault/useVault';
+import {
+  useVaultBorrowed,
+  useVaultCollateralized,
+  useVaultDebt,
+} from '../../hooks/vault/useVault';
 import { useVaultManagerAssetPrice } from '../../hooks/vault/useVaultManager';
 import { VaultCondition } from '../../pages/vaults';
 import { useUserVault } from '../../services/graph/hooks/vault';
@@ -12,15 +16,14 @@ export function useUserVaultInfo(vaultAddress) {
 
   const usm = useMtr();
   const usmPrice = useVaultManagerAssetPrice(usm && usm.address);
-
   const vault = useUserVault(vaultAddress);
   const debt = useVaultDebt(checksummedVaultAddr);
 
   const {
     id,
     collateral: collateralAddress,
-    currentBorrowed: currentBorrowedString,
-    currentCollateralized: currentCollateralizedString,
+    // currentBorrowed: currentBorrowedString,
+    // currentCollateralized: currentCollateralizedString,
     CDP,
   } = vault ?? {};
 
@@ -33,9 +36,15 @@ export function useUserVaultInfo(vaultAddress) {
 
   const collateralPrice = useVaultManagerAssetPrice(collateralAddress);
 
-  const currentBorrowed = vault && parseFloat(currentBorrowedString);
-  const currentCollateralized =
-    vault && parseFloat(currentCollateralizedString);
+  // const currentBorrowed = vault && parseFloat(currentBorrowedString);
+  const currentBorrowed = useVaultBorrowed(checksummedVaultAddr);
+  // const currentCollateralized =
+  //   vault && parseFloat(currentCollateralizedString);
+  const currentCollateralized = useVaultCollateralized(
+    collateralAddress && getAddress(collateralAddress),
+    checksummedVaultAddr,
+    CDP && parseFloat(CDP.decimals),
+  );
 
   const fee =
     debt && currentBorrowed !== undefined ? debt - currentBorrowed : undefined;

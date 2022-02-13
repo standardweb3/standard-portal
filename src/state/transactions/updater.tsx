@@ -1,4 +1,4 @@
-import { AppDispatch, AppState } from '../index';
+// import { AppDispatch, AppState } from '../index';
 import { RetryOptions, RetryableError, retry } from '../../functions/retry';
 import { checkedTransaction, finalizeTransaction } from './actions';
 import { useAddPopup, useBlockNumber } from '../application/hooks';
@@ -138,7 +138,7 @@ export default function Updater(): null {
           })
           .catch((error) => {
             if (!error.isCancelledError) {
-              console.error(`Failed to check transaction hash: ${hash}`, error);
+              // console.error(`Failed to check transaction hash: ${hash}`, error);
             }
           });
         return cancel;

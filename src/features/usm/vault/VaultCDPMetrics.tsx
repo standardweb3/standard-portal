@@ -7,10 +7,6 @@ import { DefinedStyles } from '../../../utils/DefinedStyles';
 import { VaultCDPMetric } from './VaultCDPMetric';
 
 export function VaultCDPMetrics({
-  collateralPrice,
-  liquidationPrice,
-  currentCollateralRatio,
-  minCollateralRatio,
   usmPrice,
   debtAmount,
   fee,

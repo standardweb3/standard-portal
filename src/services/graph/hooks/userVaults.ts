@@ -22,7 +22,10 @@ export const useUserVaults2 = () => {
       let results = await vaultClient.query({
         query: vaultsQuery,
         variables: {
-          user: account.toLowerCase(),
+          where: {
+            user: account.toLowerCase(),
+            isClosed: false,
+          },
         },
       });
 
@@ -32,7 +35,10 @@ export const useUserVaults2 = () => {
         results = await vaultClient.query({
           query: vaultsQuery,
           variables: {
-            user: account.toLowerCase(),
+            where: {
+              user: account.toLowerCase(),
+              isClosed: false,
+            },
             skip,
           },
         });

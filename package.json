@@ -20,7 +20,7 @@
     "@binance-chain/bsc-connector": "^1.0.0",
     "@clover-network/clover-connector": "^1.0.0",
     "@digitalnative/default-token-list": "0.0.38",
-    "@digitalnative/standard-protocol-sdk": "^0.0.174",
+    "@digitalnative/standard-protocol-sdk": "^0.0.177",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
     "@ethereumjs/common": "^2.3.0",

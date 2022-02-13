@@ -9,9 +9,10 @@ import { CurrencyLogo } from '../CurrencyLogo';
 
 export type TokenAdderProps = {
   currency: Currency | undefined;
+  hideSymbol?: boolean;
 };
 
-export function TokenAdder({ currency }: TokenAdderProps) {
+export function TokenAdder({ currency, hideSymbol }: TokenAdderProps) {
   const { account } = useActiveWeb3React();
 
   const { addToken, success } = useAddTokenToMetaMask(currency);
@@ -42,7 +43,7 @@ export function TokenAdder({ currency }: TokenAdderProps) {
           {balance.toSignificant(4)}
         </div>
       )}
-      <div>{currency.symbol}</div>
+      {!hideSymbol && <div>{currency.symbol}</div>}
     </div>
   ) : null;
 }

@@ -38,6 +38,7 @@ const WeekChart = dynamic(() => import('../../features/trade/WeekChart'), {
 import { NetworkGuardWrapper } from '../../guards/Network';
 import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
 import { reverseArray } from '../../utils';
+import { TRADE_BLACKLIST } from '../../constants/blacklist';
 
 function Tokens() {
   const { chainId } = useActiveWeb3React();
@@ -103,6 +104,9 @@ function Tokens() {
   const sortedTokens = useMemo(() => {
     return (
       tokens
+        ?.filter((token) => {
+          return !TRADE_BLACKLIST[chainId][token.id];
+        })
         ?.map((token) => {
           const oneDayToken = oneDayTokens?.find(({ id }) => token.id === id);
           const priceYesterday = oneDayToken

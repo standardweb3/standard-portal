@@ -1,23 +1,15 @@
 import styled from '@emotion/styled';
-import { Button } from '../../../components-ui/Button';
 import { CurrencyLogo } from '../../../components-ui/CurrencyLogo';
 import { formatPercent } from '../../../functions';
 import Skeleton from 'react-loading-skeleton';
 import {
   useSizeMdUp,
   ViewportLargeDown,
-  ViewportMediumUp,
-  ViewportSmallDown,
   ViewportXLargeUp,
 } from '../../../components-ui/Responsive';
 import { useState } from 'react';
 import { Question } from '../../../components-ui/Question';
-import {
-  ArrowDownIcon,
-  ArrowUpIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
-} from '@heroicons/react/outline';
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/outline';
 
 const Background = styled.div`
   overflow: hidden;

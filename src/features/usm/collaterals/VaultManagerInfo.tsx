@@ -5,8 +5,8 @@ import { useVaultManager } from '../../../services/graph/hooks/vault';
 import Skeleton from 'react-loading-skeleton';
 import {
   useSizeMdUp,
-  ViewportMediumUp,
-  ViewportSmallDown,
+  ViewportLargeUp,
+  ViewportMediumDown,
 } from '../../../components-ui/Responsive';
 import { SimpleCurrencyLogo } from '../../../components-ui/CurrencyLogo/SimpleCurrencyLogo';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/outline';
@@ -83,7 +83,7 @@ export function VaultManagerInfo() {
   return (
     <>
       <Background className="rounded-20 bg-background p-8 relative">
-        <div className="flex flex-col lg:flex-row items-start lg:items-end md:space-x-12 lg:space-y-0 z-[10] relative">
+        <div className="flex flex-col lg:flex-col items-start z-[10] relative">
           <div className="flex items-center md:items-end">
             {/* <ViewportSmallDown>
               <div className="absolute top-[24px] right-[24px] z-[0] opacity-25">
@@ -94,16 +94,16 @@ export function VaultManagerInfo() {
                 />
               </div>
             </ViewportSmallDown> */}
-            <ViewportMediumUp>
+            <ViewportLargeUp>
               <SimpleCurrencyLogo
                 symbol="mtr"
                 size="128px"
                 className="rounded-full"
               />
-            </ViewportMediumUp>
-            <div className="space-y-2 flex-col justify-end pb-2 md:ml-8">
+            </ViewportLargeUp>
+            <div className="space-y-2 flex-col justify-end pb-2 lg:ml-8">
               <div className="text-2xl !mb-4 md:mb-0 md:text-4xl font-black md:font-bold flex items-center">
-                <ViewportSmallDown>
+                <ViewportMediumDown>
                   <div className="mr-2">
                     <SimpleCurrencyLogo
                       symbol="mtr"
@@ -111,10 +111,10 @@ export function VaultManagerInfo() {
                       className="rounded-full"
                     />
                   </div>
-                </ViewportSmallDown>
+                </ViewportMediumDown>
                 <span>USM</span>
               </div>
-              <div className="flex items-center space-x-4 md:space-x-12">
+              <div className="flex flex-wrap items-center gap-x-12 gap-y-4">
                 <div className="space-y-1">
                   <div className="text-grey md:text-text text-xs md:text-base whitespace-nowrap">
                     Total Supply
@@ -142,7 +142,7 @@ export function VaultManagerInfo() {
                         Mintable USM
                       </div>
                       <div className="text-2xl md:text-3xl font-bold text-primary">
-                        {mintableSupply
+                        {mintableSupply !== undefined
                           ? formatNumberScale(mintableSupply)
                           : NumberSkeleton}
                       </div>

@@ -13,6 +13,8 @@ import { useTransactionAdder } from '../../../state/transactions/hooks';
 import { MAX_COLLATERAL_RATIO } from '../constants';
 import { useTransactionSubmission } from '../../../hooks/useTransactionSubmission';
 import TransactionConfirmationModal from '../../../modals/TransactionConfirmationModal';
+import { BIG_INT_ZERO } from '../../../constants';
+import { RippleSpinner } from '../../../components-ui/Spinner/RippleSpinner';
 
 export function VaultMint({
   vaultAddress,
@@ -55,7 +57,7 @@ export function VaultMint({
     handleDismissConfirmation,
   } = useTransactionSubmission();
 
-  const { borrowMore } = useVault(vaultAddress);
+  const { borrowMore, borrowMoreNative } = useVault(vaultAddress);
   const borrowMoreCurrencyAmount = tryParseAmount(borrowMoreAmount, usm);
   const depositCurrencyAmount = tryParseAmount(depositAmount, collateral);
 
@@ -108,23 +110,30 @@ export function VaultMint({
       (depositCurrencyAmount &&
         collateralBalance &&
         (collateralBalance.greaterThan(depositCurrencyAmount) ||
-          collateralBalance.equalTo(depositCurrencyAmount))));
+          collateralBalance.equalTo(depositCurrencyAmount)) &&
+        (depositCurrencyAmount.equalTo(0) ||
+          depositCurrencyAmount.greaterThan(0))));
 
   const onClick = async () => {
     if (depositCurrencyAmount) {
       if (collateralApprovalState == ApprovalState.APPROVED) {
         if (mtrApprovalState == ApprovalState.APPROVED) {
           if (borrowMoreCurrencyAmount) {
-            const tx = await borrowMore(
-              depositCurrencyAmount.quotient.toString(),
-              borrowMoreCurrencyAmount.quotient.toString(),
-            );
+            const tx = isCollateralNative
+              ? await borrowMoreNative(
+                  depositCurrencyAmount.quotient.toString(),
+                  borrowMoreCurrencyAmount.quotient.toString(),
+                )
+              : await borrowMore(
+                  depositCurrencyAmount.quotient.toString(),
+                  borrowMoreCurrencyAmount.quotient.toString(),
+                );
             tx &&
               addTransaction(tx, {
                 summary: `Borrow ${formatNumber(
                   borrowMoreCurrencyAmount.toExact(),
                 )} USM and deposit ${formatNumber(
-                  borrowMoreCurrencyAmount.toExact(),
+                  depositCurrencyAmount.toExact(),
                 )} ${collateral.symbol} to vault ${vaultAddress}`,
               });
             tx && handleSubmission(tx.hash);
@@ -133,18 +142,24 @@ export function VaultMint({
           await approveMtr();
         }
       } else if (collateralApprovalState == ApprovalState.NOT_APPROVED) {
-        await approveMtr();
+        await approveCollateral();
       }
     } else {
       if (mtrApprovalState == ApprovalState.APPROVED) {
         if (borrowMoreCurrencyAmount) {
-          const tx = await borrowMore(
-            depositCurrencyAmount
-              ? depositCurrencyAmount.quotient.toString()
-              : '0',
-            borrowMoreCurrencyAmount.quotient.toString(),
-          );
-
+          const tx = isCollateralNative
+            ? await borrowMoreNative(
+                depositCurrencyAmount
+                  ? depositCurrencyAmount.quotient.toString()
+                  : '0',
+                borrowMoreCurrencyAmount.quotient.toString(),
+              )
+            : await borrowMore(
+                depositCurrencyAmount
+                  ? depositCurrencyAmount.quotient.toString()
+                  : '0',
+                borrowMoreCurrencyAmount.quotient.toString(),
+              );
           tx &&
             addTransaction(tx, {
               summary: `Borrow ${formatNumber(
@@ -169,7 +184,12 @@ export function VaultMint({
         ) {
           return 'Approve USM';
         } else if (mtrApprovalState == ApprovalState.PENDING) {
-          return 'Approving';
+          return (
+            <div className="flex items-center justify-center space-x-3">
+              <div>Approving</div>
+              <RippleSpinner size={16} />
+            </div>
+          );
         }
         return 'Borrow More';
       } else if (depositCurrencyAmount && collateralBalance) {
@@ -198,7 +218,15 @@ export function VaultMint({
             collateralApprovalState == ApprovalState.PENDING ||
             mtrApprovalState == ApprovalState.PENDING
           ) {
-            return 'Approving';
+            return (
+              <div className="flex items-center justify-center space-x-3">
+                <div>Approving</div>
+                <RippleSpinner size={16} />
+              </div>
+            );
+          }
+          if (depositCurrencyAmount.lessThan(BIG_INT_ZERO)) {
+            return 'Deposit amount must be greater than 0';
           }
           return 'Deposit and Borrow More';
         } else {

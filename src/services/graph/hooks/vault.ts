@@ -1,7 +1,6 @@
 import { getVaultManagerAddress } from '@digitalnative/standard-protocol-sdk';
 import useSWR, { SWRConfiguration } from 'swr';
 import { useActiveWeb3React } from '../../../hooks';
-import { useBlockNumber } from '../../../state/application/hooks';
 import { useProtocol } from '../../../state/protocol/hooks';
 import {
   getCdps,

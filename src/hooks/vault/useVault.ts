@@ -1,9 +1,10 @@
 import VAULT_ABI from '../../constants/abis/vault.json';
 import { Contract } from '@ethersproject/contracts';
-import { useActiveWeb3React, useContract } from '..';
+import { useActiveWeb3React, useContract, useTokenContract } from '..';
 import { useSingleCallResult } from '../../state/multicall/hooks';
 import { useCallback } from 'react';
 import { calculateGasMargin } from '../../functions';
+import ERC20_ABI from '../../constants/abis/erc20.json';
 
 export function useVaultContract(
   address,
@@ -20,6 +21,32 @@ export function useVaultDebt(address) {
   const debt = callResult?.result?.[0];
 
   return debt ? debt / 1e18 : undefined;
+}
+
+export function useVaultBorrowed(address) {
+  const contract = useVaultContract(address);
+
+  const callResult = useSingleCallResult(contract, 'borrow', []);
+
+  const borrowed = callResult?.result?.[0];
+
+  return borrowed ? borrowed / 1e18 : undefined;
+}
+
+export function useVaultCollateralized(
+  collateralAddress,
+  vaultAddress,
+  decimals,
+) {
+  const collateral = useTokenContract(collateralAddress);
+  const callResult = useSingleCallResult(collateral, 'balanceOf', [
+    vaultAddress,
+  ]);
+
+  const collateralized = callResult?.result?.[0];
+  return collateralized && decimals !== undefined
+    ? collateralized / decimals
+    : undefined;
 }
 
 export function useVault(address) {
@@ -47,6 +74,30 @@ export function useVault(address) {
         let tx;
         tx = await contract.borrowMore(cAmount, dAmount);
 
+        return tx;
+      } catch (e) {
+        console.error(e);
+        // return e;
+      }
+    },
+    [account, contract],
+  );
+
+  const borrowMoreNative = useCallback(
+    async (cAmount, dAmount) => {
+      try {
+        const estimate = contract.estimateGas.borrowMoreNative;
+        const method = contract.borrowMoreNative;
+        const args = [dAmount];
+        const value = cAmount;
+
+        let tx;
+        tx = await estimate(...args, { value }).then((estimatedGasLimit) =>
+          method(...args, {
+            value,
+            gasLimit: calculateGasMargin(estimatedGasLimit),
+          }),
+        );
         return tx;
       } catch (e) {
         console.error(e);
@@ -144,6 +195,7 @@ export function useVault(address) {
   return {
     closeVault,
     borrowMore,
+    borrowMoreNative,
     payBack,
     withdraw,
     withdrawNative,

@@ -3,18 +3,27 @@ import { useActiveWeb3React } from '../../hooks';
 import { sidebarRoutes } from '../../routes';
 import { TopBarNavigation } from '../TopBarNavigation/TopBarNavigation';
 import { useCallback, useState } from 'react';
-import { MenuIcon } from '@heroicons/react/outline';
+import { ChevronLeftIcon, MenuIcon } from '@heroicons/react/outline';
 import { Slider } from '../Slider';
 import { ModalHeader } from '../Modal/ModalHeader';
 import NetworkDropDown from '../Dropdown/NetworkDropDown';
 import { Listings } from '../Listings';
+import { ConnectionStatus } from '../ConnectionStatus';
+import { StndAdder } from '../TokenAdder/StndAdder';
+import { useRouter } from 'next/router';
+import { useSizeXs } from '../Responsive';
 
 export function TopBar() {
   const { chainId, library } = useActiveWeb3React();
-
+  const router = useRouter();
+  const handleBack = () => {
+    router.back();
+  };
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const handleMenuOpen = useCallback(() => setMenuOpen(true), []);
   const handleMenuDismiss = useCallback(() => setMenuOpen(false), []);
+
+  const isViewportXs = useSizeXs();
 
   return (
     <>
@@ -59,6 +68,13 @@ export function TopBar() {
           </div>
         </div>
       </Slider>
+      <div className="text-text flex w-fulljustify-between items-center mb-6 px-4 space-x-2">
+        <div className="flex-1" onClick={handleBack}>
+          <ChevronLeftIcon className="w-6 h-6" />
+        </div>
+        <ConnectionStatus className="!rounded-20" />
+        <StndAdder hideSymbol={isViewportXs} />
+      </div>
     </>
   );
 }

@@ -38,6 +38,7 @@ export function StatusIcon({ connector }: { connector: AbstractConnector }) {
         } etc...)`}
         width={20}
         height={20}
+        // layout="fixed"
       />
     );
     // return <Identicon />

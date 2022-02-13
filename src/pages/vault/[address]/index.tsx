@@ -16,6 +16,8 @@ import { VaultPayBack } from '../../../features/usm/vault/PayBack';
 import { useUserVaultInfo } from '../../../features/usm/useVaultInfo';
 import { NetworkGuardWrapper } from '../../../guards/Network';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
+import { Rebase } from '../../../features/usm/Rebase';
+import { Rebase4 } from '../../../features/usm/Rebase4';
 
 function Vault() {
   const { account } = useActiveWeb3React();
@@ -81,10 +83,6 @@ function Vault() {
               <div className="col-span-2 lg:col-span-7">
                 <VaultCDPMetrics
                   fee={fee}
-                  currentCollateralRatio={currentCollateralRatio}
-                  minCollateralRatio={mcr}
-                  collateralPrice={collateralPrice}
-                  liquidationPrice={liquidationPrice}
                   usmPrice={usmPrice}
                   debtAmount={currentBorrowed}
                   debt={debt}

@@ -8,7 +8,7 @@ import { VaultUserInfo } from '../../features/usm/vaults/VaultUserInfo';
 import { applyCdpDecimals } from '../../features/usm/utils';
 import { useUserVaults2 } from '../../services/graph/hooks/userVaults';
 import { useCdpPrices } from '../../services/graph/hooks/cdpPrices';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { VaultsTable } from '../../features/usm/vaults/VaultsTable';
 import { RiskyVaultsTable } from '../../features/usm/collaterals/RiskyVaultsTable';
 import { getAddress } from 'ethers/lib/utils';
@@ -162,10 +162,10 @@ function Vaults() {
                         message={
                           <div className="p-0 md:p-4">
                             <div className="text-xl font-bold">
-                              You don't own any vaults
+                              You don&apos;t own any vaults
                             </div>
                             <div>
-                              Pick a collateral from below and borrow USM
+                              Select a collateral from below and borrow USM
                             </div>
                           </div>
                         }

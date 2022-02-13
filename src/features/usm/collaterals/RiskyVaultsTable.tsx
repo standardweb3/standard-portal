@@ -7,7 +7,6 @@ import { useFilter } from '../../../hooks/useFilter';
 import { usePagination } from '../../../hooks/usePagination';
 import { SortDirection, useSort } from '../../../hooks/useSort';
 import { VaultCard } from '../vaults/VaultCard';
-// import { useSizeMd } from '../../../components-ui/Responsive';
 
 export function RiskyVaultsTable({
   vaults,

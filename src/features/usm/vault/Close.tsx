@@ -1,17 +1,23 @@
 import { Button } from '../../../components-ui/Button';
 import { SimpleCurrencyLogo } from '../../../components-ui/CurrencyLogo/SimpleCurrencyLogo';
 import { ModalHeader } from '../../../components-ui/Modal/ModalHeader';
+import { RippleSpinner } from '../../../components-ui/Spinner/RippleSpinner';
 import {
   classNames,
   formatNumber,
   formatPercent,
   tryParseAmount,
 } from '../../../functions';
-import { useActiveWeb3React } from '../../../hooks';
+import {
+  ApprovalState,
+  useActiveWeb3React,
+  useApproveCallback,
+} from '../../../hooks';
 import { useVault } from '../../../hooks/vault/useVault';
 import { useTransactionAdder } from '../../../state/transactions/hooks';
 import { useCurrencyBalance } from '../../../state/wallet/hooks';
 import { DefinedStyles } from '../../../utils/DefinedStyles';
+import { CLOSE_FEE_MARGIN } from '../constants';
 import { getConditionColor } from '../functions';
 import { VaultStatusBadge } from '../vaults/VaultStatusBadge';
 
@@ -21,27 +27,55 @@ export function Close({ vaultInfo, onDismiss }) {
   const { closeVault } = useVault(vaultInfo.address);
 
   const debtCurrencyBalance = tryParseAmount(
-    String(vaultInfo.debt),
-    vaultInfo.usm,
+    vaultInfo ? String(vaultInfo.debt + CLOSE_FEE_MARGIN) : undefined,
+    vaultInfo?.usm,
+  );
+
+  const [usmApprovalState, approveUsm] = useApproveCallback(
+    debtCurrencyBalance,
+    vaultInfo.address,
   );
 
   const usmBalance = useCurrencyBalance(account, vaultInfo.usm);
   const closeable =
-    usmBalance && vaultInfo && Number(usmBalance.toExact()) >= vaultInfo.debt;
+    usmBalance &&
+    debtCurrencyBalance &&
+    vaultInfo &&
+    (usmBalance.greaterThan(debtCurrencyBalance) ||
+      usmBalance.equalTo(debtCurrencyBalance));
 
   const conditionColor = getConditionColor(vaultInfo.condition);
 
-  const buttonText = closeable ? 'Close Vault' : 'Insufficience USM balance';
+  const buttonText =
+    usmApprovalState === ApprovalState.APPROVED ? (
+      closeable ? (
+        'Close Vault'
+      ) : (
+        'Insufficience USM balance'
+      )
+    ) : usmApprovalState === ApprovalState.PENDING ? (
+      <div className="flex items-center justify-center space-x-3">
+        <div>Approving</div>
+        <RippleSpinner size={16} />
+      </div>
+    ) : (
+      'Approve USM'
+    );
 
   const handleCloseVault = async () => {
-    if (closeable && debtCurrencyBalance) {
-      const tx = await closeVault(debtCurrencyBalance.quotient.toString());
-      tx &&
-        addTransaction(tx, {
-          summary: `Close vault ${vaultInfo.address} for ${formatNumber(
-            debtCurrencyBalance.toExact(),
-          )}`,
-        });
+    if (usmApprovalState === ApprovalState.APPROVED) {
+      if (closeable && debtCurrencyBalance) {
+        const tx = await closeVault(debtCurrencyBalance.quotient.toString());
+        tx &&
+          addTransaction(tx, {
+            summary: `Close vault ${vaultInfo.address} for ${formatNumber(
+              debtCurrencyBalance.toExact(),
+            )}`,
+          });
+        tx && onDismiss();
+      }
+    } else {
+      approveUsm();
     }
   };
 
@@ -114,7 +148,7 @@ export function Close({ vaultInfo, onDismiss }) {
             <div className="text-lg">Debt</div>
           </div>
           <div className="text-2xl font-bold">
-            {formatNumber(vaultInfo.debt)} USM
+            {parseFloat(vaultInfo.debt?.toFixed(4))} USM
           </div>
         </div>
         <div className="flex items-center space-x-4">
@@ -147,7 +181,11 @@ export function Close({ vaultInfo, onDismiss }) {
         </div>
       )}
 
-      <Button className={DefinedStyles.fullButton} onClick={handleCloseVault}>
+      <Button
+        disabled={!closeable}
+        className={DefinedStyles.fullButton}
+        onClick={handleCloseVault}
+      >
         {buttonText}
       </Button>
     </div>

@@ -15,6 +15,7 @@ export function VaultWithdraw({
   vaultAddress,
   collateral,
   balance,
+  balanceNum,
   amount,
   borrowed,
   mcr,
@@ -144,9 +145,9 @@ export function VaultWithdraw({
         <div className="text-sm text-grey">Withdrawable Balance:</div>
         <div className="font-bold text-4xl">
           <>
-            {collateral && balance ? (
+            {collateral && balanceNum !== undefined ? (
               <>
-                {formatNumber(balance.toExact())}{' '}
+                {formatNumber(balanceNum)}{' '}
                 <span className="font-normal">{collateral.symbol}</span>
               </>
             ) : (

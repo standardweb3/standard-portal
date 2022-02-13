@@ -1,4 +1,3 @@
-import { BigNumber } from 'ethers';
 import { VaultCondition } from '../../pages/vaults';
 
 export function calculateFee(

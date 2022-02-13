@@ -9,8 +9,7 @@ import {
   useSingleContractMultipleData,
 } from '../../state/multicall/hooks';
 import { formatBalance } from '../../functions';
-import { call } from 'eth-permit/dist/rpc';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import useCurrentBlockTimestamp from '../useCurrentBlockTimestamp';
 
 export function useVaultManagerAddress(): string {

@@ -96,6 +96,7 @@ export const vaultsQuery = gql`
         mcr
         lfr
         sfr
+        decimals
       }
       createdAt
     }

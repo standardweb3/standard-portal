@@ -19,6 +19,7 @@ import { useUsmMintableSupply } from '../../../features/usm/useUsmMintableSupply
 import { Alert } from '../../../components-ui/Alert';
 import { NetworkGuardWrapper } from '../../../guards/Network';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
+import { Rebase4 } from '../../../features/usm/Rebase4';
 
 function Vault() {
   const { account } = useActiveWeb3React();
@@ -131,7 +132,7 @@ function Vault() {
       const newDepositAmount =
         (newDebt * parseFloat(value)) / 100 / collateralPrice -
         currentCollateralized;
-      setDepositAmount(String(newDepositAmount));
+      setDepositAmount(newDepositAmount.toFixed(4));
       return;
     }
     if (changePerc) {
@@ -147,7 +148,7 @@ function Vault() {
     const newDepositAmount =
       (newDebt * parseFloat(value)) / 100 / collateralPrice -
       currentCollateralized;
-    setDepositAmount(String(newDepositAmount));
+    setDepositAmount(newDepositAmount.toFixed(4));
   };
 
   const setToMinCollataralRatio = () => {
@@ -191,10 +192,6 @@ function Vault() {
               <div className="col-span-2 lg:col-span-7 space-y-4">
                 <VaultCDPMetrics
                   fee={fee}
-                  currentCollateralRatio={currentCollateralRatio}
-                  minCollateralRatio={mcr}
-                  collateralPrice={collateralPrice}
-                  liquidationPrice={liquidationPrice}
                   usmPrice={usmPrice}
                   debtAmount={currentBorrowed}
                   debt={debt}
@@ -256,8 +253,11 @@ function Vault() {
                 </div>
               </div>
 
-              <div className="col-span-2 lg:col-span-3">
+              <div className="col-span-2 lg:col-span-3 space-y-4">
                 <VaultFees sfr={sfr} mcr={mcr} lfr={lfr} />
+                <div>
+                  <Rebase4 />
+                </div>
               </div>
             </div>
           </div>

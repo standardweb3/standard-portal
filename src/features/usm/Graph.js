@@ -7,8 +7,9 @@ export const TooltipItems = {
   paidBack: ['Total Paid Back:'],
   collectedStabilityFee: ['Collected Stability Fee:'],
   currentCollateralizedUSD: ['Current Collateralized Assets (USD):'],
-  currentAMMReserveUSD: ['Current Collateral AMM Reserve (USD):'],
+  // currentAMMReserveUSD: ['Current Collateral AMM Reserve (USD):'],
   userBorrowedUSM: ['Borrowed USM:'],
+  currentAMMReserveUSD: ['Current Collateral Assets AMM Reserve (USD):'],
 };
 
 export const TooltipInfoMessages = {
@@ -22,7 +23,7 @@ export const TooltipInfoMessages = {
   currentCollateralizedUSD:
     'Current Collateralized Assets represents USD value of collaterals',
   currentAMMReserveUSD:
-    'Current Collateral AMM Reserve represents USD value of collaterals in Collateral-MTR AMMs',
+    'Current Collateral Assets AMM Reserve represents USD value of collaterals assets in USM-Collateral AMMs',
   userBorrowedUSM: "Historical data of User's Borrowed USM amount",
 };
 
@@ -39,6 +40,7 @@ export const DataKeys = {
   currentCollateralizedUSD: ['currentCollateralizedUSD'],
   collectedStabilityFee: ['collectedStabilityFee'],
   userBorrowedUSM: ['currentBorrowed'],
+  currentAMMReserveUSD: ['ammReserveCollateralUSD'],
 };
 
 export const SuppliesGraph = ({ data }) => {
@@ -92,7 +94,7 @@ export const HistoricSuppliesGraph = ({ data }) => {
       itemNames={TooltipItems.historicSupply}
       dataKey={DataKeys.historicSupply}
       headerText="Historic Borrowed"
-      infoTooltipMessage={TooltipInfoMessages.supplies}
+      infoTooltipMessage={TooltipInfoMessages.historicSupply}
       stopColor={[['#8236E2', 'rgba(88, 38, 158, 0)']]}
       bulletpointColors={[
         {
@@ -121,7 +123,7 @@ export const PaidBackGraph = ({ data }) => {
       itemNames={TooltipItems.paidBack}
       dataKey={DataKeys.paidBack}
       headerText="Paid Back USM"
-      infoTooltipMessage={TooltipInfoMessages.supplies}
+      infoTooltipMessage={TooltipInfoMessages.paidBack}
       stopColor={[['#8236E2', 'rgba(88, 38, 158, 0)']]}
       bulletpointColors={[
         {
@@ -150,7 +152,7 @@ export const CurrentCollateralizedGraph = ({ data }) => {
       itemNames={TooltipItems.currentCollateralizedUSD}
       dataKey={DataKeys.currentCollateralizedUSD}
       headerText="Current Collateralized Assets (USD)"
-      infoTooltipMessage={TooltipInfoMessages.supplies}
+      infoTooltipMessage={TooltipInfoMessages.currentCollateralizedUSD}
       stopColor={[['#8236E2', '#rgba(88, 38, 158, 0)']]}
       bulletpointColors={[
         {
@@ -168,6 +170,35 @@ export const CurrentCollateralizedGraph = ({ data }) => {
   );
 };
 
+export const CurrentCollateralAssetsAMMReserveGraph = ({ data }) => {
+  return (
+    <Rechart
+      hideXAxis
+      hideYAxis
+      type="area"
+      data={data}
+      itemType={ItemType.dollar}
+      itemNames={TooltipItems.currentAMMReserveUSD}
+      dataKey={DataKeys.currentAMMReserveUSD}
+      headerText="Current Collateral Assets AMM Reserve (USD)"
+      infoTooltipMessage={TooltipInfoMessages.currentAMMReserveUSD}
+      stopColor={[['#8236E2', '#rgba(88, 38, 158, 0)']]}
+      bulletpointColors={[
+        {
+          right: 20,
+          top: -12,
+          background: '#A978E7',
+        },
+      ]}
+      expandedGraphStrokeColor={'rgba(255,255,255,0.15'}
+      stroke={'#A978E7'}
+      headerSubText={`${data &&
+        data[0] &&
+        formatNumber(data[0].ammReserveCollateralUSD, true)}`}
+    />
+  );
+};
+
 export const CollectedStabilityFeeGraph = ({ data }) => {
   return (
     <Rechart
@@ -180,7 +211,7 @@ export const CollectedStabilityFeeGraph = ({ data }) => {
       itemNames={TooltipItems.collectedStabilityFee}
       dataKey={DataKeys.collectedStabilityFee}
       headerText="Collected Stability Fee (USD)"
-      infoTooltipMessage={TooltipInfoMessages.supplies}
+      infoTooltipMessage={TooltipInfoMessages.collectedStabilityFee}
       stopColor={[['#8236E2', '#rgba(88, 38, 158, 0)']]}
       bulletpointColors={[
         {
