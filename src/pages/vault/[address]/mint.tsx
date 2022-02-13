@@ -81,9 +81,11 @@ function Vault() {
   useEffect(() => {
     if (currentCollateralRatio === undefined) return;
     setCollateralRatio(String(currentCollateralRatio));
-    setCollateralRatioPercentage(
-      Math.min((currentCollateralRatio / maxCollateralRatio) * 100, 100),
-    );
+    if (collateralRatioPercentage !== undefined) {
+      setCollateralRatioPercentage(
+        Math.min((currentCollateralRatio / maxCollateralRatio) * 100, 100),
+      );
+    }
   }, [currentCollateralRatio]);
 
   const handleChangeBorrowMoreAmount = (value) => {

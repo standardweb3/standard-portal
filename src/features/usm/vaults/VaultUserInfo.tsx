@@ -14,7 +14,7 @@ export function VaultUserInfo({ totalCollateralized, dangerVaultCount }) {
   const none = userHistories?.length === 0;
   const router = useRouter();
 
-  const handleClick = () => router.push('collaterals');
+  const handleClick = () => router.push('borrow');
   const historiesForChart = userHistories?.map((uh) => {
     return {
       ...uh,

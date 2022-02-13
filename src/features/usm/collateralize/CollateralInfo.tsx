@@ -116,7 +116,7 @@ export function CollateralInfo({ mcr, lfr, sfr, collateral, collateralPrice }) {
           {(expanded || isViewportMediuUp) && (
             <div className="grid grid-cols-2 xs:grid-cols-3 gap-4 mt-6 w-full">
               <div className="">
-                <div className="flex items-start space-x-2">
+                <div className="flex items-center space-x-2">
                   <div className="text-xs sm:text-sm lg:text-base">
                     <span className="whitespace-nowrap">Min. Collateral</span>{' '}
                     Ratio
@@ -136,7 +136,7 @@ export function CollateralInfo({ mcr, lfr, sfr, collateral, collateralPrice }) {
                 </div>
               </div>
               <div className="">
-                <div className="flex items-start space-x-2">
+                <div className="flex items-center space-x-2">
                   <div className="text-xs sm:text-sm lg:text-base">
                     Stability{' '}
                     <span className="whitespace-nowrap">Fee Rate</span>
@@ -156,7 +156,7 @@ export function CollateralInfo({ mcr, lfr, sfr, collateral, collateralPrice }) {
                 </div>
               </div>
               <div className="">
-                <div className="flex items-start space-x-2">
+                <div className="flex items-center space-x-2">
                   <div className="text-xs sm:text-sm lg:text-base">
                     Liquidation{' '}
                     <span className="whitespace-nowrap">Fee Rate</span>

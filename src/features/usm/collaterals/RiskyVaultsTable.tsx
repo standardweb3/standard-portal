@@ -62,7 +62,7 @@ export function RiskyVaultsTable({
   //   };
 
   const columnClassName = `col-span-8 flex items-center`;
-  const rowsClassName = `grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 `;
+  const rowsClassName = `grid grid-cols-1 gap-4 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 `;
   const rowClassName = `
   col-span-1
   grid grid-cols-8
@@ -137,7 +137,7 @@ export function RiskyVaultsTable({
     changepageSize,
     lastPage,
     pageSize,
-  } = usePagination(0, 4, count);
+  } = usePagination(0, 12, count);
 
   const start = currentPage * pageSize;
   const end = start + pageSize;
