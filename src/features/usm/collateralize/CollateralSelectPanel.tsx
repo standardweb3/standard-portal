@@ -21,7 +21,7 @@ export function CollateralSelectPanel({
     >
       <CollateralizePanelHeader
         number={1}
-        title={'Enter Amount'}
+        title={'Choose Deposit'}
         subtitle={'Collateral assets have different collateral ratio'}
         className="min-w-[50%]"
       />

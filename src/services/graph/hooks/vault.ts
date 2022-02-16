@@ -150,7 +150,9 @@ export function useVaultUserHistories(
       : null,
     () =>
       getVaultUserHistories(chainId, {
-        id: account.toLowerCase(),
+        where: {
+          user: account.toLowerCase(),
+        },
         ...variables,
       }),
     swrConfig,

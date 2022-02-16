@@ -8,7 +8,7 @@ import { PageHeader } from '../../components-ui/PageHeader';
 import { VaultManagerInfo } from '../../features/usm/collaterals/VaultManagerInfo';
 import { NetworkGuardWrapper } from '../../guards/Network';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
-// import { useUsmMintableSupply } from '../../features/usm/useUsmMintableSupply';
+import { ExternalLink } from '../../components-ui/ExternalLink';
 
 function Collaterals() {
   // const { isMintable, mintableSupply } = useUsmMintableSupply();
@@ -25,11 +25,19 @@ function Collaterals() {
       </Head>
       <Page id="borrow-page" className={DefinedStyles.page}>
         <ViewportMediumUp>
-          <PageHeader title="Select a Collateral" />
+          <PageHeader title="Borrow" />
         </ViewportMediumUp>
         <PageContent>
           <div className="w-full max-w-[1200px]">
             <VaultManagerInfo />
+            <div className="mt-12 mb-6 flex items-center justify-between">
+              <div className="font-bold font-lg">Select a collateral</div>
+              <ExternalLink href="https://forum.standard.tech/c/proposal-governance/26">
+                <div className="text-xs text-highlight">
+                  Suggest a collateral
+                </div>
+              </ExternalLink>
+            </div>
             <CollateralsTable />
           </div>
         </PageContent>

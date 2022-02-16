@@ -185,7 +185,7 @@ export function CollateralsTable() {
 
   return cdps ? (
     <div className="w-full">
-      <div className="!mt-[72px]">
+      <div>
         <div
           className="mb-[36px] 
           flex flex-col sm:flex-row 

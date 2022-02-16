@@ -16,7 +16,6 @@ export function useCdpPrices() {
 
     return cdps.map((cdp) => [getAddress(cdp.id)]);
   }, [cdps]);
-  console.log(args);
 
   const callResult = useSingleContractMultipleData(
     args ? vaultManager : null,

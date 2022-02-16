@@ -157,15 +157,15 @@ export const vaultUserHistoriesQuery = gql`
   query userHistories(
     $first: Int! = 1000
     $date: Int! = 0
-    $id: String!
     $skip: Int! = 0
+    $where: UserHistory_filter
   ) {
     userHistories(
-      id: $id
       skip: $skip
       first: $first
       orderBy: date
       orderDirection: desc
+      where: $where
     ) {
       id
       date

@@ -18,7 +18,6 @@ import {
   getVaultManagerAddress,
 } from '@digitalnative/standard-protocol-sdk';
 import { useProtocol } from '../../../state/protocol/hooks';
-import useCDP from '../../../hooks/vault/useVaultManagerCallbacks';
 import { ViewportMediumUp } from '../../../components-ui/Responsive';
 import { PageHeader } from '../../../components-ui/PageHeader';
 import { CollateralizeBorrowPanel } from '../../../features/usm/collateralize/CollateralizeBorrowPanel';
@@ -193,6 +192,8 @@ function Collateral() {
     if (
       balance &&
       collateralizeCurrencyAmount &&
+      collateralRatio &&
+      parseFloat(collateralRatio) >= mcr &&
       (balance.greaterThan(collateralizeCurrencyAmount) ||
         balance.equalTo(collateralizeCurrencyAmount))
     ) {
@@ -213,6 +214,9 @@ function Collateral() {
     } else if (!collateralizeCurrencyAmount) {
       return 'Enter Collateral Amount';
     } else {
+      if (collateralRatio && parseFloat(collateralRatio) < mcr) {
+        return 'Below Minimum Collateral Ratio';
+      }
       return 'Insufficient Balance';
     }
   }, [balance, collateralizeCurrencyAmount]);
