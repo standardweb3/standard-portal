@@ -1,4 +1,5 @@
 import {
+  ChainId,
   Currency,
   CurrencyAmount,
   JSBI,
@@ -210,5 +211,9 @@ function PoolFinder() {
   );
 }
 
-PoolFinder.Guard = NetworkGuardWrapper(NORMAL_GUARDED_CHAINS);
+PoolFinder.Guard = NetworkGuardWrapper([
+  ChainId.MAINNET,
+  ChainId.SHIDEN,
+  ChainId.METIS,
+]);
 export default PoolFinder;

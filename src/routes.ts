@@ -18,7 +18,7 @@ export const chainIdGuardRedirect = {
   [ChainId.BSC]: '/router',
   [ChainId.MATIC]: '/router',
   [ChainId.METIS]: '/trade',
-  [ChainId.RINKEBY]: '/trade',
+  [ChainId.RINKEBY]: '/dashboard',
 };
 
 export const sidebarRoutes = [

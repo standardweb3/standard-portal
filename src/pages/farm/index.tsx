@@ -32,6 +32,7 @@ import { AVERAGE_BLOCK_TIME_IN_SECS } from '../../constants';
 import { WavySpinner } from '../../components-ui/Spinner/WavySpinner';
 import { NetworkGuardWrapper } from '../../guards/Network';
 import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
 function Farm() {
   const router = useRouter();
@@ -261,5 +262,9 @@ function Farm() {
     </>
   );
 }
-Farm.Guard = NetworkGuardWrapper(NORMAL_GUARDED_CHAINS);
+Farm.Guard = NetworkGuardWrapper([
+  ChainId.MAINNET,
+  ChainId.SHIDEN,
+  ChainId.METIS,
+]);
 export default Farm;

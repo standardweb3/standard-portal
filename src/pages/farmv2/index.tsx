@@ -18,6 +18,7 @@ import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
 import { NetworkGuardWrapper } from '../../guards/Network';
 import { AVERAGE_BLOCK_TIME_IN_SECS } from '../../constants';
 import { useActiveWeb3React } from '../../hooks';
+import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
 function Farmbare() {
   const router = useRouter();
@@ -126,5 +127,9 @@ function Farmbare() {
   );
 }
 
-Farmbare.Guard = NetworkGuardWrapper(NORMAL_GUARDED_CHAINS);
+Farmbare.Guard = NetworkGuardWrapper([
+  ChainId.MAINNET,
+  ChainId.SHIDEN,
+  ChainId.METIS,
+]);
 export default Farmbare;

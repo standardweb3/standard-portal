@@ -1,4 +1,4 @@
-import { STND_ADDRESS, Token } from '@digitalnative/standard-protocol-sdk';
+import { ChainId, STND_ADDRESS, Token } from '@digitalnative/standard-protocol-sdk';
 import React, { useMemo, useState } from 'react';
 import { formatNumber, tryParseAmount } from '../../functions';
 
@@ -395,5 +395,9 @@ function Dividend() {
   );
 }
 
-Dividend.Guard = NetworkGuardWrapper(NORMAL_GUARDED_CHAINS);
+Dividend.Guard = NetworkGuardWrapper([
+  ChainId.MAINNET,
+  ChainId.SHIDEN,
+  ChainId.METIS,
+]);
 export default Dividend;
