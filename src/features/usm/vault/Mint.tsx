@@ -102,6 +102,7 @@ export function VaultMint({
     newMinCollateralAmount,
     newCollateralRatio,
   } = useNewVaultState(newDebt, newCollateralized, collateralPrice, mcr);
+
   const borrowable =
     isMintable &&
     borrowMoreCurrencyAmount &&
@@ -111,7 +112,7 @@ export function VaultMint({
         (collateralBalance.greaterThan(depositCurrencyAmount) ||
           collateralBalance.equalTo(depositCurrencyAmount)) &&
         (depositCurrencyAmount.equalTo(0) ||
-          depositCurrencyAmount.greaterThan(0))));
+          depositCurrencyAmount.greaterThan(0)))) && newCollateralRatio !== undefined && newCollateralRatio >= mcr;
 
   const onClick = async () => {
     if (depositCurrencyAmount) {
@@ -190,6 +191,9 @@ export function VaultMint({
             </div>
           );
         }
+        if (newCollateralRatio !== undefined && newCollateralRatio < mcr) {
+          return 'Min. Collateral Ratio not met';
+        }
         return 'Borrow More';
       } else if (depositCurrencyAmount && collateralBalance) {
         if (
@@ -224,11 +228,18 @@ export function VaultMint({
               </div>
             );
           }
+
+          if (newCollateralRatio !== undefined && newCollateralRatio < mcr) {
+            return 'Min. Collateral Ratio not met';
+          }
           if (depositCurrencyAmount.lessThan(BIG_INT_ZERO)) {
             return 'Deposit amount must be greater than 0';
           }
           return 'Deposit and Borrow More';
         } else {
+          if (newCollateralRatio !== undefined && newCollateralRatio < mcr) {
+            return 'Min. Collateral Ratio not met';
+          }
           return 'Insufficient Collateral Balance';
         }
       }
