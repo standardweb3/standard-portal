@@ -90,7 +90,7 @@ export function RouterCurrencyInputPanel({
         <div className="flex-1 px-4 ">
           <NumericalInput
             className={classNames('w-full text-right', inputClassName)}
-            value={amount}
+            value={amount ?? ''}
             onUserInput={onAmountChange}
           />
         </div>
