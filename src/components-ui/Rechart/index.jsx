@@ -540,7 +540,7 @@ function Rechart({
     </div>
   ) : simple ? (
     <div className="w-full h-full text-text space-y-4">
-      <div className="">
+      <div>
         <div className="flex justify-between items-center w-full overflow-hidden">
           <div className="flex justify-end w-full pr-4 pt-4">
             <ArrowsExpandIcon
