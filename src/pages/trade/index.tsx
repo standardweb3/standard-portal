@@ -105,7 +105,7 @@ function Tokens() {
     return (
       tokens
         ?.filter((token) => {
-          return !TRADE_BLACKLIST[chainId][token.id];
+          return !TRADE_BLACKLIST?.[chainId]?.[token.id];
         })
         ?.map((token) => {
           const oneDayToken = oneDayTokens?.find(({ id }) => token.id === id);

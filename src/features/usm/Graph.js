@@ -233,10 +233,10 @@ export const UserBorrowedHistoryGraph = ({ data }) => {
   return (
     <Rechart
       simple
-      // hideXAxis
+      hideXAxis
       hideYAxis
       type="area"
-      data={data?.reverse()}
+      data={data}
       itemType={ItemType.number}
       itemNames={TooltipItems.userBorrowedUSM}
       dataKey={DataKeys.userBorrowedUSM}

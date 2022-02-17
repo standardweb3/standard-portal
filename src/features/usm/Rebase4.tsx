@@ -110,7 +110,9 @@ export function Rebase4() {
 
   return (
     <div className="rounded-20 bg-background p-6 md:p-8 flex flex-col items-center space-y-4 h-full justify-center">
-      <div className="flex items-center space-x-4 justify-between w-full">
+      <div className="flex 
+      sm:flex-row items-center sm:space-x-4 sm:space-y-0 justify-between w-full
+      flex-col space-y-4">
         <div className="flex items-center space-x-2">
           <SimpleCurrencyLogo
             symbol="usm"

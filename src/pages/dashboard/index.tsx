@@ -27,7 +27,6 @@ function Dashboard() {
     vaultManager &&
     parseFloat(vaultManager.runningStat.ammReserveCollateralUSD) +
       parseFloat(vaultManager.runningStat.currentCollateralizedUSD);
-  console.log(vaultManager);
   const usm = useMtr();
   const usmPrice = useVaultManagerAssetPrice(usm.address);
 
@@ -62,7 +61,7 @@ function Dashboard() {
         <PageContent>
           <div className="w-full max-w-[1000px] space-y-8">
             {/* <VaultManagerInfo /> */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <DashboardMetric
                 header={'USM Total Supply'}
                 stat={
@@ -76,7 +75,7 @@ function Dashboard() {
                   'Total Backing is the sum of the value of collateralized assets in vaults and the value of collateral assets in USM-collateral AMMs'
                 }
               />
-              <div className="col-span-2">
+              <div className="col-span-1 sm:col-span-2">
                 <Rebase4 />
               </div>
               {/* <Rebase3 /> */}
