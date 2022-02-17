@@ -102,7 +102,6 @@ export function VaultMint({
     newMinCollateralAmount,
     newCollateralRatio,
   } = useNewVaultState(newDebt, newCollateralized, collateralPrice, mcr);
-
   const borrowable =
     isMintable &&
     borrowMoreCurrencyAmount &&

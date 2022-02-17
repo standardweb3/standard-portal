@@ -104,11 +104,14 @@ function Vault() {
   };
 
   const handleChangeDepositAmount = (value) => {
+    const newDebt =
+      (debt + (borrowMoreAmount !== '' ? parseFloat(borrowMoreAmount) : 0))
+
     const newCollateralizedValue =
       (currentCollateralized + (value !== '' ? parseFloat(value) : 0)) *
       collateralPrice;
 
-    const newCollateralRatio = (newCollateralizedValue / debt) * 100;
+    const newCollateralRatio = (newCollateralizedValue / newDebt) * 100;
     setDepositAmount(value);
     setCollateralRatio(String(newCollateralRatio));
     setCollateralRatioPercentage(
