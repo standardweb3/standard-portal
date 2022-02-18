@@ -2,7 +2,7 @@ import { XIcon } from '@heroicons/react/outline';
 import { ResponsiveContainer } from 'recharts';
 import { Modal } from '../Modal';
 import { Question } from '../Question';
-import { useSizeXs } from '../Responsive';
+import { useSizeSmDown, useSizeXs } from '../Responsive';
 
 function ExpandedChart({
   open,
@@ -14,10 +14,17 @@ function ExpandedChart({
   headerSubText,
   runwayExtraInfo,
 }) {
-  const verySmallScreen = useSizeXs();
+  const isViewportXSmall = useSizeXs();
+  const isViewportSmallDown = useSizeSmDown();
 
   return (
-    <Modal isOpen={open} onDismiss={handleClose}>
+    <Modal
+      isOpen={open}
+      onDismiss={handleClose}
+      minWidth={
+        isViewportSmallDown ? (isViewportXSmall ? '90vw' : '70vw') : 'none'
+      }
+    >
       <div className="">
         <div className="chart-card-header">
           <div className="flex space-x-1">
