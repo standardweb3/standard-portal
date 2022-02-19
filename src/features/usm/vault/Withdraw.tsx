@@ -1,8 +1,13 @@
+import ReactGA from 'react-ga';
 import Skeleton from 'react-loading-skeleton';
 import { useMemo } from 'react';
 import { RouterCurrencyInputPanel } from '../../../bridge/feature/RouterCurrencyInputPanel';
 import { Button } from '../../../components-ui/Button';
-import { formatNumber, tryParseAmount } from '../../../functions';
+import {
+  formatNumber,
+  formatNumberScale,
+  tryParseAmount,
+} from '../../../functions';
 import { ApprovalState, useApproveCallback } from '../../../hooks';
 import { useVault } from '../../../hooks/vault/useVault';
 import { useNewVaultState } from '../../../state/vault/hooks';
@@ -54,6 +59,13 @@ export function VaultWithdraw({
             )} ${collateral.symbol} from vault ${vaultAddress}`,
           });
         tx && onAmountChange('');
+
+        tx &&
+          ReactGA.event({
+            category: 'Vault',
+            action: 'Withdraw',
+            label: [collateral.symbol, formatNumberScale(amount)].join('/'),
+          });
       }
     } else if (approvalState == ApprovalState.NOT_APPROVED) {
       await approve();

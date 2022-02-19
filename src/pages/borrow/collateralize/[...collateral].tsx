@@ -1,10 +1,16 @@
 import Head from 'next/head';
+import ReactGA from 'react-ga';
 import { Page } from '../../../components-ui/Page';
 import { PageContent } from '../../../components-ui/PageContent';
 import { DefinedStyles } from '../../../utils/DefinedStyles';
 import { CollateralSelectPanel } from '../../../features/usm/collateralize/CollateralSelectPanel';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { classNames, formatNumber, tryParseAmount } from '../../../functions';
+import {
+  classNames,
+  formatNumber,
+  formatNumberScale,
+  tryParseAmount,
+} from '../../../functions';
 import { useRouter } from 'next/router';
 import { useCurrencyBalance } from '../../../state/wallet/hooks';
 import {
@@ -120,7 +126,10 @@ function Collateral() {
   };
 
   const liquidationPrice =
-    !loading && usmAmount !== '' && collateralizeAmount !== ''
+    !loading &&
+    usmAmount !== '' &&
+    collateralizeAmount !== '' &&
+    parseFloat(collateralizeAmount) !== 0
       ? (parseFloat(usmAmount) * mcr) / 100 / parseFloat(collateralizeAmount)
       : 0;
 
@@ -247,6 +256,18 @@ function Collateral() {
             )}`,
           });
         tx && handleSubmission(tx.hash);
+
+        tx &&
+          ReactGA.event({
+            category: 'VaultManager',
+            action: 'Collateralize',
+            label: [
+              collateralCurrency.symbol,
+              formatNumberScale(collateralizeAmount),
+              'USM',
+              formatNumberScale(usmAmount),
+            ].join('/'),
+          });
       }
     } else if (approvalState == ApprovalState.NOT_APPROVED) {
       await approve();

@@ -1,8 +1,14 @@
+import ReactGA from 'react-ga';
 import { useMemo } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { RouterCurrencyInputPanel } from '../../../bridge/feature/RouterCurrencyInputPanel';
 import { Button } from '../../../components-ui/Button';
-import { classNames, formatNumber, tryParseAmount } from '../../../functions';
+import {
+  classNames,
+  formatNumber,
+  formatNumberScale,
+  tryParseAmount,
+} from '../../../functions';
 import { ApprovalState, useApproveCallback } from '../../../hooks';
 import { useVault } from '../../../hooks/vault/useVault';
 import { useNewVaultState } from '../../../state/vault/hooks';
@@ -112,7 +118,9 @@ export function VaultMint({
         (collateralBalance.greaterThan(depositCurrencyAmount) ||
           collateralBalance.equalTo(depositCurrencyAmount)) &&
         (depositCurrencyAmount.equalTo(0) ||
-          depositCurrencyAmount.greaterThan(0)))) && newCollateralRatio !== undefined && newCollateralRatio >= mcr;
+          depositCurrencyAmount.greaterThan(0)))) &&
+    newCollateralRatio !== undefined &&
+    newCollateralRatio >= mcr;
 
   const onClick = async () => {
     if (depositCurrencyAmount) {
@@ -137,6 +145,18 @@ export function VaultMint({
                 )} ${collateral.symbol} to vault ${vaultAddress}`,
               });
             tx && handleSubmission(tx.hash);
+
+            tx &&
+              ReactGA.event({
+                category: 'Vault',
+                action: 'Mint',
+                label: [
+                  'USM',
+                  formatNumberScale(borrowMoreAmount),
+                  collateral.symbol,
+                  formatNumberScale(depositAmount),
+                ].join('/'),
+              });
           }
         } else if (mtrApprovalState == ApprovalState.NOT_APPROVED) {
           await approveMtr();
@@ -167,6 +187,12 @@ export function VaultMint({
               )} USM from vault ${vaultAddress}`,
             });
           tx && handleSubmission(tx.hash);
+          tx &&
+            ReactGA.event({
+              category: 'Vault',
+              action: 'Mint',
+              label: ['USM', formatNumberScale(borrowMoreAmount)].join('/'),
+            });
         }
       } else if (mtrApprovalState == ApprovalState.NOT_APPROVED) {
         await approveMtr();

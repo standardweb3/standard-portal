@@ -1,9 +1,14 @@
+import ReactGA from 'react-ga';
 import { useMemo } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { RouterCurrencyInputPanel } from '../../../bridge/feature/RouterCurrencyInputPanel';
 import { Button } from '../../../components-ui/Button';
 import { RippleSpinner } from '../../../components-ui/Spinner/RippleSpinner';
-import { formatNumber, tryParseAmount } from '../../../functions';
+import {
+  formatNumber,
+  formatNumberScale,
+  tryParseAmount,
+} from '../../../functions';
 import { ApprovalState, useApproveCallback } from '../../../hooks';
 import { useVault } from '../../../hooks/vault/useVault';
 import { useTransactionAdder } from '../../../state/transactions/hooks';
@@ -47,6 +52,12 @@ export function VaultPayBack({
             )} USM to vault ${vaultAddress}`,
           });
         tx && onAmountChange('');
+        tx &&
+          ReactGA.event({
+            category: 'Vault',
+            action: 'PayBack',
+            label: ['USM', formatNumberScale(amount)].join('/'),
+          });
       }
     } else if (approvalState == ApprovalState.NOT_APPROVED) {
       await approve();
