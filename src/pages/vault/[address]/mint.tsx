@@ -20,13 +20,15 @@ import { Alert } from '../../../components-ui/Alert';
 import { NetworkGuardWrapper } from '../../../guards/Network';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import { Rebase4 } from '../../../features/usm/Rebase4';
+import { useValidVault } from '../../../hooks/vault/useValidVault';
 
 function Vault() {
-  const { account } = useActiveWeb3React();
   const router = useRouter();
-  const { isMintable, mintableSupply } = useUsmMintableSupply();
-
   const vaultAddress = router.query.address as string;
+  useValidVault(vaultAddress);
+
+  const { account } = useActiveWeb3React();
+  const { isMintable, mintableSupply } = useUsmMintableSupply();
 
   const {
     mcr,
@@ -105,7 +107,7 @@ function Vault() {
 
   const handleChangeDepositAmount = (value) => {
     const newDebt =
-      (debt + (borrowMoreAmount !== '' ? parseFloat(borrowMoreAmount) : 0))
+      debt + (borrowMoreAmount !== '' ? parseFloat(borrowMoreAmount) : 0);
 
     const newCollateralizedValue =
       (currentCollateralized + (value !== '' ? parseFloat(value) : 0)) *

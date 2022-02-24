@@ -1,4 +1,5 @@
 import { getAddress } from 'ethers/lib/utils';
+import { useRouter } from 'next/router';
 import { useWrappableCurrency } from '../../hooks/useWrappableCurrency';
 import { useMtr } from '../../hooks/vault/useMtr';
 import {
@@ -12,7 +13,10 @@ import { useUserVault } from '../../services/graph/hooks/vault';
 import { applyCdpDecimals } from './utils';
 
 export function useUserVaultInfo(vaultAddress) {
-  const checksummedVaultAddr = vaultAddress && getAddress(vaultAddress);
+  let checksummedVaultAddr;
+  try {
+    checksummedVaultAddr = vaultAddress && getAddress(vaultAddress);
+  } catch (err) {}
 
   const usm = useMtr();
   const usmPrice = useVaultManagerAssetPrice(usm && usm.address);

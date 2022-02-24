@@ -17,12 +17,14 @@ import { VaultFees } from '../../../features/usm/vault/VaultFees';
 import { useUserVaultInfo } from '../../../features/usm/useVaultInfo';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import { NetworkGuardWrapper } from '../../../guards/Network';
+import { useValidVault } from '../../../hooks/vault/useValidVault';
 
 function Vault() {
-  const { account } = useActiveWeb3React();
   const router = useRouter();
-
   const vaultAddress = router.query.address as string;
+  useValidVault(vaultAddress);
+
+  const { account } = useActiveWeb3React();
 
   const {
     mcr,

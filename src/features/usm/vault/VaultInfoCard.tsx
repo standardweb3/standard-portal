@@ -73,6 +73,11 @@ export function VaultInfoCard({
     closeVaultState.setOpen(address);
   };
 
+  let shortenedAddress;
+  try {
+    shortenedAddress = address && shortenAddress(address);
+  } catch (err) {}
+
   return (
     <>
       <Background
@@ -82,9 +87,7 @@ export function VaultInfoCard({
       >
         <div className="relative z-[10] w-full">
           <div className="flex justify-start md:justify-end items-center space-x-4 mb-4 md:mb-2">
-            <div className="font-semibold text-primary">
-              {shortenAddress(address)}
-            </div>
+            <div className="font-semibold text-primary">{shortenedAddress}</div>
             <div className="flex items-center space-x-2">
               <Copier toCopy={address} hideIcon className="!text-primary">
                 <DuplicateIcon className="cursor-pointer w-6 h-6 text-primary" />
