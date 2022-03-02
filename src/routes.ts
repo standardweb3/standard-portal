@@ -4,8 +4,11 @@ import poolIcon from '../public/icons/pool.svg';
 import dividendIcon from '../public/icons/dividend.svg';
 import dividendv1Icon from '../public/icons/dividendv1.svg';
 import bridgeIcon from '../public/icons/bridge.svg';
-import migrateIcon from '../public/icons/migrate.svg';
 import routerIcon from '../public/icons/router.svg';
+import migrateIcon from '../public/icons/migrate.svg';
+import forumIcon from '../public/icons/forum.svg';
+import govIcon from '../public/icons/governance.svg';
+import docsIcon from '../public/icons/docs.svg';
 
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
@@ -92,6 +95,37 @@ export const sidebarRoutes = [
     icon: migrateIcon,
     iconActive: migrateIcon,
     hidden: [ChainId.MATIC, ChainId.BSC, ChainId.SHIDEN, ChainId.METIS],
+    // hidden: [ChainId.SHIDEN],
+  },
+  {
+    name: 'Divider',
+    hidden: [],
+  },
+  {
+    name: 'Forum',
+    urls: ['https://forum.standard.tech'],
+    icon: forumIcon,
+    external: true,
+    iconActive: forumIcon,
+    hidden: [],
+    // hidden: [ChainId.SHIDEN],
+  },
+  {
+    name: 'Governance',
+    urls: ['https://snapshot.org/#/stndgov.eth'],
+    icon: govIcon,
+    external: true,
+    iconActive: govIcon,
+    hidden: [],
+    // hidden: [ChainId.SHIDEN],
+  },
+  {
+    name: 'Docs',
+    urls: ['https://docs.standard.tech'],
+    icon: docsIcon,
+    external: true,
+    iconActive: docsIcon,
+    hidden: [],
     // hidden: [ChainId.SHIDEN],
   },
 ];

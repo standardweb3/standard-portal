@@ -38,7 +38,7 @@ export function SidebarNavigation({ routes, chainId }) {
                   border-l-4 border-primary
                   font-semibold my-2"
               >
-                <Link href={route.urls[0]} prefetch={!isMobile}>
+                <Link href={route.urls[0]} prefetch={!isMobile} passHref={route.external !== undefined}>
                   <div className="flex items-center font-base py-2 px-3 text-primary">
                     {React.createElement(route.iconActive, {
                       className: 'stroke-current',
