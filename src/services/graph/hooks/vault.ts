@@ -160,6 +160,20 @@ export function useVaultUserHistories(
   return data;
 }
 
+export function useVault(
+  variables = undefined,
+  swrConfig: SWRConfiguration = undefined,
+) {
+  const { chainId } = useActiveWeb3React();
+
+  const { data } = useSWR(
+    chainId ? ['vault', chainId, JSON.stringify(variables)] : null,
+    () => getVault(chainId, variables),
+    swrConfig,
+  );
+  return data;
+}
+
 // export function useCdps(
 //   variables = undefined,
 //   swrConfig: SWRConfiguration = undefined,

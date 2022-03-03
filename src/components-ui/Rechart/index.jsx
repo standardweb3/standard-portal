@@ -23,14 +23,14 @@ import { formatNumberScale, formatPercent } from '../../functions';
 import { ItemType } from '../../features/usm/Graph';
 import { ArrowsExpandIcon } from '@heroicons/react/outline';
 
-const formatCurrency = (c) => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 0,
-    minimumFractionDigits: 0,
-  }).format(c);
-};
+// const formatCurrency = (c) => {
+//   return new Intl.NumberFormat('en-US', {
+//     style: 'currency',
+//     currency: 'USD',
+//     maximumFractionDigits: 0,
+//     minimumFractionDigits: 0,
+//   }).format(c);
+// };
 
 const tickCount = 3;
 const expandedTickCount = 5;
@@ -54,6 +54,7 @@ const renderAreaChart = (
   isPOL,
   hideYAxis = undefined,
   hideXAxis = undefined,
+  reversed = true,
 ) => (
   <AreaChart data={data}>
     <defs>
@@ -68,7 +69,7 @@ const renderAreaChart = (
       axisLine={false}
       tickLine={false}
       tickFormatter={(str) => format(new Date(str * 1000), 'MMM dd')}
-      reversed={true}
+      reversed={reversed}
       connectNulls={true}
       tick={{
         fill: '#fff',
@@ -80,7 +81,7 @@ const renderAreaChart = (
       tickCount={isExpanded ? expandedTickCount : tickCount}
       axisLine={false}
       tickLine={false}
-      width={dataFormat === 'percent' ? 33 : 55}
+      width={dataFormat === 'percent' ? 33 : 70}
       tickFormatter={(number) =>
         number !== 0
           ? dataFormat !== 'percent'
@@ -172,7 +173,7 @@ const renderStackedAreaChart = (
       tickCount={isExpanded ? expandedTickCount : tickCount}
       axisLine={false}
       tickLine={false}
-      width={dataFormat === 'percent' ? 33 : 55}
+      width={dataFormat === 'percent' ? 33 : 70}
       tickFormatter={(number) => {
         if (number !== 0) {
           if (dataFormat === 'percent') {
@@ -436,6 +437,7 @@ function Rechart({
   simple = undefined,
   hideYAxis = undefined,
   hideXAxis = undefined,
+  reversed = true,
 }) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -484,6 +486,7 @@ function Rechart({
         isPOL,
         hideYAxis,
         hideXAxis,
+        reversed,
       );
     if (type === 'stack')
       return renderStackedAreaChart(
@@ -560,7 +563,7 @@ function Rechart({
           />
         </div>
       </div>
-      <div className="w-full min-w-[310px] min-h-[260px] rounded-20">
+      <div className="w-full min-w-[232px] min-h-[195px] rounded-20">
         {loading || (data && data.length > 0) ? (
           <ResponsiveContainer minHeight={260} width="100%">
             {renderChart(type, false, hideYAxis, hideXAxis)}

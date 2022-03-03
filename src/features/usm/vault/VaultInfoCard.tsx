@@ -59,6 +59,7 @@ export function VaultInfoCard({
   sfr,
   condition,
   address,
+  hideCloseVault = false,
 }) {
   const { chainId } = useActiveWeb3React();
   const isViewportLargUp = useSizeLgUp();

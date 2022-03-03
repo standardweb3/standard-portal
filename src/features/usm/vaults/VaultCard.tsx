@@ -62,6 +62,7 @@ export function VaultCard({
   fee,
   isWnative,
   initialExpand = false,
+  ownership = false,
 }) {
   const { setOpen } = useContext(CloseVaultContext);
   const handleOpen = (e) => {
@@ -101,6 +102,7 @@ export function VaultCard({
       onClick={handleClick}
     >
       <div className="z-[1] min-w-full xs:min-w-[75%] sm:min-w-none">
+        <div className="text-center font-bold mb-2">#{id}</div>
         <div className="flex sm:flex-col space-x-4 justify-between items-center sm:items-start sm:space-x-0">
           <div className="flex space-x-4 items-center">
             <Radiation>
@@ -167,9 +169,14 @@ export function VaultCard({
           currentRatio={collateralRatio}
         />
       </div>
-      <div className="text-primary text-sm cursor-pointer" onClick={handleOpen}>
-        Close Vault
-      </div>
+      {ownership && (
+        <div
+          className="text-primary text-sm cursor-pointer"
+          onClick={handleOpen}
+        >
+          Close Vault
+        </div>
+      )}
     </Background>
   );
 }

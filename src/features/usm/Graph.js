@@ -258,3 +258,32 @@ export const UserBorrowedHistoryGraph = ({ data }) => {
     />
   );
 };
+
+export const PriceChart = ({ data }) => {
+  return (
+    <Rechart
+      simple
+      hideXAxis
+      hideYAxis
+      type="area"
+      data={data}
+      itemType={ItemType.dollar}
+      itemNames={TooltipItems.collectedStabilityFee}
+      dataKey={['price']}
+      headerText="Collected Stability Fee (USD)"
+      infoTooltipMessage={TooltipInfoMessages.collectedStabilityFee}
+      stopColor={[['#8236E2', '#rgba(88, 38, 158, 0)']]}
+      bulletpointColors={[
+        {
+          right: 20,
+          top: -12,
+          background: '#A978E7',
+        },
+      ]}
+      expandedGraphStrokeColor={'rgba(255,255,255,0.15'}
+      stroke={'#A978E7'}
+      headerSubText={`${data && data[0] && formatNumber(data[0].price, true)}`}
+      reversed={false}
+    />
+  );
+};

@@ -28,7 +28,7 @@ function Dashboard() {
     parseFloat(vaultManager.runningStat.ammReserveCollateralUSD) +
       parseFloat(vaultManager.runningStat.currentCollateralizedUSD);
   const usm = useMtr();
-  const usmPrice = useVaultManagerAssetPrice(usm.address);
+  // const usmPrice = useVaultManagerAssetPrice(usm.address);
 
   const data = useVaultManagerHistories();
   const dataForChart = data?.map((d) => {
@@ -59,7 +59,7 @@ function Dashboard() {
           <PageHeader title="Dashboard" />
         </ViewportMediumUp>
         <PageContent>
-          <div className="w-full max-w-[1000px] space-y-8">
+          <div className="w-full max-w-[1000px] space-y-4">
             {/* <VaultManagerInfo /> */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <DashboardMetric

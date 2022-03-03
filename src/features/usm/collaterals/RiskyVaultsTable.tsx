@@ -106,6 +106,7 @@ export function RiskyVaultsTable({
               mcr={mcr}
               currentBorrowed={currentBorrowed}
               currentCollateralized={currentCollateralized}
+              ownership
             />
           );
         },

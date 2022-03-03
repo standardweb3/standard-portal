@@ -9,13 +9,14 @@ import {
 } from '@digitalnative/standard-protocol-sdk';
 import useDexCandles from '../../hooks/useDexCandles';
 import { CandlePeriod, NumericalCandlestickDatum } from '../../types/Candle';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { CurrencyLogo } from '../CurrencyLogo';
 import { classNames, formatNumber } from '../../functions';
 import { useProtocol } from '../../state/protocol/hooks';
 import { useActiveWeb3React } from '../../hooks';
 import { ANALYTICS_URL } from '../../constants';
 import { useArbitrage } from '../../hooks/useArbitrage';
+import { PriceChart } from '../../features/usm/Graph';
 const Arbitrage = dynamic(() => import('../Arbitrage'), {
   ssr: false,
 });
@@ -139,9 +140,9 @@ export default function Chart({
   const { chainId } = useActiveWeb3React();
 
   const [candlePeriod, setCandlePeriod] = useState(initialCandlePeriod);
-  const [candlestickSeries, setCandlestickSeries] = useState<
-    { data: NumericalCandlestickDatum[] }[]
-  >([{ data: [] }]);
+  const [candlestickSeries, setCandlestickSeries] = useState<{ data }[]>([
+    { data: [] },
+  ]);
 
   // arbitrage
   const inputAddress = inputCurrency?.isToken
@@ -317,7 +318,7 @@ export default function Chart({
   };
 
   useEffect(() => {
-    let formattedCandleData: NumericalCandlestickDatum[] = fillCandlestickGaps(
+    let formattedCandleData: any = fillCandlestickGaps(
       candleData,
       candlePeriod,
     );
@@ -329,11 +330,18 @@ export default function Chart({
 
         formattedCandleData = formattedCandleData.map((r) => {
           return {
-            close: r.close * 10 ** decimals,
-            high: r.high * 10 ** decimals,
-            low: r.low * 10 ** decimals,
-            open: r.open * 10 ** decimals,
-            time: r.time,
+            price: r.close * 10 ** decimals,
+            // high: r.high * 10 ** decimals,
+            // low: r.low * 10 ** decimals,
+            // open: r.open * 10 ** decimals,
+            timestamp: r.time.toString(),
+          };
+        });
+      } else {
+        formattedCandleData = formattedCandleData.map((r) => {
+          return {
+            price: r.close,
+            timestamp: r.time.toString(),
           };
         });
       }
@@ -341,10 +349,11 @@ export default function Chart({
 
     setCandlestickSeries([{ data: formattedCandleData }]);
   }, [candlePeriod, candleData]);
+
   const hasData = candlestickSeries[0].data.length > 0;
 
   const lastClose = hasData
-    ? candlestickSeries[0].data[candlestickSeries[0].data.length - 1].close
+    ? candlestickSeries[0].data[candlestickSeries[0].data.length - 1].price
     : parseFloat(price?.toFixed(10)) ?? undefined;
   const symbols = [inputCurrency?.symbol, outputCurrency?.symbol];
   const { ctod, dtoc } = useArbitrage(!isLoading && lastClose, symbols);
@@ -363,7 +372,6 @@ export default function Chart({
         <div className="grid grid-cols-2 w-full gap-4">
           <div className="space-y-2 col-span-2 lg:col-span-1">
             <a
-              href={`${ANALYTICS_URL[chainId]}/pairs`}
               target="_blank"
               rel="noreferrer"
               className="flex items-center justify-center space-x-4 lg:mt-0 hover:text-gray-200 cursor-pointer rounded p-2 -ml-2 lg:w-min"
@@ -415,11 +423,11 @@ export default function Chart({
             <div className="text-xl font-black text-gray-200">Loading...</div>
           </div>
         ) : hasData ? (
-          <KChart
-            options={options}
-            autoWidth
-            height={300}
-            candlestickSeries={candlestickSeries}
+          <PriceChart
+            // options={options}
+            // autoWidth
+            // height={300}
+            data={hasData ? candlestickSeries[0].data : []}
           />
         ) : (
           <div className="h-[300px] pb-4 flex m-auto flex-col items-center justify-center">
@@ -431,12 +439,12 @@ export default function Chart({
           </div>
         )}
       </div>
-      <div className="flex items-center justify-between flex-col space-y-4 min-h-[40px] mt-4">
+      {/* <div className="flex items-center justify-between flex-col space-y-4 min-h-[40px] mt-4">
         <PeriodChooser
           period={candlePeriod}
           onChoose={(period) => setCandlePeriod(period)}
         />
-      </div>
+      </div> */}
     </>
   );
 }

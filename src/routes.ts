@@ -36,6 +36,7 @@ export const sidebarRoutes = [
       ChainId.METIS,
     ],
   },
+
   {
     name: 'Borrow',
     urls: ['/borrow'],
@@ -55,6 +56,35 @@ export const sidebarRoutes = [
     urls: ['/vaults'],
     icon: vaultIcon,
     iconActive: vaultIcon,
+    hidden: [
+      ChainId.MATIC,
+      ChainId.MAINNET,
+      ChainId.SHIDEN,
+      ChainId.MATIC,
+      ChainId.BSC,
+      ChainId.METIS,
+    ],
+  },
+  {
+    name: 'AMMs',
+    urls: ['/amms'],
+    icon: dashboardIcon,
+    iconActive: dashboardIcon,
+    hidden: [
+      ChainId.MATIC,
+      ChainId.MAINNET,
+      ChainId.SHIDEN,
+      ChainId.MATIC,
+      ChainId.BSC,
+      ChainId.METIS,
+    ],
+  },
+
+  {
+    name: 'Explorer',
+    urls: ['/explorer'],
+    icon: dashboardIcon,
+    iconActive: dashboardIcon,
     hidden: [
       ChainId.MATIC,
       ChainId.MAINNET,

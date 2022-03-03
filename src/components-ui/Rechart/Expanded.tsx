@@ -25,7 +25,7 @@ function ExpandedChart({
         isViewportSmallDown ? (isViewportXSmall ? '90vw' : '70vw') : 'none'
       }
     >
-      <div className="">
+      <div className="w-full">
         <div className="chart-card-header">
           <div className="flex space-x-1">
             <div className="flex items-center whitespace-nowrap max-w-max">
@@ -46,9 +46,9 @@ function ExpandedChart({
           </div>
         </div>
 
-        <div className="w-full min-w-[300px] mt-4">
+        <div className="w-full min-w-[225px] mt-4">
           {data && data.length > 0 && (
-            <ResponsiveContainer minHeight={260} minWidth={300}>
+            <ResponsiveContainer minHeight={195} minWidth={225}>
               {renderChart}
             </ResponsiveContainer>
           )}

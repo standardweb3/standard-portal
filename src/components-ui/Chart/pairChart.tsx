@@ -14,8 +14,10 @@ import { CurrencyLogo } from '../CurrencyLogo';
 import { classNames, formatNumber } from '../../functions';
 import { useProtocol } from '../../state/protocol/hooks';
 import { useActiveWeb3React } from '../../hooks';
-import { ANALYTICS_URL } from '../../constants';
 import { useArbitrage } from '../../hooks/useArbitrage';
+import { Button } from '../Button';
+import { getBuyUrl } from '../../functions/urls';
+
 const Arbitrage = dynamic(() => import('../Arbitrage'), {
   ssr: false,
 });
@@ -359,41 +361,57 @@ export default function Chart({
   // const fmtLastClose = lastClose ? formattedNum(lastClose) : 'N/A'
   return (
     <>
-      <div className="flex items-center space-x-4 justify-between mb-4">
-        <div className="grid grid-cols-2 w-full gap-4">
-          <div className="space-y-2 col-span-2 lg:col-span-1">
-            <a
-              href={`${ANALYTICS_URL[chainId]}/pairs`}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center justify-center space-x-4 lg:mt-0 hover:text-gray-200 cursor-pointer rounded p-2 -ml-2 lg:w-min"
-            >
-              <div className="flex items-center space-x-2">
-                <CurrencyLogo
-                  currency={inputCurrency}
-                  size={'30px'}
-                  className={'rounded-full'}
-                />
-                <div className="text-xl font-medium">
-                  {inputCurrency?.symbol}
-                </div>
-              </div>
-              <div className="text-lg font-medium text-h">/</div>
-              <div className="flex items-center space-x-2">
-                <CurrencyLogo
-                  currency={outputCurrency}
-                  size={'30px'}
-                  className={'rounded-full'}
-                />
-                <div className="text-xl font-medium">
-                  {outputCurrency?.symbol}
-                </div>
-              </div>
-            </a>
-
-            <div className="text-3xl font-black text-gray-200 text-center lg:text-left truncate">
-              {formatNumber(lastClose || 0)}
+      <div className="flex items-center space-x-4 justify-between mb-8">
+        <div className="space-y-4 w-full">
+          <a
+            href={getBuyUrl(inputCurrency, outputCurrency)}
+            className="flex items-center space-x-4
+                justify-center sm:justify-start
+                lg:mt-0 hover:text-gray-200
+                cursor-pointer rounded p-2 -ml-2 lg:w-min"
+          >
+            <div className="flex items-center space-x-2">
+              <CurrencyLogo
+                currency={inputCurrency}
+                size={'30px'}
+                className={'rounded-full'}
+              />
+              <div className="text-xl font-medium">{inputCurrency?.symbol}</div>
             </div>
+            <div className="text-lg font-medium text-h">/</div>
+            <div className="flex items-center space-x-2">
+              <CurrencyLogo
+                currency={outputCurrency}
+                size={'30px'}
+                className={'rounded-full'}
+              />
+              <div className="text-xl font-medium">
+                {outputCurrency?.symbol}
+              </div>
+            </div>
+          </a>
+          <div
+            className="
+            flex flex-col items-center justify-between w-full space-y-4
+            sm:flex-row sm:space-x-4 sm:space-y-0"
+          >
+            <div className="space-y-2">
+              <div className="text-3xl font-black text-gray-200 truncate">
+                {formatNumber(lastClose || 0)}
+              </div>
+              <div className="flex items-center space-x-2">
+                <div>Liquidated (02/28):</div>
+                <div>12 {inputCurrency.symbol}</div>
+              </div>
+            </div>
+            <a href={getBuyUrl(inputCurrency, outputCurrency)}>
+              <Button
+                type="bordered"
+                className="!rounded-lg !py-2 !px-6 text-lg"
+              >
+                Trade
+              </Button>
+            </a>
           </div>
           {ctod !== undefined && dtoc !== undefined && (
             <div className="col-span-2 lg:col-span-1 flex justify-center lg:justify-end order-first lg:order-last">

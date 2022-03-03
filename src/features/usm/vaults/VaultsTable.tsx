@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-import { Button } from '../../../components-ui/Button';
 import { Dropdown } from '../../../components-ui/Dropdown';
 import { Sorter } from '../../../components-ui/Sorter';
 import { Table } from '../../../components-ui/Table/Table';
@@ -9,7 +8,6 @@ import { useFilter } from '../../../hooks/useFilter';
 import { usePagination } from '../../../hooks/usePagination';
 import { SortDirection, useSort } from '../../../hooks/useSort';
 import { VaultCondition } from '../../../pages/vaults';
-import { DefinedStyles } from '../../../utils/DefinedStyles';
 import { VaultCard } from './VaultCard';
 
 function ConditionFilters({ changeConditionFilter, activeCondition }) {
@@ -152,6 +150,7 @@ export function VaultsTable({ vaults, hideFilter = undefined }) {
               currentCollateralized={currentCollateralized}
               debt={debt}
               fee={fee}
+              ownership
             />
           );
         },
