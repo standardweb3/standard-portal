@@ -258,6 +258,7 @@ function Tokens() {
         className: 'col-span-2 justify-center items-center flex',
         Cell: ({ value }) => {
           const { chainId } = useActiveWeb3React();
+          if (chainId === ChainId.METIS) return '-';
           return (
             <div
               className={`text-xs lg:text-sm ${
@@ -274,8 +275,8 @@ function Tokens() {
         accessor: 'sevenDayPriceChange',
         className: 'col-span-2 hidden lg:flex justify-center items-center',
         Cell: ({ value }) => {
-          // const { chainId } = useActiveWeb3React();
-          // if (chainId === ChainId.METIS) return '-';
+          const { chainId } = useActiveWeb3React();
+          if (chainId === ChainId.METIS) return '-';
           return (
             <div
               className={`text-xs lg:text-sm ${
@@ -295,8 +296,8 @@ function Tokens() {
         Cell: (cell) => {
           const { value } = cell;
 
-          // const { chainId } = useActiveWeb3React();
-          // if (chainId === ChainId.METIS) return '-';
+          const { chainId } = useActiveWeb3React();
+          if (chainId === ChainId.METIS) return '-';
 
           return (
             <div
