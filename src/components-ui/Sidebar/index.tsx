@@ -5,6 +5,7 @@ import { NetworkStatus } from '../NetworkStatus';
 import { SidebarNavigation } from './SidebarNavigation';
 import { sidebarRoutes } from '../../routes';
 import { Listings } from '../Listings';
+import { Socials } from '../Socials';
 
 export function Sidebar() {
   const { chainId, library } = useActiveWeb3React();
@@ -36,7 +37,8 @@ export function Sidebar() {
         </div>
       </div>
       <div className="px-8 py-8 w-full space-y-4">
-        <Listings />
+        {/* <Listings /> */}
+        <Socials />
       </div>
       {/* <div className="flex flex-col">
         <div>{`current: ${protocol}`}</div>

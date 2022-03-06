@@ -81,7 +81,14 @@ export const vaultsQuery = gql`
     $where: Vault_filter
     $block: Block_height
   ) {
-    vaults(first: $first, skip: $skip, where: $where, block: $block) {
+    vaults(
+      first: $first
+      skip: $skip
+      where: $where
+      block: $block
+      orderBy: numId
+      orderDirection: desc
+    ) {
       id
       collateral
       user {
