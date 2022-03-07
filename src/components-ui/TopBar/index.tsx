@@ -7,11 +7,12 @@ import { ChevronLeftIcon, MenuIcon } from '@heroicons/react/outline';
 import { Slider } from '../Slider';
 import { ModalHeader } from '../Modal/ModalHeader';
 import NetworkDropDown from '../Dropdown/NetworkDropDown';
-import { Listings } from '../Listings';
+// import { Listings } from '../Listings';
 import { ConnectionStatus } from '../ConnectionStatus';
 import { StndAdder } from '../TokenAdder/StndAdder';
 import { useRouter } from 'next/router';
 import { useSizeXs } from '../Responsive';
+import { Socials } from '../Socials';
 
 export function TopBar() {
   const { chainId, library } = useActiveWeb3React();
@@ -63,8 +64,9 @@ export function TopBar() {
             />
           </div>
 
-          <div className="w-full space-y-4">
-            <Listings />
+          <div className="max-w-[160px] space-y-4">
+            {/* <Listings /> */}
+            <Socials />
           </div>
         </div>
       </Slider>

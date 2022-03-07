@@ -1,11 +1,11 @@
 import React from 'react';
-import { classNames } from '../../functions';
+// import { classNames } from '../../functions';
 // import Image from '../Image';
-import twitter from '../../../public/img/socials/twitter.svg';
-import telegram from '../../../public/img/socials/telegram.svg';
-import medium from '../../../public/img/socials/medium.svg';
-import discord from '../../../public/img/socials/discord.svg';
-// import website from '../../../public/img/socials/website.svg';
+// import twitter from '../../../public/img/socials/twitter.svg';
+// import telegram from '../../../public/img/socials/telegram.svg';
+// import medium from '../../../public/img/socials/medium.svg';
+// import discord from '../../../public/img/socials/discord.svg';
+// // import website from '../../../public/img/socials/website.svg';
 import { ExternalLink } from '../ExternalLink';
 import Image from '../Image';
 
@@ -35,7 +35,7 @@ export function Socials() {
   ];
 
   return (
-    <div className="grid grid-cols-4 gap-4 justify-center items-center">
+    <div className="grid grid-cols-4 gap-2 justify-center items-center">
       {SOCIALS.map((social) => {
         console.log(social);
         return (

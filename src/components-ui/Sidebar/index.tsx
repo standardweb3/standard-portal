@@ -36,7 +36,7 @@ export function Sidebar() {
           <SidebarNavigation routes={sidebarRoutes} chainId={chainId} />
         </div>
       </div>
-      <div className="px-8 py-8 w-full space-y-4">
+      <div className="px-4 py-8 w-full space-y-4">
         {/* <Listings /> */}
         <Socials />
       </div>
