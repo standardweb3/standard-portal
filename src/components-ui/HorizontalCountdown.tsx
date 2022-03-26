@@ -13,7 +13,6 @@ export function HorizontalCountdown({ duration, remaining }) {
   //   remaining,
   //   duration,
   // ]);
-  // console.log('123percentage', percentage);
   return (
     <TrackCont ref={ref} className="flex items-center relative">
       <Track className={`bg-scrollbar-track !rounded-lg !h-[6px]`}>

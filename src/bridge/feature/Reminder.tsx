@@ -90,6 +90,5 @@ export default function Reminder({
   currency,
   selectChain,
 }: ReminderType) {
-  // console.log(bridgeType)
   return CrossBridge(bridgeConfig, currency, selectChain, bridgeType);
 }

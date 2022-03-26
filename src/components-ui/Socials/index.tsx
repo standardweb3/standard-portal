@@ -37,9 +37,11 @@ export function Socials() {
   return (
     <div className="grid grid-cols-4 gap-2 justify-center items-center">
       {SOCIALS.map((social) => {
-        console.log(social);
         return (
-          <div className="col-span-1 text-grey flex items-center justify-center">
+          <div
+            key={social.alt}
+            className="col-span-1 text-grey flex items-center justify-center"
+          >
             <ExternalLink href={social.url} className="!text-grey">
               {/* {React.createElement(social.src, {
                 className: classNames(

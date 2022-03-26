@@ -117,7 +117,6 @@ export function signSwapoutSpecData({
     contract
       .Swapout(value, address)
       .then((res: any) => {
-        // console.log(res);
         resolve({
           msg: Status.Success,
           info: res.hash,
@@ -167,7 +166,6 @@ export function signSwapoutErc20Data({ value, address, token }: BuildParams) {
     contract
       .Swapout(value, address)
       .then((res: any) => {
-        // console.log(res);
         resolve({
           msg: Status.Success,
           info: res.hash,
@@ -213,7 +211,7 @@ export async function signSwapoutData({
     version: 'swapout',
     pairid: destTokenInfo.pairid,
   };
-  // console.log(rdata)
+
   if (destChain && specSymbol.includes(ChainId[destChain])) {
     results = await signSwapoutSpecData({ value, address, token, destChain });
   } else {
@@ -234,7 +232,6 @@ export function signSwapinData({
   isRecords,
 }: BuildParams) {
   return new Promise(async (resolve) => {
-    // console.log(value.toString().indexOf('.') === -1);
     if (
       !value ||
       value.toString().indexOf('.') !== -1 ||
@@ -260,7 +257,6 @@ export function signSwapinData({
       });
       return;
     }
-    // console.log(token)
     const baseInfo: any = await getMMBaseInfo();
     const tokenList: any = await GetTokenListByChainID({
       srcChainID: baseInfo.chainId,
@@ -268,9 +264,7 @@ export function signSwapinData({
     const curTokenInfo = tokenList ? tokenList.bridge[token] : '';
     const destTokenInfo =
       curTokenInfo && destChain ? curTokenInfo.destChains[destChain] : '';
-    // console.log(baseInfo)
-    // console.log(curTokenInfo)
-    // console.log(destTokenInfo)
+   
     const rdata = {
       hash: '',
       chainId: baseInfo.chainId,
@@ -283,13 +277,11 @@ export function signSwapinData({
       version: 'swapin',
       pairid: destTokenInfo.pairid,
     };
-    // console.log(rdata)
     if (web3Fn.utils.isAddress(token)) {
       const contract = getMMContract(swapBTCABI, token);
       contract
         .transfer(address, value)
         .then((res: any) => {
-          // console.log(res)
           rdata.hash = res;
           if (!isRecords) {
             recordsTxns(rdata);
@@ -300,7 +292,6 @@ export function signSwapinData({
           });
         })
         .catch((err: any) => {
-          // console.log(err);
           resolve({
             msg: Status.Error,
             error: err?.data?.message
@@ -317,7 +308,6 @@ export function signSwapinData({
         to: address,
         value: value,
       };
-      // console.log(data)
       provider
         .send('eth_sendTransaction', [data])
         .then((res: any) => {
@@ -331,7 +321,6 @@ export function signSwapinData({
           });
         })
         .catch((err: any) => {
-          // console.log(err);
           resolve({
             msg: Status.Error,
             error: err?.data?.message
@@ -341,9 +330,7 @@ export function signSwapinData({
               : err.toString(),
           });
         });
-      // provider.send('eth_requestAccounts', []).then((res:any) => {
-      //   console.log(res)
-      // })
+      // provider.send('eth_requestAccounts', []).then((res:any) => {      // })
     }
   });
 }

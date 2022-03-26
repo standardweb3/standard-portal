@@ -79,7 +79,6 @@ export function CollateralRatioProgressBar({
       let perc = (mouse.x / ref.current.offsetWidth) * 100;
       perc = perc > 99.2 ? 100 : perc < 0.8 ? 0 : perc;
       const newLiqRatio = Math.round(perc * maxCollateralRatio * 10) / 1000;
-      // console.log(perc);
       setCollateralRatioPercentage(perc);
       setCollateralRatio(String(newLiqRatio), false);
     }
@@ -93,7 +92,6 @@ export function CollateralRatioProgressBar({
     () => String((safeCollateralRatio / maxCollateralRatio) * 100) + '%',
     [safeCollateralRatio, maxCollateralRatio],
   );
-  // console.log(minLeft, safeLeft);
 
   const handleClickMinRatio = (e) => {
     e.stopPropagation();

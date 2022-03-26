@@ -23,7 +23,6 @@ export function DislineBridgeInfo(chainId: any) {
           resolve('');
         } else {
           const data: any = {};
-          // console.log(res)
           for (const key in res) {
             const obj = res[key];
             const isProxy = obj.DestToken.DelegateToken ? 1 : 0;
@@ -57,11 +56,7 @@ export function GetTokenListByChainID({
   chainList?: Array<string>;
   bridgeAPI?: string | undefined;
 }) {
-  return new Promise((resolve) => {
-    // console.log(bridgeAPI)
-    // console.log(srcChainID)
-    const lObj = getLocalData(CURRENTCHAIN, srcChainID, CURRENTCHAIN);
-    // console.log(lObj)
+  return new Promise((resolve) => {    const lObj = getLocalData(CURRENTCHAIN, srcChainID, CURRENTCHAIN);
     if (lObj) {
       resolve(lObj);
     } else {
@@ -110,7 +105,6 @@ export function GetTokenListByChainID({
                 if (!chainList.includes(data[key][token].chainId)) continue;
                 if (!bsckData[key]) bsckData[key] = {};
                 for (const c in data[key][token].destChains) {
-                  // console.log(chainList)
                   if (chainList.includes(c)) {
                     if (!bsckData[key][token]) {
                       bsckData[key][token] = {
@@ -147,7 +141,6 @@ export function GetRouterListByChainID({
   tokenList?: Array<string>;
 }) {
   return new Promise((resolve) => {
-    // console.log(chainId)
     if (!srcChainID) {
       resolve('');
     } else {
@@ -227,7 +220,6 @@ export function GetChainList() {
       resolve(lObj);
     } else {
       getUrlData({ url: chainInfoUrl }).then((res: any) => {
-        // console.log(res)
         if (!res) {
           resolve('');
         } else {

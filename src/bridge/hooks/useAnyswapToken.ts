@@ -23,9 +23,6 @@ export function useAnyswapToken(
   const price = currency?.price;
 
   // const token = address && name ? undefined : useToken(address ? address : undefined)
-  // console.log(token)
-  // console.log(address)
-  // console.log(currency)
   return useMemo(() => {
     if (!currency) return undefined;
     // if (!chainId || !address) return undefined

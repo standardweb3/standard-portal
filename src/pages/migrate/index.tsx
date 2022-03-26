@@ -204,12 +204,6 @@ const MigrateButtons = ({
   const sushiRollContract = useSushiRollContract(
     state.selectedLPToken?.version ? state.selectedLPToken?.version : undefined,
   );
-  // console.log(
-  //   'sushiRollContract address',
-  //   sushiRollContract?.address,
-  //   state.selectedLPToken?.balance,
-  //   state.selectedLPToken?.version
-  // )
 
   const [approval, approve] = useApproveCallback(
     state.selectedLPToken?.balance,
@@ -256,7 +250,6 @@ const MigrateButtons = ({
     try {
       await state.onMigrate();
     } catch (e) {
-      // console.log(e);
       setError(e);
     }
   };
