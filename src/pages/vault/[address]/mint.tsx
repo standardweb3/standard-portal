@@ -55,6 +55,7 @@ function Vault() {
     handleWrapUnwrap,
     isCollateralNative,
     isCollateralWnative,
+    isClosed,
   } = useUserVaultInfo(vaultAddress);
 
   // END: vault info

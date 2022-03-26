@@ -50,6 +50,7 @@ function Vault() {
     handleWrapUnwrap,
     isCollateralNative,
     isCollateralWnative,
+    isClosed,
   } = useUserVaultInfo(vaultAddress);
 
   const collateralBalance = useCurrencyBalance(account, collateralCurrency);

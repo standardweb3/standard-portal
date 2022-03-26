@@ -84,6 +84,7 @@ export const vaultsQuery = gql`
     vaults(first: $first, skip: $skip, where: $where, block: $block) {
       id
       collateral
+      isClosed
       user {
         id
       }

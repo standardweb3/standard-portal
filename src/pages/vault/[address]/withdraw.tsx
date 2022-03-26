@@ -51,6 +51,7 @@ function Vault() {
     handleWrapUnwrap,
     isCollateralNative,
     isCollateralWnative,
+    isClosed,
   } = useUserVaultInfo(vaultAddress);
 
   // START: withdraw

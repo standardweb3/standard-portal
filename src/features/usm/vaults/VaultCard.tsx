@@ -102,9 +102,8 @@ export function VaultCard({
       onClick={handleClick}
     >
       <div className="z-[1] min-w-full xs:min-w-[75%] sm:min-w-none">
-        <div className="text-center font-bold mb-2">#{id}</div>
         <div className="flex sm:flex-col space-x-4 justify-between items-center sm:items-start sm:space-x-0">
-          <div className="flex space-x-4 items-center">
+          <div className="flex space-x-4 items-center justify-between">
             <Radiation>
               {collateral ? (
                 <CurrencyLogo
@@ -117,16 +116,20 @@ export function VaultCard({
               )}
             </Radiation>
             <div className="space-y-1">
-              <div className="font-bold text-xl sm:text-2xl">
-                {collateral ? (
-                  isWnative ? (
-                    collateral.symbol.substring(1)
+              <div className="text-right">
+                <div className="text-grey text-xs -mb-1">#{id}</div>
+
+                <div className="font-bold text-xl sm:text-2xl">
+                  {collateral ? (
+                    isWnative ? (
+                      collateral.symbol.substring(1)
+                    ) : (
+                      collateral.symbol
+                    )
                   ) : (
-                    collateral.symbol
-                  )
-                ) : (
-                  <Skeleton count={1} />
-                )}
+                    <Skeleton count={1} />
+                  )}
+                </div>
               </div>
               {condition !== VaultCondition.UNKNWON && (
                 <Radiation2>

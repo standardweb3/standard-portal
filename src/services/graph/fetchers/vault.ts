@@ -14,7 +14,7 @@ import {
 } from '../queries/vault';
 
 export const VAULT = {
-  [ChainId.RINKEBY]: 'billjhlee/rinkeby-vault',
+  [ChainId.RINKEBY]: 'billjhlee/rinkeby-vault-dev',
 };
 
 export const vaultsGraphClient = (chainId) => {

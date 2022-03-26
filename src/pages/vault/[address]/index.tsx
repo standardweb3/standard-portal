@@ -45,11 +45,11 @@ function Vault() {
     address,
     id,
     liquidatable,
+    isClosed,
     // handleWrapUnwrap,
     // isCollateralNative,
     // isCollateralWnative,
   } = useUserVaultInfo(vaultAddress);
-  console.log('ebt',debt)
   const usmBalance = useCurrencyBalance(account, usm);
   const [paybackAmount, setPaybackAmount] = useState('');
 

@@ -29,6 +29,7 @@ export function useUserVaultInfo(vaultAddress) {
     // currentBorrowed: currentBorrowedString,
     // currentCollateralized: currentCollateralizedString,
     CDP,
+    isClosed,
   } = vault ?? {};
 
   const {
@@ -127,5 +128,6 @@ export function useUserVaultInfo(vaultAddress) {
     handleWrapUnwrap,
     isCollateralNative,
     isCollateralWnative,
+    isClosed,
   };
 }
