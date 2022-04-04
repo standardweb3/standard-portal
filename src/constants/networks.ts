@@ -124,7 +124,7 @@ export const SUPPORTED_NETWORKS: {
       symbol: 'SDN',
       decimals: 18,
     },
-    rpcUrls: ['https://rpc.shiden.astar.network:8545'],
+    rpcUrls: ['https://shiden.api.onfinality.io/public'],
     blockExplorerUrls: ['https://blockscout.com/shiden'],
   },
   [ChainId.METIS]: {
