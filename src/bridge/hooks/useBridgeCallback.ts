@@ -234,7 +234,7 @@ export function useBridgeUnderlyingCallback(
                   recordsTxns(data);
                 }
               } catch (error) {
-                console.log('Could not swapout', error);
+                console.error('Could not swapout', error);
               }
             }
           : undefined,
@@ -426,7 +426,7 @@ export function useSwapUnderlyingCallback(
                   )}`,
                 });
               } catch (error) {
-                console.log('Could not swapout', error);
+                console.error('Could not swapout', error);
               }
             }
           : undefined,
@@ -509,7 +509,7 @@ export function useSwapNativeCallback(
                   )}`,
                 });
               } catch (error) {
-                console.log('Could not swapout', error);
+                console.error('Could not swapout', error);
               }
             }
           : undefined,
@@ -620,7 +620,7 @@ export function useBridgeSwapNativeCallback(
                   recordsTxns(data);
                 }
               } catch (error) {
-                console.log('Could not swapout', error);
+                console.error('Could not swapout', error);
               }
             }
           : undefined,
@@ -733,7 +733,7 @@ export function useBridgeSwapUnderlyingCallback(
                   recordsTxns(data);
                 }
               } catch (error) {
-                console.log('Could not swapout', error);
+                console.error('Could not swapout', error);
               }
             }
           : undefined,
@@ -855,7 +855,7 @@ export function useCrossBridgeCallback(
                   recordsTxns(rdata);
                 }
               } catch (error) {
-                console.log('Could not swapout', error);
+                console.error('Could not swapout', error);
               }
             }
           : undefined,

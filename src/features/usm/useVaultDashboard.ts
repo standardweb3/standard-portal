@@ -210,10 +210,4 @@ export function useVaultDashboard() {
     ammCollaterals,
     cVaultCollaterals
   };
-  //   console.log('wwb', ammReserveHistories, collateralReserveHistories);
-  //   console.log('wwwwwww', Object.values(collateralReserveHistories))
-  //   for (let key in ammReserveHistories) {
-  //     console.log('wwwwww', key);
-  //   }
-  //   console.log('wwb', ammReserveHistories, collateralReserveHistories);
 }

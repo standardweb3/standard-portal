@@ -308,8 +308,6 @@ export function useSwapCallback(
                     value,
                   };
 
-            // library.getGasPrice().then((gasPrice) => console.log({ gasPrice }))
-
             return library
               .estimateGas(tx)
               .then((gasEstimate) => {
