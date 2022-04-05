@@ -3,7 +3,6 @@ import { Page } from '../../components-ui/Page';
 import { PageContent } from '../../components-ui/PageContent';
 import { PageHeader } from '../../components-ui/PageHeader';
 import { ViewportMediumUp } from '../../components-ui/Responsive';
-import { VaultManagerInfo } from '../../features/usm/collaterals/VaultManagerInfo';
 import { DashboardMetric } from '../../features/usm/dashboard/DashboardMetric';
 import UsmPairCardType from '../../features/usmPairs/usmPairCard';
 import { formatNumber } from '../../functions';
@@ -43,7 +42,7 @@ export default function Amms() {
         <PageContent>
           <div className="w-full max-w-[1200px]">
             <div className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <DashboardMetric
                   header={'USM Total Supply'}
                   stat={
@@ -51,29 +50,22 @@ export default function Amms() {
                   }
                 />
                 <DashboardMetric
-                  header={'AMM Reserve'}
+                  header={'Cumulative Liquidations (USD)'}
                   stat={
                     vaultManager &&
-                    formatNumber(
-                      vaultManager?.runningStat.ammReserveCollateralUSD,
-                      true,
-                    )
-                  }
-                  tip={
-                    'Total Backing is the sum of the value of collateralized assets in vaults and the value of collateral assets in USM-collateral AMMs'
-                  }
-                />
-                <DashboardMetric
-                  header={'Liquidations (USD)'}
-                  stat={
-                    vaultManager && formatNumber(vaultManager?.currentBorrowed)
+                    `${formatNumber(
+                      vaultManager?.liquidation?.liquidationAmountUSD ?? 0,
+                    )} USD`
                   }
                 />
 
                 <DashboardMetric
                   header={'Liquidations Count'}
                   stat={
-                    vaultManager && formatNumber(vaultManager?.currentBorrowed)
+                    vaultManager &&
+                    formatNumber(
+                      vaultManager?.liquidation?.liquidationCount ?? 0,
+                    )
                   }
                 />
               </div>

@@ -1,5 +1,6 @@
 import { getAddress } from 'ethers/lib/utils';
 import { useRouter } from 'next/router';
+import { useActiveWeb3React } from '../../hooks';
 import { useWrappableCurrency } from '../../hooks/useWrappableCurrency';
 import { useMtr } from '../../hooks/vault/useMtr';
 import {
@@ -13,6 +14,7 @@ import { useUserVault } from '../../services/graph/hooks/vault';
 import { applyCdpDecimals } from './utils';
 
 export function useUserVaultInfo(vaultAddress) {
+  const { account } = useActiveWeb3React();
   let checksummedVaultAddr;
   try {
     checksummedVaultAddr = vaultAddress && getAddress(vaultAddress);
@@ -30,8 +32,12 @@ export function useUserVaultInfo(vaultAddress) {
     // currentCollateralized: currentCollateralizedString,
     CDP,
     isClosed,
+    isLiquidated,
+    liquidation,
+    user,
   } = vault ?? {};
 
+  const isUserVault = account && user && account.toLowerCase() == user.id
   const {
     handleWrapUnwrap,
     currency: collateralCurrency,
@@ -52,8 +58,7 @@ export function useUserVaultInfo(vaultAddress) {
   );
 
   const fee =
-    debt && currentBorrowed !== undefined ? debt - currentBorrowed : undefined;
-
+    debt !== undefined && currentBorrowed !== undefined ? debt - currentBorrowed : undefined;
   const mcr = CDP && applyCdpDecimals(CDP.mcr);
   const sfr = CDP && applyCdpDecimals(CDP.sfr);
   const lfr = CDP && applyCdpDecimals(CDP.lfr);
@@ -70,7 +75,7 @@ export function useUserVaultInfo(vaultAddress) {
       : undefined;
 
   const currentCollateralRatio =
-    vault && debt && currentCollateralizedValue !== undefined
+    vault && debt !== undefined && currentCollateralizedValue !== undefined
       ? (currentCollateralizedValue / debt) * 100
       : undefined;
 
@@ -85,14 +90,17 @@ export function useUserVaultInfo(vaultAddress) {
 
   const liquidatable = currentCollateralRatio < mcr;
 
-  const condition =
-    collateralPrice !== undefined
-      ? collateralPrice > liquidationPrice * 1.3
-        ? VaultCondition.SAFE
-        : collateralPrice >= liquidationPrice * 1.1
-        ? VaultCondition.WARNING
-        : VaultCondition.DANGER
-      : undefined;
+  const condition = isClosed
+    ? VaultCondition.CLOSED
+    : isLiquidated
+    ? VaultCondition.LIQUIDATED
+    : collateralPrice !== undefined
+    ? collateralPrice > liquidationPrice * 1.3
+      ? VaultCondition.SAFE
+      : collateralPrice >= liquidationPrice * 1.1
+      ? VaultCondition.WARNING
+      : VaultCondition.DANGER
+    : undefined;
 
   return {
     mcr,
@@ -129,5 +137,8 @@ export function useUserVaultInfo(vaultAddress) {
     isCollateralNative,
     isCollateralWnative,
     isClosed,
+    isLiquidated,
+    liquidation,
+    isUserVault
   };
 }

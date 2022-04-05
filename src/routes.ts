@@ -9,6 +9,8 @@ import routerIcon from '../public/icons/router.svg';
 import dashboardIcon from '../public/icons/dashboard.svg';
 import vaultIcon from '../public/icons/vault.svg';
 import borrowIcon from '../public/icons/borrow.svg';
+import ammsIcon from '../public/icons/amms.svg'
+import explorerIcon from '../public/icons/explorer.svg'
 
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
@@ -68,8 +70,8 @@ export const sidebarRoutes = [
   {
     name: 'AMMs',
     urls: ['/amms'],
-    icon: dashboardIcon,
-    iconActive: dashboardIcon,
+    icon: ammsIcon,
+    iconActive: ammsIcon,
     hidden: [
       ChainId.MATIC,
       ChainId.MAINNET,
@@ -83,8 +85,8 @@ export const sidebarRoutes = [
   {
     name: 'Explorer',
     urls: ['/explorer'],
-    icon: dashboardIcon,
-    iconActive: dashboardIcon,
+    icon: explorerIcon,
+    iconActive: explorerIcon,
     hidden: [
       ChainId.MATIC,
       ChainId.MAINNET,

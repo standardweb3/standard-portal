@@ -56,6 +56,8 @@ function Vault() {
     isCollateralNative,
     isCollateralWnative,
     isClosed,
+    isLiquidated,
+    isUserVault,
   } = useUserVaultInfo(vaultAddress);
 
   // END: vault info
@@ -194,80 +196,92 @@ function Vault() {
               sfr={sfr}
               currentCollateralRatio={currentCollateralRatio}
               address={address}
+              isClosed={isClosed}
+              isLiquidated={isLiquidated}
             />
 
-            <div className="grid grid-cols-2 lg:grid-cols-7 gap-4">
-              <div className="col-span-2 lg:col-span-7 space-y-4">
-                <VaultCDPMetrics
-                  fee={fee}
-                  usmPrice={usmPrice}
-                  debtAmount={currentBorrowed}
-                  debt={debt}
-                  currentBorrowed={currentBorrowed}
-                  horizontal
-                />
-                {!isMintable && (
-                  <Alert
-                    type="error"
-                    dismissable={false}
-                    message={
-                      <div className="p-0 md:p-4">
-                        <div className="text-xl font-bold">
-                          Borrowing Disabled
-                        </div>
-                        <div>
-                          Supply limit of USM has been reached and borrowing USM
-                          is restricted.
-                        </div>
-                      </div>
-                    }
+            {!isClosed && (
+              <div className="grid grid-cols-2 lg:grid-cols-7 gap-4">
+                <div className="col-span-2 lg:col-span-7 space-y-4">
+                  <VaultCDPMetrics
+                    fee={fee}
+                    usmPrice={usmPrice}
+                    debtAmount={currentBorrowed}
+                    debt={debt}
+                    currentBorrowed={currentBorrowed}
+                    horizontal
                   />
+                  {!isMintable && (
+                    <Alert
+                      type="error"
+                      dismissable={false}
+                      message={
+                        <div className="p-0 md:p-4">
+                          <div className="text-xl font-bold">
+                            Borrowing Disabled
+                          </div>
+                          <div>
+                            Supply limit of USM has been reached and borrowing
+                            USM is restricted.
+                          </div>
+                        </div>
+                      }
+                    />
+                  )}
+                </div>
+
+                {isUserVault && !isLiquidated && (
+                  <>
+                    <div className="col-span-2 lg:col-span-4">
+                      <div className="rounded-20 p-8 bg-background space-y-8">
+                        <VaultHeader vaultAddress={vaultAddress} mint />
+                        <VaultMint
+                          debt={debt}
+                          stabilityFee={fee}
+                          collateral={collateralCurrency}
+                          mcr={mcr}
+                          minCollateralAmount={minCollateralAmount}
+                          collateralBalance={collateralBalance}
+                          collateralPrice={collateralPrice}
+                          currentCollateralized={currentCollateralized}
+                          borrowed={currentBorrowed}
+                          vaultAddress={checksummedVaultAddress}
+                          usm={usm}
+                          depositAmount={depositAmount}
+                          borrowMoreAmount={borrowMoreAmount}
+                          onBorrowMoreAmountChange={
+                            handleChangeBorrowMoreAmount
+                          }
+                          onDepositAmountChange={handleChangeDepositAmount}
+                          collateralRatio={collateralRatio}
+                          setCollateralRatio={handleChangeCollateralRatio}
+                          maxCollateralRatio={maxCollateralRatio}
+                          setCollateralRatioPercentage={
+                            setCollateralRatioPercentage
+                          }
+                          collateralRatioPercentage={collateralRatioPercentage}
+                          setToMinCollataralRatio={setToMinCollataralRatio}
+                          setToSafeCollateralRatio={setToSafeCollateralRatio}
+                          handleWrapUnwrap={handleWrapUnwrap}
+                          isCollateralNative={isCollateralNative}
+                          isCollateralWnative={isCollateralWnative}
+                          loading={loading}
+                          mintableSupply={mintableSupply}
+                          isMintable={isMintable}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="col-span-2 lg:col-span-3 space-y-4">
+                      <VaultFees sfr={sfr} mcr={mcr} lfr={lfr} />
+                      <div>
+                        <Rebase4 />
+                      </div>
+                    </div>
+                  </>
                 )}
               </div>
-
-              <div className="col-span-2 lg:col-span-4">
-                <div className="rounded-20 p-8 bg-background space-y-8">
-                  <VaultHeader vaultAddress={vaultAddress} mint />
-                  <VaultMint
-                    debt={debt}
-                    stabilityFee={fee}
-                    collateral={collateralCurrency}
-                    mcr={mcr}
-                    minCollateralAmount={minCollateralAmount}
-                    collateralBalance={collateralBalance}
-                    collateralPrice={collateralPrice}
-                    currentCollateralized={currentCollateralized}
-                    borrowed={currentBorrowed}
-                    vaultAddress={checksummedVaultAddress}
-                    usm={usm}
-                    depositAmount={depositAmount}
-                    borrowMoreAmount={borrowMoreAmount}
-                    onBorrowMoreAmountChange={handleChangeBorrowMoreAmount}
-                    onDepositAmountChange={handleChangeDepositAmount}
-                    collateralRatio={collateralRatio}
-                    setCollateralRatio={handleChangeCollateralRatio}
-                    maxCollateralRatio={maxCollateralRatio}
-                    setCollateralRatioPercentage={setCollateralRatioPercentage}
-                    collateralRatioPercentage={collateralRatioPercentage}
-                    setToMinCollataralRatio={setToMinCollataralRatio}
-                    setToSafeCollateralRatio={setToSafeCollateralRatio}
-                    handleWrapUnwrap={handleWrapUnwrap}
-                    isCollateralNative={isCollateralNative}
-                    isCollateralWnative={isCollateralWnative}
-                    loading={loading}
-                    mintableSupply={mintableSupply}
-                    isMintable={isMintable}
-                  />
-                </div>
-              </div>
-
-              <div className="col-span-2 lg:col-span-3 space-y-4">
-                <VaultFees sfr={sfr} mcr={mcr} lfr={lfr} />
-                <div>
-                  <Rebase4 />
-                </div>
-              </div>
-            </div>
+            )}
           </div>
         </PageContent>
       </Page>

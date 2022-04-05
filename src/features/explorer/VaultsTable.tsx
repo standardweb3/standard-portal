@@ -16,6 +16,9 @@ export function VaultsTable({ vaults }) {
         debt,
         fee,
         isWnative,
+        isClosed,
+        isLiquidated,
+        liquidation
       }) => (
         <VaultCard
           isWnative={isWnative}
@@ -31,6 +34,9 @@ export function VaultsTable({ vaults }) {
           currentCollateralized={currentCollateralized}
           debt={debt}
           fee={fee}
+          isClosed={isClosed}
+          isLiquidated={isLiquidated}
+          liquidation={liquidation}
         />
       ),
     );

@@ -1,4 +1,5 @@
 import Rechart from '../../components-ui/Rechart';
+import ColorHash from 'color-hash';
 import { formatNumber } from '../../functions';
 
 export const TooltipItems = {
@@ -41,6 +42,64 @@ export const DataKeys = {
   collectedStabilityFee: ['collectedStabilityFee'],
   userBorrowedUSM: ['currentBorrowed'],
   currentAMMReserveUSD: ['ammReserveCollateralUSD'],
+};
+
+export const colorHashRgbToString = (rgb, opacity = 1) => {
+  return `rgba(${rgb.join(',')},${opacity})`;
+};
+
+export const getStrokes = (dataKey, opacity = 1) => {
+  let colorHash = new ColorHash();
+  return dataKey.map((d) => colorHashRgbToString(colorHash.rgb(d), opacity));
+};
+
+export const getStopColors = (dataKey, endOpacity = 0) => {
+  let colorHash = new ColorHash();
+  return dataKey.map((d) => [
+    colorHashRgbToString(colorHash.rgb(d), 1),
+    colorHashRgbToString(colorHash.rgb(d), endOpacity),
+  ]);
+};
+
+export const getBulletPointColors = (dataKey) => {
+  let colorHash = new ColorHash();
+  return dataKey.map((d) => {
+    return {
+      right: 20,
+      top: -12,
+      background: colorHashRgbToString(colorHash.rgb(d), 1),
+    };
+  });
+};
+
+export const ReservesGraph = ({
+  data,
+  dataKey,
+  stroke,
+  stopColor,
+  tooltipItems,
+  bulletpointColors,
+  title,
+  tooltipInfoMessage
+}) => {
+  return (
+    <Rechart
+      hideYAxis
+      hideXAxis
+      type="stack"
+      data={data}
+      itemType={ItemType.number}
+      itemNames={tooltipItems}
+      dataKey={dataKey}
+      headerText={title}
+      infoTooltipMessage={tooltipInfoMessage}
+      stopColor={stopColor}
+      bulletpointColors={bulletpointColors}
+      expandedGraphStrokeColor={'rgba(255,255,255,0.15'}
+      stroke={stroke}
+      reversed={false}
+    />
+  );
 };
 
 export const SuppliesGraph = ({ data }) => {

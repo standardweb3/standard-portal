@@ -72,6 +72,9 @@ export default function Explorer() {
       currentCollateralized,
       collateral,
       createdAt,
+      isClosed,
+      isLiquidated,
+      liquidation
     } = v;
 
     const isWnative = getAddress(collateral) === WNATIVE[chainId].address;
@@ -96,14 +99,17 @@ export default function Explorer() {
     const liquidationPrice =
       (debt * vMcr) / 100 / parseFloat(currentCollateralized);
 
-    const condition =
-      collateralPrice !== undefined
-        ? collateralPrice > liquidationPrice * 1.3
-          ? VaultCondition.SAFE
-          : collateralPrice >= liquidationPrice * 1.1
-          ? VaultCondition.WARNING
-          : VaultCondition.DANGER
-        : VaultCondition.UNKNWON;
+    const condition = isClosed
+      ? VaultCondition.CLOSED
+      : isLiquidated
+      ? VaultCondition.LIQUIDATED
+      : collateralPrice !== undefined
+      ? collateralPrice > liquidationPrice * 1.3
+        ? VaultCondition.SAFE
+        : collateralPrice >= liquidationPrice * 1.1
+        ? VaultCondition.WARNING
+        : VaultCondition.DANGER
+      : VaultCondition.UNKNWON;
 
     const refactoredVault = {
       id,
@@ -117,6 +123,8 @@ export default function Explorer() {
       collateralAddress: getAddress(collateral),
       collateralPrice,
       isWnative,
+      isLiquidated,
+      liquidation,
       fee,
       debt,
     };
@@ -182,6 +190,9 @@ export default function Explorer() {
                     }
                     debt={searchVaultForCard.debt}
                     fee={searchVaultForCard.fee}
+                    isLiquidated={searchVaultForCard.isLiquidated}
+                    liquidation={searchVaultForCard.liquidation}
+
                   />
                 </div>
               ) : (

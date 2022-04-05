@@ -55,6 +55,7 @@
     "bezier-easing": "^2.1.0",
     "bitcoin-ops": "^1.4.1",
     "bitcoinjs-lib": "^6.0.0",
+    "color-hash": "^2.0.1",
     "cookie-cutter": "^0.2.0",
     "copy-to-clipboard": "^3.3.1",
     "eth-permit": "^0.1.10",

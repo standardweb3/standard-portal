@@ -120,6 +120,40 @@ const renderAreaChart = (
   </AreaChart>
 );
 
+const renderStackedAreaChartGradietns = (dataKey, stopColor) => {
+  return dataKey.map((d, index) => {
+    return (
+      <linearGradient
+        key={d}
+        id={`color-${dataKey[index]}`}
+        x1="0"
+        y1="0"
+        x2="0"
+        y2="1"
+      >
+        <stop offset="0%" stopColor={stopColor[index][0]} stopOpacity={1} />
+        <stop offset="90%" stopColor={stopColor[index][1]} stopOpacity={0.9} />
+      </linearGradient>
+    );
+  });
+};
+
+const renderStackedAreaChartStack = (dataKey, stroke) => {
+  return dataKey.map((d, index) => {
+    return (
+      <Area
+        key={d}
+        dataKey={dataKey[index]}
+        stroke={stroke ? stroke[index] : 'none'}
+        fill={`url(#color-${dataKey[index]})`}
+        strokeWidth={3}
+        fillOpacity={1}
+        stackId="1"
+      />
+    );
+  });
+};
+
 const renderStackedAreaChart = (
   data,
   dataKey,
@@ -133,30 +167,10 @@ const renderStackedAreaChart = (
   expandedGraphStrokeColor,
   hideYAxis = undefined,
   hideXAxis = undefined,
+  reversed = true,
 ) => (
   <AreaChart data={data}>
-    <defs>
-      <linearGradient id={`color-${dataKey[0]}`} x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor={stopColor[0][0]} stopOpacity={1} />
-        <stop offset="90%" stopColor={stopColor[0][1]} stopOpacity={0.9} />
-      </linearGradient>
-      <linearGradient id={`color-${dataKey[1]}`} x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor={stopColor[1][0]} stopOpacity={1} />
-        <stop offset="90%" stopColor={stopColor[1][1]} stopOpacity={0.9} />
-      </linearGradient>
-      <linearGradient id={`color-${dataKey[2]}`} x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor={stopColor[2][0]} stopOpacity={1} />
-        <stop offset="90%" stopColor={stopColor[2][1]} stopOpacity={0.9} />
-      </linearGradient>
-      <linearGradient id={`color-${dataKey[3]}`} x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor={stopColor[3][0]} stopOpacity={1} />
-        <stop offset="90%" stopColor={stopColor[3][1]} stopOpacity={0.9} />
-      </linearGradient>
-      <linearGradient id={`color-${dataKey[4]}`} x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor={stopColor[4][0]} stopOpacity={1} />
-        <stop offset="90%" stopColor={stopColor[4][1]} stopOpacity={0.9} />
-      </linearGradient>
-    </defs>
+    <defs>{renderStackedAreaChartGradietns(dataKey, stopColor)}</defs>
 
     <XAxis
       dataKey="timestamp"
@@ -164,7 +178,7 @@ const renderStackedAreaChart = (
       axisLine={false}
       tickLine={false}
       tickFormatter={(str) => format(new Date(str * 1000), 'MMM dd')}
-      reversed={true}
+      reversed={reversed}
       connectNulls={true}
       // padding={{ right: 20 }}
       hide={hideXAxis}
@@ -206,46 +220,7 @@ const renderStackedAreaChart = (
         />
       }
     />
-    <Area
-      dataKey={dataKey[0]}
-      stroke={stroke ? stroke[0] : 'none'}
-      fill={`url(#color-${dataKey[0]})`}
-      strokeWidth={3}
-      fillOpacity={1}
-      stackId="1"
-    />
-    <Area
-      dataKey={dataKey[1]}
-      stroke={stroke ? stroke[1] : 'none'}
-      fill={`url(#color-${dataKey[1]})`}
-      strokeWidth={3}
-      fillOpacity={1}
-      stackId="1"
-    />
-    <Area
-      dataKey={dataKey[2]}
-      stroke={stroke ? stroke[2] : 'none'}
-      fill={`url(#color-${dataKey[2]})`}
-      strokeWidth={3}
-      fillOpacity={1}
-      stackId="1"
-    />
-    <Area
-      dataKey={dataKey[3]}
-      stroke={stroke ? stroke[3] : 'none'}
-      fill={`url(#color-${dataKey[3]})`}
-      strokeWidth={3}
-      fillOpacity={1}
-      stackId="1"
-    />
-    <Area
-      dataKey={dataKey[4]}
-      stroke={stroke ? stroke[4] : 'none'}
-      fill={`url(#color-${dataKey[4]})`}
-      strokeWidth={3}
-      fillOpacity={1}
-      stackId="1"
-    />
+    {renderStackedAreaChartStack(dataKey, stroke)}
     {renderExpandedChartStroke(isExpanded, expandedGraphStrokeColor)}
   </AreaChart>
 );
@@ -502,6 +477,7 @@ function Rechart({
         expandedGraphStrokeColor,
         hideYAxis,
         hideXAxis,
+        reversed,
       );
     if (type === 'multi')
       return renderMultiLineChart(
@@ -612,7 +588,9 @@ function Rechart({
             {renderChart(type, false, hideYAxis, hideXAxis)}
           </ResponsiveContainer>
         ) : (
-          <Skeleton count={1} />
+          <div className="flex justify-center items-center w-full min-h-[300px]">
+            <LogoSpinner width={48} height={48} />
+          </div>
         )}
       </div>
     </div>

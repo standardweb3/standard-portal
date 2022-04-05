@@ -22,6 +22,8 @@ const Radiation2 = styled.div`
   border-radius: 25%;
 `;
 
+const inactiveBg =
+  'linear-gradient(180deg, rgba(191, 191, 191, 0.34) 25.52%, rgba(191, 191, 191, 0.0272) 100%)';
 const safeBg =
   'linear-gradient(180deg, rgba(0, 143, 58, 0.34) 25.52%, rgba(0, 143, 58, 0.0272) 100%)';
 const warningBg =
@@ -40,7 +42,10 @@ const Background = styled.div<{ condition: VaultCondition }>`
     top: 0;
     left: 0;
     background: ${(props) =>
-      props.condition === VaultCondition.WARNING
+      props.condition === VaultCondition.CLOSED ||
+      props.condition === VaultCondition.LIQUIDATED
+        ? inactiveBg
+        : props.condition === VaultCondition.WARNING
         ? warningBg
         : props.condition === VaultCondition.DANGER
         ? dangerBg
@@ -61,6 +66,9 @@ export function VaultCard({
   debt,
   fee,
   isWnative,
+  isClosed = false,
+  isLiquidated = false,
+  liquidation = null,
   initialExpand = false,
   ownership = false,
 }) {
@@ -98,7 +106,8 @@ export function VaultCard({
         w-full px-8 py-8 sm:p-8 text-text relative 
         flex flex-col rounded-20 items-center cursor-pointer
         bg-background hover:scale-[1.03] hover:bg-bright
-        transition duration-500"
+        transition duration-500
+        h-[215px] sm:h-[315px] md:h-[315px]"
       onClick={handleClick}
     >
       <div className="z-[1] min-w-full xs:min-w-[75%] sm:min-w-none">
@@ -146,33 +155,59 @@ export function VaultCard({
             <div className="flex flex-col w-full sm:mt-4">
               <div className="text-xs sm:text-sm text-grey">Borrowed</div>
               <div className="font-bold text-sm">
-                {currentBorrowed ? (
+                {currentBorrowed !== undefined ? (
                   formatNumber(currentBorrowed, true)
                 ) : (
                   <Skeleton count={1} />
                 )}
               </div>
             </div>
-            <div className="flex flex-col w-full mt-1">
-              <div className="text-xs sm:text-sm text-grey">Collateralized</div>
-              <div className="font-bold text-sm">
-                {collateralValueUSD !== undefined ? (
-                  formatNumber(collateralValueUSD, true)
-                ) : (
-                  <Skeleton count={1} />
-                )}
+            {!isLiquidated && (
+              <div className="flex flex-col w-full mt-1">
+                <div className="text-xs sm:text-sm text-grey">
+                  Collateralized
+                </div>
+                <div className="font-bold text-sm">
+                  {collateralValueUSD !== undefined ? (
+                    formatNumber(collateralValueUSD, true)
+                  ) : (
+                    <Skeleton count={1} />
+                  )}
+                </div>
               </div>
-            </div>
+            )}
+            {isLiquidated && (
+              <div className="flex flex-col w-full mt-1">
+                <div className="text-xs sm:text-sm text-grey">Liquidated</div>
+                <div className="font-bold text-sm">
+                  {liquidation !== null ? (
+                    `${formatNumber(liquidation?.liquidationAmount)} ${
+                      isWnative
+                        ? collateral?.symbol?.substring(1)
+                        : collateral?.symbol
+                    }`
+                  ) : (
+                    <Skeleton count={1} />
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
-        <VaultProgressBar
-          minRatio={mcr}
-          maxRatio={MAX_COLLATERAL_RATIO}
-          condition={condition}
-          currentRatio={collateralRatio}
-        />
+        {isClosed ? (
+          <div className='flex items-center justify-center mt-8 text-grey text-sm'>The vault has been closed</div>
+        ) : isLiquidated ? (
+          <div className='flex items-center justify-center mt-8 text-grey text-sm'>The vault has been liquidated</div>
+        ) : (
+          <VaultProgressBar
+            minRatio={mcr}
+            maxRatio={MAX_COLLATERAL_RATIO}
+            condition={condition}
+            currentRatio={collateralRatio}
+          />
+        )}
       </div>
-      {ownership && (
+      {ownership && !isClosed && !isLiquidated && (
         <div
           className="text-primary text-sm cursor-pointer"
           onClick={handleOpen}

@@ -11,6 +11,8 @@ import {
   vaultQuery,
   vaultsQuery,
   vaultUserHistoriesQuery,
+  vaultAmmReservesQuery,
+  vaultCollateralReservesQuery,
 } from '../queries/vault';
 
 export const VAULT = {
@@ -98,3 +100,28 @@ export const getVaultUserHistories = async (
 
   return result;
 };
+
+export const getVaultAmmReserves = async (
+  chainId = ChainId.MAINNET,
+  variables,
+) => {
+  const { pairs: result } = await vault(
+    chainId,
+    vaultAmmReservesQuery,
+    variables,
+  );
+  return result;
+};
+
+export const getVaultCollateralReserves = async (
+  chainId = ChainId.MAINNET,
+  variables,
+) => {
+  const { collateralVaults: result } = await vault(
+    chainId,
+    vaultCollateralReservesQuery,
+    variables,
+  );
+  return result;
+};
+

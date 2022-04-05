@@ -15,6 +15,9 @@ export const vaultManagerQuery = gql`
       }
       liquidation {
         liquidationFeeUSD
+        liquidationAmountUSD
+        liquidationAMMUSD
+        liquidationCount
       }
     }
   }
@@ -99,6 +102,11 @@ export const vaultsQuery = gql`
         sfr
         decimals
       }
+      liquidation { 
+        liquidationAmount
+        liquidationFee
+        liquidationAMM
+      }
       createdAt
     }
   }
@@ -116,6 +124,9 @@ export const cVaultQuery = gql`
         lfr
         symbol
         decimals
+      }
+      liquidation {
+        liquidationAMM
       }
     }
   }
@@ -172,6 +183,62 @@ export const vaultUserHistoriesQuery = gql`
       date
       currentBorrowed
       activeVaultCount
+      timestamp
+    }
+  }
+`;
+
+export const vaultAmmReservesQuery = gql`
+  query vaultAmmReserves(
+    $first: Int! = 1000
+    $skip: Int! = 0
+    $where: Pair_filter
+  ) {
+    pairs(first: $first, skip: $skip, where: $where) {
+      id
+      collateral
+      collateralReserve
+      collateralSymbol
+    }
+  }
+`;
+
+export const vaultCollateralReservesQuery = gql`
+  query vaultCollateralReserves(
+    $first: Int! = 1000
+    $skip: Int! = 0
+    $where: CollateralVault_filter
+  ) {
+    collateralVaults(first: $first, skip: $skip, where: $where) {
+      id
+      collateral
+      currentCollateralized
+      cdp {
+        symbol
+      }
+    }
+  }
+`;
+
+export const collateralVaultHistoriesQuery = gql`
+  query collateralVaultHistories(
+    $first: Int! = 1000
+    $skip: Int! = 0
+    $where: CollateralVaultHistory_filter
+  ) {
+    collateralVaultHistories(
+      first: $first
+      skip: $skip
+      where: $where
+      orderBy: date
+      orderDirection: desc
+    ) {
+      id
+      collateralVault {
+        id
+      }
+      liquidationAMM
+      currentCollateralized
       timestamp
     }
   }

@@ -11,6 +11,8 @@ import {
   getVaults,
   getVaultUser,
   getVaultUserHistories,
+  getVaultAmmReserves,
+  getVaultCollateralReserves
 } from '../fetchers/vault';
 
 export function useVaultManager(
@@ -73,7 +75,7 @@ export function useUserVault(
       getVault(chainId, {
         where: {
           address: vaultAddress?.toLowerCase(),
-          user: account?.toLowerCase(),
+          // user: account?.toLowerCase(),
         },
       }),
   );
@@ -169,6 +171,34 @@ export function useVault(
   const { data } = useSWR(
     chainId ? ['vault', chainId, JSON.stringify(variables)] : null,
     () => getVault(chainId, variables),
+    swrConfig,
+  );
+  return data;
+}
+
+export function useVaultAmmReserves(
+  variables = undefined,
+  swrConfig: SWRConfiguration = undefined,
+) {
+  const { chainId } = useActiveWeb3React();
+  const { data } = useSWR(
+    chainId ? ['vaultAmmReserves', chainId, JSON.stringify(variables)] : null,
+    () => getVaultAmmReserves(chainId, variables),
+    swrConfig,
+  );
+  return data;
+}
+
+export function useVaultCollateralReserves(
+  variables = undefined,
+  swrConfig: SWRConfiguration = undefined,
+) {
+  const { chainId } = useActiveWeb3React();
+  const { data } = useSWR(
+    chainId
+      ? ['vaultCollateralReserves', chainId, JSON.stringify(variables)]
+      : null,
+    () => getVaultCollateralReserves(chainId, variables),
     swrConfig,
   );
   return data;

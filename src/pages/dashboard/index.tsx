@@ -1,9 +1,11 @@
 import Head from 'next/head';
 import {
-  CurrentCollateralAssetsAMMReserveGraph,
-  CurrentCollateralizedGraph,
+  getBulletPointColors,
+  getStopColors,
+  getStrokes,
   HistoricSuppliesGraph,
   PaidBackGraph,
+  ReservesGraph,
   SuppliesGraph,
 } from '../../features/usm/Graph';
 import { useVaultManagerHistories } from '../../services/graph/hooks/vault';
@@ -15,20 +17,29 @@ import { DefinedStyles } from '../../utils/DefinedStyles';
 import { PageContent } from '../../components-ui/PageContent';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import { NetworkGuardWrapper } from '../../guards/Network';
-import { useVaultManager } from '../../services/graph/hooks/vault';
-import { useMtr } from '../../hooks/vault/useMtr';
-import { useVaultManagerAssetPrice } from '../../hooks/vault/useVaultManager';
+import {
+  useVaultManager,
+} from '../../services/graph/hooks/vault';
 import { Rebase4 } from '../../features/usm/Rebase4';
 import { formatNumber } from '../../functions';
+import { useVaultDashboard } from '../../features/usm/useVaultDashboard';
 
 function Dashboard() {
   const vaultManager = useVaultManager();
-  const totalBacking =
-    vaultManager &&
-    parseFloat(vaultManager.runningStat.ammReserveCollateralUSD) +
-      parseFloat(vaultManager.runningStat.currentCollateralizedUSD);
-  const usm = useMtr();
-  // const usmPrice = useVaultManagerAssetPrice(usm.address);
+  const dashboardStats = useVaultDashboard();
+  const {
+    ammReserveDataKeys,
+    collateralReserveDataKeys,
+    collateralAmmLiquidationDataKeys,
+    ammReserveHistoriesForGraph,
+    collateralReserveHistoriesForGraph,
+    collateralAmmLiquidationHistoriesForGraph,
+    ammReserveTooltipItems,
+    collateralReserveTooltipItems,
+    collateralAmmLiquidationTooltipItems,
+    ammCollaterals,
+    cVaultCollaterals
+  } = dashboardStats;
 
   const data = useVaultManagerHistories();
   const dataForChart = data?.map((d) => {
@@ -68,13 +79,21 @@ function Dashboard() {
                   vaultManager && formatNumber(vaultManager?.currentBorrowed)
                 }
               />
+
               <DashboardMetric
+                header={'Collected Stability Fee'}
+                stat={
+                  vaultManager &&
+                  formatNumber(vaultManager?.collectedStabilityFee)
+                }
+              />
+              {/* <DashboardMetric
                 header={'Total Backing'}
                 stat={usm && formatNumber(totalBacking, true)}
                 tip={
                   'Total Backing is the sum of the value of collateralized assets in vaults and the value of collateral assets in USM-collateral AMMs'
                 }
-              />
+              /> */}
               <div className="col-span-1 sm:col-span-2">
                 <Rebase4 />
               </div>
@@ -93,10 +112,50 @@ function Dashboard() {
                 <HistoricSuppliesGraph data={dataForChart} />
               </div>
               <div className="col-span-1 bg-background rounded-20 p-2">
-                <CurrentCollateralizedGraph data={dataForChart} />
+                <ReservesGraph
+                  dataKey={collateralReserveDataKeys}
+                  data={collateralReserveHistoriesForGraph ?? []}
+                  stroke={getStrokes(cVaultCollaterals)}
+                  stopColor={getStopColors(
+                    cVaultCollaterals,
+                  )}
+                  bulletpointColors={getBulletPointColors(
+                    cVaultCollaterals,
+                  )}
+                  tooltipItems={collateralReserveTooltipItems}
+                  title="Collateralized Assets"
+                  tooltipInfoMessage="Current collaterals deposited in vaults"
+                />
               </div>
               <div className="col-span-1 bg-background rounded-20 p-2">
-                <CurrentCollateralAssetsAMMReserveGraph data={dataForChart} />
+                <ReservesGraph
+                  dataKey={ammReserveDataKeys}
+                  data={ammReserveHistoriesForGraph ?? []}
+                  stroke={getStrokes(ammCollaterals)}
+                  stopColor={getStopColors(ammCollaterals)}
+                  bulletpointColors={getBulletPointColors(
+                    ammCollaterals,
+                  )}
+                  tooltipItems={ammReserveTooltipItems}
+                  title="Collateral-USM AMM Reserves"
+                  tooltipInfoMessage="Current collateral reserves in Collateral-USM AMM"
+                />
+              </div>
+              <div className="col-span-1 bg-background rounded-20 p-2">
+                <ReservesGraph
+                  dataKey={collateralAmmLiquidationDataKeys}
+                  data={collateralAmmLiquidationHistoriesForGraph ?? []}
+                  stroke={getStrokes(cVaultCollaterals)}
+                  stopColor={getStopColors(
+                    cVaultCollaterals,
+                  )}
+                  bulletpointColors={getBulletPointColors(
+                    cVaultCollaterals,
+                  )}
+                  tooltipItems={collateralAmmLiquidationTooltipItems}
+                  title="Collateral Liquidations to AMM"
+                  tooltipInfoMessage="Collateral liquidations on AMMs"
+                />
               </div>
               <div className="col-span-1 bg-background rounded-20 p-2">
                 <PaidBackGraph data={dataForChart} />

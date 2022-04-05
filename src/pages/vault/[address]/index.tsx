@@ -17,10 +17,12 @@ import { useUserVaultInfo } from '../../../features/usm/useVaultInfo';
 import { NetworkGuardWrapper } from '../../../guards/Network';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import { useValidVault } from '../../../hooks/vault/useValidVault';
+import { VaultLiquidatedCDPMetrics } from '../../../features/usm/vault/VaultLiquidatedCDPMetrics';
 
 function Vault() {
   const router = useRouter();
   const vaultAddress = router.query.address as string;
+
   useValidVault(vaultAddress);
 
   const { account } = useActiveWeb3React();
@@ -46,10 +48,14 @@ function Vault() {
     id,
     liquidatable,
     isClosed,
+    isLiquidated,
+    isUserVault,
+    liquidation,
     // handleWrapUnwrap,
     // isCollateralNative,
     // isCollateralWnative,
   } = useUserVaultInfo(vaultAddress);
+
   const usmBalance = useCurrencyBalance(account, usm);
   const [paybackAmount, setPaybackAmount] = useState('');
 
@@ -78,39 +84,58 @@ function Vault() {
               sfr={sfr}
               currentCollateralRatio={currentCollateralRatio}
               address={address}
+              isClosed={isClosed}
+              isLiquidated={isLiquidated}
             />
-            <div className="grid grid-cols-2 lg:grid-cols-7 gap-4">
-              <div className="col-span-2 lg:col-span-7">
-                <VaultCDPMetrics
-                  fee={fee}
-                  usmPrice={usmPrice}
-                  debtAmount={currentBorrowed}
-                  debt={debt}
-                  currentBorrowed={currentBorrowed}
-                  horizontal
-                />
-              </div>
-              <div className="col-span-2 lg:col-span-4">
-                <div className="rounded-20 p-8 bg-background space-y-8">
-                  <VaultHeader vaultAddress={address} payback />
-                  <VaultPayBack
-                    mcr={mcr}
-                    collateralPrice={collateralPrice}
-                    currentCollateralized={currentCollateralized}
-                    borrowed={currentBorrowed}
-                    vaultAddress={address}
-                    usm={usm}
-                    balance={usmBalance}
-                    amount={paybackAmount}
-                    onAmountChange={setPaybackAmount}
-                    debt={debt}
-                  />
+            {!isClosed && (
+              <div className="grid grid-cols-2 lg:grid-cols-7 gap-4">
+                <div className="col-span-2 lg:col-span-7">
+                  {isLiquidated ? (
+                    <VaultLiquidatedCDPMetrics
+                      collateralSymbol={collateralCurrency?.symbol}
+                      liquidationAmount={liquidation.liquidationAmount}
+                      liquidationFee={liquidation.liquidationFee}
+                      liquidationAMM={liquidation.liquidationAMM}
+                      currentBorrowed={currentBorrowed}
+                      horizontal
+                    />
+                  ) : (
+                    <VaultCDPMetrics
+                      fee={fee}
+                      usmPrice={usmPrice}
+                      debtAmount={currentBorrowed}
+                      debt={debt}
+                      currentBorrowed={currentBorrowed}
+                      horizontal
+                    />
+                  )}
                 </div>
+                {isUserVault && !isLiquidated && (
+                  <>
+                    <div className="col-span-2 lg:col-span-4">
+                      <div className="rounded-20 p-8 bg-background space-y-8">
+                        <VaultHeader vaultAddress={address} payback />
+                        <VaultPayBack
+                          mcr={mcr}
+                          collateralPrice={collateralPrice}
+                          currentCollateralized={currentCollateralized}
+                          borrowed={currentBorrowed}
+                          vaultAddress={address}
+                          usm={usm}
+                          balance={usmBalance}
+                          amount={paybackAmount}
+                          onAmountChange={setPaybackAmount}
+                          debt={debt}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-span-2 lg:col-span-3">
+                      <VaultFees sfr={sfr} mcr={mcr} lfr={lfr} />
+                    </div>
+                  </>
+                )}
               </div>
-              <div className="col-span-2 lg:col-span-3">
-                <VaultFees sfr={sfr} mcr={mcr} lfr={lfr} />
-              </div>
-            </div>
+            )}
           </div>
         </PageContent>
       </Page>

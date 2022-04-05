@@ -60,6 +60,8 @@ export function VaultInfoCard({
   condition,
   address,
   hideCloseVault = false,
+  isClosed,
+  isLiquidated,
 }) {
   const { chainId } = useActiveWeb3React();
   const isViewportLargUp = useSizeLgUp();
@@ -224,15 +226,17 @@ export function VaultInfoCard({
               </div>
             </div>
           </div>
-          <div className="mt-4 flex justify-end">
-            <Button
-              type="bordered"
-              className="!border !border-4 md:text-lg border-primary !bg-transparent font-bold"
-              onClick={handleOpen}
-            >
-              Close Vault
-            </Button>
-          </div>
+          {!isClosed && !isLiquidated && (
+            <div className="mt-4 flex justify-end">
+              <Button
+                type="bordered"
+                className="!border !border-4 md:text-lg border-primary !bg-transparent font-bold"
+                onClick={handleOpen}
+              >
+                Close Vault
+              </Button>
+            </div>
+          )}
           {!isViewportLargUp && (
             <div
               onClick={() => setExpanded(!expanded)}

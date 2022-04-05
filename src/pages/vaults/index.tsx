@@ -31,6 +31,8 @@ export enum VaultCondition {
   SAFE = 'safe',
   WARNING = 'warning',
   DANGER = 'danger',
+  CLOSED = 'closed',
+  LIQUIDATED = 'liquidated',
   UNKNWON = 'unknown',
 }
 
@@ -47,11 +49,14 @@ function Vaults() {
   const {
     dangerVaults,
     warningVaults,
+    liquidatedVaults,
     allVaults,
     totalCollateralized,
   } = useMemo(() => {
     const dangerVaults = [];
     const warningVaults = [];
+    const closedVaults = [];
+    const liquidatedVaults = [];
     let totalCollateralized = 0;
     const allVaults = userVaults.map((v) => {
       const {
@@ -62,6 +67,8 @@ function Vaults() {
         currentCollateralized,
         collateral,
         createdAt,
+        isLiquidated,
+        liquidation
       } = v;
 
       const isWnative = getAddress(collateral) === WNATIVE[chainId].address;
@@ -87,14 +94,15 @@ function Vaults() {
       const liquidationPrice =
         (debt * vMcr) / 100 / parseFloat(currentCollateralized);
 
-      const condition =
-        collateralPrice !== undefined
-          ? collateralPrice > liquidationPrice * 1.3
-            ? VaultCondition.SAFE
-            : collateralPrice >= liquidationPrice * 1.1
-            ? VaultCondition.WARNING
-            : VaultCondition.DANGER
-          : VaultCondition.UNKNWON;
+      const condition = isLiquidated
+        ? VaultCondition.LIQUIDATED
+        : collateralPrice !== undefined
+        ? collateralPrice > liquidationPrice * 1.3
+          ? VaultCondition.SAFE
+          : collateralPrice >= liquidationPrice * 1.1
+          ? VaultCondition.WARNING
+          : VaultCondition.DANGER
+        : VaultCondition.UNKNWON;
 
       const refactoredVault = {
         id,
@@ -108,11 +116,14 @@ function Vaults() {
         collateralAddress: getAddress(collateral),
         collateralPrice,
         isWnative,
+        isLiquidated,
         fee,
         debt,
+        liquidation
       };
-
-      if (condition === VaultCondition.DANGER) {
+      if (isLiquidated) {
+        liquidatedVaults.push(refactoredVault);
+      } else if (condition === VaultCondition.DANGER) {
         dangerVaults.push(refactoredVault);
       } else if (condition === VaultCondition.WARNING) {
         warningVaults.push(refactoredVault);
@@ -120,7 +131,7 @@ function Vaults() {
 
       return refactoredVault;
     });
-    return { dangerVaults, warningVaults, allVaults, totalCollateralized };
+    return { dangerVaults, warningVaults, liquidatedVaults, allVaults, totalCollateralized };
   }, [cdpPrices, userVaults]);
 
   // const vaultAddrs = useVaultAddresses(v1Ids);
@@ -159,6 +170,7 @@ function Vaults() {
                     <div>
                       <Alert
                         dismissable={false}
+                        className="mb-4"
                         message={
                           <div className="p-0 md:p-4">
                             <div className="text-xl font-bold">

@@ -53,6 +53,16 @@ function ConditionFilters({ changeConditionFilter, activeCondition }) {
       >
         Danger
       </div>
+
+      <div
+        className={classNames(
+          baseStyle,
+          activeCondition == VaultCondition.LIQUIDATED && activeStyle,
+        )}
+        onClick={() => changeConditionFilter(VaultCondition.LIQUIDATED)}
+      >
+        Liquidated
+      </div>
     </div>
   );
 }
@@ -133,6 +143,8 @@ export function VaultsTable({ vaults, hideFilter = undefined }) {
             condition,
             debt,
             fee,
+            isLiquidated,
+            liquidation,
             isWnative,
           } = row.original;
           return (
@@ -148,8 +160,10 @@ export function VaultsTable({ vaults, hideFilter = undefined }) {
               mcr={mcr}
               currentBorrowed={currentBorrowed}
               currentCollateralized={currentCollateralized}
+              isLiquidated={isLiquidated}
               debt={debt}
               fee={fee}
+              liquidation={liquidation}
               ownership
             />
           );

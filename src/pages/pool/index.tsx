@@ -77,7 +77,6 @@ function Pool() {
     .map(([, pair]) => pair)
     .filter((v2Pair): v2Pair is Pair => Boolean(v2Pair));
 
-  console.log(allV2PairsWithLiquidity);
   // TODO: Replicate this!
   // show liquidity even if its deposited in rewards contract
   // const stakingInfo = useStakingInfo()

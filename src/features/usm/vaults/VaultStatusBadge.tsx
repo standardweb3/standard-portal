@@ -13,7 +13,11 @@ export function VaultStatusBadge({
   return (
     <div className="cursor-default">
       <Question
-        disableShow={disableShow}
+        disableShow={
+          condition === VaultCondition.CLOSED ||
+          VaultCondition.LIQUIDATED ||
+          disableShow
+        }
         text={
           tooltipText !== undefined ? (
             <div>{tooltipText}</div>
@@ -57,7 +61,10 @@ export function VaultStatusBadge({
         <div
           className={classNames(
             'px-3 py-1 rounded-20 text-xs flex items-center space-x-1',
-            condition === VaultCondition.SAFE
+            condition === VaultCondition.CLOSED ||
+              condition === VaultCondition.LIQUIDATED
+              ? 'text-grey border-grey'
+              : condition === VaultCondition.SAFE
               ? 'text-safe border-safe'
               : condition === VaultCondition.WARNING
               ? 'text-warn border-warn'
@@ -70,7 +77,10 @@ export function VaultStatusBadge({
             <div
               className={classNames(
                 'w-2 h-2 rounded-full',
-                condition === VaultCondition.SAFE
+                condition === VaultCondition.CLOSED ||
+                  condition === VaultCondition.LIQUIDATED
+                  ? 'bg-grey'
+                  : condition === VaultCondition.SAFE
                   ? 'bg-safe'
                   : condition === VaultCondition.WARNING
                   ? 'bg-warn'

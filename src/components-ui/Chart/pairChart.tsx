@@ -17,6 +17,7 @@ import { useActiveWeb3React } from '../../hooks';
 import { useArbitrage } from '../../hooks/useArbitrage';
 import { Button } from '../Button';
 import { getBuyUrl } from '../../functions/urls';
+import { useCVault } from '../../services/graph';
 
 const Arbitrage = dynamic(() => import('../Arbitrage'), {
   ssr: false,
@@ -139,6 +140,9 @@ export default function Chart({
 }: ChartProps) {
   const protocol = useProtocol();
   const { chainId } = useActiveWeb3React();
+  const cVault = useCVault({
+    id: inputCurrency.wrapped.address.toLowerCase(),
+  });
 
   const [candlePeriod, setCandlePeriod] = useState(initialCandlePeriod);
   const [candlestickSeries, setCandlestickSeries] = useState<
@@ -399,10 +403,14 @@ export default function Chart({
               <div className="text-3xl font-black text-gray-200 truncate">
                 {formatNumber(lastClose || 0)}
               </div>
-              <div className="flex items-center space-x-2">
-                <div>Liquidated (02/28):</div>
-                <div>12 {inputCurrency.symbol}</div>
-              </div>
+              {cVault?.liquidation && (
+                <div className="flex items-center space-x-2">
+                  <div>Liquidated:</div>
+                  <div>
+                    {cVault?.liquidation?.liquidationAMM} {inputCurrency.symbol}
+                  </div>
+                </div>
+              )}
             </div>
             <a href={getBuyUrl(inputCurrency, outputCurrency)}>
               <Button

@@ -52,6 +52,8 @@ function Vault() {
     isCollateralNative,
     isCollateralWnative,
     isClosed,
+    isLiquidated,
+    isUserVault,
   } = useUserVaultInfo(vaultAddress);
 
   // START: withdraw
@@ -94,47 +96,54 @@ function Vault() {
               sfr={sfr}
               currentCollateralRatio={currentCollateralRatio}
               address={address}
+              isClosed={isClosed}
+              isLiquidated={isLiquidated}
             />
-
-            <div className="grid grid-cols-2 lg:grid-cols-7 gap-4">
-              <div className="col-span-2 lg:col-span-7">
-                <VaultCDPMetrics
-                  fee={fee}
-                  usmPrice={usmPrice}
-                  debtAmount={currentBorrowed}
-                  debt={debt}
-                  currentBorrowed={currentBorrowed}
-                  horizontal
-                />
-              </div>
-              <div className="col-span-2 lg:col-span-4">
-                <div className="rounded-20 p-8 bg-background space-y-8">
-                  <VaultHeader vaultAddress={vaultAddress} withdraw />
-                  <VaultWithdraw
-                    minCollateralAmount={minCollateralAmount}
-                    borrowed={currentBorrowed}
-                    mcr={mcr}
-                    collateralPrice={collateralPrice}
-                    currentCollateralized={currentCollateralized}
-                    onAmountChange={setWithdrawAmount}
-                    vaultAddress={address}
-                    collateral={collateralCurrency}
-                    amount={withdrawAmount}
-                    balance={withdrawableCurrencyBalance}
-                    balanceNum={withdrawableBalance}
-                    collateralBalance={collateralBalance}
-                    debt={debt}
+            {!isClosed && (
+              <div className="grid grid-cols-2 lg:grid-cols-7 gap-4">
+                <div className="col-span-2 lg:col-span-7">
+                  <VaultCDPMetrics
                     fee={fee}
-                    handleWrapUnwrap={handleWrapUnwrap}
-                    isCollateralNative={isCollateralNative}
-                    isCollateralWnative={isCollateralWnative}
+                    usmPrice={usmPrice}
+                    debtAmount={currentBorrowed}
+                    debt={debt}
+                    currentBorrowed={currentBorrowed}
+                    horizontal
                   />
                 </div>
+                {isUserVault && !isLiquidated && (
+                  <>
+                    <div className="col-span-2 lg:col-span-4">
+                      <div className="rounded-20 p-8 bg-background space-y-8">
+                        <VaultHeader vaultAddress={vaultAddress} withdraw />
+                        <VaultWithdraw
+                          minCollateralAmount={minCollateralAmount}
+                          borrowed={currentBorrowed}
+                          mcr={mcr}
+                          collateralPrice={collateralPrice}
+                          currentCollateralized={currentCollateralized}
+                          onAmountChange={setWithdrawAmount}
+                          vaultAddress={address}
+                          collateral={collateralCurrency}
+                          amount={withdrawAmount}
+                          balance={withdrawableCurrencyBalance}
+                          balanceNum={withdrawableBalance}
+                          collateralBalance={collateralBalance}
+                          debt={debt}
+                          fee={fee}
+                          handleWrapUnwrap={handleWrapUnwrap}
+                          isCollateralNative={isCollateralNative}
+                          isCollateralWnative={isCollateralWnative}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-span-2 lg:col-span-3">
+                      <VaultFees sfr={sfr} mcr={mcr} lfr={lfr} />
+                    </div>
+                  </>
+                )}
               </div>
-              <div className="col-span-2 lg:col-span-3">
-                <VaultFees sfr={sfr} mcr={mcr} lfr={lfr} />
-              </div>
-            </div>
+            )}
           </div>
         </PageContent>
       </Page>

@@ -20,6 +20,7 @@ export const explorerVaultsQuery = gql`
         id
       }
       address
+      isClosed
       isLiquidated
       currentBorrowed
       currentCollateralized
@@ -29,6 +30,9 @@ export const explorerVaultsQuery = gql`
         lfr
         sfr
         decimals
+      }
+      liquidation {
+        liquidationAmount
       }
       createdAt
     }
