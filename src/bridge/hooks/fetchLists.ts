@@ -34,7 +34,6 @@ export function useFetchRouterTokenList() {
   }, [data, error]);
 
   return tokens;
-  // console.log(lists)
   // return useCallback(
   //   async () => {
   //     if (!chainId) return

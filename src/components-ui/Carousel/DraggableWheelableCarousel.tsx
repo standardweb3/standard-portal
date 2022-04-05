@@ -48,12 +48,9 @@ export function DraggableWheelableCarousel({
   //       scrollToItem,
   //       isLastItemVisible,
   //     } = useContext(VisibilityContext);
-  //     console.log(isLastItemVisible);
   //     if (isLastItemVisible) {
-  //       console.log('sss');
   //       const item = getItemByIndex(0);
   //       if (item) {
-  //         console.log('ggg');
   //         scrollToItem(item);
   //       }
   //     } else scrollNext();

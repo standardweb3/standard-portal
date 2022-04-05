@@ -281,8 +281,6 @@ export function useBridgeNativeCallback(
   const bridgeContract = useBridgeContract(routerToken);
   const balance = useETHBalances(account ? [account] : [])?.[account ?? ''];
   const normalCurrency = toNormalCurrency(inputCurrency, chainId);
-  // console.log(balance)
-  // console.log(inputCurrency)
   // 我们总是可以解析输入货币的金额，因为包装是1:1
   const inputAmount = useMemo(
     () => tryParseNormalCurrencyAmount(typedValue, normalCurrency),
@@ -293,7 +291,6 @@ export function useBridgeNativeCallback(
   const addBridgeTransaction = useBridgeTransactionAdder();
 
   return useMemo(() => {
-    // console.log(inputCurrency)
     if (
       !bridgeContract ||
       !chainId ||
@@ -302,7 +299,6 @@ export function useBridgeNativeCallback(
       !toChainID
     )
       return NOT_APPLICABLE;
-    // console.log(typedValue)
 
     const sufficientBalance =
       inputAmount && balance && !balance.lessThan(inputAmount);
@@ -313,8 +309,6 @@ export function useBridgeNativeCallback(
         sufficientBalance && inputAmount
           ? async () => {
               try {
-                // console.log(bridgeContract.anySwapOutNative)
-                // console.log(inputAmount.raw.toString(16))
                 const txReceipt = await bridgeContract.anySwapOutNative(
                   ...[inputToken, toAddress, toChainID],
                   { value: `0x${inputAmount.numerator.toString(16)}` },
@@ -396,8 +390,6 @@ export function useSwapUnderlyingCallback(
   const bridgeContract = useSwapUnderlyingContract(inputToken);
   const normalCurrency = toNormalCurrency(inputCurrency, chainId);
   const balance = useCurrencyBalance(account ?? undefined, normalCurrency);
-  // console.log(balance?.raw.toString())
-  // console.log(inputCurrency)
   // 我们总是可以解析输入货币的金额，因为包装是1:1
   const inputAmount = useMemo(
     () => tryParseNormalCurrencyAmount(typedValue, normalCurrency),
@@ -405,21 +397,18 @@ export function useSwapUnderlyingCallback(
   );
   const addTransaction = useTransactionAdder();
   return useMemo(() => {
-    // console.log(inputCurrency)
     if (!bridgeContract || !chainId || !inputCurrency || !swapType)
       return NOT_APPLICABLE;
-    // console.log(inputAmount?.raw.toString())
 
     const sufficientBalance =
       inputAmount && balance && !balance.lessThan(inputAmount);
-    // console.log(sufficientBalance)
-    return {
+
+      return {
       wrapType: WrapType.WRAP,
       execute:
         sufficientBalance && inputAmount
           ? async () => {
               try {
-                // console.log(inputAmount.raw.toString(16))
                 const txReceipt =
                   swapType === 'deposit'
                     ? await bridgeContract.deposit(
@@ -480,8 +469,6 @@ export function useSwapNativeCallback(
   const normalCurrency = toNormalCurrency(inputCurrency, chainId);
   const anybalance = useCurrencyBalance(account ?? undefined, normalCurrency);
   const balance = swapType === 'deposit' ? ethbalance : anybalance;
-  // console.log(balance)
-  // console.log(inputCurrency)
   // 我们总是可以解析输入货币的金额，因为包装是1:1
   const inputAmount = useMemo(
     () => tryParseNormalCurrencyAmount(typedValue, normalCurrency),
@@ -489,10 +476,8 @@ export function useSwapNativeCallback(
   );
   const addTransaction = useTransactionAdder();
   return useMemo(() => {
-    // console.log(inputCurrency)
     if (!bridgeContract || !chainId || !inputCurrency || !swapType)
       return NOT_APPLICABLE;
-    // console.log(typedValue)
 
     const sufficientBalance =
       inputAmount && balance && !balance.lessThan(inputAmount);
@@ -503,10 +488,7 @@ export function useSwapNativeCallback(
         sufficientBalance && inputAmount
           ? async () => {
               try {
-                // console.log(`0x${inputAmount.raw.toString(16)}`)
                 const v = { value: `0x${inputAmount.numerator.toString(16)}` };
-                // console.log(v)
-                // console.log([inputToken, account])
                 const txReceipt =
                   swapType === 'deposit'
                     ? await bridgeContract.depositNative(
@@ -575,8 +557,6 @@ export function useBridgeSwapNativeCallback(
   const normalCurrency = toNormalCurrency(inputCurrency, chainId);
 
   const balance = useCurrencyBalance(account ?? undefined, normalCurrency);
-  // console.log(balance)
-  // console.log(inputCurrency)
   // 我们总是可以解析输入货币的金额，因为包装是1:1
   const inputAmount = useMemo(
     () => tryParseNormalCurrencyAmount(typedValue, normalCurrency),
@@ -584,7 +564,6 @@ export function useBridgeSwapNativeCallback(
   );
   const addTransaction = useTransactionAdder();
   return useMemo(() => {
-    // console.log(inputCurrency)
     if (
       !bridgeContract ||
       !chainId ||
@@ -597,7 +576,6 @@ export function useBridgeSwapNativeCallback(
       routerPath.length <= 0
     )
       return NOT_APPLICABLE;
-    // console.log(typedValue)
 
     const sufficientBalance =
       inputAmount && balance && !balance.lessThan(inputAmount);
@@ -608,17 +586,9 @@ export function useBridgeSwapNativeCallback(
         sufficientBalance && inputAmount
           ? async () => {
               try {
-                // console.log(`0x${inputAmount.raw.toString(16)}`)
-                // console.log(inputAmount.raw.toString())
-                // console.log(outputAmount)
-                // console.log(routerPath)
-                // console.log(toAddress)
-                // console.log(parseInt((Date.now()/1000 + deadline).toString()))
-                // console.log(toChainID)
                 const txType = isUnderlying
                   ? 'anySwapOutExactTokensForNativeUnderlying'
                   : 'anySwapOutExactTokensForNative';
-                // console.log(txType)
                 // const txReceipt = await bridgeContract.anySwapOutExactTokensForNative(
                 const txReceipt = await bridgeContract[txType](
                   `0x${inputAmount.numerator.toString(16)}`,
@@ -701,8 +671,6 @@ export function useBridgeSwapUnderlyingCallback(
   const normalCurrency = toNormalCurrency(inputCurrency, chainId);
 
   const balance = useCurrencyBalance(account ?? undefined, normalCurrency);
-  // console.log(balance)
-  // console.log(inputCurrency)
   // 我们总是可以解析输入货币的金额，因为包装是1:1
   const inputAmount = useMemo(
     () => tryParseNormalCurrencyAmount(typedValue, normalCurrency),
@@ -710,7 +678,6 @@ export function useBridgeSwapUnderlyingCallback(
   );
   const addTransaction = useTransactionAdder();
   return useMemo(() => {
-    // console.log(inputCurrency)
     if (
       !bridgeContract ||
       !chainId ||
@@ -723,24 +690,15 @@ export function useBridgeSwapUnderlyingCallback(
       routerPath.length <= 0
     )
       return NOT_APPLICABLE;
-    // console.log(typedValue)
 
     const sufficientBalance =
       inputAmount && balance && !balance.lessThan(inputAmount);
-    // console.log(sufficientBalance)
-    // console.log(inputAmount)
     return {
       wrapType: WrapType.WRAP,
       execute:
         sufficientBalance && inputAmount
           ? async () => {
               try {
-                // console.log(`0x${inputAmount.raw.toString(16)}`)
-                // console.log(outputAmount)
-                // console.log(routerPath)
-                // console.log(toAddress)
-                // console.log(parseInt((Date.now()/1000 + deadline).toString()))
-                // console.log(toChainID)
                 // const txReceipt = await bridgeContract.anySwapOutExactTokensForNativeUnderlying(
                 const txType = isUnderlying
                   ? 'anySwapOutExactTokensForTokensUnderlying'
@@ -823,8 +781,6 @@ export function useCrossBridgeCallback(
   const tokenBalance = useCurrencyBalance(account ?? undefined, normalCurrency);
   const ethBalance = useETHBalances(account ? [account] : [])?.[account ?? ''];
   const balance = inputCurrency ? tokenBalance : ethBalance;
-  // console.log(balance)
-  // console.log(inputCurrency)
   // 我们总是可以解析输入货币的金额，因为包装是1:1
   const inputAmount = useMemo(
     () =>
@@ -839,12 +795,10 @@ export function useCrossBridgeCallback(
 
   return useMemo(() => {
     if (!chainId || !toAddress || !toChainID) return NOT_APPLICABLE;
-    // console.log(typedValue)
 
     const sufficientBalance =
       inputAmount && balance && !balance.lessThan(inputAmount);
-    // console.log(inputAmount?.raw?.toString())
-    // console.log(balance?.raw?.toString())
+
     return {
       wrapType: WrapType.WRAP,
       execute:
@@ -948,8 +902,6 @@ export function useCrossBridgeCallback(
 //   const { chainId, account } = useActiveWeb3React();
 //   const connectedWallet = useConnectedWallet();
 //   const { post, connect } = useWallet();
-//   // console.log(balance)
-//   // console.log(inputCurrency)
 //   // 我们总是可以解析输入货币的金额，因为包装是1:1
 //   const inputAmount = useMemo(
 //     () =>
@@ -961,7 +913,6 @@ export function useCrossBridgeCallback(
 //   const addTransaction = useTransactionAdder();
 
 //   const sendTx = useCallback(() => {
-//     console.log(connectedWallet);
 //     if (
 //       !connectedWallet ||
 //       !account ||
@@ -980,10 +931,6 @@ export function useCrossBridgeCallback(
 
 //   return useMemo(() => {
 //     if (!chainId || !toAddress || !toChainID) return NOT_APPLICABLE;
-//     // console.log(typedValue)
-
-//     // console.log(inputAmount?.raw?.toString())
-//     // console.log(balance?.raw?.toString())
 //     return {
 //       wrapType: !connectedWallet ? WrapType.NOCONNECT : WrapType.WRAP,
 //       onConnect: async () => {
@@ -992,9 +939,7 @@ export function useCrossBridgeCallback(
 //       execute: inputAmount
 //         ? async () => {
 //             try {
-//               console.log(12);
 //               const txReceipt: any = await sendTx();
-//               console.log(txReceipt);
 //               if (txReceipt) {
 //                 const txData: any = { hash: txReceipt?.result?.txhash };
 //                 addTransaction(txData, {
@@ -1019,7 +964,6 @@ export function useCrossBridgeCallback(
 //                 }
 //               }
 //             } catch (error) {
-//               console.log('Could not swapout', error);
 //             }
 //           }
 //         : undefined,

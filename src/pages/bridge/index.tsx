@@ -562,12 +562,10 @@ export function Bridge() {
   }, [chainId, count]);
   // useEffect(() => {
   //   if (selectCurrency) {
-  //     console.log('url iii', selectCurrency);
   //     const arr: any = [];
 
   //     for (const c in selectCurrency?.destChains) {
   //       if (c?.toString() === chainId?.toString()) continue;
-  //       console.log('url', c?.toString(), chainId?.toString());
   //       if (
   //         (getCurConfigInfo().showChain.length > 0 &&
   //           !getCurConfigInfo().showChain.includes(c)) ||
@@ -578,7 +576,6 @@ export function Bridge() {
   //         continue;
   //       arr.push(c);
   //     }
-  //     console.log('url arr', arr);
 
   //     let useChain: any = selectChain
   //       ? selectChain
@@ -593,7 +590,6 @@ export function Bridge() {
   //         }
   //       }
   //     }
-  //     console.log('url bgg');
   //     setSelectChain(useChain);
   //     setSelectChainList(arr);
   //   } else {

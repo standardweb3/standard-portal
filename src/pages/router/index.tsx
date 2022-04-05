@@ -598,7 +598,6 @@ export function Router() {
   //         continue;
   //       arr.push(c);
   //     }
-  //     console.log('selectChain', selectChain);
   //     let useChain: any = selectChain
   //       ? selectChain
   //       : getCurChainInfo(chainId).bridgeInitChain;

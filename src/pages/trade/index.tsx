@@ -39,6 +39,7 @@ import { NetworkGuardWrapper } from '../../guards/Network';
 import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
 import { reverseArray } from '../../utils';
 import { TRADE_BLACKLIST } from '../../constants/blacklist';
+import { filterTokens } from '../../functions/filtering';
 
 function Tokens() {
   const { chainId } = useActiveWeb3React();
@@ -93,7 +94,18 @@ function Tokens() {
   const _sevenDayEthPrice = useSevenDayEthPrice();
   const sevenDayEthPrice = parseFloat(_sevenDayEthPrice ?? '0');
 
-  const tokens = useTokens({});
+  const unfilteredTokens = useTokens({
+    where: {
+      derivedETH_gt: 0,
+    },
+  });
+
+  const tokenBlacklist = ['0x9f89d6bdd4adc964d8124bf857a26fcb83f4939e'];
+  const tokens = useMemo(
+    () =>
+      unfilteredTokens?.filter((token) => !tokenBlacklist.includes(token.id)) ?? [],
+    [unfilteredTokens],
+  );
 
   useEffect(() => {
     if (tokens !== undefined && tokens.length === 0) {
@@ -254,6 +266,7 @@ function Tokens() {
         className: 'col-span-2 justify-center items-center flex',
         Cell: ({ value }) => {
           const { chainId } = useActiveWeb3React();
+          if (chainId === ChainId.METIS) return '-';
           return (
             <div
               className={`text-xs lg:text-sm ${

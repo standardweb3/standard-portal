@@ -412,9 +412,7 @@ export function useDividendPoolWhitelistTokenBalances(pageSize: number) {
   }, [balances, anyLoading, current, lastBlockNumber]);
 
   return { tokensWithDividends, next, current, loading: anyLoading, last };
-  // useEffect(() => {
-  //   console.log(pairDividends);
-  // }, [pairDividends]);
+
   // const pairsWithDividends = useMemo(
   //   () =>
   //   pairs.reduce<{ [address: string]: CurrencyAmount<Currency> }>(
@@ -487,9 +485,7 @@ export function useDividendPoolWhitelistPairBalances(pageSize: number) {
   }, [balances, anyLoading, current, lastBlockNumber]);
 
   return { pairsWithDividends, next, current, loading: anyLoading, last };
-  // useEffect(() => {
-  //   console.log(pairDividends);
-  // }, [pairDividends]);
+
   // const pairsWithDividends = useMemo(
   //   () =>
   //   pairs.reduce<{ [address: string]: CurrencyAmount<Currency> }>(

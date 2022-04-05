@@ -12,7 +12,6 @@ export function useCollaterals(
     () => getCollaterals({ ...variables, chainId }),
     swrConfig,
   );
-  //   console.log('collaterals', data);
   return data;
 }
 

@@ -57,7 +57,6 @@ export function useNewVaultState(
       ? (currentCollateralizedUSD / mtrBalance) * 100
       : undefined;
 
-  // console.log(newLiquidationPriceUSD,)
   return {
     newMinCollateralAmount,
     newLiquidationPriceUSD,
