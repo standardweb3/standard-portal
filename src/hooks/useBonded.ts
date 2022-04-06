@@ -41,7 +41,7 @@ export function useBondSupply(): BigNumber | null {
         .then((res) => {
           setTotalSupply(res);
         })
-        .catch((err) => console.log('fetch bond supply error', err));
+        .catch((err) => console.error('fetch bond supply error', err));
     }
   }, [dividendPoolAddress, stndContract, lastBlockNumber]);
 
@@ -61,7 +61,7 @@ export function useLastBonded() {
         .then((res) => {
           setLastBonded(res);
         })
-        .catch((err) => console.log('fetch last bonded error', err));
+        .catch((err) => console.error('fetch last bonded error', err));
     }
   }, [dividendPoolContract, account, lastBlockNumber]);
 
@@ -81,7 +81,7 @@ export function useLastClaimed(token?: string) {
         .then((res) => {
           setLastClaimed(res);
         })
-        .catch((err) => console.log('fetch last claimed error', err));
+        .catch((err) => console.error('fetch last claimed error', err));
     }
   }, [dividendPoolContract, account, lastBlockNumber]);
 

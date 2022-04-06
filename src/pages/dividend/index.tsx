@@ -101,6 +101,10 @@ function Stake() {
   );
 }
 
-Stake.Guard = NetworkGuardWrapper(NORMAL_GUARDED_CHAINS);
+Stake.Guard = NetworkGuardWrapper([
+  ChainId.MAINNET,
+  ChainId.SHIDEN,
+  ChainId.METIS,
+]);
 
 export default Stake;

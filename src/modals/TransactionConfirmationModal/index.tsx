@@ -1,19 +1,9 @@
 // import { AlertTriangle, ArrowUpCircle, CheckCircle } from 'react-feather';
 import { ChainId, Currency } from '@digitalnative/standard-protocol-sdk';
 import React, { FC } from 'react';
-import LogoPrimary from '../../../public/img/logos/logo.primary.png';
 
 import { Button } from '../../components-ui/Button';
-import {
-  CheckCircleIcon,
-  CheckIcon,
-  EmojiSadIcon,
-  ExclamationCircleIcon,
-  SortAscendingIcon,
-  ThumbUpIcon,
-  UploadIcon,
-  XIcon,
-} from '@heroicons/react/outline';
+import { XIcon } from '@heroicons/react/outline';
 import { ExternalLink } from '../../components-ui/ExternalLink';
 import { Image } from '../../components-ui/Image';
 // import Lottie from 'lottie-react';
@@ -23,14 +13,9 @@ import { getExplorerLink } from '../../functions/explorer';
 // import loadingRollingCircle from '../../animation/loading-rolling-circle.json';
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
 import useAddTokenToMetaMask from '../../hooks/useAddTokenToMetaMask';
-import { WavySpinner } from '../../components-ui/Spinner/WavySpinner';
 import { LogoSpinner } from '../../components-ui/Spinner/LogoSpinner';
 import { LogoCrumble } from '../../components-ui/LogoCrumble';
-import {
-  useSizeSm,
-  useSizeSmDown,
-  useSizeXs,
-} from '../../components-ui/Responsive';
+import { useSizeSmDown, useSizeXs } from '../../components-ui/Responsive';
 
 interface ConfirmationPendingContentProps {
   onDismiss: () => void;

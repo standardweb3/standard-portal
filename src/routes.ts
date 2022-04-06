@@ -6,6 +6,11 @@ import dividendv1Icon from '../public/icons/dividendv1.svg';
 import bridgeIcon from '../public/icons/bridge.svg';
 import migrateIcon from '../public/icons/migrate.svg';
 import routerIcon from '../public/icons/router.svg';
+import dashboardIcon from '../public/icons/dashboard.svg';
+import vaultIcon from '../public/icons/vault.svg';
+import borrowIcon from '../public/icons/borrow.svg';
+import ammsIcon from '../public/icons/amms.svg'
+import explorerIcon from '../public/icons/explorer.svg'
 
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
@@ -15,9 +20,87 @@ export const chainIdGuardRedirect = {
   [ChainId.BSC]: '/router',
   [ChainId.MATIC]: '/router',
   [ChainId.METIS]: '/trade',
+  [ChainId.RINKEBY]: '/dashboard',
 };
 
 export const sidebarRoutes = [
+  {
+    name: 'Dashboard',
+    urls: ['/dashboard'],
+    icon: dashboardIcon,
+    iconActive: dashboardIcon,
+    hidden: [
+      ChainId.MATIC,
+      ChainId.MAINNET,
+      ChainId.SHIDEN,
+      ChainId.MATIC,
+      ChainId.BSC,
+    ],
+  },
+
+  {
+    name: 'Borrow',
+    urls: ['/borrow'],
+    icon: borrowIcon,
+    iconActive: borrowIcon,
+    hidden: [
+      ChainId.MATIC,
+      ChainId.MAINNET,
+      ChainId.SHIDEN,
+      ChainId.MATIC,
+      ChainId.BSC,
+    ],
+  },
+  {
+    name: 'Vaults',
+    urls: ['/vaults'],
+    icon: vaultIcon,
+    iconActive: vaultIcon,
+    hidden: [
+      ChainId.MATIC,
+      ChainId.MAINNET,
+      ChainId.SHIDEN,
+      ChainId.MATIC,
+      ChainId.BSC,
+    ],
+  },
+  {
+    name: 'AMMs',
+    urls: ['/amms'],
+    icon: ammsIcon,
+    iconActive: ammsIcon,
+    hidden: [
+      ChainId.MATIC,
+      ChainId.MAINNET,
+      ChainId.SHIDEN,
+      ChainId.MATIC,
+      ChainId.BSC,
+    ],
+  },
+
+  {
+    name: 'Explorer',
+    urls: ['/explorer'],
+    icon: explorerIcon,
+    iconActive: explorerIcon,
+    hidden: [
+      ChainId.MATIC,
+      ChainId.MAINNET,
+      ChainId.SHIDEN,
+      ChainId.MATIC,
+      ChainId.BSC,
+    ],
+  },
+  {
+    name: 'Divider',
+    hidden: [
+      ChainId.MATIC,
+      ChainId.MAINNET,
+      ChainId.SHIDEN,
+      ChainId.MATIC,
+      ChainId.BSC,
+    ],
+  },
   {
     name: 'Trade',
     urls: ['/trade', '/add', 'liquidity'],
@@ -34,19 +117,19 @@ export const sidebarRoutes = [
   },
   {
     name: 'Divider',
-    hidden: [ChainId.BSC, ChainId.MATIC],
+    hidden: [ChainId.BSC, ChainId.MATIC, ChainId.RINKEBY],
   },
   {
     name: 'Farm',
     urls: ['/farm'],
     icon: farmIcon,
     iconActive: farmIcon,
-    hidden: [ChainId.MATIC, ChainId.BSC],
+    hidden: [ChainId.MATIC, ChainId.BSC, ChainId.RINKEBY],
   },
 
   {
     name: 'Divider',
-    hidden: [ChainId.BSC, ChainId.MATIC],
+    hidden: [ChainId.BSC, ChainId.MATIC, ChainId.RINKEBY],
   },
   {
     name: 'Dividend',
@@ -54,25 +137,31 @@ export const sidebarRoutes = [
     icon: dividendIcon,
     iconActive: dividendIcon,
     // hidden: [ChainId.SHIDEN],
-    hidden: [ChainId.MATIC, ChainId.BSC, ChainId.METIS],
+    hidden: [ChainId.MATIC, ChainId.BSC, ChainId.METIS, ChainId.RINKEBY],
   },
   {
     name: 'Dividend V1',
     urls: ['/v1dividend'],
     icon: dividendv1Icon,
     iconActive: dividendv1Icon,
-    hidden: [ChainId.MAINNET, ChainId.MATIC, ChainId.BSC, ChainId.METIS],
+    hidden: [
+      ChainId.MAINNET,
+      ChainId.MATIC,
+      ChainId.BSC,
+      ChainId.METIS,
+      ChainId.RINKEBY,
+    ],
   },
   {
     name: 'Divider',
-    hidden: [ChainId.BSC, ChainId.MATIC, ChainId.METIS],
+    hidden: [ChainId.BSC, ChainId.MATIC, ChainId.METIS, ChainId.RINKEBY],
   },
   {
     name: 'Bridge',
     urls: ['/bridge'],
     icon: bridgeIcon,
     iconActive: bridgeIcon,
-    hidden: [],
+    hidden: [ChainId.RINKEBY],
     // hidden: [],
   },
   {
@@ -80,18 +169,30 @@ export const sidebarRoutes = [
     urls: ['/router'],
     icon: routerIcon,
     iconActive: routerIcon,
-    hidden: [],
+    hidden: [ChainId.RINKEBY],
   },
   {
     name: 'Divider',
-    hidden: [ChainId.BSC, ChainId.MATIC, ChainId.METIS, ChainId.SHIDEN],
+    hidden: [
+      ChainId.BSC,
+      ChainId.MATIC,
+      ChainId.METIS,
+      ChainId.SHIDEN,
+      ChainId.RINKEBY,
+    ],
   },
   {
     name: 'Migrate',
     urls: ['/migrate'],
     icon: migrateIcon,
     iconActive: migrateIcon,
-    hidden: [ChainId.MATIC, ChainId.BSC, ChainId.SHIDEN, ChainId.METIS],
+    hidden: [
+      ChainId.MATIC,
+      ChainId.BSC,
+      ChainId.SHIDEN,
+      ChainId.METIS,
+      ChainId.RINKEBY,
+    ],
     // hidden: [ChainId.SHIDEN],
   },
 ];

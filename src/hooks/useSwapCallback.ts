@@ -154,7 +154,6 @@ export function useSwapCallArguments(
             value: '0x0',
           };
         } else {
-          // console.log({ methodName, args })
           return {
             address: routerContract.address,
             calldata: routerContract.interface.encodeFunctionData(
@@ -259,8 +258,6 @@ export function useSwapCallback(
     useArcher,
   );
 
-  // console.log({ swapCalls, trade })
-
   const addTransaction = useTransactionAdder();
 
   const { address: recipientAddress } = useENS(recipientAddressOrName);
@@ -310,10 +307,6 @@ export function useSwapCallback(
                     data: calldata,
                     value,
                   };
-
-            // console.log('Estimate gas for valid swap')
-
-            // library.getGasPrice().then((gasPrice) => console.log({ gasPrice }))
 
             return library
               .estimateGas(tx)
@@ -389,15 +382,8 @@ export function useSwapCallback(
           call: { address, calldata, value },
         } = bestCallOption;
 
-        // console.log({ bestCallOption })
-
         if (!useArcher) {
-          // console.log('SWAP WITHOUT ARCHER');
-          // console.log(
-          //   'gasEstimate' in bestCallOption
-          //     ? { gasLimit: calculateGasMargin(bestCallOption.gasEstimate) }
-          //     : {},
-          // );
+
           return library
             .getSigner()
             .sendTransaction({
@@ -554,7 +540,6 @@ export function useSwapCallback(
                 common,
               });
               const unsignedTx = tx.getMessageToSign();
-              // console.log('unsignedTx', unsignedTx)
 
               return library.provider
                 .request({
@@ -616,7 +601,6 @@ export function useSwapCallback(
                       ethTip: archerETHTip,
                     }
                   : undefined;
-              // console.log('archer', archer)
               addTransaction(
                 { hash },
                 {

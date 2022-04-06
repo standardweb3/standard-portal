@@ -12,6 +12,20 @@ import Numeral from 'numeral';
 import { ethers } from 'ethers';
 import { getAddress } from '@ethersproject/address';
 
+export function trim(number = 0, precision = 0) {
+  // why would number ever be undefined??? what are we trimming?
+  const array = Number(number)
+    .toFixed(8)
+    .split('.');
+  if (array.length === 1) return number.toString();
+  if (precision === 0) return array[0].toString();
+
+  const poppedNumber = array.pop() || '0';
+  array.push(poppedNumber.substring(0, precision));
+  const trimmedNumber = array.join('.');
+  return trimmedNumber;
+}
+
 export const capitalize = (s) => {
   if (typeof s !== 'string') return '';
   return s.charAt(0).toUpperCase() + s.slice(1);
@@ -53,7 +67,7 @@ const priceFormatter = new Intl.NumberFormat('en-US', {
 });
 
 export function formatPercent(percentString: any) {
-  const percent = parseFloat(percentString);
+  const percent = parseFloat(String(percentString));
   if (!percent || percent === Infinity || percent === 0) {
     return '0%';
   }
@@ -83,6 +97,7 @@ export const formatNumber = (
   usd = false,
   scale = true,
   min = 0.0001,
+  fixedPrecision = 2,
 ) => {
   if (isNaN(number) || number === '' || number === undefined) {
     return usd ? '$0.00' : '0';
@@ -90,7 +105,9 @@ export const formatNumber = (
   const num = parseFloat(number);
 
   if (num > 500000000 && scale) {
-    return (usd ? '$' : '') + formatK(num.toFixed(0));
+    const formatted = formatK(num.toFixed(0));
+    if (formatted.startsWith('NaN')) return num.toFixed(0);
+    return (usd ? '$' : '') + formatted;
   }
 
   if (num === 0) {
@@ -106,8 +123,8 @@ export const formatNumber = (
 
   if (num > 1000) {
     return usd
-      ? '$' + Number(parseFloat(String(num)).toFixed(0)).toLocaleString()
-      : '' + Number(parseFloat(String(num)).toFixed(0)).toLocaleString();
+      ? '$' + parseFloat(num.toFixed(fixedPrecision)).toLocaleString()
+      : '' + parseFloat(num.toFixed(fixedPrecision)).toLocaleString();
   }
 
   if (usd) {
@@ -119,7 +136,7 @@ export const formatNumber = (
     }
   }
 
-  return parseFloat(String(num)).toPrecision(4);
+  return Number(parseFloat(String(num)).toPrecision(4)).toString();
 };
 
 export function formatNumberScale(number: any, usd = false) {

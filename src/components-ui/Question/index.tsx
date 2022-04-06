@@ -4,11 +4,11 @@ import { Tooltip } from '../Tooltip';
 import { classNames } from '../../functions';
 import { ExclamationCircleIcon } from '@heroicons/react/outline';
 
-export const Question: FC<{ text: any; className?: string }> = ({
-  children,
-  text,
-  className,
-}) => {
+export const Question: FC<{
+  text: any;
+  className?: string;
+  disableShow?: boolean;
+}> = ({ children, text, className, disableShow }) => {
   const [show, setShow] = useState<boolean>(false);
 
   const open = useCallback(() => setShow(true), [setShow]);
@@ -16,7 +16,7 @@ export const Question: FC<{ text: any; className?: string }> = ({
 
   if (children) {
     return (
-      <Tooltip text={text} show={show}>
+      <Tooltip text={text} show={!disableShow && show}>
         <div
           className="flex items-center justify-center outline-none"
           onClick={open}
@@ -31,7 +31,7 @@ export const Question: FC<{ text: any; className?: string }> = ({
 
   return (
     <span className={classNames('flex items-center justify-center', className)}>
-      <Tooltip text={text} show={show}>
+      <Tooltip text={text} show={!disableShow && show}>
         <div
           className="flex items-center justify-center outline-none cursor-help"
           onClick={open}

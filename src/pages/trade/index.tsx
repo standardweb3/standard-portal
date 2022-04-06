@@ -38,6 +38,8 @@ const WeekChart = dynamic(() => import('../../features/trade/WeekChart'), {
 import { NetworkGuardWrapper } from '../../guards/Network';
 import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
 import { reverseArray } from '../../utils';
+import { TRADE_BLACKLIST } from '../../constants/blacklist';
+import { filterTokens } from '../../functions/filtering';
 
 function Tokens() {
   const { chainId } = useActiveWeb3React();
@@ -92,8 +94,20 @@ function Tokens() {
   const _sevenDayEthPrice = useSevenDayEthPrice();
   const sevenDayEthPrice = parseFloat(_sevenDayEthPrice ?? '0');
 
-  const tokens = useTokens({});
+  const unfilteredTokens = useTokens({
+    where: {
+      derivedETH_gt: 0,
+    },
+  });
 
+  const tokenBlacklist = ['0x6388e0cc745b3c5ed23c6d569a01a4d27eda3e14'];
+  const tokens = useMemo(
+    () => {
+      return unfilteredTokens?.filter((token) => !tokenBlacklist.includes(token.id))
+    },
+    [unfilteredTokens]
+  );
+  
   useEffect(() => {
     if (tokens !== undefined && tokens.length === 0) {
       router.push('/trade/buy');
@@ -103,6 +117,9 @@ function Tokens() {
   const sortedTokens = useMemo(() => {
     return (
       tokens
+        ?.filter((token) => {
+          return !TRADE_BLACKLIST?.[chainId]?.[token.id];
+        })
         ?.map((token) => {
           const oneDayToken = oneDayTokens?.find(({ id }) => token.id === id);
           const priceYesterday = oneDayToken
@@ -116,6 +133,7 @@ function Tokens() {
           const sevenDayToken = sevenDayTokens?.find(
             ({ id }) => token.id === id,
           );
+
           const priceWeekAgo = sevenDayToken
             ? sevenDayToken.derivedETH * sevenDayEthPrice
             : 0;
@@ -249,6 +267,7 @@ function Tokens() {
         className: 'col-span-2 justify-center items-center flex',
         Cell: ({ value }) => {
           const { chainId } = useActiveWeb3React();
+          if (chainId === ChainId.METIS) return '-';
           return (
             <div
               className={`text-xs lg:text-sm ${
@@ -288,6 +307,7 @@ function Tokens() {
 
           const { chainId } = useActiveWeb3React();
           if (chainId === ChainId.METIS) return '-';
+
           return (
             <div
               className={`${
@@ -382,7 +402,7 @@ function Tokens() {
     changepageSize,
     lastPage,
     pageSize,
-  } = usePagination(0, 20, count);
+  } = usePagination(0, 12, count);
 
   const start = currentPage * pageSize;
   const end = start + pageSize;
@@ -452,6 +472,7 @@ function Tokens() {
                 data={data}
                 initialPage={currentPage}
                 rowsPerPage={pageSize}
+                initialPageSize={12}
                 pageCount={lastPage + 1}
                 onNextPage={toNextPage}
                 onPrevPage={toPrevPage}

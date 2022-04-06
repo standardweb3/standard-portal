@@ -19,7 +19,6 @@ export function getBaseCoin(
   type?: number,
   name?: string,
 ) {
-  // console.log(value)
   if (
     value &&
     (value === 'BASECURRENCY' ||

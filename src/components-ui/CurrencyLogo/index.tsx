@@ -26,7 +26,6 @@ export const getTokenLogoURL = (token: Token, chainId: ChainId) => {
     token,
     chainId,
   )}.jpg`;
-
   return imageURL;
 };
 
@@ -126,6 +125,7 @@ const MetisLogo =
 
 const LOGO: { readonly [chainId in ChainId]?: string } = {
   [ChainId.MAINNET]: EthereumLogo,
+  [ChainId.RINKEBY]: EthereumLogo,
   [ChainId.SHIBUYA]: ShibuyaLogo,
   [ChainId.SHIDEN]: ShidenLogo,
   [ChainId.FANTOM]: FantomLogo,

@@ -46,6 +46,7 @@ export const Input = React.memo(
     onUserInput,
     placeholder,
     className,
+    max,
     ...rest
   }: {
     value: string | number;
@@ -53,6 +54,7 @@ export const Input = React.memo(
     error?: boolean;
     fontSize?: string;
     align?: 'right' | 'left';
+    max?: number;
   } & Omit<React.HTMLProps<HTMLInputElement>, 'ref' | 'onChange' | 'as'>) => {
     const enforcer = (nextUserInput: string) => {
       if (
@@ -81,7 +83,7 @@ export const Input = React.memo(
         pattern="^[0-9]*$"
         placeholder={placeholder || '100'}
         min={0}
-        max={100}
+        max={max ?? 100}
         minLength={1}
         maxLength={3}
         spellCheck="false"

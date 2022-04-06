@@ -7,14 +7,22 @@ export function SearchV2({
   search,
   className,
   inputProps,
+  iconRight = false,
 }: {
   term: string;
   search: (value: string) => void;
   inputProps?: any;
   className?: string;
+  iconRight?: boolean;
 }) {
   return (
-    <div className={classNames('flex rounded-20 space-x-4', className)}>
+    <div
+      className={classNames(
+        'flex rounded-20 space-x-4',
+        className,
+        iconRight && 'flex-row-reverse	',
+      )}
+    >
       <div className="flex items-center pointer-events-none">
         <SearchIcon className="w-4 h-4" />
       </div>

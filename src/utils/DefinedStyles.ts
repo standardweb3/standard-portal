@@ -7,6 +7,7 @@ export const DefinedStyles = {
   fullButton: 'font-bold !py-4 !px-4 !text-xl w-full',
   button: 'font-bold !py-4 !px-4 !text-xl',
   liquidityButton: 'font-bold text-base !px-3 !py-3',
+  horizontalDivider: 'border-r border-grey',
   divider: 'border-t border-divider mt-2 mb-2',
   'txSettings-text': 'text-white !text-opacity-50',
   'txSettings-auto': '!text-white text-md',
@@ -61,4 +62,13 @@ export const DefinedStyles = {
   pl-1 pr-3 sm:pl-3 sm:pr-3 py-3`,
   step:
     'rounded-full bg-opaque-secondary w-8 h-8 flex items-center justify-center',
+  vaultPanel: 'rounded-20 p-4 bg-dark-2 text-text',
+  collateralizePanel: `bg-opaque
+    rounded-20 p-4 
+    w-full 
+    backdrop-blur-[200px] 
+    bg-background
+    md:px-8
+    md:py-12`,
+  collateralizePanelContent: 'w-full flex flex-col space-y-4',
 };

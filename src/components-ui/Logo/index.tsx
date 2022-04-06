@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import logoLight from '../../../public/img/logos/logo.light.png';
 import logoDark from '../../../public/img/logos/logo.dark.png';
-import logoShortLight from '../../../public/img/logos/logo.short.light.png';
-import logoShortDark from '../../../public/img/logos/logo.short.dark.png';
+import logoShortLight from '../../../public/img/logos/logo.primary.png';
+import logoShortDark from '../../../public/img/logos/logo.primary.png';
 
 export const LogosType = {
   light: {

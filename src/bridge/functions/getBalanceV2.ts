@@ -84,7 +84,7 @@ function getBlandTs(
           }
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
       resolve(list);
     });
@@ -108,7 +108,6 @@ export function getNodeTotalsupply(
         },
       ];
       getBlandTs(tokenList, chainId, account).then((res: any) => {
-        // console.log(res)
         resolve(res);
       });
     } else {
@@ -128,7 +127,6 @@ export function getNodeBalance(
     if (account && token && chainID) {
       if (isNativeToken || !isAddress(token)) {
         useWeb3(chainID, 'eth', 'getBalance', [account]).then((res: any) => {
-          // console.log(res)
           if (res && res.toString().indexOf('Error: Returned error') === -1) {
             const bl = res;
             resolve(fromWei(bl, dec));
@@ -141,7 +139,6 @@ export function getNodeBalance(
         const data = contract.methods.balanceOf(account).encodeABI();
         useWeb3(chainID, 'eth', 'call', [{ data, to: token }]).then(
           (res: any) => {
-            // console.log(res)
             if (res && res.toString().indexOf('Error: Returned error') === -1) {
               try {
                 const bl = ERC20_INTERFACE?.decodeFunctionResult(

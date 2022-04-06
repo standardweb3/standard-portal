@@ -202,6 +202,7 @@ export function Table({
           />
         </span>{' '}
         <select
+          className="bg-dark-3"
           value={pageSize}
           onChange={(e) => {
             setPageSize(Number(e.target.value));

@@ -8,8 +8,6 @@ export function formatDecimal(num: any, decimal: number) {
     return num;
   }
   const minnum = 1 / Math.pow(10, decimal);
-  // console.log(decimal)
-  // console.log(minnum)
   if (!num || Number(num) <= 0) {
     return '0.00';
   }

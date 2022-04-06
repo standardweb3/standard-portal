@@ -130,7 +130,7 @@ export default function Updater(): null {
           })
           .catch((error) => {
             if (!error.isCancelledError) {
-              console.error(`Failed to check transaction hash: ${hash}`, error);
+              // console.error(`Failed to check transaction hash: ${hash}`, error);
             }
           });
         return cancel;

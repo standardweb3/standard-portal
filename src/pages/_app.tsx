@@ -42,6 +42,10 @@ import UserUpdater from '../state/user/updater'
 import '../styles/index.css'
 import '../styles/globals.css';
 
+import { SkeletonTheme } from 'react-loading-skeleton'
+
+import 'react-loading-skeleton/dist/skeleton.css'
+
 const Web3ProviderNetwork = dynamic(() => import('../components-ui/Web3ProviderNetwork'), { ssr: false })
 const Web3ProviderNetworkBridge = dynamic(() => import('../components-ui/Web3ProviderBridge'), { ssr: false })
 
@@ -166,11 +170,13 @@ function MyApp({
                     <BridgeTransactionUpdater/>
                     <MulticallUpdater />
                   <Provider>
+                    <SkeletonTheme baseColor="#F365BD" highlightColor="#fff">
                     <Layout>
                       <Guard>
                         <Component {...pageProps} />
                       </Guard>
                     </Layout>
+                    </SkeletonTheme>
                   </Provider>
                   </>
 

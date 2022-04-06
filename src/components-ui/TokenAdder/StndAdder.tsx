@@ -4,8 +4,8 @@ import { GeckoTerminal } from '../../features/misc/gecko/GeckoTerminal';
 import { useActiveWeb3React } from '../../hooks';
 import { useCurrency } from '../../hooks/Tokens';
 
-export function StndAdder() {
+export function StndAdder({ hideSymbol = undefined }) {
   const { chainId } = useActiveWeb3React();
   const currency = useCurrency(STND_ADDRESS[chainId]);
-  return <TokenAdder currency={currency} rightComponent={<GeckoTerminal />} />;
+  return <TokenAdder currency={currency} hideSymbol={hideSymbol} rightComponent={<GeckoTerminal />} />;
 }

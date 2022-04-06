@@ -25,8 +25,6 @@ export default function Arbitrage({
   const ctodRate = ctod ? ctod - 1 : 0;
   const dtoCRate = dtoc ? dtoc - 1 : 0;
   // const [toCex, setToCex] = useState(outbound);
-  // console.log('toCex', toCex);
-  //
   const rate = (outbound ? dtoCRate : ctodRate) * 100;
   const isWgmi = rate / 100 >= 0;
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import { currencyId } from '../../functions/currency';
-import { useActiveWeb3React } from '../../hooks';
 import { NavigationLink } from '../../components-ui/NavigationLink';
 import { useRouter } from 'next/router';
 
@@ -9,7 +8,6 @@ export default function LiquidityHeader({
   output = undefined,
   isPairValid = false,
 }: any): JSX.Element {
-  const { chainId } = useActiveWeb3React();
   const router = useRouter();
   const isAddActive = router.asPath.startsWith('/add');
   const isPoolActive = router.asPath.startsWith('/pool');

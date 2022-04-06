@@ -27,9 +27,6 @@ export async function getMMBaseInfo(chainId?: any) {
   const provider = getProvider(chainId);
   const account = await provider.send('eth_requestAccounts', []);
   const chainID = await provider.send('eth_chainId', []);
-  // console.log(ethers.BigNumber.from(chainID))
-  // console.log(ethers.BigNumber.from(chainID).toString())
-  // console.log(ethers.BigNumber.from(chainID).toNumber())
   return {
     chainId: ethers.BigNumber.from(chainID).toString(),
     account: account[0]?.toLowerCase(),

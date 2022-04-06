@@ -13,7 +13,7 @@ const Layout = ({ children }) => {
   return (
     <div
       className={`
-      bg-mobile-main sm:bg-main
+      bg-mobile-main md:bg-main
       relative
       overflow-hidden
       w-full h-full
@@ -33,7 +33,7 @@ const Layout = ({ children }) => {
         </style>
       )}
       <div
-        className="z-[1] w-full h-full 
+        className="z-[1] relative w-full h-full 
       flex flex-col md:flex-row"
       >
         <ViewportSmallDown>
@@ -45,6 +45,7 @@ const Layout = ({ children }) => {
         <Main>{children}</Main>
       </div>
       {!isMobile && <Cone1 />}
+      {!isMobile && <Cone2 />}
       {!isMobile && <Cone3 />}
     </div>
   );
@@ -74,19 +75,19 @@ const Cone1 = styled.div`
   transform: rotate(-29.96deg);
 `;
 
-// const Cone2 = styled.div`
-//   position: absolute;
-//   width: 428.56px;
-//   height: 909.75px;
-//   right: 25%;
-//   top: 25%;
-//   z-index: -1;
+const Cone2 = styled.div`
+  position: absolute;
+  width: 385.72px;
+  height: 818.81px;
+  right: 50%;
+  top: 25%;
+  z-index: -1;
 
-//   background: linear-gradient(347.31deg, #ff009c -22.31%, #439fbc 92.99%);
-//   // opacity: 0.3;
-//   filter: blur(240px);
-//   transform: rotate(-75deg);
-// `;
+  background: linear-gradient(347.31deg, #ff009c -22.31%, #439fbc 92.99%);
+  opacity: 0.3;
+  filter: blur(240px);
+  transform: rotate(-75deg);
+`;
 
 const Cone3 = styled.div`
   position: absolute;

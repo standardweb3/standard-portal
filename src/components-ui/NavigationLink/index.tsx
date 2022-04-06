@@ -25,8 +25,6 @@ export const NavigationLink = ({
     ? `${childClassName} ${activeClassName}`.trim()
     : childClassName;
 
-  // console.log({ asPath, pathname, route, query })
-
   return (
     <Link href={props.href} {...props}>
       {React.cloneElement(child, {

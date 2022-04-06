@@ -13,7 +13,7 @@ const unknown =
 
 const getTokenUrls = (chainId, id, symbol) => {
   const urls = [];
-  if (getAddress(STND_ADDRESS[chainId]) === getAddress(id))
+  if (id && getAddress(STND_ADDRESS[chainId]) === getAddress(id))
     urls.push(
       'https://raw.githubusercontent.com/digitalnativeinc/assets/master/blockchains/ethereum/assets/0x9040e237C3bF18347bb00957Dc22167D0f2b999d/logo.png',
     );
@@ -107,6 +107,7 @@ const MetisLogo =
 
 const LOGO: { readonly [chainId in ChainId]?: string } = {
   [ChainId.MAINNET]: EthereumLogo,
+  [ChainId.RINKEBY]: EthereumLogo,
   [ChainId.SHIBUYA]: ShibuyaLogo,
   [ChainId.SHIDEN]: ShidenLogo,
   [ChainId.FANTOM]: FantomLogo,

@@ -43,6 +43,7 @@ function Pool() {
       })),
     [trackedTokenPairs],
   );
+
   const liquidityTokens = useMemo(
     () => tokenPairsWithLiquidityTokens.map((tpwlt) => tpwlt.liquidityToken),
     [tokenPairsWithLiquidityTokens],

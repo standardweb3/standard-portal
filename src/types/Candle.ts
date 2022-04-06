@@ -26,3 +26,10 @@ export interface NumericalCandlestickDatum {
   token0?: string;
   token1?: string;
 }
+
+export interface RechartPriceDatum {
+  timestamp: number;
+  price: number;
+  token0?: string;
+  token1?: string;
+}

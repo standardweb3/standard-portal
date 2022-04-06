@@ -14,6 +14,7 @@ import { useActiveWeb3React } from '../../hooks/useActiveWeb3React';
 import { Listbox, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/outline';
 import { Fragment, useMemo } from 'react';
+import { Radiation } from '../../features/usm/collaterals/CollateralCard';
 
 export default function NetworkDropDown(): JSX.Element | null {
   const { chainId, library, account } = useActiveWeb3React();
@@ -58,8 +59,8 @@ export default function NetworkDropDown(): JSX.Element | null {
             src={NETWORK_ICON[chainId]}
             alt={`Switch to ${NETWORK_LABEL[chainId]} Network`}
             className="rounded-full"
-            width="32px"
-            height="32px"
+            width="36px"
+            height="36px"
           />
           <span className="flex items-center pointer-events-none">
             <ChevronDownIcon className="w-3 h-3" aria-hidden="true" />
@@ -78,7 +79,8 @@ export default function NetworkDropDown(): JSX.Element | null {
             absolute
             z-40
             overflow-auto 
-            text-base bg-background-modal
+            text-base bg-background
+            border border-border-3
             rounded-20
             focus:outline-none
             "
@@ -87,19 +89,21 @@ export default function NetworkDropDown(): JSX.Element | null {
               <Listbox.Option
                 key={idx}
                 className={({ active }) =>
-                  `select-none relative cursor-pointer py-1 px-2`
+                  `select-none relative cursor-pointer py-4 px-4`
                 }
                 value={optionChainId}
               >
                 {({ selected, active }) => (
                   <div className="flex items-center space-x-3">
-                    <Image
-                      src={NETWORK_ICON[optionChainId]}
-                      alt={`Switch to ${NETWORK_LABEL[optionChainId]} Network`}
-                      className="rounded-full flex-grow"
-                      width="32px"
-                      height="32px"
-                    />
+                    <Radiation>
+                      <Image
+                        src={NETWORK_ICON[optionChainId]}
+                        alt={`Switch to ${NETWORK_LABEL[optionChainId]} Network`}
+                        className="rounded-full flex-grow"
+                        width="36px"
+                        height="36px"
+                      />
+                    </Radiation>
                     <div className="inline-block">
                       {NETWORK_LABEL[optionChainId]}
                     </div>

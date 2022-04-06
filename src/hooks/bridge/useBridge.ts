@@ -23,7 +23,6 @@ export function useAnyswapInfo() {
     let result: AnyswapTokensMap = {};
     Object.keys(data || {}).forEach((key) => {
       const info: AnyswapResultPairInfo = data[key];
-      // console.log('info', info, Object.keys(data), result);
 
       let sourceContractAddress = info.SrcToken.ContractAddress;
       if (!sourceContractAddress) {

@@ -6,7 +6,6 @@ import { getGeckoUrl } from './getGeckoUrl';
 
 export function GeckoTerminal() {
   const { chainId } = useActiveWeb3React();
-  const router = useRouter();
   const geckoUrl = getGeckoUrl(chainId);
 
   const geckoImage =

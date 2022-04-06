@@ -123,20 +123,22 @@ const fillCandlestickGaps = (
 };
 
 interface ChartProps {
-  inputCurrency: Currency | Token | undefined;
-  outputCurrency: Currency | Token | undefined;
-  price: Price<Currency, Currency>;
+  inputCurrency?: Currency | Token | undefined;
+  outputCurrency?: Currency | Token | undefined;
+  price?: Price<Currency, Currency>;
+  initialCandlePeriod?: CandlePeriod;
 }
 
 export default function Chart({
   inputCurrency,
   outputCurrency,
   price,
+  initialCandlePeriod = CandlePeriod.OneHour,
 }: ChartProps) {
   const protocol = useProtocol();
   const { chainId } = useActiveWeb3React();
 
-  const [candlePeriod, setCandlePeriod] = useState(CandlePeriod.OneHour);
+  const [candlePeriod, setCandlePeriod] = useState(initialCandlePeriod);
   const [candlestickSeries, setCandlestickSeries] = useState<
     { data: NumericalCandlestickDatum[] }[]
   >([{ data: [] }]);
