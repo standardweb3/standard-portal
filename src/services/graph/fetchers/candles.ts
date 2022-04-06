@@ -4,7 +4,7 @@ import { GRAPH_HOST } from '../constants';
 export const CANDLES = {
   [ChainId.MAINNET]: 'billjhlee/ethereum-candles',
   //   [ChainId.KOVAN]: 'digitalnative/standardprotocol',
-  [ChainId.RINKEBY]: 'billjhlee/rinkeby-candles',
+  [ChainId.RINKEBY]: 'billjhlee/rinkeby-candles-dev',
   [ChainId.SHIBUYA]: 'digitalnativeinc/shibuya-exchange',
   [ChainId.SHIDEN]: 'digitalnativeinc/shiden-candles',
   [ChainId.METIS]: 'digitalnativeinc/metis-candles',
