@@ -16,7 +16,7 @@ export function useCollateral(collateral) {
     if (collateralCurrency.isNative) {
       setCollateralAddress(collateralCurrency.wrapped.address);
     } else if (
-      collateralCurrency.isToken &&
+      collateralCurrency?.isToken &&
       collateralCurrency.address === WNATIVE[chainId].address
     ) {
       setCollateralAddress('ETH');

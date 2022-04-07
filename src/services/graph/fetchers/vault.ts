@@ -16,7 +16,7 @@ import {
 
 export const VAULT = {
   [ChainId.RINKEBY]: 'billjhlee/rinkeby-vault-dev',
-  [ChainId.METIS]: "digitalnative/metis-vault"
+  [ChainId.METIS]: "digitalnativeinc/metis-vault"
 };
 
 export const vaultsGraphClient = (chainId) => {

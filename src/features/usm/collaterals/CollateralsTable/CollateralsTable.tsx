@@ -66,7 +66,6 @@ export function CollateralsTable() {
   } = useCollateralsTable();
 
   const cdps = useCdps();
-
   const listColumnClassName = `w-full flex items-center`;
   const cardColumnClassName = `col-span-8 flex items-center`;
 

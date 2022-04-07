@@ -280,7 +280,6 @@ export function useCurrency(
   ]);
 
   const wnative = chainId ? WNATIVE[chainId] : undefined;
-
   if (wnative?.address?.toLowerCase() === currencyId?.toLowerCase())
     return wnative;
 
