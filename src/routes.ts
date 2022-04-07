@@ -19,7 +19,7 @@ export const chainIdGuardRedirect = {
   [ChainId.SHIDEN]: '/trade',
   [ChainId.BSC]: '/router',
   [ChainId.MATIC]: '/router',
-  [ChainId.METIS]: '/trade',
+  [ChainId.METIS]: '/dashboard',
   [ChainId.RINKEBY]: '/dashboard',
 };
 
@@ -81,6 +81,19 @@ export const sidebarRoutes = [
   {
     name: 'Explorer',
     urls: ['/explorer'],
+    icon: explorerIcon,
+    iconActive: explorerIcon,
+    hidden: [
+      ChainId.MATIC,
+      ChainId.MAINNET,
+      ChainId.SHIDEN,
+      ChainId.MATIC,
+      ChainId.BSC,
+    ],
+  },
+  {
+    name: 'Campaign',
+    urls: ['/campaign'],
     icon: explorerIcon,
     iconActive: explorerIcon,
     hidden: [

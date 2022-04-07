@@ -143,7 +143,7 @@ export function CollateralRatioProgressBar({
     >
       <Track className={`bg-scrollbar-track`}>
         <Thumb
-          percentage={collateralRatioPercentage}
+          percentage={Math.min(collateralRatioPercentage, 100)}
           className={classNames(trackColor, !dragging && '!duration-500')}
         >
           <ThumbRoller

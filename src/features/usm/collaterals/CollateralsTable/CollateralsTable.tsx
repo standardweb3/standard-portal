@@ -44,7 +44,7 @@ export function CollateralsTable() {
 
   const [filter, setFilter] = useState(CollateralTableFilter.none);
 
-  const setFilterNone = () => setFilter(CollateralTableFilter.none);
+  // const setFilterNone = () => setFilter(CollateralTableFilter.none);
   // const setFilterPopular = () => setFilter(CollateralTableFilter.popular);
   // const setFilterNative = () => setFilter(CollateralTableFilter.native);
   // const setFilterStablecoin = () => setFilter(CollateralTableFilter.stablecoin);
@@ -65,7 +65,11 @@ export function CollateralsTable() {
     // changeSortDirection,
   } = useCollateralsTable();
 
-  const cdps = useCdps();
+  const cdps = useCdps({
+    where: {
+      isOpen: true
+    }
+  });
   const listColumnClassName = `w-full flex items-center`;
   const cardColumnClassName = `col-span-8 flex items-center`;
 
