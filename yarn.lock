@@ -1596,10 +1596,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha512-5a6wqoJV/xEdbRNKVo6I4hO3VjyDq//8q2f9I6PBAvMesJHFauXDorcNCsr9RzvsZnaWi5NYCcfyqP1QeFHFbw==
 
-"@digitalnative/default-token-list@0.0.39":
-  version "0.0.39"
-  resolved "https://registry.yarnpkg.com/@digitalnative/default-token-list/-/default-token-list-0.0.39.tgz#8e4eb28edb6d31dfd0f42e1d9a0925f04d2d63fc"
-  integrity sha512-McGtsrPrYor1TDrVHVLt8oS659rjuoP07HSQFCjSq02D6r/N0BVtAUtEU/hCroMlti0HdQEOVODaNWxZ9xG5hA==
+"@digitalnative/default-token-list@0.0.41":
+  version "0.0.41"
+  resolved "https://registry.yarnpkg.com/@digitalnative/default-token-list/-/default-token-list-0.0.41.tgz#986c8fa07bd35f2e142635b9fb9c81ff8e744b76"
+  integrity sha512-HeESlrmu5gibk2F9kmOp9DumZ1Tu2+rfjbyg/0+xyGrvyH1tDQFTxV9Mf6ruWX+mkZT2WqNdJ/fVHwxIDLgH3w==
   dependencies:
     "@tenderly/hardhat-tenderly" "^1.0.12"
 
@@ -1646,10 +1646,10 @@
     postcss-selector-matches "^4.0.0"
     postcss-selector-not "^4.0.0"
 
-"@digitalnative/standard-protocol-sdk@^0.0.185":
-  version "0.0.185"
-  resolved "https://registry.yarnpkg.com/@digitalnative/standard-protocol-sdk/-/standard-protocol-sdk-0.0.185.tgz#99c36fbc70088eb99739270e735f75fc058de252"
-  integrity sha512-2cfUsR7cflq3UP4CqhoNlo7B9yPG+2Sgfn9D5k8OuuCwNtw3ZPDDjqRmd1EfyYJ4gj2looCUbBpyWL8LN6hk0g==
+"@digitalnative/standard-protocol-sdk@^0.0.186":
+  version "0.0.186"
+  resolved "https://registry.yarnpkg.com/@digitalnative/standard-protocol-sdk/-/standard-protocol-sdk-0.0.186.tgz#89fbfe140e083186897b0f54e3694ca06f82e6e9"
+  integrity sha512-ZY7rIaqOX1QPlXo+4qCEf3QWaufyiro8wGEURwkrP6mjW6agTx45dvkRK2JFj7n+32XOR1wbWHtDuzNTBikPHg==
   dependencies:
     big.js "^6.1.0"
     decimal.js-light "^2.5.0"

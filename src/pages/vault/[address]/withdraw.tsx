@@ -57,7 +57,6 @@ function Vault() {
   } = useUserVaultInfo(vaultAddress);
 
   // START: withdraw
-
   const collateralBalance = useCurrencyBalance(account, collateralCurrency);
 
   const withdrawableBalance = !loading

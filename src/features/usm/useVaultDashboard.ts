@@ -58,7 +58,6 @@ export function useVaultDashboard() {
   const vaultClient = vaultsGraphClient(chainId);
   const ammReserves = useVaultAmmReserves();
   const collateralReserves = useVaultCollateralReserves();
-  console.log(collateralReserves)
 
   let ammReserveHistoriesResult = {};
   let ammCollateralsResult = {};

@@ -43,7 +43,6 @@ function Vaults() {
   const currentBlock = useCurrentBlockTimestamp();
   const cdpPrices = useCdpPrices();
   const cdpExpiaries = useCdpExpiaries();
-  console.log('expiaries', cdpExpiaries)
   const usm = useMtr();
   // const usmPrice = useVaultManagerAssetPrice(usm.address);
   const { isLoading, userVaults } = useUserVaults2();
@@ -78,7 +77,7 @@ function Vaults() {
       const vMcr = applyCdpDecimals(CDP.mcr);
       const vSfr = applyCdpDecimals(CDP.sfr);
 
-      const fee = currentBlock
+      const fee = currentBlock && cdpExpiaries
         ? calculateFee(
             currentBlock.toNumber(),
             parseFloat(createdAt),

@@ -19,7 +19,7 @@ export function useVaultDebt(address) {
 
   const debt = callResult?.result?.[0];
 
-  return debt ? debt / 1e18 : undefined;
+  return debt !== undefined ? debt / 1e18 : undefined;
 }
 
 export function useVaultBorrowed(address) {

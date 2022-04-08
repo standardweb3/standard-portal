@@ -36,7 +36,7 @@ export function useUserVaultInfo(vaultAddress) {
     user,
   } = vault ?? {};
 
-  const isUserVault = account && user && account.toLowerCase() == user.id
+  const isUserVault = account && user && account.toLowerCase() == user.id;
   const {
     handleWrapUnwrap,
     currency: collateralCurrency,
@@ -57,16 +57,18 @@ export function useUserVaultInfo(vaultAddress) {
   );
 
   const fee =
-    debt !== undefined && currentBorrowed !== undefined ? debt - currentBorrowed : undefined;
+    debt !== undefined && currentBorrowed !== undefined
+      ? debt - currentBorrowed
+      : undefined;
   const mcr = CDP && applyCdpDecimals(CDP.mcr);
   const sfr = CDP && applyCdpDecimals(CDP.sfr);
   const lfr = CDP && applyCdpDecimals(CDP.lfr);
 
   const liquidationPrice =
-    vault && debt && (debt * mcr) / 100 / currentCollateralized;
+    vault && debt !== undefined && (debt * mcr) / 100 / currentCollateralized;
 
   const debtValue =
-    debt && usmPrice !== undefined ? usmPrice * debt : undefined;
+    debt !== undefined && usmPrice !== undefined ? usmPrice * debt : undefined;
   // market value of current collateralized
   const currentCollateralizedValue =
     vault && collateralPrice !== undefined
@@ -80,10 +82,14 @@ export function useUserVaultInfo(vaultAddress) {
 
   // market value of min collateral amount
   const minCollateralAmountValue =
-    vault && debt ? (mcr / 100) * debt : undefined;
+    vault && debt !== undefined ? (mcr / 100) * debt : undefined;
 
   const minCollateralAmount =
-    minCollateralAmountValue && collateralPrice
+    minCollateralAmountValue === 0
+      ? 0
+      : collateralPrice === 0
+      ? undefined
+      : minCollateralAmountValue !== undefined && collateralPrice !== undefined
       ? minCollateralAmountValue / collateralPrice
       : undefined;
 
@@ -124,7 +130,7 @@ export function useUserVaultInfo(vaultAddress) {
     loading:
       vaultAddress &&
       vault &&
-      debt &&
+      debt !== undefined &&
       collateralCurrency &&
       collateralPrice &&
       usmPrice
@@ -139,6 +145,6 @@ export function useUserVaultInfo(vaultAddress) {
     isClosed,
     isLiquidated,
     liquidation,
-    isUserVault
+    isUserVault,
   };
 }

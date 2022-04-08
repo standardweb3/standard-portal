@@ -150,7 +150,7 @@ export const sidebarRoutes = [
     icon: dividendIcon,
     iconActive: dividendIcon,
     // hidden: [ChainId.SHIDEN],
-    hidden: [ChainId.MATIC, ChainId.BSC, ChainId.METIS, ChainId.RINKEBY],
+    hidden: [ChainId.MATIC, ChainId.BSC, ChainId.RINKEBY],
   },
   {
     name: 'Dividend V1',
