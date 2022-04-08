@@ -6,7 +6,7 @@ import { campaignUsersQuery, scoreAggregatorsQuery } from '../queries/campaign';
 
 export const CAMPAIGN = {
   [ChainId.RINKEBY]: 'billjhlee/rinkeby-vault-campaign',
-  [ChainId.METIS]: 'digitalnativeinc/metis-campaign',
+  [ChainId.METIS]: 'digitalnativeinc/metis-vault-campaign',
 };
 export const campaignUri = (chainId = ChainId.MAINNET) =>
   `${GRAPH_HOST[chainId]}/subgraphs/name/${CAMPAIGN[chainId]}`;
