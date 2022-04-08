@@ -7,13 +7,15 @@ import { ViewportMediumUp } from '../../components-ui/Responsive';
 import { VaultUserInfo } from '../../features/usm/vaults/VaultUserInfo';
 import { applyCdpDecimals } from '../../features/usm/utils';
 import { useUserVaults2 } from '../../services/graph/hooks/userVaults';
-import { useCdpExpiaries, useCdpPrices } from '../../services/graph/hooks/cdpPrices';
+import {
+  useCdpExpiaries,
+  useCdpPrices,
+} from '../../services/graph/hooks/cdpPrices';
 import { useMemo } from 'react';
 import { VaultsTable } from '../../features/usm/vaults/VaultsTable';
 import { RiskyVaultsTable } from '../../features/usm/collaterals/RiskyVaultsTable';
 import { getAddress } from 'ethers/lib/utils';
 import useCurrentBlockTimestamp from '../../hooks/useCurrentBlockTimestamp';
-import { useMtr } from '../../hooks/vault/useMtr';
 import { calculateFee } from '../../features/usm/functions';
 import {
   CloseVaultContext,
@@ -43,7 +45,7 @@ function Vaults() {
   const currentBlock = useCurrentBlockTimestamp();
   const cdpPrices = useCdpPrices();
   const cdpExpiaries = useCdpExpiaries();
-  const usm = useMtr();
+
   // const usmPrice = useVaultManagerAssetPrice(usm.address);
   const { isLoading, userVaults } = useUserVaults2();
 
@@ -69,22 +71,30 @@ function Vaults() {
         collateral,
         createdAt,
         isLiquidated,
-        liquidation
+        liquidation,
+        lastPaidBack,
+        ex_sfr,
       } = v;
 
       const isWnative = getAddress(collateral) === WNATIVE[chainId].address;
 
       const vMcr = applyCdpDecimals(CDP.mcr);
       const vSfr = applyCdpDecimals(CDP.sfr);
+      const initSfr = applyCdpDecimals(ex_sfr);
 
-      const fee = currentBlock && cdpExpiaries
-        ? calculateFee(
-            currentBlock.toNumber(),
-            parseFloat(createdAt),
-            vSfr,
-            parseFloat(currentBorrowed),
-          )
-        : 0;
+      const fee =
+        currentBlock && cdpExpiaries && cdpExpiaries[collateral]
+          ? calculateFee(
+              currentBlock.toNumber(),
+              parseFloat(createdAt),
+              lastPaidBack,
+              vSfr,
+              initSfr,
+              cdpExpiaries[collateral],
+              parseFloat(currentBorrowed),
+            )
+          : 0;
+
       const debt = parseFloat(currentBorrowed) + fee;
 
       const collateralPrice = cdpPrices[collateral]?.price;
@@ -120,7 +130,7 @@ function Vaults() {
         isLiquidated,
         fee,
         debt,
-        liquidation
+        liquidation,
       };
       if (isLiquidated) {
         liquidatedVaults.push(refactoredVault);
@@ -132,7 +142,13 @@ function Vaults() {
 
       return refactoredVault;
     });
-    return { dangerVaults, warningVaults, liquidatedVaults, allVaults, totalCollateralized };
+    return {
+      dangerVaults,
+      warningVaults,
+      liquidatedVaults,
+      allVaults,
+      totalCollateralized,
+    };
   }, [cdpPrices, userVaults]);
 
   // const vaultAddrs = useVaultAddresses(v1Ids);

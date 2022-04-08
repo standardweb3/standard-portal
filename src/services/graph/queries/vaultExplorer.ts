@@ -29,12 +29,15 @@ export const explorerVaultsQuery = gql`
         mcr
         lfr
         sfr
+        expiary
         decimals
       }
       liquidation {
         liquidationAmount
       }
       createdAt
+      lastPaidBack
+      ex_sfr
     }
   }
 `;

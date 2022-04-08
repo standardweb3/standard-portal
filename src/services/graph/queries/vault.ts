@@ -107,6 +107,7 @@ export const vaultsQuery = gql`
         mcr
         lfr
         sfr
+        expiary
         decimals
       }
       liquidation { 
@@ -114,7 +115,9 @@ export const vaultsQuery = gql`
         liquidationFee
         liquidationAMM
       }
+      lastPaidBack
       createdAt
+      ex_sfr
     }
   }
 `;

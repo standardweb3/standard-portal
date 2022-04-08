@@ -17,25 +17,33 @@ function Campaign() {
   const scoreAggregator = useCampaingScoreAggregator();
   const users = useCampaingUsers();
 
+  const totalReward = 77777;
   const renderUsers = () => {
     return (
       users?.map((user, index) => {
+        const userShare = user.score / (scoreAggregator?.totalScore ?? 1);
+        const userReward = userShare * totalReward;
         return (
           <div
             key={user.id}
-            className="w-full flex items-center gap-4 rounded-20 bg-dark p-4"
+            className="w-full flex items-center justify-between gap-4 rounded-20 bg-dark p-4"
           >
-            <div className="text-xl font-bold">{index + 1}</div>
-            <div>
-              <div className="flex items-center gap-2 text-sm">
-                <div className="text-grey">User:</div>
-                <div className="">{shortenAddress(user.id)}</div>
-              </div>
+            <div className="flex items-center gap-4">
+              <div className="text-xl font-bold">{index + 1}</div>
+              <div>
+                <div className="flex items-center gap-2 text-sm">
+                  <div className="text-grey">User:</div>
+                  <div className="">{shortenAddress(user.id)}</div>
+                </div>
 
-              <div className="flex items-center gap-2 text-sm">
-                <div className="text-grey">Score:</div>
-                <div className="text-primary">{formatNumber(user.score)}</div>
+                <div className="flex items-center gap-2 text-sm">
+                  <div className="text-grey">Score:</div>
+                  <div className="text-primary">{formatNumber(user.score)}</div>
+                </div>
               </div>
+            </div>
+            <div className="text-sm xs:text-base text-green">
+              {formatNumber(userReward)} STND
             </div>
           </div>
         );
@@ -60,6 +68,12 @@ function Campaign() {
         <PageContent>
           <div className="w-full max-w-[500px]">
             <div className="grid grid-cols-2 gap-4 mb-8">
+              <div className="col-span-2 bg-background p-4 rounded-20">
+                <div className="flex flex-col justify-center items-center">
+                  <div className="font-bold text-lg mb-2">Total Reward</div>
+                  <div className="text-primary text-xl font-bold">{totalReward}</div>
+                </div>
+              </div>
               <div className="bg-background p-4 rounded-20">
                 <div className="flex flex-col justify-center items-center">
                   <div className="font-bold text-lg mb-2">Total Score</div>
@@ -87,9 +101,11 @@ function Campaign() {
             </div>
 
             <div className="font-bold text-lg mb-4">Score Board (TOP 100)</div>
-            <div className="grid grid-cols-1 gap-4 max-h-[500px] overflow-scroll">
-              {renderUsers()}
-            </div>
+            {scoreAggregator && (
+              <div className="grid grid-cols-1 gap-4 max-h-[500px] overflow-scroll">
+                {renderUsers()}
+              </div>
+            )}
           </div>
         </PageContent>
       </Page>

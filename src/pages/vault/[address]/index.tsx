@@ -55,7 +55,7 @@ function Vault() {
     // isCollateralNative,
     // isCollateralWnative,
   } = useUserVaultInfo(vaultAddress);
-
+  
   const usmBalance = useCurrencyBalance(account, usm);
   const [paybackAmount, setPaybackAmount] = useState('');
 

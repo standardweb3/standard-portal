@@ -5,7 +5,7 @@ import { GRAPH_HOST } from '../constants';
 import { campaignUsersQuery, scoreAggregatorsQuery } from '../queries/campaign';
 
 export const CAMPAIGN = {
-  [ChainId.RINKEBY]: 'digitalnativeinc/rinkeby-vault-campaign',
+  [ChainId.RINKEBY]: 'billjhlee/rinkeby-vault-campaign',
   [ChainId.METIS]: 'digitalnativeinc/metis-campaign',
 };
 export const campaignUri = (chainId = ChainId.MAINNET) =>

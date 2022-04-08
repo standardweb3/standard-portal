@@ -5,7 +5,7 @@ import { PageContent } from '../../components-ui/PageContent';
 import { PageHeader } from '../../components-ui/PageHeader';
 import { ViewportMediumUp } from '../../components-ui/Responsive';
 import { DashboardMetric } from '../../features/usm/dashboard/DashboardMetric';
-import UsmPairCardType from '../../features/usmPairs/usmPairCard';
+import UsmPairCard from '../../features/usmPairs/usmPairCard';
 import { formatNumber } from '../../functions';
 import { NetworkGuardWrapper } from '../../guards/Network';
 import { useUsmPairs } from '../../services/graph/hooks/usmPairs';
@@ -15,14 +15,16 @@ import { DefinedStyles } from '../../utils/DefinedStyles';
 export function Amms() {
   const vaultManager = useVaultManager();
   const usmPairs = useUsmPairs();
-  const renderAmmCard = () => {
+  const renderAmmCards = () => {
     return usmPairs?.map((pair) => {
       return (
-        <UsmPairCardType
-          key={pair.id}
-          inputAddress={pair.isToken0Mtr ? pair.token1 : pair.token0}
-          outputAddress={pair.isToken0Mtr ? pair.token0 : pair.token1}
-        />
+        <div className="col-span-1">
+          <UsmPairCard
+            key={pair.id}
+            inputAddress={pair.isToken0Mtr ? pair.token1 : pair.token0}
+            outputAddress={pair.isToken0Mtr ? pair.token0 : pair.token1}
+          />
+        </div>
       );
     });
   };
@@ -72,8 +74,8 @@ export function Amms() {
                 />
               </div>
               {usmPairs?.length > 0 ? (
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                  <div className="col-span-1">{renderAmmCard()}</div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {renderAmmCards()}
                 </div>
               ) : (
                 <div></div>

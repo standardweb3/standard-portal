@@ -149,7 +149,6 @@ export const sidebarRoutes = [
     urls: ['/dividend'],
     icon: dividendIcon,
     iconActive: dividendIcon,
-    // hidden: [ChainId.SHIDEN],
     hidden: [ChainId.MATIC, ChainId.BSC, ChainId.RINKEBY],
   },
   {

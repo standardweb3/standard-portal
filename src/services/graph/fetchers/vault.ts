@@ -16,7 +16,7 @@ import {
 
 export const VAULT = {
   [ChainId.RINKEBY]: 'billjhlee/rinkeby-vault-dev',
-  [ChainId.METIS]: "digitalnativeinc/metis-vault"
+  [ChainId.METIS]: 'digitalnativeinc/metis-vault',
 };
 
 export const vaultsGraphClient = (chainId) => {
@@ -53,8 +53,9 @@ export const getVaults = async (chainId = ChainId.MAINNET, variables) => {
 };
 
 export const getVault = async (chainId = ChainId.MAINNET, variables) => {
-  const { vaults } = await vault(chainId, vaultsQuery, variables);
-  return vaults?.[0];
+  const result = await vault(chainId, vaultsQuery, variables);
+
+  return result?.vaults?.[0];
 };
 
 export const getCVault = async (chainId = ChainId.MAINNET, variables) => {
@@ -124,4 +125,3 @@ export const getVaultCollateralReserves = async (
   );
   return result;
 };
-

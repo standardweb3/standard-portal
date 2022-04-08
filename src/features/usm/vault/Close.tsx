@@ -1,6 +1,8 @@
+import Skeleton from 'react-loading-skeleton';
 import { Button } from '../../../components-ui/Button';
 import { SimpleCurrencyLogo } from '../../../components-ui/CurrencyLogo/SimpleCurrencyLogo';
 import { ModalHeader } from '../../../components-ui/Modal/ModalHeader';
+import { Question } from '../../../components-ui/Question';
 import { RippleSpinner } from '../../../components-ui/Spinner/RippleSpinner';
 import {
   classNames,
@@ -13,21 +15,32 @@ import {
   useActiveWeb3React,
   useApproveCallback,
 } from '../../../hooks';
-import { useVault, useVaultDebt } from '../../../hooks/vault/useVault';
+import useCurrentBlockTimestamp from '../../../hooks/useCurrentBlockTimestamp';
+import { useVault } from '../../../hooks/vault/useVault';
 import { useTransactionAdder } from '../../../state/transactions/hooks';
 import { useCurrencyBalance } from '../../../state/wallet/hooks';
 import { DefinedStyles } from '../../../utils/DefinedStyles';
-import { CLOSE_FEE_MARGIN } from '../constants';
 import { getConditionColor } from '../functions';
 import { VaultStatusBadge } from '../vaults/VaultStatusBadge';
 
 export function Close({ vaultInfo, onDismiss }) {
   const addTransaction = useTransactionAdder();
+  const currentBlockTimestamp = useCurrentBlockTimestamp();
   const { account } = useActiveWeb3React();
   const { closeVault } = useVault(vaultInfo.address);
 
+  const vaultLife =
+    vaultInfo &&
+    currentBlockTimestamp &&
+    currentBlockTimestamp.toNumber() - vaultInfo.createdAt;
+
+  const padding =
+    vaultLife !== undefined && vaultInfo && (vaultInfo.fee / vaultLife) * 100;
+
   const debtCurrencyBalance = tryParseAmount(
-    vaultInfo ? String(vaultInfo.debt + CLOSE_FEE_MARGIN) : undefined,
+    vaultInfo && padding !== undefined
+      ? String(vaultInfo.debt + padding)
+      : undefined,
     vaultInfo?.usm,
   );
 
@@ -146,9 +159,16 @@ export function Close({ vaultInfo, onDismiss }) {
               symbol="mtr"
             />
             <div className="text-lg">Debt</div>
+            <Question
+              text={`Debt amount includes stability fee inclusive for the next block. If block doesn't change before the transaction is submitted, unused USM will be returned`}
+            />
           </div>
           <div className="text-2xl font-bold">
-            {parseFloat(vaultInfo.debt?.toFixed(4))} USM
+            {vaultInfo && padding !== undefined ? (
+              `${parseFloat((vaultInfo.debt + padding)?.toFixed(4))} USM`
+            ) : (
+              <Skeleton />
+            )}
           </div>
         </div>
         <div className="flex items-center space-x-4">
@@ -169,7 +189,11 @@ export function Close({ vaultInfo, onDismiss }) {
           <div className="space-y-1 mt-4 mr-4">
             <div className="text-sm">Debt Value</div>
             <div className="font-bold">
-              ${formatNumber(vaultInfo.debtValue)}
+              {vaultInfo && padding !== undefined ? (
+                `${formatNumber(vaultInfo.debtValue + padding)}`
+              ) : (
+                <Skeleton />
+              )}
             </div>
           </div>
         </div>

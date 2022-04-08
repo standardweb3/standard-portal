@@ -34,8 +34,10 @@ export function useUserVaultInfo(vaultAddress) {
     isLiquidated,
     liquidation,
     user,
+    createdAt,
+    ex_sfr
   } = vault ?? {};
-
+  
   const isUserVault = account && user && account.toLowerCase() == user.id;
   const {
     handleWrapUnwrap,
@@ -62,7 +64,9 @@ export function useUserVaultInfo(vaultAddress) {
       : undefined;
   const mcr = CDP && applyCdpDecimals(CDP.mcr);
   const sfr = CDP && applyCdpDecimals(CDP.sfr);
+  const init_sfr = CDP && applyCdpDecimals(ex_sfr)
   const lfr = CDP && applyCdpDecimals(CDP.lfr);
+  const expiary = CDP && applyCdpDecimals(CDP.expiary)
 
   const liquidationPrice =
     vault && debt !== undefined && (debt * mcr) / 100 / currentCollateralized;
@@ -111,6 +115,7 @@ export function useUserVaultInfo(vaultAddress) {
     mcr,
     sfr,
     lfr,
+    expiary,
     fee,
     debt,
     usm,
@@ -146,5 +151,7 @@ export function useUserVaultInfo(vaultAddress) {
     isLiquidated,
     liquidation,
     isUserVault,
+    createdAt,
+    init_sfr
   };
 }

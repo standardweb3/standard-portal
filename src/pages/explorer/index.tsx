@@ -14,7 +14,7 @@ import { applyCdpDecimals } from '../../features/usm/utils';
 import { useActiveWeb3React } from '../../hooks';
 import { useExplorerVaultsPagination } from '../../hooks/explorer/useExplorerVaultsPagination';
 import useCurrentBlockTimestamp from '../../hooks/useCurrentBlockTimestamp';
-import { useCdpPrices } from '../../services/graph/hooks/cdpPrices';
+import { useCdpExpiaries, useCdpPrices } from '../../services/graph/hooks/cdpPrices';
 import { useExplorerVaults } from '../../services/graph/hooks/vaultExplorer';
 import { DefinedStyles } from '../../utils/DefinedStyles';
 import { VaultCondition } from '../vaults';
@@ -28,6 +28,7 @@ export function Explorer() {
   const { account, chainId } = useActiveWeb3React();
   const currentBlock = useCurrentBlockTimestamp();
   const cdpPrices = useCdpPrices();
+  const cdpExpiaries = useCdpExpiaries();
 
   const [term, setTerm] = useState('');
   const debouncedTerm = useDebounce(term, 200);
@@ -77,6 +78,8 @@ export function Explorer() {
       isLiquidated,
       liquidation,
       user,
+      ex_sfr,
+      lastPaidBack,
     } = v;
 
     const isUserVault = account && user && account.toLowerCase() == user.id
@@ -84,12 +87,16 @@ export function Explorer() {
 
     const vMcr = applyCdpDecimals(CDP.mcr);
     const vSfr = applyCdpDecimals(CDP.sfr);
+    const initSfr = applyCdpDecimals(ex_sfr);
 
     const fee = currentBlock
       ? calculateFee(
           currentBlock.toNumber(),
           parseFloat(createdAt),
+          lastPaidBack,
           vSfr,
+          initSfr,
+          cdpExpiaries[collateral],
           parseFloat(currentBorrowed),
         )
       : 0;

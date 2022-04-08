@@ -3,23 +3,23 @@ import { VaultCondition } from '../../pages/vaults';
 export function calculateFee(
   currentBlockTimestamp,
   createdAt,
+  lastPaidBack,
   sfr,
+  initSfr,
+  expiary,
   borrowedValue,
 ) {
-  // const borrowedValueBN = BigNumber.from(String(borrowedValue));
-  // const sfrBN = BigNumber.from(String(sfr));
-  // const sfrTimeVBN = borrowedValueBN.times;
-  const sfrTimesV = Math.floor(borrowedValue * sfr);
-  const duration = Math.floor(
-    Math.floor(
-      Math.floor(Math.floor((currentBlockTimestamp - createdAt) / 60) / 60) /
-        24,
-    ) / 30,
-  );
-  // (currentBlockTimestamp - createdAt) / 60 / 60 / 24 / 30;
+  const vaultLife = currentBlockTimestamp - createdAt;
 
-  // round down
-  return Math.floor(sfrTimesV / 100) * duration;
+  const expired = vaultLife > expiary;
+
+  const sfrForCalculation = expired ? sfr / 100 : initSfr / 100;
+
+  const duration = (currentBlockTimestamp - lastPaidBack) / 2592000
+  const durationV = (duration + 3600/1e18) * borrowedValue
+  const fee = durationV * sfrForCalculation
+
+  return fee
 }
 
 export function getConditionColor(condition) {
