@@ -18,9 +18,8 @@ export function Amms() {
   const renderAmmCards = () => {
     return usmPairs?.map((pair) => {
       return (
-        <div className="col-span-1">
+        <div className="col-span-1" key={pair.id}>
           <UsmPairCard
-            key={pair.id}
             inputAddress={pair.isToken0Mtr ? pair.token1 : pair.token0}
             outputAddress={pair.isToken0Mtr ? pair.token0 : pair.token1}
           />

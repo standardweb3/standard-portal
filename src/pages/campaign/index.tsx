@@ -71,7 +71,9 @@ function Campaign() {
               <div className="col-span-2 bg-background p-4 rounded-20">
                 <div className="flex flex-col justify-center items-center">
                   <div className="font-bold text-lg mb-2">Total Reward</div>
-                  <div className="text-primary text-xl font-bold">{totalReward}</div>
+                  <div className="text-primary text-xl font-bold">
+                    {totalReward}
+                  </div>
                 </div>
               </div>
               <div className="bg-background p-4 rounded-20">

@@ -11,6 +11,7 @@ import vaultIcon from '../public/icons/vault.svg';
 import borrowIcon from '../public/icons/borrow.svg';
 import ammsIcon from '../public/icons/amms.svg'
 import explorerIcon from '../public/icons/explorer.svg'
+import campaignIcon from '../public/icons/campaign.svg'
 
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
@@ -94,8 +95,8 @@ export const sidebarRoutes = [
   {
     name: 'Campaign',
     urls: ['/campaign'],
-    icon: explorerIcon,
-    iconActive: explorerIcon,
+    icon: campaignIcon,
+    iconActive: campaignIcon,
     hidden: [
       ChainId.MATIC,
       ChainId.MAINNET,
@@ -149,7 +150,7 @@ export const sidebarRoutes = [
     urls: ['/dividend'],
     icon: dividendIcon,
     iconActive: dividendIcon,
-    hidden: [ChainId.MATIC, ChainId.BSC, ChainId.RINKEBY],
+    hidden: [ChainId.MATIC, ChainId.BSC, ChainId.RINKEBY, ChainId.METIS],
   },
   {
     name: 'Dividend V1',
