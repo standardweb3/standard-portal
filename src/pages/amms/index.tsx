@@ -20,8 +20,8 @@ export function Amms() {
       return (
         <div className="col-span-1" key={pair.id}>
           <UsmPairCard
-            inputAddress={pair.isToken0Mtr ? pair.token1 : pair.token0}
-            outputAddress={pair.isToken0Mtr ? pair.token0 : pair.token1}
+            inputAddress={pair.isToken0Mtr ? pair.token0 : pair.token1}
+            outputAddress={pair.isToken0Mtr ? pair.token1 : pair.token0}
           />
         </div>
       );

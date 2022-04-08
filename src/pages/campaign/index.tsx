@@ -101,8 +101,24 @@ function Campaign() {
                 </div>
               </div>
             </div>
+            <div className="font-bold mb-4"></div>
 
-            <div className="font-bold text-lg mb-4">Score Board (TOP 100)</div>
+            <div className="font-bold text-lg mb-2">Score Board (TOP 100)</div>
+
+            <div className="text-grey text-sm">
+              * Score: Daily accumulation of outstanding borrowed USM
+            </div>
+            <div className="text-grey mb-2 text-sm">
+              * Reward: User's score / Total Score * Total Reward
+            </div>
+            <div className="text-grey text-sm">
+              * Rewards are indexed using subgraph.
+            </div>
+
+            <div className="text-grey mb-4 text-sm">
+              * Reward indexing speed may not match the tx completion speed
+            </div>
+
             {scoreAggregator && (
               <div className="grid grid-cols-1 gap-4 max-h-[500px] overflow-scroll">
                 {renderUsers()}
