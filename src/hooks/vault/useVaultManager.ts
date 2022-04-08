@@ -43,6 +43,22 @@ export function useVaultManagerAssetPrice(address) {
   return assetPrice ? parseFloat(formatBalance(assetPrice, 8)) : undefined;
 }
 
+
+export function useCollateralExpiary(collateralAddress) {
+  const contract = useVaultMannagerConract();
+
+  const args = [collateralAddress];
+  const callResult = useSingleCallResult(
+    collateralAddress && contract,
+    'getExpiary',
+    args,
+  );
+  const expiary = callResult?.result?.[0];
+
+  return expiary
+}
+
+
 export function useVaultManagerIsValidCDP(collateral, debt, cAmount, dAmount) {
   const contract = useVaultMannagerConract();
 

@@ -7,7 +7,7 @@ import { ViewportMediumUp } from '../../components-ui/Responsive';
 import { VaultUserInfo } from '../../features/usm/vaults/VaultUserInfo';
 import { applyCdpDecimals } from '../../features/usm/utils';
 import { useUserVaults2 } from '../../services/graph/hooks/userVaults';
-import { useCdpPrices } from '../../services/graph/hooks/cdpPrices';
+import { useCdpExpiaries, useCdpPrices } from '../../services/graph/hooks/cdpPrices';
 import { useMemo } from 'react';
 import { VaultsTable } from '../../features/usm/vaults/VaultsTable';
 import { RiskyVaultsTable } from '../../features/usm/collaterals/RiskyVaultsTable';
@@ -42,6 +42,8 @@ function Vaults() {
 
   const currentBlock = useCurrentBlockTimestamp();
   const cdpPrices = useCdpPrices();
+  const cdpExpiaries = useCdpExpiaries();
+  console.log('expiaries', cdpExpiaries)
   const usm = useMtr();
   // const usmPrice = useVaultManagerAssetPrice(usm.address);
   const { isLoading, userVaults } = useUserVaults2();

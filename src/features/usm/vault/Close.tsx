@@ -13,7 +13,7 @@ import {
   useActiveWeb3React,
   useApproveCallback,
 } from '../../../hooks';
-import { useVault } from '../../../hooks/vault/useVault';
+import { useVault, useVaultDebt } from '../../../hooks/vault/useVault';
 import { useTransactionAdder } from '../../../state/transactions/hooks';
 import { useCurrencyBalance } from '../../../state/wallet/hooks';
 import { DefinedStyles } from '../../../utils/DefinedStyles';
@@ -182,7 +182,7 @@ export function Close({ vaultInfo, onDismiss }) {
       )}
 
       <Button
-        disabled={!closeable}
+        disabled={usmApprovalState === ApprovalState.APPROVED && !closeable}
         className={DefinedStyles.fullButton}
         onClick={handleCloseVault}
       >

@@ -25,7 +25,7 @@ import useDebounce from '../../hooks/useDebounce';
 import { NetworkGuardWrapper } from '../../guards/Network';
 
 export function Explorer() {
-  const { chainId } = useActiveWeb3React();
+  const { account, chainId } = useActiveWeb3React();
   const currentBlock = useCurrentBlockTimestamp();
   const cdpPrices = useCdpPrices();
 
@@ -75,9 +75,11 @@ export function Explorer() {
       createdAt,
       isClosed,
       isLiquidated,
-      liquidation
+      liquidation,
+      user,
     } = v;
 
+    const isUserVault = account && user && account.toLowerCase() == user.id
     const isWnative = getAddress(collateral) === WNATIVE[chainId].address;
 
     const vMcr = applyCdpDecimals(CDP.mcr);
@@ -125,9 +127,11 @@ export function Explorer() {
       collateralPrice,
       isWnative,
       isLiquidated,
+      isClosed,
       liquidation,
       fee,
       debt,
+      isUserVault
     };
 
     return refactoredVault;
@@ -193,7 +197,8 @@ export function Explorer() {
                     fee={searchVaultForCard.fee}
                     isLiquidated={searchVaultForCard.isLiquidated}
                     liquidation={searchVaultForCard.liquidation}
-
+                    isClosed={searchVaultForCard.isClosed}
+                    ownership={searchVaultForCard.isUserVault}
                   />
                 </div>
               ) : (

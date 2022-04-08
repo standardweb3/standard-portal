@@ -1,5 +1,4 @@
 import { getAddress } from 'ethers/lib/utils';
-import { useRouter } from 'next/router';
 import { useActiveWeb3React } from '../../hooks';
 import { useWrappableCurrency } from '../../hooks/useWrappableCurrency';
 import { useMtr } from '../../hooks/vault/useMtr';
@@ -111,6 +110,7 @@ export function useUserVaultInfo(vaultAddress) {
     usm,
     usmPrice,
     collateralCurrency,
+    collateralAddress,
     collateralPrice,
     liquidationPrice,
     currentBorrowed,

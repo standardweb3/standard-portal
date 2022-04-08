@@ -73,6 +73,7 @@ export function VaultCard({
   ownership = false,
 }) {
   const { setOpen } = useContext(CloseVaultContext);
+  
   const handleOpen = (e) => {
     e.stopPropagation();
     e.preventDefault();
@@ -91,7 +92,7 @@ export function VaultCard({
       ? collateralPrice * parseFloat(currentCollateralized)
       : undefined;
 
-  const collateralRatio = (collateralValueUSD / debt) * 100;
+  const collateralRatio = debt ? (collateralValueUSD / debt) * 100 : 0;
 
   const handleClick = () => {
     router.push(`/vault/${address}`);

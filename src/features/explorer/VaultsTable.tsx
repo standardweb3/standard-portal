@@ -18,7 +18,8 @@ export function VaultsTable({ vaults }) {
         isWnative,
         isClosed,
         isLiquidated,
-        liquidation
+        liquidation,
+        isUserVault
       }) => (
         <VaultCard
           isWnative={isWnative}
@@ -37,6 +38,7 @@ export function VaultsTable({ vaults }) {
           isClosed={isClosed}
           isLiquidated={isLiquidated}
           liquidation={liquidation}
+          ownership={isUserVault}
         />
       ),
     );

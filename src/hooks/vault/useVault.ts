@@ -4,7 +4,6 @@ import { useActiveWeb3React, useContract, useTokenContract } from '..';
 import { useSingleCallResult } from '../../state/multicall/hooks';
 import { useCallback } from 'react';
 import { calculateGasMargin } from '../../functions';
-import ERC20_ABI from '../../constants/abis/erc20.json';
 
 export function useVaultContract(
   address,

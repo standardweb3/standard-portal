@@ -62,6 +62,7 @@ export function VaultInfoCard({
   hideCloseVault = false,
   isClosed,
   isLiquidated,
+  ownership =false
 }) {
   const { chainId } = useActiveWeb3React();
   const isViewportLargUp = useSizeLgUp();
@@ -226,7 +227,7 @@ export function VaultInfoCard({
               </div>
             </div>
           </div>
-          {!isClosed && !isLiquidated && (
+          {ownership && !isClosed && !isLiquidated && (
             <div className="mt-4 flex justify-end">
               <Button
                 type="bordered"

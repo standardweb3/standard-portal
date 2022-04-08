@@ -41,7 +41,7 @@ export function VaultProgressBar({
         ></Thumb>
       </Track>
 
-      <TrackText left={minLeft} className="text-white cursor-pointer">
+      <TrackText left={minLeft} className="text-white cursor-pointer whitespace-nowrap">
         Min: {minRatio}%
       </TrackText>
 

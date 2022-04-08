@@ -198,6 +198,7 @@ function Vault() {
               address={address}
               isClosed={isClosed}
               isLiquidated={isLiquidated}
+              ownership={isUserVault}
             />
 
             {!isClosed && (

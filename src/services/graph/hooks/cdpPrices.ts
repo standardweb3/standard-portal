@@ -35,3 +35,36 @@ export function useCdpPrices() {
 
   return pricesMap;
 }
+
+
+
+export function useCdpExpiaries() {
+  const cdps = useCdps();
+  const vaultManager = useVaultMannagerConract();
+
+  const expiariesMap = {};
+
+  const args = useMemo(() => {
+    if (!cdps) return;
+
+    return cdps.map((cdp) => [getAddress(cdp.id)]);
+  }, [cdps]);
+
+  const callResult = useSingleContractMultipleData(
+    args ? vaultManager : null,
+    'getExpiary',
+    args,
+  );
+
+  callResult?.forEach((res, i) => {
+    const expiary = res?.result?.[0];
+    if (expiary) {
+      expiariesMap[cdps[i].id] = {
+        price: parseFloat(expiary),
+        symbol: cdps[i].symbol,
+      };
+    }
+  });
+
+  return expiariesMap;
+}

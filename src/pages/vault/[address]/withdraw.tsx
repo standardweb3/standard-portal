@@ -98,6 +98,7 @@ function Vault() {
               address={address}
               isClosed={isClosed}
               isLiquidated={isLiquidated}
+              ownership={isUserVault}
             />
             {!isClosed && (
               <div className="grid grid-cols-2 lg:grid-cols-7 gap-4">
