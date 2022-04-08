@@ -109,7 +109,7 @@ function Campaign() {
               * Score: Daily accumulation of outstanding borrowed USM
             </div>
             <div className="text-grey mb-2 text-sm">
-              * Reward: User's score / Total Score * Total Reward
+              * Reward: User&apos;s score / Total Score * Total Reward
             </div>
             <div className="text-grey text-sm">
               * Rewards are indexed using subgraph.
