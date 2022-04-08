@@ -16,7 +16,6 @@ import { DefinedStyles } from '../../../utils/DefinedStyles';
 import { CollateralRatioProgressBar } from '../../../components-ui/ProgressBar/CollateralRatioProgressBar';
 import { Input as NumericalInput } from '../../../components-ui/NumericalInput';
 import { useTransactionAdder } from '../../../state/transactions/hooks';
-import { MAX_COLLATERAL_RATIO } from '../constants';
 import { useTransactionSubmission } from '../../../hooks/useTransactionSubmission';
 import TransactionConfirmationModal from '../../../modals/TransactionConfirmationModal';
 import { BIG_INT_ZERO } from '../../../constants';
@@ -40,6 +39,7 @@ export function VaultMint({
   stabilityFee,
   collateralRatio,
   setCollateralRatio,
+  safeCollateralRatio,
   maxCollateralRatio,
   setCollateralRatioPercentage,
   collateralRatioPercentage,
@@ -348,17 +348,21 @@ export function VaultMint({
         items-center
         w-full space-x-4"
       >
-        <div className="flex flex-1 w-full">
-          <CollateralRatioProgressBar
-            collateralRatioPercentage={collateralRatioPercentage}
-            setCollateralRatioPercentage={setCollateralRatioPercentage}
-            maxCollateralRatio={MAX_COLLATERAL_RATIO}
-            setCollateralRatio={setCollateralRatio}
-            collateralRatio={collateralRatio}
-            setToMinCollataralRatio={setToMinCollataralRatio}
-            setToSafeCollateralRatio={setToSafeCollateralRatio}
-          />
-        </div>
+        {!loading && (
+          <div className="flex flex-1 w-full">
+            <CollateralRatioProgressBar
+              collateralRatioPercentage={collateralRatioPercentage}
+              setCollateralRatioPercentage={setCollateralRatioPercentage}
+              minCollateralRatio={mcr ?? 0}
+              safeCollateralRatio={safeCollateralRatio}
+              maxCollateralRatio={maxCollateralRatio}
+              setCollateralRatio={setCollateralRatio}
+              collateralRatio={collateralRatio}
+              setToMinCollataralRatio={setToMinCollataralRatio}
+              setToSafeCollateralRatio={setToSafeCollateralRatio}
+            />
+          </div>
+        )}
         <div className="flex items-center space-x-2 bg-opaque rounded-20 px-4 py-4 mb-4 sm:mb-0">
           <NumericalInput
             className={classNames('text-right max-w-[110px]')}

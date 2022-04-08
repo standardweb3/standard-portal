@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useMemo, useRef, useState } from 'react';
 import useMouse from '@react-hook/mouse-position';
 import { classNames } from '../../functions';
+import { MAX_COLLATERAL_RATIO } from '../../features/usm/constants';
 
 export const TrackCont = styled.div`
   width: 100%;
@@ -52,7 +53,7 @@ export const TrackText = styled.div<{ left: string; safe?: boolean }>`
 
 export function CollateralRatioProgressBar({
   collateralRatioPercentage,
-  maxCollateralRatio = 300,
+  maxCollateralRatio = MAX_COLLATERAL_RATIO,
   minCollateralRatio = 150,
   safeCollateralRatio = 200,
   setCollateralRatio,

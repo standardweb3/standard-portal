@@ -21,6 +21,10 @@ import { NetworkGuardWrapper } from '../../../guards/Network';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import { Rebase4 } from '../../../features/usm/Rebase4';
 import { useValidVault } from '../../../hooks/vault/useValidVault';
+import {
+  getMaxCollateralRatio,
+  getSafeCollateralRatio,
+} from '../../../features/usm/constants';
 
 function Vault() {
   const router = useRouter();
@@ -74,8 +78,8 @@ function Vault() {
   const [borrowMoreAmount, setBorrowMoreAmount] = useState('');
   // END
   //
-  const maxCollateralRatio = 320;
-  const safeCollateralRatio = 200;
+  const maxCollateralRatio = mcr ? getMaxCollateralRatio(mcr) : 0;
+  const safeCollateralRatio = mcr ? getSafeCollateralRatio(mcr) : 0;
   const minCollateralRatio = mcr;
 
   const [collateralRatio, setCollateralRatio] = useState(undefined);
@@ -260,6 +264,7 @@ function Vault() {
                           setCollateralRatioPercentage={
                             setCollateralRatioPercentage
                           }
+                          safeCollateralRatio={safeCollateralRatio}
                           collateralRatioPercentage={collateralRatioPercentage}
                           setToMinCollataralRatio={setToMinCollataralRatio}
                           setToSafeCollateralRatio={setToSafeCollateralRatio}

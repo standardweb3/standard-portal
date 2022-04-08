@@ -10,7 +10,7 @@ import { useContext, useState } from 'react';
 import { VaultProgressBar } from '../vault/VaultProgressBar';
 import { useSizeXs } from '../../../components-ui/Responsive';
 import { CloseVaultContext } from '../vault/CloseVaultContext';
-import { MAX_COLLATERAL_RATIO } from '../constants';
+import { getMaxCollateralRatio, getSafeCollateralRatio, MAX_COLLATERAL_RATIO } from '../constants';
 
 const Radiation = styled.div`
   filter: drop-shadow(0px 4px 10px rgba(195, 159, 159, 0.25));
@@ -99,6 +99,8 @@ export function VaultCard({
   };
 
   const imageSize = isViewportXs ? '58px' : '72px';
+  const safeCollateralRatio = getSafeCollateralRatio(mcr)
+  const maxCollateralRatio = getMaxCollateralRatio(mcr)
 
   return (
     <Background
@@ -202,7 +204,7 @@ export function VaultCard({
         ) : (
           <VaultProgressBar
             minRatio={mcr}
-            maxRatio={MAX_COLLATERAL_RATIO}
+            maxRatio={maxCollateralRatio}
             condition={condition}
             currentRatio={collateralRatio}
           />

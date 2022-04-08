@@ -10,10 +10,13 @@ export function CollateralizeSettingsPanel({
   collateralRatio,
   setCollateralRatio,
   maxCollateralRatio,
+  minCollateralRatio,
   setCollateralRatioPercentage,
   collateralRatioPercentage,
   setToMinCollataralRatio,
+  safeCollateralRatio,
   setToSafeCollateralRatio,
+  loading,
 }) {
   // change to use MTR later
   const mtr = useMtr();
@@ -37,17 +40,21 @@ export function CollateralizeSettingsPanel({
         items-center 
         w-full space-x-4"
           >
-            <div className="flex flex-1 w-full">
-              <CollateralRatioProgressBar
-                collateralRatioPercentage={collateralRatioPercentage}
-                setCollateralRatioPercentage={setCollateralRatioPercentage}
-                maxCollateralRatio={maxCollateralRatio}
-                setCollateralRatio={setCollateralRatio}
-                collateralRatio={collateralRatio}
-                setToMinCollataralRatio={setToMinCollataralRatio}
-                setToSafeCollateralRatio={setToSafeCollateralRatio}
-              />
-            </div>
+            {!loading && (
+              <div className="flex flex-1 w-full">
+                <CollateralRatioProgressBar
+                  minCollateralRatio={minCollateralRatio}
+                  collateralRatioPercentage={collateralRatioPercentage}
+                  setCollateralRatioPercentage={setCollateralRatioPercentage}
+                  maxCollateralRatio={maxCollateralRatio}
+                  setCollateralRatio={setCollateralRatio}
+                  collateralRatio={collateralRatio}
+                  setToMinCollataralRatio={setToMinCollataralRatio}
+                  safeCollateralRatio={safeCollateralRatio}
+                  setToSafeCollateralRatio={setToSafeCollateralRatio}
+                />
+              </div>
+            )}
             <div className="flex items-center space-x-2 bg-opaque rounded-20 px-4 py-4 mb-4 sm:mb-0">
               <NumericalInput
                 className={classNames('text-right max-w-[110px]')}

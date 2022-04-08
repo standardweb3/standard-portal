@@ -33,8 +33,8 @@ import { CollateralizeSettingsPanel } from '../../../features/usm/collateralize/
 import { useTransactionAdder } from '../../../state/transactions/hooks';
 import { useCollateral } from '../../../features/usm/useCollateral';
 import {
+  getMaxCollateralRatio,
   getSafeCollateralRatio,
-  MAX_COLLATERAL_RATIO,
 } from '../../../features/usm/constants';
 import { RippleSpinner } from '../../../components-ui/Spinner/RippleSpinner';
 import { useUsmMintableSupply } from '../../../features/usm/useUsmMintableSupply';
@@ -76,6 +76,7 @@ function Collateral() {
     handleWrapUnwrap,
   } = useCollateral(collateralAddr);
 
+
   const balance = useCurrencyBalance(account, collateralCurrency);
   const [collateralizeAmount, setCollateralizeAmount] = useState('');
 
@@ -93,20 +94,21 @@ function Collateral() {
   );
 
   const safeCollateralRatio = getSafeCollateralRatio(mcr);
+  const maxCollateralRatio = getMaxCollateralRatio(mcr)
 
   const [collateralRatio, setCollateralRatio] = useState(
     String(safeCollateralRatio),
   );
 
   const [collateralRatioPercentage, setCollateralRatioPercentage] = useState(
-    (safeCollateralRatio / MAX_COLLATERAL_RATIO) * 100,
+    (safeCollateralRatio / maxCollateralRatio) * 100,
   );
 
   useEffect(() => {
     if (safeCollateralRatio) {
       setCollateralRatio(String(safeCollateralRatio));
       setCollateralRatioPercentage(
-        (safeCollateralRatio / MAX_COLLATERAL_RATIO) * 100,
+        (safeCollateralRatio / maxCollateralRatio) * 100,
       );
     }
   }, [safeCollateralRatio]);
@@ -146,12 +148,12 @@ function Collateral() {
 
   const handleChangeCollateralRatio = (value, changePerc = true) => {
     if (value === '') {
-      setCollateralRatioPercentage((mcr / MAX_COLLATERAL_RATIO) * 100);
+      setCollateralRatioPercentage((mcr / maxCollateralRatio) * 100);
       setCollateralRatio('');
       setUsmAmount('');
       return;
     }
-    if (parseFloat(value) >= MAX_COLLATERAL_RATIO) {
+    if (parseFloat(value) >= maxCollateralRatio) {
       setCollateralRatio(String(value));
       setCollateralRatioPercentage(100);
       setUsmAmount(((collateralizeValue / parseFloat(value)) * 100).toFixed(4));
@@ -159,7 +161,7 @@ function Collateral() {
     }
     if (changePerc) {
       const newCollateralRatioPercentage =
-        (parseFloat(value) / MAX_COLLATERAL_RATIO) * 100;
+        (parseFloat(value) / maxCollateralRatio) * 100;
 
       setCollateralRatioPercentage(newCollateralRatioPercentage);
     }
@@ -337,12 +339,15 @@ function Collateral() {
                 <CollateralizeSettingsPanel
                   usmAmount={usmAmount}
                   collateralRatio={collateralRatio}
+                  minCollateralRatio={mcr}
                   setCollateralRatio={handleChangeCollateralRatio}
-                  maxCollateralRatio={MAX_COLLATERAL_RATIO}
+                  safeCollateralRatio={safeCollateralRatio}
+                  maxCollateralRatio={maxCollateralRatio}
                   setCollateralRatioPercentage={setCollateralRatioPercentage}
                   collateralRatioPercentage={collateralRatioPercentage}
                   setToMinCollataralRatio={setToMinCollataralRatio}
                   setToSafeCollateralRatio={setToSafeCollateralRatio}
+                  loading={loading}
                 />
                 <CollateralizeBorrowPanel
                   mintableSupply={mintableSupply}
