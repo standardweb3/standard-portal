@@ -42,6 +42,7 @@ function Campaign() {
       }) ?? []
     );
   };
+
   return (
     <>
       <Head>

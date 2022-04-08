@@ -15,7 +15,7 @@ export function useVaultDashboard() {
   const [ammReserveDataKeys, setAmmReserveDataKeys] = useState([]);
   const [ammReserveTooltipItems, setAmmReserveTooltipItems] = useState([]);
   const [ammCollaterals, setAmmCollaterals] = useState([]);
-  const [cVaultCollaterals, setCVaultCollaterals] = useState([])
+  const [cVaultCollaterals, setCVaultCollaterals] = useState([]);
 
   const [
     ammReserveHistoriesForGraph,
@@ -58,6 +58,7 @@ export function useVaultDashboard() {
   const vaultClient = vaultsGraphClient(chainId);
   const ammReserves = useVaultAmmReserves();
   const collateralReserves = useVaultCollateralReserves();
+  console.log(collateralReserves)
 
   let ammReserveHistoriesResult = {};
   let ammCollateralsResult = {};
@@ -74,13 +75,15 @@ export function useVaultDashboard() {
               },
             },
           });
-          ammReserveHistoriesResult[reserve.collateralSymbol] =
-            results?.data?.pairDayDatas ?? [];
-          ammCollateralsResult[reserve.collateralSymbol] = true;
+          if (reserve.collateralSymbol) {
+            ammReserveHistoriesResult[reserve.collateralSymbol] =
+              results?.data?.pairDayDatas ?? [];
+            ammCollateralsResult[reserve.collateralSymbol] = true;
+          }
         }),
       ).then(() => {
         setAmmReserveHistories(ammReserveHistoriesResult);
-        setAmmCollaterals(Object.keys(ammCollateralsResult))
+        setAmmCollaterals(Object.keys(ammCollateralsResult));
       });
       setAmmReserveLoaded(true);
     }
@@ -101,14 +104,15 @@ export function useVaultDashboard() {
               },
             },
           });
-          collateralReserveHistoriesResult[reserve.cdp.symbol] =
-            results?.data?.collateralVaultHistories ?? [];
+          if (reserve.cdp) {
+            collateralReserveHistoriesResult[reserve.cdp.symbol] =
+              results?.data?.collateralVaultHistories ?? [];
             cVaultCollateralsResult[reserve.cdp.symbol] = true;
-
+          }
         }),
       ).then(() => {
         setCollateralReserveHistories(collateralReserveHistoriesResult);
-        setCVaultCollaterals(Object.keys(cVaultCollateralsResult))
+        setCVaultCollaterals(Object.keys(cVaultCollateralsResult));
       });
       setCollateralReservesLoaded(true);
     }
@@ -208,6 +212,6 @@ export function useVaultDashboard() {
     collateralReserveTooltipItems,
     collateralAmmLiquidationTooltipItems,
     ammCollaterals,
-    cVaultCollaterals
+    cVaultCollaterals,
   };
 }
