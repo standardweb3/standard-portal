@@ -31,8 +31,15 @@ import {
 import { AVERAGE_BLOCK_TIME_IN_SECS } from '../../constants';
 import { WavySpinner } from '../../components-ui/Spinner/WavySpinner';
 import { NetworkGuardWrapper } from '../../guards/Network';
-import { NORMAL_GUARDED_CHAINS } from '../../constants/networks';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
+import { useMemo } from 'react';
+
+function getBlackList(chainId) {
+  const bannedAddrs = {
+    [ChainId.METIS]: ["0x169698b28c5c1418ec023c8349d6e3f885bd9dd2"]
+  }
+  return bannedAddrs[chainId]
+}
 
 function Farm() {
   const router = useRouter();
@@ -46,9 +53,14 @@ function Farm() {
 
   const pairAddresses = useFarmPairAddresses();
 
+  const filteredPairAddresses = useMemo(() => {
+    const blackList = getBlackList(chainId)
+    return pairAddresses.filter(addr => !blackList.includes(addr))
+  }, [pairAddresses, chainId])
+
   const swapPairs = useSushiPairs({
     where: {
-      id_in: pairAddresses,
+      id_in: filteredPairAddresses,
     },
   });
 
