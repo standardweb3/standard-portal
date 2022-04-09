@@ -8,6 +8,9 @@ import {
 import { collateralVaultHistoriesQuery } from '../../services/graph/queries';
 import { usmPairDayDatasQuery } from '../../services/graph/queries/usmPairs';
 
+const timestampToDateTimestamp = (timestamp) => {
+  return Math.floor(timestamp / 86400) * 86400;
+};
 export function useVaultDashboard() {
   const { chainId } = useActiveWeb3React();
   const [ammReserveLoaded, setAmmReserveLoaded] = useState(false);
@@ -56,7 +59,11 @@ export function useVaultDashboard() {
   ] = useState(undefined);
 
   const vaultClient = vaultsGraphClient(chainId);
-  const ammReserves = useVaultAmmReserves();
+  const ammReserves = useVaultAmmReserves({
+    where: {
+      isOpen: true,
+    },
+  });
   const collateralReserves = useVaultCollateralReserves();
 
   let ammReserveHistoriesResult = {};
@@ -66,6 +73,7 @@ export function useVaultDashboard() {
     if (!ammReserveLoaded && ammReserves !== undefined) {
       Promise.all(
         ammReserves.map(async (reserve) => {
+          const symbol = reserve.collateralSymbol?.split('.').join('');
           let results = await vaultClient.query({
             query: usmPairDayDatasQuery,
             variables: {
@@ -74,10 +82,15 @@ export function useVaultDashboard() {
               },
             },
           });
-          if (reserve.collateralSymbol) {
-            ammReserveHistoriesResult[reserve.collateralSymbol] =
-              results?.data?.pairDayDatas ?? [];
-            ammCollateralsResult[reserve.collateralSymbol] = true;
+          if (symbol) {
+            ammReserveHistoriesResult[symbol] =
+              results?.data?.pairDayDatas?.map((d) => {
+                return {
+                  ...d,
+                  timestamp: timestampToDateTimestamp(d.timestamp),
+                };
+              }) ?? [];
+            ammCollateralsResult[symbol] = true;
           }
         }),
       ).then(() => {
@@ -95,6 +108,7 @@ export function useVaultDashboard() {
     if (!collateralReservesLoaded && collateralReserves !== undefined) {
       Promise.all(
         collateralReserves.map(async (reserve) => {
+          const symbol = reserve.cdp?.symbol?.split('.').join('');
           let results = await vaultClient.query({
             query: collateralVaultHistoriesQuery,
             variables: {
@@ -103,10 +117,15 @@ export function useVaultDashboard() {
               },
             },
           });
-          if (reserve.cdp) {
-            collateralReserveHistoriesResult[reserve.cdp.symbol] =
-              results?.data?.collateralVaultHistories ?? [];
-            cVaultCollateralsResult[reserve.cdp.symbol] = true;
+          if (symbol) {
+            collateralReserveHistoriesResult[symbol] =
+              results?.data?.collateralVaultHistories?.map((history) => {
+                return {
+                  ...history,
+                  timestamp: timestampToDateTimestamp(history.timestamp),
+                };
+              }) ?? [];
+            cVaultCollateralsResult[symbol] = true;
           }
         }),
       ).then(() => {
@@ -118,36 +137,56 @@ export function useVaultDashboard() {
   }, [collateralReservesLoaded, collateralReserves]);
 
   useEffect(() => {
-    if (ammReserveHistories !== undefined) {
+    if (ammReserveHistories !== undefined && ammCollaterals.length > 0) {
       let resultMap = {};
       let dataKeys = {};
       let toolTipItems = {};
 
-      Object.entries(ammReserveHistories).map(([symbol, histories]: any) => {
+      Object.entries(ammReserveHistories).map(([_symbol, histories]: any) => {
+        const symbol = _symbol.split('.').join('');
         histories.forEach((history) => {
           if (resultMap[history.timestamp]) {
-            resultMap[history.timestamp][symbol + 'Reserve'] =
-              history.collateralReserve;
+            resultMap[history.timestamp][symbol + 'Reserve'] = parseFloat(
+              history.collateralReserve,
+            );
           } else {
             resultMap[history.timestamp] = {
-              [symbol + 'Reserve']: history.collateralReserve,
+              [symbol + 'Reserve']: parseFloat(history.collateralReserve),
               timestamp: history.timestamp,
             };
-            if (!dataKeys[symbol + 'Reserve'])
-              dataKeys[symbol + 'Reserve'] = true;
-            if (!toolTipItems[symbol + ' Reserve'])
-              toolTipItems[symbol + ' Reserve'] = true;
+          }
+        });
+        if (!dataKeys[symbol + 'Reserve']) dataKeys[symbol + 'Reserve'] = true;
+        if (!toolTipItems[symbol + ' Reserve'])
+          toolTipItems[symbol + ' Reserve'] = true;
+      });
+
+      const keys = Object.keys(resultMap);
+      keys.forEach((key, index) => {
+        ammCollaterals.forEach((collateral) => {
+          if (index === 0) {
+            if (resultMap[key][collateral + 'Reserve'] === undefined) {
+              resultMap[key][collateral + 'Reserve'] = 0;
+            }
+          } else {
+            if (resultMap[key][collateral + 'Reserve'] === undefined) {
+              resultMap[keys[index - 1]][collateral + 'Reserve'] = 0;
+            }
           }
         });
       });
+
       setAmmReserveHistoriesForGraph(Object.values(resultMap));
       setAmmReserveDataKeys(Object.keys(dataKeys));
       setAmmReserveTooltipItems(Object.keys(toolTipItems));
     }
-  }, [ammReserveHistories]);
+  }, [ammReserveHistories, ammCollaterals]);
 
   useEffect(() => {
-    if (collateralReserveHistories !== undefined) {
+    if (
+      collateralReserveHistories !== undefined &&
+      cVaultCollaterals.length > 0
+    ) {
       let resultMap = {};
       let dataKeys = {};
       let toolTipItems = {};
@@ -157,35 +196,71 @@ export function useVaultDashboard() {
       let liquidationToolTipItems = {};
 
       Object.entries(collateralReserveHistories).map(
-        ([symbol, histories]: any) => {
+        ([_symbol, histories]: any) => {
+          const symbol = _symbol.split('.').join('');
           histories.forEach((history) => {
             if (resultMap[history.timestamp]) {
-              resultMap[history.timestamp][symbol + 'Reserve'] =
-                history.currentCollateralized;
-              liquidationsResultMap[history.timestamp][symbol + 'Liquidation'] =
-                history.currentCollateralized;
+              resultMap[history.timestamp][symbol + 'Reserve'] = parseFloat(
+                history.currentCollateralized,
+              );
+              liquidationsResultMap[history.timestamp][
+                symbol + 'Liquidation'
+              ] = parseFloat(history.currentCollateralized);
             } else {
               resultMap[history.timestamp] = {
-                [symbol + 'Reserve']: history.currentCollateralized,
+                [symbol + 'Reserve']: parseFloat(history.currentCollateralized),
                 timestamp: history.timestamp,
               };
 
               liquidationsResultMap[history.timestamp] = {
-                [symbol + 'Liquidation']: history.liquidationAMM,
+                [symbol + 'Liquidation']: parseFloat(history.liquidationAMM),
                 timestamp: history.timestamp,
               };
-              if (!dataKeys[symbol + 'Reserve']) {
-                dataKeys[symbol + 'Reserve'] = true;
-                liquidationDataKeys[symbol + 'Liquidation'] = true;
-              }
-              if (!toolTipItems[symbol + ' Reserve']) {
-                toolTipItems[symbol + ' Reserve'] = true;
-                liquidationToolTipItems[symbol + ' AMM Liquidations'] = true;
-              }
             }
           });
+
+          if (!dataKeys[symbol + 'Reserve']) {
+            dataKeys[symbol + 'Reserve'] = true;
+            liquidationDataKeys[symbol + 'Liquidation'] = true;
+          }
+
+          if (!toolTipItems[symbol + ' Reserve']) {
+            toolTipItems[symbol + ' Reserve'] = true;
+            liquidationToolTipItems[symbol + ' AMM Liquidations'] = true;
+          }
         },
       );
+      
+      const keys = Object.keys(resultMap);
+      keys.forEach((key, index) => {
+        cVaultCollaterals.forEach((collateral) => {
+          if (index === 0) {
+            if (resultMap[key][collateral + 'Reserve'] === undefined) {
+              resultMap[key][collateral + 'Reserve'] = 0;
+            }
+            if (
+              liquidationsResultMap[key][collateral + 'Liquidation'] ===
+              undefined
+            ) {
+              liquidationsResultMap[key][collateral + 'Liquidation'] = 0;
+            }
+          } else {
+            if (resultMap[key][collateral + 'Reserve'] === undefined) {
+              resultMap[key][collateral + 'Reserve'] = 0;
+            }
+            if (
+              liquidationsResultMap[keys[index - 1]][
+                collateral + 'Liquidation'
+              ] === undefined
+            ) {
+              liquidationsResultMap[keys[index - 1]][
+                collateral + 'Liquidation'
+              ] = 0;
+            }
+          }
+        });
+      });
+
       setCollateralReserveHistoriesForGraph(Object.values(resultMap));
       setCollateralReserveDataKeys(Object.keys(dataKeys));
       setCollateralReserveTooltipItems(Object.keys(toolTipItems));
@@ -198,7 +273,7 @@ export function useVaultDashboard() {
         Object.keys(liquidationToolTipItems),
       );
     }
-  }, [collateralReserveHistories]);
+  }, [collateralReserveHistories, cVaultCollaterals]);
 
   return {
     ammReserveDataKeys,

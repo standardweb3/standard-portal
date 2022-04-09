@@ -55,70 +55,72 @@ const renderAreaChart = (
   hideYAxis = undefined,
   hideXAxis = undefined,
   reversed = true,
-) => (
-  <AreaChart data={data}>
-    <defs>
-      <linearGradient id={`color-${dataKey[0]}`} x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor={stopColor[0][0]} stopOpacity={1} />
-        <stop offset="90%" stopColor={stopColor[0][1]} stopOpacity={0.5} />
-      </linearGradient>
-    </defs>
-    <XAxis
-      dataKey="timestamp"
-      interval={30}
-      axisLine={false}
-      tickLine={false}
-      tickFormatter={(str) => format(new Date(str * 1000), 'MMM dd')}
-      reversed={reversed}
-      connectNulls={true}
-      tick={{
-        fill: '#fff',
-      }}
-      hide={hideXAxis}
-      // padding={{ right: 20 }}
-    />
-    <YAxis
-      tickCount={isExpanded ? expandedTickCount : tickCount}
-      axisLine={false}
-      tickLine={false}
-      width={dataFormat === 'percent' ? 33 : 70}
-      tickFormatter={(number) =>
-        number !== 0
-          ? dataFormat !== 'percent'
-            ? `${formatNumberScale(
-                parseFloat(number),
-                itemType === ItemType.dollar,
-              )}`
-            : `${formatPercent(parseFloat(number))}`
-          : ''
-      }
-      domain={[0, 'auto']}
-      dx={3}
-      connectNulls={true}
-      allowDataOverflow={true}
-      hide={hideYAxis}
-    />
-    <Tooltip
-      content={
-        <CustomTooltip
-          bulletpointColors={bulletpointColors}
-          itemNames={itemNames}
-          itemType={itemType}
-          isStaked={isStaked}
-          isPOL={isPOL}
-        />
-      }
-    />
-    <Area
-      dataKey={dataKey[0]}
-      stroke={stroke}
-      strokeWidth={3}
-      fill={`url(#color-${dataKey[0]})`}
-      fillOpacity={1}
-    />
-    {renderExpandedChartStroke(isExpanded, expandedGraphStrokeColor)}
-  </AreaChart>
-);
+) => {
+  return (
+    <AreaChart data={data}>
+      <defs>
+        <linearGradient id={`color-${dataKey[0]}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={stopColor[0][0]} stopOpacity={1} />
+          <stop offset="90%" stopColor={stopColor[0][1]} stopOpacity={0.5} />
+        </linearGradient>
+      </defs>
+      <XAxis
+        dataKey="timestamp"
+        interval={30}
+        axisLine={false}
+        tickLine={false}
+        tickFormatter={(str) => format(new Date(str * 1000), 'MMM dd')}
+        reversed={reversed}
+        connectNulls={true}
+        tick={{
+          fill: '#fff',
+        }}
+        hide={hideXAxis}
+        // padding={{ right: 20 }}
+      />
+      <YAxis
+        tickCount={isExpanded ? expandedTickCount : tickCount}
+        axisLine={false}
+        tickLine={false}
+        width={dataFormat === 'percent' ? 33 : 70}
+        tickFormatter={(number) =>
+          number !== 0
+            ? dataFormat !== 'percent'
+              ? `${formatNumberScale(
+                  parseFloat(number),
+                  itemType === ItemType.dollar,
+                )}`
+              : `${formatPercent(parseFloat(number))}`
+            : ''
+        }
+        domain={[0, 'auto']}
+        dx={3}
+        connectNulls={true}
+        allowDataOverflow={true}
+        hide={hideYAxis}
+      />
+      <Tooltip
+        content={
+          <CustomTooltip
+            bulletpointColors={bulletpointColors}
+            itemNames={itemNames}
+            itemType={itemType}
+            isStaked={isStaked}
+            isPOL={isPOL}
+          />
+        }
+      />
+      <Area
+        dataKey={dataKey[0]}
+        stroke={stroke}
+        strokeWidth={3}
+        fill={`url(#color-${dataKey[0]})`}
+        fillOpacity={1}
+      />
+      {renderExpandedChartStroke(isExpanded, expandedGraphStrokeColor)}
+    </AreaChart>
+  );
+};
 
 const renderStackedAreaChartGradietns = (dataKey, stopColor) => {
   return dataKey.map((d, index) => {
@@ -168,62 +170,64 @@ const renderStackedAreaChart = (
   hideYAxis = undefined,
   hideXAxis = undefined,
   reversed = true,
-) => (
-  <AreaChart data={data}>
-    <defs>{renderStackedAreaChartGradietns(dataKey, stopColor)}</defs>
+) => {
+  return (
+    <AreaChart data={data}>
+      <defs>{renderStackedAreaChartGradietns(dataKey, stopColor)}</defs>
 
-    <XAxis
-      dataKey="timestamp"
-      interval={30}
-      axisLine={false}
-      tickLine={false}
-      tickFormatter={(str) => format(new Date(str * 1000), 'MMM dd')}
-      reversed={reversed}
-      connectNulls={true}
-      // padding={{ right: 20 }}
-      hide={hideXAxis}
-    />
-    <YAxis
-      tickCount={isExpanded ? expandedTickCount : tickCount}
-      axisLine={false}
-      tickLine={false}
-      width={dataFormat === 'percent' ? 33 : 70}
-      tickFormatter={(number) => {
-        if (number !== 0) {
-          if (dataFormat === 'percent') {
-            return `${formatPercent(parseFloat(number))}`;
-          } else if (dataFormat === 'k')
-            return `${formatNumberScale(
-              parseFloat(number),
-              itemType === ItemType.dollar,
-            )}`;
-          else
-            return `${formatNumberScale(
-              parseFloat(number),
-              itemType === ItemType.dollar,
-            )}`;
+      <XAxis
+        dataKey="timestamp"
+        interval={30}
+        axisLine={false}
+        tickLine={false}
+        tickFormatter={(str) => format(new Date(str * 1000), 'MMM dd')}
+        reversed={reversed}
+        connectNulls={true}
+        // padding={{ right: 20 }}
+        hide={hideXAxis}
+      />
+      <YAxis
+        tickCount={isExpanded ? expandedTickCount : tickCount}
+        axisLine={false}
+        tickLine={false}
+        width={dataFormat === 'percent' ? 33 : 70}
+        tickFormatter={(number) => {
+          if (number !== 0) {
+            if (dataFormat === 'percent') {
+              return `${formatPercent(parseFloat(number))}`;
+            } else if (dataFormat === 'k')
+              return `${formatNumberScale(
+                parseFloat(number),
+                itemType === ItemType.dollar,
+              )}`;
+            else
+              return `${formatNumberScale(
+                parseFloat(number),
+                itemType === ItemType.dollar,
+              )}`;
+          }
+          return '';
+        }}
+        domain={[0, 'auto']}
+        connectNulls={true}
+        allowDataOverflow={false}
+        hide={hideYAxis}
+      />
+      <Tooltip
+        formatter={(value) => trim(parseFloat(value), 2)}
+        content={
+          <CustomTooltip
+            bulletpointColors={bulletpointColors}
+            itemNames={itemNames}
+            itemType={itemType}
+          />
         }
-        return '';
-      }}
-      domain={[0, 'auto']}
-      connectNulls={true}
-      allowDataOverflow={false}
-      hide={hideYAxis}
-    />
-    <Tooltip
-      formatter={(value) => trim(parseFloat(value), 2)}
-      content={
-        <CustomTooltip
-          bulletpointColors={bulletpointColors}
-          itemNames={itemNames}
-          itemType={itemType}
-        />
-      }
-    />
-    {renderStackedAreaChartStack(dataKey, stroke)}
-    {renderExpandedChartStroke(isExpanded, expandedGraphStrokeColor)}
-  </AreaChart>
-);
+      />
+      {renderStackedAreaChartStack(dataKey, stroke)}
+      {renderExpandedChartStroke(isExpanded, expandedGraphStrokeColor)}
+    </AreaChart>
+  );
+};
 
 const renderLineChart = (
   data,

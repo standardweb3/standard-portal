@@ -17,12 +17,11 @@ import { DefinedStyles } from '../../utils/DefinedStyles';
 import { PageContent } from '../../components-ui/PageContent';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 import { NetworkGuardWrapper } from '../../guards/Network';
-import {
-  useVaultManager,
-} from '../../services/graph/hooks/vault';
+import { useVaultManager } from '../../services/graph/hooks/vault';
 import { Rebase4 } from '../../features/usm/Rebase4';
 import { formatNumber } from '../../functions';
 import { useVaultDashboard } from '../../features/usm/useVaultDashboard';
+import { LogoSpinner } from '../../components-ui/Spinner/LogoSpinner';
 
 function Dashboard() {
   const vaultManager = useVaultManager();
@@ -38,7 +37,7 @@ function Dashboard() {
     collateralReserveTooltipItems,
     collateralAmmLiquidationTooltipItems,
     ammCollaterals,
-    cVaultCollaterals
+    cVaultCollaterals,
   } = dashboardStats;
 
   const data = useVaultManagerHistories();
@@ -112,50 +111,58 @@ function Dashboard() {
                 <HistoricSuppliesGraph data={dataForChart} />
               </div>
               <div className="col-span-1 bg-background rounded-20 p-2">
-                <ReservesGraph
-                  dataKey={collateralReserveDataKeys}
-                  data={collateralReserveHistoriesForGraph ?? []}
-                  stroke={getStrokes(cVaultCollaterals)}
-                  stopColor={getStopColors(
-                    cVaultCollaterals,
-                  )}
-                  bulletpointColors={getBulletPointColors(
-                    cVaultCollaterals,
-                  )}
-                  tooltipItems={collateralReserveTooltipItems}
-                  title="Collateralized Assets"
-                  tooltipInfoMessage="Current collaterals deposited in vaults"
-                />
+                {collateralReserveHistoriesForGraph ? (
+                  <ReservesGraph
+                    dataKey={collateralReserveDataKeys}
+                    data={collateralReserveHistoriesForGraph ?? []}
+                    stroke={getStrokes(cVaultCollaterals)}
+                    stopColor={getStopColors(cVaultCollaterals)}
+                    bulletpointColors={getBulletPointColors(cVaultCollaterals)}
+                    tooltipItems={collateralReserveTooltipItems}
+                    title="Collateralized Assets"
+                    tooltipInfoMessage="Current collaterals deposited in vaults"
+                  />
+                ) : (
+                  <div className="flex justify-center items-center w-full min-h-[300px]">
+                    <LogoSpinner width={48} height={48} />
+                  </div>
+                )}
               </div>
               <div className="col-span-1 bg-background rounded-20 p-2">
-                <ReservesGraph
-                  dataKey={ammReserveDataKeys}
-                  data={ammReserveHistoriesForGraph ?? []}
-                  stroke={getStrokes(ammCollaterals)}
-                  stopColor={getStopColors(ammCollaterals)}
-                  bulletpointColors={getBulletPointColors(
-                    ammCollaterals,
-                  )}
-                  tooltipItems={ammReserveTooltipItems}
-                  title="Collateral-USM AMM Reserves"
-                  tooltipInfoMessage="Current collateral reserves in Collateral-USM AMM"
-                />
+                {ammReserveHistoriesForGraph ? (
+                  <ReservesGraph
+                    dataKey={ammReserveDataKeys}
+                    data={ammReserveHistoriesForGraph ?? []}
+                    stroke={getStrokes(ammCollaterals)}
+                    stopColor={getStopColors(ammCollaterals)}
+                    bulletpointColors={getBulletPointColors(ammCollaterals)}
+                    tooltipItems={ammReserveTooltipItems}
+                    title="Collateral-USM AMM Reserves"
+                    tooltipInfoMessage="Current collateral reserves in Collateral-USM AMM"
+                  />
+                ) : (
+                  <div className="flex justify-center items-center w-full min-h-[300px]">
+                    <LogoSpinner width={48} height={48} />
+                  </div>
+                )}
               </div>
               <div className="col-span-1 bg-background rounded-20 p-2">
-                <ReservesGraph
-                  dataKey={collateralAmmLiquidationDataKeys}
-                  data={collateralAmmLiquidationHistoriesForGraph ?? []}
-                  stroke={getStrokes(cVaultCollaterals)}
-                  stopColor={getStopColors(
-                    cVaultCollaterals,
-                  )}
-                  bulletpointColors={getBulletPointColors(
-                    cVaultCollaterals,
-                  )}
-                  tooltipItems={collateralAmmLiquidationTooltipItems}
-                  title="Collateral Liquidations to AMM"
-                  tooltipInfoMessage="Collateral liquidations on AMMs"
-                />
+                {collateralAmmLiquidationHistoriesForGraph ? (
+                  <ReservesGraph
+                    dataKey={collateralAmmLiquidationDataKeys}
+                    data={collateralAmmLiquidationHistoriesForGraph ?? []}
+                    stroke={getStrokes(cVaultCollaterals)}
+                    stopColor={getStopColors(cVaultCollaterals)}
+                    bulletpointColors={getBulletPointColors(cVaultCollaterals)}
+                    tooltipItems={collateralAmmLiquidationTooltipItems}
+                    title="Collateral Liquidations to AMM"
+                    tooltipInfoMessage="Collateral liquidations on AMMs"
+                  />
+                ) : (
+                  <div className="flex justify-center items-center w-full min-h-[300px]">
+                    <LogoSpinner width={48} height={48} />
+                  </div>
+                )}
               </div>
               <div className="col-span-1 bg-background rounded-20 p-2">
                 <PaidBackGraph data={dataForChart} />
