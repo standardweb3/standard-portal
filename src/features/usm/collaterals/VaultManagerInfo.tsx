@@ -164,7 +164,7 @@ export function VaultManagerInfo() {
 
           {(expanded || isViewportMediuUp) && (
             <div className="flex justify-start flex-wrap pb-2 mt-4">
-              <div className="mr-8 mt-4">
+              {/* <div className="mr-8 mt-4">
                 <div className="text-grey text-xs md:text-sm lg:text-sm">
                   Current Collateralized
                 </div>
@@ -178,7 +178,7 @@ export function VaultManagerInfo() {
                     NumberSkeleton
                   )}
                 </div>
-              </div>
+              </div> */}
               <div className="mr-8 mt-4">
                 <div className="text-grey text-xs md:text-sm lg:text-sm">
                   Liq. Collaterals
