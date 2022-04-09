@@ -92,9 +92,9 @@ export function Rebase4() {
   const vaultManager = useVaultManager();
   const { triggerRebase } = useVaultManagerCallbacks();
   const rebaseCountdown = useRebaseCountdown();
-  const rebasable = rebaseCountdown !== undefined && rebaseCountdown == 0;
-  const usm = useMtr();
-  const usmPrice = useVaultManagerAssetPrice(usm.address);
+  // const rebasable = rebaseCountdown !== undefined && rebaseCountdown == 0;
+  // const usm = useMtr();
+  const usmPrice = useVaultManagerAssetPrice('0x0000000000000000000000000000000000000000');
 
   const handleRebase = async () => {
     let tx = await triggerRebase();
