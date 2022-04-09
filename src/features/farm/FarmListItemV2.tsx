@@ -17,9 +17,13 @@ const FarmListItemV2 = ({ farm, ...rest }) => {
   const totalPoolTokens = useTotalSupply(amount?.currency);
 
   const _reserve0 =
-    !!_token0 && CurrencyAmount.fromRawAmount(_token0, reserve0.toString());
+    !!_token0 &&
+    reserve0 !== undefined &&
+    CurrencyAmount.fromRawAmount(_token0, reserve0.toString());
   const _reserve1 =
-    !!_token1 && CurrencyAmount.fromRawAmount(_token1, reserve1.toString());
+    !!_token1 &&
+    reserve1 !== undefined &&
+    CurrencyAmount.fromRawAmount(_token1, reserve1.toString());
 
   const [token0Amount, token1Amount] =
     !!amount && !!_reserve0 && !!_reserve1 && !!totalPoolTokens

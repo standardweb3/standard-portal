@@ -144,8 +144,8 @@ const FarmListItemDetailsV2 = ({ farm, token0, token1 }) => {
               <Liquidity
                 liquidityToken={liquidityToken}
                 userHasBalance={userHasBalance}
-                tokenAId={token0.address}
-                tokenBId={token1.address}
+                tokenAId={token0?.address}
+                tokenBId={token1?.address}
               />
             </div>
           ) : (
