@@ -170,7 +170,8 @@ export function useVaultDashboard() {
             }
           } else {
             if (resultMap[key][collateral + 'Reserve'] === undefined) {
-              resultMap[keys[index - 1]][collateral + 'Reserve'] = 0;
+              resultMap[key][collateral + 'Reserve'] =
+                resultMap[keys[index - 1]][collateral + 'Reserve'];
             }
           }
         });
@@ -205,7 +206,7 @@ export function useVaultDashboard() {
               );
               liquidationsResultMap[history.timestamp][
                 symbol + 'Liquidation'
-              ] = parseFloat(history.currentCollateralized);
+              ] = parseFloat(history.liquidationAMM);
             } else {
               resultMap[history.timestamp] = {
                 [symbol + 'Reserve']: parseFloat(history.currentCollateralized),
@@ -230,7 +231,7 @@ export function useVaultDashboard() {
           }
         },
       );
-      
+
       const keys = Object.keys(resultMap);
       keys.forEach((key, index) => {
         cVaultCollaterals.forEach((collateral) => {
@@ -246,20 +247,22 @@ export function useVaultDashboard() {
             }
           } else {
             if (resultMap[key][collateral + 'Reserve'] === undefined) {
-              resultMap[key][collateral + 'Reserve'] = 0;
+              resultMap[key][collateral + 'Reserve'] = resultMap[keys[index-1]][collateral + 'Reserve']
             }
             if (
-              liquidationsResultMap[keys[index - 1]][
-                collateral + 'Liquidation'
-              ] === undefined
+              liquidationsResultMap[key][collateral + 'Liquidation'] ===
+              undefined
             ) {
-              liquidationsResultMap[keys[index - 1]][
-                collateral + 'Liquidation'
-              ] = 0;
+              liquidationsResultMap[key][collateral + 'Liquidation'] =
+                liquidationsResultMap[keys[index - 1]][
+                  collateral + 'Liquidation'
+                ];
             }
           }
         });
       });
+
+      console.log(liquidationsResultMap)
 
       setCollateralReserveHistoriesForGraph(Object.values(resultMap));
       setCollateralReserveDataKeys(Object.keys(dataKeys));
