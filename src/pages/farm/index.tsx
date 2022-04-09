@@ -55,7 +55,7 @@ function Farm() {
 
   const filteredPairAddresses = useMemo(() => {
     const blackList = getBlackList(chainId)
-    return pairAddresses.filter(addr => !blackList.includes(addr))
+    return pairAddresses.filter(addr => !blackList?.includes(addr))
   }, [pairAddresses, chainId])
 
   const swapPairs = useSushiPairs({
