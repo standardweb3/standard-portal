@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { formatNumber, formatNumberScale } from '../../../functions';
 import {
   useVaultManager,
   useVaultCollateralReserves,
+  useCdpPrices,
 } from '../../../services/graph/hooks';
 import Skeleton from 'react-loading-skeleton';
 import {
@@ -55,32 +56,43 @@ const Background = styled.div`
 
 export function VaultManagerInfo() {
   const vaultManager = useVaultManager();
+  const cdpPrices = useCdpPrices();
   const collateralReserves = useVaultCollateralReserves();
 
-  const renderReserves = () => {
-    return collateralReserves?.map((reserve, index) => {
+  const totalCollateralizedUSD = useMemo(() => {
+    return collateralReserves?.reduce((sum, item) => {
       return (
-        <div className="mr-8 mt-4" key={index}>
-          <div className="text-grey text-xs md:text-sm lg:text-sm">
-            Collateralized {reserve.cdp.symbol}
-          </div>
-          <div className="text-lg font-bold">
-            {runningStat ? (
-              <>
-                {formatNumber(reserve.currentCollateralized)}
-                <span className="font-normal text-base">
-                  {' '}
-                  {reserve.cdp.symbol}
-                </span>
-              </>
-            ) : (
-              NumberSkeleton
-            )}
-          </div>
-        </div>
+        sum +
+          cdpPrices[item.collateral]?.price *
+            parseFloat(item.currentCollateralized) ?? 0
       );
-    });
-  };
+    }, 0);
+  }, [cdpPrices, collateralReserves]);
+
+  // const renderReserves = () => {
+  //   return collateralReserves?.map((reserve, index) => {
+  //     return (
+  //       <div className="mr-8 mt-4" key={index}>
+  //         <div className="text-grey text-xs md:text-sm lg:text-sm">
+  //           Collateralized {reserve.cdp.symbol}
+  //         </div>
+  //         <div className="text-lg font-bold">
+  //           {runningStat ? (
+  //             <>
+  //               {formatNumber(reserve.currentCollateralized)}
+  //               <span className="font-normal text-base">
+  //                 {' '}
+  //                 {reserve.cdp.symbol}
+  //               </span>
+  //             </>
+  //           ) : (
+  //             NumberSkeleton
+  //           )}
+  //         </div>
+  //       </div>
+  //     );
+  //   });
+  // };
 
   const isMintable =
     vaultManager && vaultManager.rebaseActive
@@ -193,7 +205,21 @@ export function VaultManagerInfo() {
 
           {(expanded || isViewportMediuUp) && (
             <div className="flex justify-start flex-wrap pb-2 mt-4">
-              {renderReserves()}
+              <div className="mr-8 mt-4">
+                <div className="text-grey text-xs md:text-sm lg:text-sm">
+                  Total Collateralized (Vaults)
+                </div>
+                <div className="text-lg font-bold">
+                  {totalCollateralizedUSD ? (
+                    <>
+                      {formatNumber(totalCollateralizedUSD)}
+                      <span className="font-normal text-base"> USD</span>
+                    </>
+                  ) : (
+                    NumberSkeleton
+                  )}
+                </div>
+              </div>
               <div className="mr-8 mt-4">
                 <div className="text-grey text-xs md:text-sm lg:text-sm">
                   Liq. Collaterals

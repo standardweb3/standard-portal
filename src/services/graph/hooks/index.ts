@@ -15,6 +15,7 @@ import { SUPPORTED_NETWORK_IDS } from '../../../constants/networks';
 export * from './blocks';
 export * from './exchange';
 export * from './vault'
+export * from './cdpPrices';
 
 export function useMasterChefV2TotalAllocPoint(swrConfig = undefined) {
   const { chainId } = useActiveWeb3React();
