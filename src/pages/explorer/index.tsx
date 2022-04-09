@@ -205,7 +205,6 @@ export function Explorer() {
                     isLiquidated={searchVaultForCard.isLiquidated}
                     liquidation={searchVaultForCard.liquidation}
                     isClosed={searchVaultForCard.isClosed}
-                    ownership={searchVaultForCard.isUserVault}
                   />
                 </div>
               ) : (

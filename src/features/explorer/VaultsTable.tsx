@@ -38,7 +38,6 @@ export function VaultsTable({ vaults }) {
           isClosed={isClosed}
           isLiquidated={isLiquidated}
           liquidation={liquidation}
-          ownership={isUserVault}
         />
       ),
     );

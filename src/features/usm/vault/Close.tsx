@@ -51,16 +51,17 @@ export function Close({ vaultInfo, onDismiss }) {
 
   const usmBalance = useCurrencyBalance(account, vaultInfo.usm);
   const closeable =
-    usmBalance &&
-    debtCurrencyBalance &&
-    vaultInfo &&
-    (usmBalance.greaterThan(debtCurrencyBalance) ||
-      usmBalance.equalTo(debtCurrencyBalance));
+    vaultInfo?.debt === 0 ||
+    (usmBalance &&
+      debtCurrencyBalance &&
+      vaultInfo &&
+      (usmBalance.greaterThan(debtCurrencyBalance) ||
+        usmBalance.equalTo(debtCurrencyBalance)));
 
   const conditionColor = getConditionColor(vaultInfo.condition);
 
   const buttonText =
-    usmApprovalState === ApprovalState.APPROVED ? (
+    vaultInfo?.debt === 0 || usmApprovalState === ApprovalState.APPROVED ? (
       closeable ? (
         'Close Vault'
       ) : (
@@ -76,7 +77,14 @@ export function Close({ vaultInfo, onDismiss }) {
     );
 
   const handleCloseVault = async () => {
-    if (usmApprovalState === ApprovalState.APPROVED) {
+    if (vaultInfo?.debt === 0) {
+      const tx = await closeVault('0');
+      tx &&
+        addTransaction(tx, {
+          summary: `Close vault ${vaultInfo.address} for ${formatNumber(0)}`,
+        });
+      tx && onDismiss();
+    } else if (usmApprovalState === ApprovalState.APPROVED) {
       if (closeable && debtCurrencyBalance) {
         const tx = await closeVault(debtCurrencyBalance.quotient.toString());
         tx &&
