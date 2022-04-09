@@ -1,7 +1,10 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import { formatNumber, formatNumberScale } from '../../../functions';
-import { useVaultManager } from '../../../services/graph/hooks/vault';
+import {
+  useVaultManager,
+  useVaultCollateralReserves,
+} from '../../../services/graph/hooks';
 import Skeleton from 'react-loading-skeleton';
 import {
   useSizeMdUp,
@@ -52,6 +55,32 @@ const Background = styled.div`
 
 export function VaultManagerInfo() {
   const vaultManager = useVaultManager();
+  const collateralReserves = useVaultCollateralReserves();
+
+  const renderReserves = () => {
+    return collateralReserves?.map((reserve, index) => {
+      return (
+        <div className="mr-8 mt-4" key={index}>
+          <div className="text-grey text-xs md:text-sm lg:text-sm">
+            Collateralized {reserve.cdp.symbol}
+          </div>
+          <div className="text-lg font-bold">
+            {runningStat ? (
+              <>
+                {formatNumber(reserve.currentCollateralized)}
+                <span className="font-normal text-base">
+                  {' '}
+                  {reserve.cdp.symbol}
+                </span>
+              </>
+            ) : (
+              NumberSkeleton
+            )}
+          </div>
+        </div>
+      );
+    });
+  };
 
   const isMintable =
     vaultManager && vaultManager.rebaseActive
@@ -164,21 +193,7 @@ export function VaultManagerInfo() {
 
           {(expanded || isViewportMediuUp) && (
             <div className="flex justify-start flex-wrap pb-2 mt-4">
-              {/* <div className="mr-8 mt-4">
-                <div className="text-grey text-xs md:text-sm lg:text-sm">
-                  Current Collateralized
-                </div>
-                <div className="text-lg font-bold">
-                  {runningStat ? (
-                    <>
-                      {formatNumber(runningStat.currentCollateralizedUSD)}
-                      <span className="font-normal text-base"> USD</span>
-                    </>
-                  ) : (
-                    NumberSkeleton
-                  )}
-                </div>
-              </div> */}
+              {renderReserves()}
               <div className="mr-8 mt-4">
                 <div className="text-grey text-xs md:text-sm lg:text-sm">
                   Liq. Collaterals

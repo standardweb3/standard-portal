@@ -262,8 +262,6 @@ export function useVaultDashboard() {
         });
       });
 
-      console.log(liquidationsResultMap)
-
       setCollateralReserveHistoriesForGraph(Object.values(resultMap));
       setCollateralReserveDataKeys(Object.keys(dataKeys));
       setCollateralReserveTooltipItems(Object.keys(toolTipItems));
