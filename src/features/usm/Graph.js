@@ -80,7 +80,8 @@ export const ReservesGraph = ({
   tooltipItems,
   bulletpointColors,
   title,
-  tooltipInfoMessage
+  tooltipInfoMessage,
+  itemType
 }) => {
   return (
     <Rechart
@@ -88,7 +89,7 @@ export const ReservesGraph = ({
       hideXAxis
       type="stack"
       data={data}
-      itemType={ItemType.number}
+      itemType={itemType}
       itemNames={tooltipItems}
       dataKey={dataKey}
       headerText={title}

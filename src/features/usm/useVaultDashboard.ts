@@ -147,11 +147,11 @@ export function useVaultDashboard() {
         histories.forEach((history) => {
           if (resultMap[history.timestamp]) {
             resultMap[history.timestamp][symbol + 'Reserve'] = parseFloat(
-              history.collateralReserve,
+              history.collateralReserveUSD,
             );
           } else {
             resultMap[history.timestamp] = {
-              [symbol + 'Reserve']: parseFloat(history.collateralReserve),
+              [symbol + 'Reserve']: parseFloat(history.collateralReserveUSD),
               timestamp: history.timestamp,
             };
           }
@@ -202,19 +202,19 @@ export function useVaultDashboard() {
           histories.forEach((history) => {
             if (resultMap[history.timestamp]) {
               resultMap[history.timestamp][symbol + 'Reserve'] = parseFloat(
-                history.currentCollateralized,
+                history.currentCollateralizedUSD,
               );
               liquidationsResultMap[history.timestamp][
                 symbol + 'Liquidation'
-              ] = parseFloat(history.liquidationAMM);
+              ] = parseFloat(history.liquidationAMMUSD);
             } else {
               resultMap[history.timestamp] = {
-                [symbol + 'Reserve']: parseFloat(history.currentCollateralized),
+                [symbol + 'Reserve']: parseFloat(history.currentCollateralizedUSD),
                 timestamp: history.timestamp,
               };
 
               liquidationsResultMap[history.timestamp] = {
-                [symbol + 'Liquidation']: parseFloat(history.liquidationAMM),
+                [symbol + 'Liquidation']: parseFloat(history.liquidationAMMUSD),
                 timestamp: history.timestamp,
               };
             }

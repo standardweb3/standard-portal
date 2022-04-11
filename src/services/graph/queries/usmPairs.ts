@@ -31,6 +31,7 @@ export const usmPairDayDatasQuery = gql`
     pairDayDatas(skip: $skip, first: $first, where: $where, orderBy: date, orderDirection: desc) {
       id
       collateralReserve
+      collateralReserveUSD
       timestamp
     }
   }

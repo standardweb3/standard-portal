@@ -4,6 +4,7 @@ import {
   getStopColors,
   getStrokes,
   HistoricSuppliesGraph,
+  ItemType,
   PaidBackGraph,
   ReservesGraph,
   SuppliesGraph,
@@ -113,13 +114,14 @@ function Dashboard() {
               <div className="col-span-1 bg-background rounded-20 p-2">
                 {collateralReserveHistoriesForGraph ? (
                   <ReservesGraph
+                    itemType={ItemType.dollar}
                     dataKey={collateralReserveDataKeys}
                     data={collateralReserveHistoriesForGraph ?? []}
                     stroke={getStrokes(cVaultCollaterals)}
                     stopColor={getStopColors(cVaultCollaterals)}
                     bulletpointColors={getBulletPointColors(cVaultCollaterals)}
                     tooltipItems={collateralReserveTooltipItems}
-                    title="Collateralized Assets"
+                    title="Collateralized Assets (USD)"
                     tooltipInfoMessage="Current collaterals deposited in vaults"
                   />
                 ) : (
@@ -131,13 +133,14 @@ function Dashboard() {
               <div className="col-span-1 bg-background rounded-20 p-2">
                 {ammReserveHistoriesForGraph ? (
                   <ReservesGraph
+                    itemType={ItemType.dollar}
                     dataKey={ammReserveDataKeys}
                     data={ammReserveHistoriesForGraph ?? []}
                     stroke={getStrokes(ammCollaterals)}
                     stopColor={getStopColors(ammCollaterals)}
                     bulletpointColors={getBulletPointColors(ammCollaterals)}
                     tooltipItems={ammReserveTooltipItems}
-                    title="Collateral-USM AMM Reserves"
+                    title="Collateral-USM AMM Reserves (USD)"
                     tooltipInfoMessage="Current collateral reserves in Collateral-USM AMM"
                   />
                 ) : (
@@ -149,13 +152,14 @@ function Dashboard() {
               <div className="col-span-1 bg-background rounded-20 p-2">
                 {collateralAmmLiquidationHistoriesForGraph ? (
                   <ReservesGraph
+                    itemType={ItemType.dollar}
                     dataKey={collateralAmmLiquidationDataKeys}
                     data={collateralAmmLiquidationHistoriesForGraph ?? []}
                     stroke={getStrokes(cVaultCollaterals)}
                     stopColor={getStopColors(cVaultCollaterals)}
                     bulletpointColors={getBulletPointColors(cVaultCollaterals)}
                     tooltipItems={collateralAmmLiquidationTooltipItems}
-                    title="Collateral Liquidations to AMM"
+                    title="Collateral Liquidations to AMM (USD)"
                     tooltipInfoMessage="Collateral liquidations on AMMs"
                   />
                 ) : (

@@ -248,7 +248,9 @@ export const collateralVaultHistoriesQuery = gql`
         id
       }
       liquidationAMM
+      liquidationAMMUSD
       currentCollateralized
+      currentCollateralizedUSD
       timestamp
     }
   }
