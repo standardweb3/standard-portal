@@ -55,12 +55,11 @@ function Vault() {
     isLiquidated,
     isUserVault,
   } = useUserVaultInfo(vaultAddress);
-
   // START: withdraw
   const collateralBalance = useCurrencyBalance(account, collateralCurrency);
 
   const withdrawableBalance = !loading
-    ? Math.max(currentCollateralized - minCollateralAmount, 0)
+    ? Math.max(currentCollateralized - minCollateralAmount, 0).toFixed(collateralCurrency.decimals)
     : undefined;
 
   const withdrawableCurrencyBalance = tryParseAmount(
