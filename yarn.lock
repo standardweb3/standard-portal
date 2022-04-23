@@ -1596,10 +1596,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha512-5a6wqoJV/xEdbRNKVo6I4hO3VjyDq//8q2f9I6PBAvMesJHFauXDorcNCsr9RzvsZnaWi5NYCcfyqP1QeFHFbw==
 
-"@digitalnative/default-token-list@0.0.41":
-  version "0.0.41"
-  resolved "https://registry.yarnpkg.com/@digitalnative/default-token-list/-/default-token-list-0.0.41.tgz#986c8fa07bd35f2e142635b9fb9c81ff8e744b76"
-  integrity sha512-HeESlrmu5gibk2F9kmOp9DumZ1Tu2+rfjbyg/0+xyGrvyH1tDQFTxV9Mf6ruWX+mkZT2WqNdJ/fVHwxIDLgH3w==
+"@digitalnative/default-token-list@0.0.44":
+  version "0.0.44"
+  resolved "https://registry.yarnpkg.com/@digitalnative/default-token-list/-/default-token-list-0.0.44.tgz#aaeb318c06cf414441b82c9f9c68473abd97c6b4"
+  integrity sha512-AQ+6RdOnLXk51dFRrcbzrzzc85f0iAn7gKarllCk7RFueZ3yxcAQvb+kgEnzTKuDDsNBMk689HxHM+uXH8dQZw==
   dependencies:
     "@tenderly/hardhat-tenderly" "^1.0.12"
 
