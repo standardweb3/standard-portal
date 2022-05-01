@@ -5,6 +5,7 @@ import { NetworkStatus } from '../NetworkStatus';
 import { SidebarNavigation } from './SidebarNavigation';
 import { sidebarRoutes } from '../../routes';
 import { Socials } from '../Socials';
+import Switchere from '../Switchere';
 
 export function Sidebar() {
   const { chainId, library } = useActiveWeb3React();
@@ -31,33 +32,15 @@ export function Sidebar() {
         <div className="space-y-4 py-2 px-4 mt-4">
           {library && library.provider.isMetaMask && <NetworkStatus />}
           <ConnectionStatus />
+          <Switchere />
         </div>
-
         <div className="py-2">
           <SidebarNavigation routes={sidebarRoutes} chainId={chainId} />
         </div>
       </div>
       <div className="px-4 py-8 w-full space-y-4">
-        {/* <Listings /> */}
         <Socials />
       </div>
-      {/* <div className="flex flex-col">
-        <div>{`current: ${protocol}`}</div>
-        <button
-          onClick={() => {
-            switchProtocol(Protocol.SUSHISWAP);
-          }}
-        >
-          sushi
-        </button>
-        <button
-          onClick={() => {
-            switchProtocol(Protocol.STANDARD_PROTOCOL);
-          }}
-        >
-          standard
-        </button>
-      </div> */}
     </div>
   );
 }

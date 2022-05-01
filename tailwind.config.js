@@ -108,6 +108,7 @@ module.exports = {
         tooltip: 'rgba(88, 88, 88, 0.5)',
         'tooltip-border': 'rgba(186, 186, 186, 0.6)',
         'dark-3': '#44446D',
+        white: '#fff',
       },
       textShadow: {
         white: '0px 0px 1px rgba(255,255,255, 0.5)',
