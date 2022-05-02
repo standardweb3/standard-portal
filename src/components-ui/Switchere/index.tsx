@@ -63,7 +63,7 @@ export default function Switchere() {
         <div>
           <Image src={switchHereImage} width="18px" height="22px" />
         </div>
-        <div className="text-sm text-text">Switchere</div>
+        <div className="text-sm text-text">Buy STND</div>
       </div>
       <Modal
         minWidth={
