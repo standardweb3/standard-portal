@@ -20,11 +20,14 @@ export default function Switchere() {
     setLoading(true);
     await window?.switchereSdk?.init({
       el: '#switchere',
-      partnerKey: 'JWY0ML4U23KITM5K',
-    //   partnerKey: 'I9W1QL2MWVGP4WBL',
-    //   JWY0ML4U23KITM5K
-      httpReturnSuccess: 'https://domain.tld/success',
-      httpReturnFailed: 'https://domain.tld/failed',
+    //   partnerKey: 'JWY0ML4U23KITM5K',
+      partnerKey: 'I9W1QL2MWVGP4WBL',
+      payinCurrencyDefault: "USD",
+      payinGroupDefault: "card",
+      payoutCurrencyDefault: "STND",
+      payoutGroupDefault: "crypto",
+      httpReturnSuccess: 'https://standard.tech/success',
+      httpReturnFailed: 'https://standard.tech/failed'
     });
     setLoading(false);
   };
@@ -37,7 +40,7 @@ export default function Switchere() {
   const loadScript = () => {
     return (
       <Script
-        src="https://sandbox.switchere.com/js/sdk-builder.js"
+        src="https://switchere.com/js/sdk-builder.js"
         strategy="beforeInteractive"
       />
     );
