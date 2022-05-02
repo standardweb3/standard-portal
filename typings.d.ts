@@ -25,6 +25,7 @@ declare global {
     };
     clover?: any;
     web3?: Record<string, unknown>;
+    switchereSdk?: any;
   }
 }
 

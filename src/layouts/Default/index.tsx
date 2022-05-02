@@ -8,6 +8,7 @@ import { isMobile } from 'react-device-detect';
 import Main from './Main';
 
 import styled from '@emotion/styled';
+import { BottomBar } from '../../components-ui/BottomBar';
 
 const Layout = ({ children }) => {
   return (
@@ -38,6 +39,7 @@ const Layout = ({ children }) => {
       >
         <ViewportSmallDown>
           <TopBar />
+          <BottomBar />
         </ViewportSmallDown>
         <ViewportMediumUp>
           <Sidebar />
