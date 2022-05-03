@@ -24,6 +24,14 @@ import { formatNumber } from '../../functions';
 import { useVaultDashboard } from '../../features/usm/useVaultDashboard';
 import { LogoSpinner } from '../../components-ui/Spinner/LogoSpinner';
 
+function collectSumFromMap(map, excludedKeys) {
+  return Object.keys(map)
+    .filter((key) => !excludedKeys[key])
+    .reduce((sum, i) => {
+      return sum + map[i];
+    }, 0);
+}
+
 function Dashboard() {
   const vaultManager = useVaultManager();
   const dashboardStats = useVaultDashboard();
@@ -55,6 +63,40 @@ function Dashboard() {
     };
   });
 
+  const latestCollateralReserve =
+    collateralReserveHistoriesForGraph &&
+    formatNumber(
+      collectSumFromMap(
+        collateralReserveHistoriesForGraph[
+          collateralReserveHistoriesForGraph.length - 1
+        ],
+        { timestamp: true },
+      ),
+      true,
+    );
+
+  const latestLiquidation =
+    collateralAmmLiquidationHistoriesForGraph &&
+    formatNumber(
+      collectSumFromMap(
+        collateralAmmLiquidationHistoriesForGraph[
+          collateralAmmLiquidationHistoriesForGraph.length - 1
+        ],
+        { timestamp: true },
+      ),
+      true,
+    );
+
+  const latestAmmReserve =
+    ammReserveHistoriesForGraph &&
+    formatNumber(
+      collectSumFromMap(
+        ammReserveHistoriesForGraph[ammReserveHistoriesForGraph.length - 1],
+        { timestamp: true },
+      ),
+      true,
+    );
+    
   return (
     <>
       <Head>
@@ -122,6 +164,7 @@ function Dashboard() {
                     bulletpointColors={getBulletPointColors(cVaultCollaterals)}
                     tooltipItems={collateralReserveTooltipItems}
                     title="Collateralized Assets (USD)"
+                    subtitle={latestCollateralReserve}
                     tooltipInfoMessage="Current collaterals deposited in vaults"
                   />
                 ) : (
@@ -141,6 +184,7 @@ function Dashboard() {
                     bulletpointColors={getBulletPointColors(ammCollaterals)}
                     tooltipItems={ammReserveTooltipItems}
                     title="Collateral-USM AMM Reserves (USD)"
+                    subtitle={latestAmmReserve}
                     tooltipInfoMessage="Current collateral reserves in Collateral-USM AMM"
                   />
                 ) : (
@@ -160,6 +204,7 @@ function Dashboard() {
                     bulletpointColors={getBulletPointColors(cVaultCollaterals)}
                     tooltipItems={collateralAmmLiquidationTooltipItems}
                     title="Collateral Liquidations to AMM (USD)"
+                    subtitle={latestLiquidation}
                     tooltipInfoMessage="Collateral liquidations on AMMs"
                   />
                 ) : (

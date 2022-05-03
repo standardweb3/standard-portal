@@ -80,6 +80,7 @@ export const ReservesGraph = ({
   tooltipItems,
   bulletpointColors,
   title,
+  subtitle = undefined,
   tooltipInfoMessage,
   itemType
 }) => {
@@ -99,6 +100,7 @@ export const ReservesGraph = ({
       expandedGraphStrokeColor={'rgba(255,255,255,0.15'}
       stroke={stroke}
       reversed={false}
+      headerSubText={subtitle}
     />
   );
 };
