@@ -210,7 +210,7 @@ export function VaultManagerInfo() {
                   Total Collateralized (Vaults)
                 </div>
                 <div className="text-lg font-bold">
-                  {totalCollateralizedUSD ? (
+                  {totalCollateralizedUSD !== undefined ? (
                     <>
                       {formatNumber(totalCollateralizedUSD)}
                       <span className="font-normal text-base"> USD</span>
