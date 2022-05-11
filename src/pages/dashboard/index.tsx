@@ -25,11 +25,13 @@ import { useVaultDashboard } from '../../features/usm/useVaultDashboard';
 import { LogoSpinner } from '../../components-ui/Spinner/LogoSpinner';
 
 function collectSumFromMap(map, excludedKeys) {
-  return Object.keys(map)
-    .filter((key) => !excludedKeys[key])
-    .reduce((sum, i) => {
-      return sum + map[i];
-    }, 0);
+  return map
+    ? Object.keys(map)
+        .filter((key) => !excludedKeys[key])
+        .reduce((sum, i) => {
+          return sum + map[i];
+        }, 0)
+    : 0;
 }
 
 function Dashboard() {
@@ -63,40 +65,40 @@ function Dashboard() {
     };
   });
 
-  const latestCollateralReserve =
-    collateralReserveHistoriesForGraph &&
-    formatNumber(
-      collectSumFromMap(
-        collateralReserveHistoriesForGraph[
-          collateralReserveHistoriesForGraph.length - 1
-        ],
-        { timestamp: true },
-      ),
-      true,
-    );
+  const latestCollateralReserve = collateralReserveHistoriesForGraph
+    ? formatNumber(
+        collectSumFromMap(
+          collateralReserveHistoriesForGraph[
+            collateralReserveHistoriesForGraph.length - 1
+          ],
+          { timestamp: true },
+        ),
+        true,
+      )
+    : 0;
 
-  const latestLiquidation =
-    collateralAmmLiquidationHistoriesForGraph &&
-    formatNumber(
-      collectSumFromMap(
-        collateralAmmLiquidationHistoriesForGraph[
-          collateralAmmLiquidationHistoriesForGraph.length - 1
-        ],
-        { timestamp: true },
-      ),
-      true,
-    );
+  const latestLiquidation = collateralAmmLiquidationHistoriesForGraph
+    ? formatNumber(
+        collectSumFromMap(
+          collateralAmmLiquidationHistoriesForGraph[
+            collateralAmmLiquidationHistoriesForGraph.length - 1
+          ],
+          { timestamp: true },
+        ),
+        true,
+      )
+    : 0;
 
-  const latestAmmReserve =
-    ammReserveHistoriesForGraph &&
-    formatNumber(
-      collectSumFromMap(
-        ammReserveHistoriesForGraph[ammReserveHistoriesForGraph.length - 1],
-        { timestamp: true },
-      ),
-      true,
-    );
-    
+  const latestAmmReserve = ammReserveHistoriesForGraph
+    ? formatNumber(
+        collectSumFromMap(
+          ammReserveHistoriesForGraph[ammReserveHistoriesForGraph.length - 1],
+          { timestamp: true },
+        ),
+        true,
+      )
+    : 0;
+
   return (
     <>
       <Head>
@@ -188,7 +190,7 @@ function Dashboard() {
                     tooltipInfoMessage="Current collateral reserves in Collateral-USM AMM"
                   />
                 ) : (
-                  <div className="flex justify-center items-center w-full min-h-[300px]">
+                  <div className="flex justify-center items-center w-full min-h-[300px] h-full">
                     <LogoSpinner width={48} height={48} />
                   </div>
                 )}
@@ -224,5 +226,10 @@ function Dashboard() {
   );
 }
 
-Dashboard.Guard = NetworkGuardWrapper([ChainId.RINKEBY, ChainId.METIS]);
+Dashboard.Guard = NetworkGuardWrapper([
+  ChainId.RINKEBY,
+  ChainId.METIS,
+  ChainId.MAINNET,
+  ChainId.SHIDEN
+]);
 export default Dashboard;

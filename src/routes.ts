@@ -32,8 +32,6 @@ export const sidebarRoutes = [
     iconActive: dashboardIcon,
     hidden: [
       ChainId.MATIC,
-      ChainId.MAINNET,
-      ChainId.SHIDEN,
       ChainId.MATIC,
       ChainId.BSC,
     ],
@@ -46,8 +44,6 @@ export const sidebarRoutes = [
     iconActive: borrowIcon,
     hidden: [
       ChainId.MATIC,
-      ChainId.MAINNET,
-      ChainId.SHIDEN,
       ChainId.MATIC,
       ChainId.BSC,
     ],
@@ -59,8 +55,6 @@ export const sidebarRoutes = [
     iconActive: vaultIcon,
     hidden: [
       ChainId.MATIC,
-      ChainId.MAINNET,
-      ChainId.SHIDEN,
       ChainId.MATIC,
       ChainId.BSC,
     ],
@@ -72,8 +66,6 @@ export const sidebarRoutes = [
     iconActive: ammsIcon,
     hidden: [
       ChainId.MATIC,
-      ChainId.MAINNET,
-      ChainId.SHIDEN,
       ChainId.MATIC,
       ChainId.BSC,
     ],
@@ -86,8 +78,6 @@ export const sidebarRoutes = [
     iconActive: explorerIcon,
     hidden: [
       ChainId.MATIC,
-      ChainId.MAINNET,
-      ChainId.SHIDEN,
       ChainId.MATIC,
       ChainId.BSC,
     ],
@@ -109,8 +99,6 @@ export const sidebarRoutes = [
     name: 'Divider',
     hidden: [
       ChainId.MATIC,
-      ChainId.MAINNET,
-      ChainId.SHIDEN,
       ChainId.MATIC,
       ChainId.BSC,
     ],

@@ -87,5 +87,5 @@ export function Amms() {
   );
 }
 
-Amms.Guard = NetworkGuardWrapper([ChainId.RINKEBY, ChainId.METIS]);
+Amms.Guard = NetworkGuardWrapper([ChainId.RINKEBY, ChainId.METIS, ChainId.MAINNET, ChainId.SHIDEN]);
 export default Amms;

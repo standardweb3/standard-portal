@@ -16,7 +16,9 @@ import {
 
 export const VAULT = {
   [ChainId.RINKEBY]: 'billjhlee/rinkeby-vault-dev',
+  [ChainId.MAINNET]: 'billjhlee/ethereum-vault',
   [ChainId.METIS]: 'digitalnativeinc/metis-vault',
+  [ChainId.SHIDEN]: 'digitalnativeinc/shiden-vault',
 };
 
 export const vaultsGraphClient = (chainId) => {
