@@ -3,8 +3,8 @@ import { tokenListUrl, VERSION, USE_VERSION } from '../constant';
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
 export const SDN_MAIN_CHAINID = 336;
-export const SDN_MAINNET = 'https://rpc.shiden.astar.network:8545';
-export const SDN_MAIN_EXPLORER = 'https://shiden.subscan.io';
+export const SDN_MAINNET = 'https://evm.shiden.astar.network';
+export const SDN_MAIN_EXPLORER = 'https://blockscout.com/shiden';
 
 export const tokenList = [];
 export const testTokenList = [];
