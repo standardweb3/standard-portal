@@ -139,8 +139,7 @@ export const clover = new CloverConnector({
 export const walletlink = new WalletLinkConnector({
   url: RPC[ChainId.MAINNET],
   appName: 'Standard Protocol',
-  appLogoUrl:
-    'https://raw.githubusercontent.com/sushiswap/art/master/sushi/logo-256x256.png',
+  appLogoUrl: 'https://raw.githubusercontent.com/digitalnativeinc/icons/master/art/standard/logo-256x256.png',
 });
 
 // mainnet only
