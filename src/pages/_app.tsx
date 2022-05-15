@@ -3,6 +3,7 @@ import Head from 'next/head'
 import { Fragment, FunctionComponent, useEffect } from 'react';
 // next
 import { NextComponentType, NextPageContext } from 'next';
+import {hotjar} from 'react-hotjar'
 import { useRouter } from 'next/router'
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic'
@@ -75,7 +76,7 @@ function MyApp({
 
   useEffect(() => {
     ReactGA.initialize(process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_PROD : process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_DEV)
-
+    hotjar.initialize(2970531, 6)
     const errorHandler = (error) => {
       ReactGA.exception({
         description: `${error.message} @ ${error.filename}:${error.lineno}:${error.colno}`,

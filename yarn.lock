@@ -14601,6 +14601,11 @@ react-horizontal-scrolling-menu@^2.7.0:
   dependencies:
     smooth-scroll-into-view-if-needed "^1.1.32"
 
+react-hotjar@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/react-hotjar/-/react-hotjar-5.0.0.tgz#72beaa2e0067b407c4183dc3ace5020f68959cab"
+  integrity sha512-nEKDm+O5a77C9DlheuA9tz5rwhRjeIFPLhdvynGFxEYTT1qrYC3NU12Z9/tgvN2l9Tzyn7erUQ0C8fZHZBceTw==
+
 react-is@17.0.2, react-is@^17.0.1:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
