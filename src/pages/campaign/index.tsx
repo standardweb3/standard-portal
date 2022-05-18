@@ -33,7 +33,7 @@ function Campaign() {
               <div>
                 <div className="flex items-center gap-2 text-sm">
                   <div className="text-grey">User:</div>
-                  <div className="">{shortenAddress(user.id)}</div>
+                  <div className="">{user.id}</div>
                 </div>
 
                 <div className="flex items-center gap-2 text-sm">
