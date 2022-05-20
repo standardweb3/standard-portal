@@ -8,6 +8,7 @@ import { useRouter } from 'next/router'
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic'
 import ReactGA from 'react-ga'
+import TagManager from 'react-gtm-module';
 
 // lingui
 // import { I18nProvider } from '@lingui/react'
@@ -77,6 +78,7 @@ function MyApp({
   useEffect(() => {
     ReactGA.initialize(process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_PROD : process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_DEV)
     hotjar.initialize(2970531, 6)
+    TagManager.initialize({ gtmId: 'GTM-PMM9BFL' })
     const errorHandler = (error) => {
       ReactGA.exception({
         description: `${error.message} @ ${error.filename}:${error.lineno}:${error.colno}`,
