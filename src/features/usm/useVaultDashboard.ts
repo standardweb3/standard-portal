@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useActiveWeb3React } from '../../hooks';
 import {
   useVaultAmmReserves,
@@ -68,6 +68,11 @@ export function useVaultDashboard() {
 
   let ammReserveHistoriesResult = {};
   let ammCollateralsResult = {};
+
+  useEffect(() => {
+    setCollateralReservesLoaded(false)
+    setAmmReserveLoaded(false)
+  }, [chainId])
 
   useEffect(() => {
     if (!ammReserveLoaded && ammReserves !== undefined) {
