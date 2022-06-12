@@ -1,13 +1,32 @@
 const withPWA = require('next-pwa');
 const runtimeCaching = require('next-pwa/cache');
 
-// const linguiConfig = require('./lingui.config.js');
+//const linguiConfig = require('./lingui.config.js');
 
-// const { locales, sourceLocale } = linguiConfig;
+//const { locales, sourceLocale } = linguiConfig;
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
+
+const securityHeaders = [
+  {
+    key: "Strict-Transport-Security",
+    value: "max-age=31536000; includeSubDomains; preload"
+  },
+  {
+    key: "X-Frame-Options",
+    value: "SAMEORIGIN"
+  },
+  {
+    key: "X-Content-Type-Options",
+    value: "nosniff"
+  },
+  {
+    key: "X-XSS-Protection",
+    value: "1; mode=block"
+  }
+]
 
 module.exports = withBundleAnalyzer(
   withPWA({
@@ -45,6 +64,15 @@ module.exports = withBundleAnalyzer(
           permanent: true,
         },
       ];
+    },
+    async headers() {
+      return [
+        {
+          // Apply these headers to all routes in your application.
+          source: '/:path*',
+          headers: securityHeaders,
+        },
+      ]
     },
   }),
 );
