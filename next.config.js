@@ -24,12 +24,16 @@ const securityHeaders = [
   },
   {
     key: "X-XSS-Protection",
-    value: "1; mode=block"
+    value: "0"
   },
   {
     key: "Referrer-Policy",
-    value: "no-referrer"
-  }
+    value: "strict-origin-when-cross-origin"
+  },
+  {
+    key: "Content-Security-Policy",
+    value: "upgrade-insecure-requests",
+  },
 ]
 
 module.exports = withBundleAnalyzer(
