@@ -34,6 +34,8 @@ export const sidebarRoutes = [
       ChainId.MATIC,
       ChainId.MATIC,
       ChainId.BSC,
+      ChainId.MAINNET,
+      ChainId.SHIDEN
     ],
   },
 
@@ -46,6 +48,8 @@ export const sidebarRoutes = [
       ChainId.MATIC,
       ChainId.MATIC,
       ChainId.BSC,
+      ChainId.MAINNET,
+      ChainId.SHIDEN
     ],
   },
   {
@@ -57,6 +61,8 @@ export const sidebarRoutes = [
       ChainId.MATIC,
       ChainId.MATIC,
       ChainId.BSC,
+      ChainId.MAINNET,
+      ChainId.SHIDEN
     ],
   },
   {
@@ -68,6 +74,8 @@ export const sidebarRoutes = [
       ChainId.MATIC,
       ChainId.MATIC,
       ChainId.BSC,
+      ChainId.MAINNET,
+      ChainId.SHIDEN
     ],
   },
 
@@ -80,6 +88,8 @@ export const sidebarRoutes = [
       ChainId.MATIC,
       ChainId.MATIC,
       ChainId.BSC,
+      ChainId.MAINNET,
+      ChainId.SHIDEN
     ],
   },
   {
@@ -93,6 +103,9 @@ export const sidebarRoutes = [
       ChainId.SHIDEN,
       ChainId.MATIC,
       ChainId.BSC,
+      ChainId.MAINNET,
+      ChainId.SHIDEN,
+      ChainId.METIS
     ],
   },
   {
@@ -101,6 +114,8 @@ export const sidebarRoutes = [
       ChainId.MATIC,
       ChainId.MATIC,
       ChainId.BSC,
+      ChainId.MAINNET,
+      ChainId.SHIDEN
     ],
   },
   {
