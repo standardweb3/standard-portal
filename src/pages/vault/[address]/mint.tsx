@@ -25,6 +25,7 @@ import {
   getMaxCollateralRatio,
   getSafeCollateralRatio,
 } from '../../../features/usm/constants';
+import { Chain } from '@ethereumjs/common';
 
 function Vault() {
   const router = useRouter();
@@ -295,5 +296,5 @@ function Vault() {
   );
 }
 
-Vault.Guard = NetworkGuardWrapper([ChainId.RINKEBY, ChainId.METIS]);
+Vault.Guard = NetworkGuardWrapper([ChainId.RINKEBY, ChainId.METIS, ChainId.SHIDEN]);
 export default Vault;

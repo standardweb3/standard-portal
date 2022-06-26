@@ -398,5 +398,5 @@ function Collateral() {
   );
 }
 
-Collateral.Guard = NetworkGuardWrapper([ChainId.RINKEBY, ChainId.METIS]);
+Collateral.Guard = NetworkGuardWrapper([ChainId.RINKEBY, ChainId.METIS, ChainId.SHIDEN]);
 export default Collateral;
