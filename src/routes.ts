@@ -100,7 +100,6 @@ export const sidebarRoutes = [
     hidden: [
       ChainId.MATIC,
       ChainId.MAINNET,
-      ChainId.SHIDEN,
       ChainId.MATIC,
       ChainId.BSC,
       ChainId.MAINNET,
