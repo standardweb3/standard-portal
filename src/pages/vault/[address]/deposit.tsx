@@ -137,5 +137,5 @@ function Vault() {
   );
 }
 
-Vault.Guard = NetworkGuardWrapper([ChainId.RINKEBY, ChainId.METIS, ChainId.MAINNET, ChainId.SHIDEN]);
+Vault.Guard = NetworkGuardWrapper([ChainId.RINKEBY, ChainId.METIS]);
 export default Vault;

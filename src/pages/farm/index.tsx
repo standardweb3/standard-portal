@@ -58,6 +58,7 @@ function Farm() {
     return pairAddresses.filter(addr => !blackList?.includes(addr))
   }, [pairAddresses, chainId])
 
+  console.log('filtered', filteredPairAddresses)
   const swapPairs = useSushiPairs({
     where: {
       id_in: filteredPairAddresses,
