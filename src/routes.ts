@@ -9,9 +9,9 @@ import routerIcon from '../public/icons/router.svg';
 import dashboardIcon from '../public/icons/dashboard.svg';
 import vaultIcon from '../public/icons/vault.svg';
 import borrowIcon from '../public/icons/borrow.svg';
-import ammsIcon from '../public/icons/amms.svg'
-import explorerIcon from '../public/icons/explorer.svg'
-import campaignIcon from '../public/icons/campaign.svg'
+import ammsIcon from '../public/icons/amms.svg';
+import explorerIcon from '../public/icons/explorer.svg';
+import campaignIcon from '../public/icons/campaign.svg';
 
 import { ChainId } from '@digitalnative/standard-protocol-sdk';
 
@@ -30,13 +30,7 @@ export const sidebarRoutes = [
     urls: ['/dashboard'],
     icon: dashboardIcon,
     iconActive: dashboardIcon,
-    hidden: [
-      ChainId.MATIC,
-      ChainId.MATIC,
-      ChainId.BSC,
-      ChainId.MAINNET,
-      ChainId.SHIDEN
-    ],
+    hidden: [ChainId.MATIC, ChainId.BSC, ChainId.MAINNET],
   },
 
   {
@@ -44,39 +38,21 @@ export const sidebarRoutes = [
     urls: ['/borrow'],
     icon: borrowIcon,
     iconActive: borrowIcon,
-    hidden: [
-      ChainId.MATIC,
-      ChainId.MATIC,
-      ChainId.BSC,
-      ChainId.MAINNET,
-      ChainId.SHIDEN
-    ],
+    hidden: [ChainId.MATIC, ChainId.BSC, ChainId.MAINNET],
   },
   {
     name: 'Vaults',
     urls: ['/vaults'],
     icon: vaultIcon,
     iconActive: vaultIcon,
-    hidden: [
-      ChainId.MATIC,
-      ChainId.MATIC,
-      ChainId.BSC,
-      ChainId.MAINNET,
-      ChainId.SHIDEN
-    ],
+    hidden: [ChainId.MATIC, ChainId.BSC, ChainId.MAINNET],
   },
   {
     name: 'AMMs',
     urls: ['/amms'],
     icon: ammsIcon,
     iconActive: ammsIcon,
-    hidden: [
-      ChainId.MATIC,
-      ChainId.MATIC,
-      ChainId.BSC,
-      ChainId.MAINNET,
-      ChainId.SHIDEN
-    ],
+    hidden: [ChainId.MATIC, ChainId.BSC, ChainId.MAINNET],
   },
 
   {
@@ -84,13 +60,7 @@ export const sidebarRoutes = [
     urls: ['/explorer'],
     icon: explorerIcon,
     iconActive: explorerIcon,
-    hidden: [
-      ChainId.MATIC,
-      ChainId.MATIC,
-      ChainId.BSC,
-      ChainId.MAINNET,
-      ChainId.SHIDEN
-    ],
+    hidden: [ChainId.MATIC, ChainId.BSC, ChainId.MAINNET],
   },
   {
     name: 'Campaign',
@@ -100,22 +70,14 @@ export const sidebarRoutes = [
     hidden: [
       ChainId.MATIC,
       ChainId.MAINNET,
-      ChainId.MATIC,
       ChainId.BSC,
-      ChainId.MAINNET,
       ChainId.SHIDEN,
-      ChainId.METIS
+      ChainId.METIS,
     ],
   },
   {
     name: 'Divider',
-    hidden: [
-      ChainId.MATIC,
-      ChainId.MATIC,
-      ChainId.BSC,
-      ChainId.MAINNET,
-      ChainId.SHIDEN
-    ],
+    hidden: [ChainId.MATIC, ChainId.BSC, ChainId.MAINNET, ChainId.SHIDEN],
   },
   {
     name: 'Trade',
