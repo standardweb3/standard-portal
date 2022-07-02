@@ -234,5 +234,5 @@ export function Explorer() {
   );
 }
 
-Explorer.Guard = NetworkGuardWrapper([ChainId.RINKEBY, ChainId.METIS]);
+Explorer.Guard = NetworkGuardWrapper([ChainId.RINKEBY, ChainId.METIS, ChainId.SHIDEN]);
 export default Explorer;

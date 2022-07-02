@@ -31,7 +31,7 @@ export const DEFAULT_LIST_OF_LISTS: string[] = [
   CMC_ALL_LIST,
   CMC_STABLECOIN,
   UMA_LIST,
-  YEARN_LIST,
+  //YEARN_LIST,
   SYNTHETIX_LIST,
   WRAPPED_LIST,
   SET_LIST,
@@ -42,9 +42,9 @@ export const DEFAULT_LIST_OF_LISTS: string[] = [
   NFTX_LIST,
   OPTIMISM_LIST,
   GEMINI_LIST,
-  DHEDGE_LIST,
+  //DHEDGE_LIST,
   ...UNSUPPORTED_LIST_URLS, // need to load unsupported tokens as well
 ]
 
 // default lists to be 'active' aka searched across
-export const DEFAULT_ACTIVE_LIST_URLS: string[] = [NFTX_LIST, YEARN_LIST, GEMINI_LIST]
+export const DEFAULT_ACTIVE_LIST_URLS: string[] = [NFTX_LIST,  GEMINI_LIST]
