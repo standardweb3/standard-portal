@@ -20,7 +20,7 @@
     "@apollo/client": "^3.4.16",
     "@binance-chain/bsc-connector": "^1.0.0",
     "@clover-network/clover-connector": "^1.0.0",
-    "@digitalnative/default-token-list": "0.0.44",
+    "@digitalnative/default-token-list": "0.0.45",
     "@digitalnative/standard-protocol-sdk": "^0.0.196",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
